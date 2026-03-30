@@ -12,11 +12,11 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { RX_COLORS, FS_COLORS } from '../utils/colors';
 
-// CVS angular heart — geometric/chevron style matching the CVS brand
+// CVS heart icon — the brand heart shape: soft rounded top lobes, pointed bottom
 function createHeartIcon(color, size = 18, opacity = 0.9) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 32 32">
-    <path d="M16 28 L3 15 L3 9 L9 3 L16 10 L23 3 L29 3 L29 15 Z"
-      fill="${color}" fill-opacity="${opacity}" stroke="${darkenHexStr(color)}" stroke-width="1" stroke-linejoin="miter"/>
+    <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
+      fill="${color}" fill-opacity="${opacity}" stroke="${darkenHexStr(color)}" stroke-width="0.5"/>
   </svg>`;
   return L.divIcon({
     html: svg,

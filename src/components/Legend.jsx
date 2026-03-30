@@ -93,7 +93,7 @@ export default function Legend({ districtMode = 'rx' }) {
           }}
         >
           <svg width="12" height="12" viewBox="0 0 32 32" style={{ flexShrink: 0 }}>
-            <path d="M16 28 L3 15 L3 9 L9 3 L16 10 L23 3 L29 3 L29 15 Z"
+            <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
               fill={colorMap[key]} />
           </svg>
           <span>{labelMap[key]}</span>
