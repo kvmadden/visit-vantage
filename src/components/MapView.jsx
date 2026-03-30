@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback, memo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -97,6 +97,22 @@ function FlyToStore({ selectedStore, activeDistrict, stores }) {
 }
 
 // ---------------------------------------------------------------------------
+// ZoomTracker — updates zoom state on map zoom events
+// ---------------------------------------------------------------------------
+function ZoomTracker({ onZoomChange }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const handler = () => onZoomChange(map.getZoom());
+    map.on('zoomend', handler);
+    onZoomChange(map.getZoom());
+    return () => map.off('zoomend', handler);
+  }, [map, onZoomChange]);
+
+  return null;
+}
+
+// ---------------------------------------------------------------------------
 // Memoised store marker
 // ---------------------------------------------------------------------------
 const StoreMarker = memo(function StoreMarker({
@@ -104,6 +120,7 @@ const StoreMarker = memo(function StoreMarker({
   isSelected,
   isFaded,
   districtMode,
+  zoom,
   onStoreSelect,
 }) {
   const isTarget = store.target === true;
@@ -115,9 +132,16 @@ const StoreMarker = memo(function StoreMarker({
     onStoreSelect(store);
   }, [store, onStoreSelect]);
 
+  // Scale icons up once zoomed past level 11
+  // Base sizes: heart 18, bullseye 13
+  // At zoom 11 and below: base size. Each zoom level above 11 adds ~30%
+  const zoomScale = zoom <= 11 ? 1 : 1 + (zoom - 11) * 0.3;
+  const baseHeart = isSelected ? 24 : 18;
+  const baseBullseye = isSelected ? 17 : 13;
+  const heartSize = Math.round(baseHeart * zoomScale);
+  const bullseyeSize = Math.round(baseBullseye * zoomScale);
+
   const opacity = isFaded ? 0.2 : 0.9;
-  const heartSize = isSelected ? 24 : 18;
-  const bullseyeSize = isSelected ? 17 : 13;
 
   const icon = isTarget
     ? createBullseyeIcon(isFaded ? '#52525b' : (RX_COLORS[store.rxDistrict] || '#ef4444'), bullseyeSize, opacity)
@@ -192,6 +216,9 @@ export default function MapView({
   districtMode = 'rx',
   gpsPosition = null,
 }) {
+  const [zoom, setZoom] = useState(DEFAULT_ZOOM);
+  const handleZoomChange = useCallback((z) => setZoom(z), []);
+
   const markers = useMemo(() => {
     return stores.map((store) => {
       const isSelected =
@@ -207,11 +234,12 @@ export default function MapView({
           isSelected={isSelected}
           isFaded={isFaded}
           districtMode={districtMode}
+          zoom={zoom}
           onStoreSelect={onStoreSelect}
         />
       );
     });
-  }, [stores, selectedStore, activeDistrict, districtMode, onStoreSelect]);
+  }, [stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect]);
 
   return (
     <MapContainer
@@ -221,6 +249,7 @@ export default function MapView({
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
+      <ZoomTracker onZoomChange={handleZoomChange} />
 
       {markers}
 
