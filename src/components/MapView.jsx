@@ -26,11 +26,12 @@ function createHeartIcon(color, size = 18, opacity = 0.9) {
   });
 }
 
-// Target bullseye — thick outer ring + filled center dot (no middle ring)
-function createBullseyeIcon(color, size = 18, opacity = 0.9) {
+// Target bullseye — thick outer ring, white gap, filled inner circle (brand proportions)
+function createBullseyeIcon(color, size = 13, opacity = 0.9) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="9.5" fill="none" stroke="${color}" stroke-width="3" opacity="${opacity}"/>
-    <circle cx="12" cy="12" r="3" fill="${color}" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="10.5" fill="${color}" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="7.5" fill="#18181b" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="4.5" fill="${color}" opacity="${opacity}"/>
   </svg>`;
   return L.divIcon({
     html: svg,
@@ -115,11 +116,12 @@ const StoreMarker = memo(function StoreMarker({
   }, [store, onStoreSelect]);
 
   const opacity = isFaded ? 0.2 : 0.9;
-  const size = isSelected ? 24 : 18;
+  const heartSize = isSelected ? 24 : 18;
+  const bullseyeSize = isSelected ? 17 : 13;
 
   const icon = isTarget
-    ? createBullseyeIcon(isFaded ? '#52525b' : (RX_COLORS[store.rxDistrict] || '#ef4444'), size, opacity)
-    : createHeartIcon(isFaded ? '#52525b' : color, size, opacity);
+    ? createBullseyeIcon(isFaded ? '#52525b' : (RX_COLORS[store.rxDistrict] || '#ef4444'), bullseyeSize, opacity)
+    : createHeartIcon(isFaded ? '#52525b' : color, heartSize, opacity);
 
   return (
     <Marker

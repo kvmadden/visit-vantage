@@ -110,9 +110,10 @@ export default function Legend({ districtMode = 'rx' }) {
             }}
           />
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
-              <circle cx="12" cy="12" r="9.5" fill="none" stroke="#71717a" strokeWidth="3" />
-              <circle cx="12" cy="12" r="3" fill="#71717a" />
+            <svg width="10" height="10" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+              <circle cx="12" cy="12" r="10.5" fill="#71717a" />
+              <circle cx="12" cy="12" r="7.5" fill="#18181b" />
+              <circle cx="12" cy="12" r="4.5" fill="#71717a" />
             </svg>
             <span>Target</span>
           </div>
