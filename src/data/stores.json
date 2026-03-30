@@ -268,7 +268,7 @@
     "address": "7351 W Hillsborough Ave",
     "city": "Tampa",
     "zip": "33634",
-    "nickname": "Hillsborough y M\u00e1s",
+    "nickname": "Hillsborough y Más",
     "intersection": null,
     "fs24": "No",
     "rx24": "No",
@@ -567,8 +567,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.2086,
-    "lng": -82.3325,
+    "lat": 28.237807,
+    "lng": -82.36823,
     "target": false
   },
   {
@@ -593,8 +593,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.1425,
-    "lng": -82.4503,
+    "lat": 28.191221,
+    "lng": -82.465752,
     "target": false
   },
   {
@@ -1113,8 +1113,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.31,
-    "lng": -82.71,
+    "lat": 28.330443,
+    "lng": -82.699095,
     "target": false
   },
   {
@@ -1165,8 +1165,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.0156,
-    "lng": -82.7706,
+    "lat": 28.023088,
+    "lng": -82.763516,
     "target": false
   },
   {
@@ -1217,8 +1217,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.06,
-    "lng": -82.22,
+    "lat": 27.038015,
+    "lng": -82.219846,
     "target": false
   },
   {
@@ -1243,8 +1243,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.25,
-    "lng": -82.68,
+    "lat": 28.217261,
+    "lng": -82.693788,
     "target": false
   },
   {
@@ -1295,8 +1295,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.1672,
-    "lng": -82.4578,
+    "lat": 27.138554,
+    "lng": -82.458467,
     "target": false
   },
   {
@@ -1321,8 +1321,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.86,
-    "lng": -82.76,
+    "lat": 27.872464,
+    "lng": -82.762445,
     "target": false
   },
   {
@@ -1555,8 +1555,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.24,
-    "lng": -82.1811,
+    "lat": 28.229865,
+    "lng": -82.214499,
     "target": false
   },
   {
@@ -1685,8 +1685,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.9394,
-    "lng": -82.2328,
+    "lat": 27.937846,
+    "lng": -82.251832,
     "target": false
   },
   {
@@ -1711,8 +1711,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.055,
-    "lng": -82.54,
+    "lat": 28.083424,
+    "lng": -82.541665,
     "target": false
   },
   {
@@ -1789,8 +1789,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.21,
-    "lng": -82.67,
+    "lat": 28.19331,
+    "lng": -82.634521,
     "target": false
   },
   {
@@ -1841,8 +1841,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.8503,
-    "lng": -82.7822,
+    "lat": 27.844098,
+    "lng": -82.819994,
     "target": false
   },
   {
@@ -2075,8 +2075,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.0986,
-    "lng": -82.4531,
+    "lat": 27.099891,
+    "lng": -82.433493,
     "target": false
   },
   {
@@ -2127,8 +2127,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.45,
-    "lng": -82.42,
+    "lat": 27.444424,
+    "lng": -82.46913,
     "target": false
   },
   {
@@ -2205,8 +2205,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.0,
-    "lng": -82.15,
+    "lat": 27.017566,
+    "lng": -82.052548,
     "target": false
   },
   {
@@ -2777,8 +2777,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.86,
-    "lng": -82.33,
+    "lat": 27.89601,
+    "lng": -82.339507,
     "target": false
   },
   {
@@ -2803,8 +2803,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.4428,
-    "lng": -82.4608,
+    "lat": 27.484917,
+    "lng": -82.433923,
     "target": false
   },
   {
@@ -2907,8 +2907,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.1536,
-    "lng": -82.5661,
+    "lat": 28.187886,
+    "lng": -82.55127,
     "target": false
   },
   {
@@ -2933,8 +2933,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.44,
-    "lng": -82.39,
+    "lat": 27.432261,
+    "lng": -82.427112,
     "target": false
   },
   {
@@ -3713,8 +3713,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.4564,
-    "lng": -82.4136,
+    "lat": 27.49681,
+    "lng": -82.4716,
     "target": true
   }
 ]
