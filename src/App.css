@@ -724,6 +724,11 @@ body {
   color: #52525b !important;
 }
 
+.target-x-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
 /* ============================================
    Animations
    ============================================ */

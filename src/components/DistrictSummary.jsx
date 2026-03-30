@@ -1,7 +1,10 @@
 import React, { useMemo } from 'react';
-import { RX_COLORS } from '../utils/colors';
+import { RX_COLORS, FS_COLORS } from '../utils/colors';
 
-export default function DistrictSummary({ district, stores, dlName }) {
+export default function DistrictSummary({ district, stores, districtMode = 'rx', dlName }) {
+  const isRx = districtMode === 'rx';
+  const colorMap = isRx ? RX_COLORS : FS_COLORS;
+
   const stats = useMemo(() => {
     if (!stores || stores.length === 0) return null;
 
@@ -16,12 +19,12 @@ export default function DistrictSummary({ district, stores, dlName }) {
 
   if (!stats) return null;
 
-  const color = RX_COLORS[district] || '#888';
+  const color = colorMap[district] || '#888';
 
   const statItems = [
     { label: 'stores', value: stats.total },
     { label: '24hr Rx', value: stats.rx24hr },
-    { label: 'Target', value: stats.target },
+    ...(isRx ? [{ label: 'Target', value: stats.target }] : []),
     { label: 'Y Mas', value: stats.ymas },
     { label: 'FS 24hr', value: stats.fs24hr },
   ].filter((item) => item.value > 0);
@@ -33,7 +36,9 @@ export default function DistrictSummary({ district, stores, dlName }) {
           className="district-summary-dot"
           style={{ backgroundColor: color }}
         />
-        <span className="district-summary-title">Rx District D{district}</span>
+        <span className="district-summary-title">
+          {isRx ? 'Rx' : 'FS'} District D{district}
+        </span>
       </div>
 
       {dlName && (

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { RX_COLORS, RX_LABELS } from '../utils/colors';
+import { RX_COLORS, RX_LABELS, FS_COLORS, FS_LABELS } from '../utils/colors';
 
-export default function Legend() {
+export default function Legend({ districtMode = 'rx' }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const isRx = districtMode === 'rx';
+  const colorMap = isRx ? RX_COLORS : FS_COLORS;
+  const labelMap = isRx ? RX_LABELS : FS_LABELS;
 
   if (!isOpen) {
     return (
@@ -29,9 +33,9 @@ export default function Legend() {
         aria-label="Open legend"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="3" r="2.5" fill="#4A9EFF" />
-          <circle cx="8" cy="8" r="2.5" fill="#3D9A6D" />
-          <circle cx="8" cy="13" r="2.5" fill="#f59e0b" />
+          <circle cx="8" cy="3" r="2.5" fill={Object.values(colorMap)[0]} />
+          <circle cx="8" cy="8" r="2.5" fill={Object.values(colorMap)[1]} />
+          <circle cx="8" cy="13" r="2.5" fill={Object.values(colorMap)[2]} />
         </svg>
       </button>
     );
@@ -74,9 +78,11 @@ export default function Legend() {
         ✕
       </button>
 
-      <div style={{ fontWeight: 600, marginBottom: 8 }}>Rx Districts</div>
+      <div style={{ fontWeight: 600, marginBottom: 8 }}>
+        {isRx ? 'Rx Districts' : 'FS Districts'}
+      </div>
 
-      {Object.keys(RX_COLORS).map((key) => (
+      {Object.keys(colorMap).map((key) => (
         <div
           key={key}
           style={{
@@ -91,35 +97,32 @@ export default function Legend() {
               width: 10,
               height: 10,
               borderRadius: '50%',
-              backgroundColor: RX_COLORS[key],
+              backgroundColor: colorMap[key],
               flexShrink: 0,
             }}
           />
-          <span>{RX_LABELS[key]}</span>
+          <span>{labelMap[key]}</span>
         </div>
       ))}
 
-      <hr
-        style={{
-          border: 'none',
-          borderTop: '1px solid #3f3f46',
-          margin: '8px 0',
-        }}
-      />
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            backgroundColor: '#52525b',
-            border: '2px solid #ef4444',
-            flexShrink: 0,
-          }}
-        />
-        <span>Target (FS 98)</span>
-      </div>
+      {isRx && (
+        <>
+          <hr
+            style={{
+              border: 'none',
+              borderTop: '1px solid #3f3f46',
+              margin: '8px 0',
+            }}
+          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <svg width="12" height="12" viewBox="0 0 16 16" style={{ flexShrink: 0 }}>
+              <line x1="3" y1="3" x2="13" y2="13" stroke="#71717a" strokeWidth="2.5" strokeLinecap="round" />
+              <line x1="13" y1="3" x2="3" y2="13" stroke="#71717a" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+            <span>Target</span>
+          </div>
+        </>
+      )}
     </div>
   );
 }

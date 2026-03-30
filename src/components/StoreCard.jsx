@@ -72,7 +72,7 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
           {store.rxDistrict && store.rxDL && (
             <div>Rx D{store.rxDistrict}: {store.rxDL}</div>
           )}
-          {store.fsDistrict && store.fsDL && (
+          {store.fsDistrict && store.fsDistrict !== 98 && store.fsDL && (
             <div>FS D{store.fsDistrict}: {store.fsDL}</div>
           )}
         </div>

@@ -8,11 +8,12 @@ import DistrictSummary from './components/DistrictSummary';
 import RoutePlanner from './components/RoutePlanner';
 import Legend from './components/Legend';
 import { optimizeRoute, getRouteStats, buildMapsUrl } from './utils/routing';
-import { RX_COLORS } from './utils/colors';
+import { RX_COLORS, FS_COLORS } from './utils/colors';
 import './App.css';
 
 export default function App() {
   const [activeDistrict, setActiveDistrict] = useState(null);
+  const [districtMode, setDistrictMode] = useState('rx'); // 'rx' or 'fs'
   const [flags, setFlags] = useState({ fs24: false, rx24: false, ymas: false, target: false });
   const [searchText, setSearchText] = useState('');
   const [selectedStore, setSelectedStore] = useState(null);
@@ -22,7 +23,11 @@ export default function App() {
 
   const filteredStores = useMemo(() => {
     return stores.filter((store) => {
-      if (activeDistrict != null && store.rxDistrict !== activeDistrict) return false;
+      // In FS mode, hide Target stores (fsDistrict 98)
+      if (districtMode === 'fs' && store.target === true) return false;
+
+      const districtField = districtMode === 'rx' ? 'rxDistrict' : 'fsDistrict';
+      if (activeDistrict != null && store[districtField] !== activeDistrict) return false;
       if (flags.fs24 && store.fs24 !== 'Yes') return false;
       if (flags.rx24 && store.rx24 !== 'Yes') return false;
       if (flags.ymas && store.ymas !== 'Yes') return false;
@@ -43,7 +48,7 @@ export default function App() {
       }
       return true;
     });
-  }, [activeDistrict, flags, searchText, stores]);
+  }, [activeDistrict, districtMode, flags, searchText, stores]);
 
   const routeStats = useMemo(() => {
     if (routeStores.length === 0) return null;
@@ -52,6 +57,11 @@ export default function App() {
 
   const handleDistrictChange = useCallback((d) => {
     setActiveDistrict(d);
+  }, []);
+
+  const handleDistrictModeChange = useCallback((mode) => {
+    setDistrictMode(mode);
+    setActiveDistrict(null); // reset filter when switching modes
   }, []);
 
   const handleFlagToggle = useCallback((flag) => {
@@ -113,6 +123,8 @@ export default function App() {
       <FilterBar
         activeDistrict={activeDistrict}
         onDistrictChange={handleDistrictChange}
+        districtMode={districtMode}
+        onDistrictModeChange={handleDistrictModeChange}
         flags={flags}
         onFlagToggle={handleFlagToggle}
         storeCount={filteredStores.length}
@@ -133,6 +145,7 @@ export default function App() {
             onStoreSelect={handleStoreSelect}
             routeStores={routeStores}
             activeDistrict={districtView ? activeDistrict : null}
+            districtMode={districtMode}
             gpsPosition={gpsPosition}
           />
         </div>
@@ -140,10 +153,15 @@ export default function App() {
           <DistrictSummary
             district={activeDistrict}
             stores={filteredStores}
-            dlName={filteredStores[0]?.rxDL || ''}
+            districtMode={districtMode}
+            dlName={
+              districtMode === 'rx'
+                ? filteredStores[0]?.rxDL || ''
+                : filteredStores[0]?.fsDL || ''
+            }
           />
         )}
-        <Legend />
+        <Legend districtMode={districtMode} />
         {selectedStore && (
           <StoreCard
             store={selectedStore}

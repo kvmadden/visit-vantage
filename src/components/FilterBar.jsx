@@ -1,7 +1,8 @@
 import React from 'react';
-import { RX_COLORS } from '../utils/colors';
+import { RX_COLORS, FS_COLORS } from '../utils/colors';
 
-const DISTRICTS = [20, 21, 22, 23, 24, 25, 26, 27];
+const RX_DISTRICTS = [20, 21, 22, 23, 24, 25, 26, 27];
+const FS_DISTRICTS = [1, 2, 3, 4, 5];
 
 const FLAG_LABELS = {
   fs24: 'FS 24hr',
@@ -72,6 +73,30 @@ const styles = {
     borderColor: '#a1a1aa',
     color: '#fafafa',
   },
+  modeToggle: {
+    display: 'inline-flex',
+    borderRadius: 9999,
+    border: '1.5px solid #3f3f46',
+    overflow: 'hidden',
+    flexShrink: 0,
+  },
+  modeButton: {
+    padding: '4px 12px',
+    fontSize: 13,
+    fontWeight: 500,
+    border: 'none',
+    cursor: 'pointer',
+    transition: 'background-color 0.15s, color 0.15s',
+    minHeight: 36,
+  },
+  modeActive: {
+    backgroundColor: '#3f3f46',
+    color: '#fafafa',
+  },
+  modeInactive: {
+    backgroundColor: '#18181b',
+    color: '#71717a',
+  },
 };
 
 function hexToRgba(hex, alpha) {
@@ -84,15 +109,24 @@ function hexToRgba(hex, alpha) {
 function FilterBar({
   activeDistrict,
   onDistrictChange,
+  districtMode,
+  onDistrictModeChange,
   flags,
   onFlagToggle,
   storeCount,
   districtView,
   onDistrictViewToggle,
 }) {
+  const isRx = districtMode === 'rx';
+  const districts = isRx ? RX_DISTRICTS : FS_DISTRICTS;
+  const colorMap = isRx ? RX_COLORS : FS_COLORS;
+
+  // In FS mode, hide the Target flag toggle
+  const visibleFlags = isRx ? FLAG_KEYS : FLAG_KEYS.filter((k) => k !== 'target');
+
   const districtPillStyle = (district) => {
     const isActive = activeDistrict === district;
-    const color = RX_COLORS[district];
+    const color = colorMap[district];
     if (isActive) {
       return {
         ...styles.pillBase,
@@ -111,6 +145,28 @@ function FilterBar({
       {/* Store count badge */}
       <span style={styles.badge}>{storeCount}</span>
 
+      {/* Rx / FS mode toggle */}
+      <div style={styles.modeToggle}>
+        <button
+          style={{
+            ...styles.modeButton,
+            ...(isRx ? styles.modeActive : styles.modeInactive),
+          }}
+          onClick={() => onDistrictModeChange('rx')}
+        >
+          Rx
+        </button>
+        <button
+          style={{
+            ...styles.modeButton,
+            ...(isRx ? styles.modeInactive : styles.modeActive),
+          }}
+          onClick={() => onDistrictModeChange('fs')}
+        >
+          FS
+        </button>
+      </div>
+
       {/* "All" pill */}
       <button
         className={`filter-pill${allActive ? ' active' : ''}`}
@@ -124,8 +180,8 @@ function FilterBar({
         All
       </button>
 
-      {/* District pills D20-D27 */}
-      {DISTRICTS.map((d) => (
+      {/* District pills */}
+      {districts.map((d) => (
         <button
           key={d}
           className={`filter-pill${activeDistrict === d ? ' active' : ''}`}
@@ -140,7 +196,7 @@ function FilterBar({
       <span style={styles.divider} aria-hidden="true" />
 
       {/* Flag toggles */}
-      {FLAG_KEYS.map((key) => {
+      {visibleFlags.map((key) => {
         const isActive = flags[key];
         return (
           <button

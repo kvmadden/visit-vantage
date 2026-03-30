@@ -19,3 +19,19 @@ export const RX_LABELS = {
   26: 'D26',
   27: 'D27',
 };
+
+export const FS_COLORS = {
+  1: '#60a5fa',
+  2: '#34d399',
+  3: '#fbbf24',
+  4: '#f87171',
+  5: '#a78bfa',
+};
+
+export const FS_LABELS = {
+  1: 'D1',
+  2: 'D2',
+  3: 'D3',
+  4: 'D4',
+  5: 'D5',
+};

@@ -3,12 +3,28 @@ import {
   MapContainer,
   TileLayer,
   CircleMarker,
+  Marker,
   Polyline,
   Tooltip,
   useMap,
 } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { RX_COLORS } from '../utils/colors';
+import { RX_COLORS, FS_COLORS } from '../utils/colors';
+
+// X-shaped SVG icon for Target stores
+function createXIcon(color) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <line x1="3" y1="3" x2="13" y2="13" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="13" y1="3" x2="3" y2="13" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>`;
+  return L.divIcon({
+    html: svg,
+    className: 'target-x-icon',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+  });
+}
 
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
@@ -74,13 +90,40 @@ const StoreMarker = memo(function StoreMarker({
   store,
   isSelected,
   isFaded,
+  districtMode,
   onStoreSelect,
 }) {
   const isTarget = store.target === true;
+  const colorMap = districtMode === 'fs' ? FS_COLORS : RX_COLORS;
+  const districtKey = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
 
-  let radius = isTarget ? 5 : 7;
-  let fillColor = isTarget ? '#52525b' : RX_COLORS[store.rxDistrict] || '#888';
-  let strokeColor = isTarget ? '#ef4444' : darkenHex(fillColor);
+  const handleClick = useCallback(() => {
+    onStoreSelect(store);
+  }, [store, onStoreSelect]);
+
+  // Target stores render as X markers
+  if (isTarget) {
+    const rxColor = RX_COLORS[store.rxDistrict] || '#71717a';
+    const opacity = isFaded ? 0.15 : 1;
+    const icon = createXIcon(isFaded ? '#52525b' : rxColor);
+
+    return (
+      <Marker
+        position={[store.lat, store.lng]}
+        icon={icon}
+        opacity={opacity}
+        eventHandlers={{ click: handleClick }}
+      >
+        <Tooltip direction="top" offset={[0, -8]}>
+          {store.nickname} #{store.store}
+        </Tooltip>
+      </Marker>
+    );
+  }
+
+  let radius = 7;
+  let fillColor = colorMap[districtKey] || '#888';
+  let strokeColor = darkenHex(fillColor);
   let fillOpacity = 0.9;
 
   if (isFaded) {
@@ -92,10 +135,6 @@ const StoreMarker = memo(function StoreMarker({
     radius = 10;
     fillOpacity = 1;
   }
-
-  const handleClick = useCallback(() => {
-    onStoreSelect(store);
-  }, [store, onStoreSelect]);
 
   return (
     <CircleMarker
@@ -170,14 +209,16 @@ export default function MapView({
   onStoreSelect,
   routeStores = [],
   activeDistrict = null,
+  districtMode = 'rx',
   gpsPosition = null,
 }) {
   const markers = useMemo(() => {
     return stores.map((store) => {
       const isSelected =
         selectedStore != null && selectedStore.store === store.store;
+      const districtKey = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
       const isFaded =
-        activeDistrict != null && store.rxDistrict !== activeDistrict;
+        activeDistrict != null && districtKey !== activeDistrict;
 
       return (
         <StoreMarker
@@ -185,11 +226,12 @@ export default function MapView({
           store={store}
           isSelected={isSelected}
           isFaded={isFaded}
+          districtMode={districtMode}
           onStoreSelect={onStoreSelect}
         />
       );
     });
-  }, [stores, selectedStore, activeDistrict, onStoreSelect]);
+  }, [stores, selectedStore, activeDistrict, districtMode, onStoreSelect]);
 
   return (
     <MapContainer
