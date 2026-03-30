@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useCallback, memo } from 'react';
 import {
   MapContainer,
   TileLayer,
-  CircleMarker,
   Marker,
   Polyline,
+  CircleMarker,
   Tooltip,
   useMap,
 } from 'react-leaflet';
@@ -12,18 +12,42 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { RX_COLORS, FS_COLORS } from '../utils/colors';
 
-// X-shaped SVG icon for Target stores
-function createXIcon(color) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-    <line x1="3" y1="3" x2="13" y2="13" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="13" y1="3" x2="3" y2="13" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+// Heart-shaped SVG icon for regular CVS stores
+function createHeartIcon(color, size = 18, opacity = 0.9) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+      fill="${color}" fill-opacity="${opacity}" stroke="${darkenHexStr(color)}" stroke-width="1"/>
   </svg>`;
   return L.divIcon({
     html: svg,
-    className: 'target-x-icon',
-    iconSize: [16, 16],
-    iconAnchor: [8, 8],
+    className: 'cvs-heart-icon',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
   });
+}
+
+// Bullseye icon for Target stores (Target brand style)
+function createBullseyeIcon(color, size = 18, opacity = 0.9) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="none" stroke="${color}" stroke-width="2.5" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="5.5" fill="none" stroke="${color}" stroke-width="2.5" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="2" fill="${color}" opacity="${opacity}"/>
+  </svg>`;
+  return L.divIcon({
+    html: svg,
+    className: 'target-bullseye-icon',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
+}
+
+// Standalone helper for SVG string context (no DOM access)
+function darkenHexStr(hex, amount = 40) {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, (num >> 16) - amount);
+  const g = Math.max(0, ((num >> 8) & 0x00ff) - amount);
+  const b = Math.max(0, (num & 0x0000ff) - amount);
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
 }
 
 const DEFAULT_CENTER = [27.85, -82.48];
@@ -36,17 +60,6 @@ const TILE_ATTRIBUTION =
 
 const ROUTE_COLOR = '#4A9EFF';
 const GPS_COLOR = '#22c55e';
-
-// ---------------------------------------------------------------------------
-// Helper: darken a hex color by a fixed amount
-// ---------------------------------------------------------------------------
-function darkenHex(hex, amount = 40) {
-  const num = parseInt(hex.replace('#', ''), 16);
-  const r = Math.max(0, (num >> 16) - amount);
-  const g = Math.max(0, ((num >> 8) & 0x00ff) - amount);
-  const b = Math.max(0, (num & 0x0000ff) - amount);
-  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
-}
 
 // ---------------------------------------------------------------------------
 // FlyToStore — reacts to selectedStore and activeDistrict changes
@@ -96,63 +109,29 @@ const StoreMarker = memo(function StoreMarker({
   const isTarget = store.target === true;
   const colorMap = districtMode === 'fs' ? FS_COLORS : RX_COLORS;
   const districtKey = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
+  const color = colorMap[districtKey] || '#888';
 
   const handleClick = useCallback(() => {
     onStoreSelect(store);
   }, [store, onStoreSelect]);
 
-  // Target stores render as X markers
-  if (isTarget) {
-    const rxColor = RX_COLORS[store.rxDistrict] || '#71717a';
-    const opacity = isFaded ? 0.15 : 1;
-    const icon = createXIcon(isFaded ? '#52525b' : rxColor);
+  const opacity = isFaded ? 0.2 : 0.9;
+  const size = isSelected ? 24 : 18;
 
-    return (
-      <Marker
-        position={[store.lat, store.lng]}
-        icon={icon}
-        opacity={opacity}
-        eventHandlers={{ click: handleClick }}
-      >
-        <Tooltip direction="top" offset={[0, -8]}>
-          {store.nickname} #{store.store}
-        </Tooltip>
-      </Marker>
-    );
-  }
-
-  let radius = 7;
-  let fillColor = colorMap[districtKey] || '#888';
-  let strokeColor = darkenHex(fillColor);
-  let fillOpacity = 0.9;
-
-  if (isFaded) {
-    fillOpacity = 0.15;
-    radius = 5;
-  }
-
-  if (isSelected) {
-    radius = 10;
-    fillOpacity = 1;
-  }
+  const icon = isTarget
+    ? createBullseyeIcon(isFaded ? '#52525b' : (RX_COLORS[store.rxDistrict] || '#ef4444'), size, opacity)
+    : createHeartIcon(isFaded ? '#52525b' : color, size, opacity);
 
   return (
-    <CircleMarker
-      center={[store.lat, store.lng]}
-      radius={radius}
-      pathOptions={{
-        fillColor,
-        fillOpacity,
-        color: strokeColor,
-        weight: 2,
-      }}
-      className={isSelected ? 'marker-pulse' : undefined}
+    <Marker
+      position={[store.lat, store.lng]}
+      icon={icon}
       eventHandlers={{ click: handleClick }}
     >
-      <Tooltip direction="top" offset={[0, -8]}>
+      <Tooltip direction="top" offset={[0, -10]}>
         {store.nickname} #{store.store}
       </Tooltip>
-    </CircleMarker>
+    </Marker>
   );
 });
 
