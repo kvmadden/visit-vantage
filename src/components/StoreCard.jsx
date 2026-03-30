@@ -1,135 +1,171 @@
-import React from 'react';
+import { useState } from "react";
+import { RX_COLORS } from "../utils/colors";
 
-export const CHAIN_COLORS = {
-  CVS: '#cc0000',
-  Walgreens: '#1a7b1a',
-  Walmart: '#0071ce',
-  Publix: '#4b8f29',
-  'Winn-Dixie': '#e31837',
-  'Rite Aid': '#1e3c78',
-  Target: '#cc0000',
-  Costco: '#e31837',
-  "Sam's Club": '#0060a9',
-  Kroger: '#0062ac',
-};
+export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRoute, isInRoute }) {
+  const [expanded, setExpanded] = useState(false);
 
-const styles = {
-  card: {
-    minHeight: 72,
-    padding: '12px 16px',
-    marginBottom: 8,
-    borderRadius: 10,
-    background: '#fff',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    position: 'relative',
-    border: '1px solid transparent',
-    transition: 'border-color 0.15s ease',
-    boxSizing: 'border-box',
-  },
-  cardSelected: {
-    borderLeft: '4px solid #4a90d9',
-  },
-  content: {
-    flex: 1,
-    minWidth: 0,
-  },
-  chainBadge: {
-    display: 'inline-block',
-    fontSize: 11,
-    fontWeight: 600,
-    color: '#fff',
-    borderRadius: 10,
-    padding: '2px 8px',
-    marginBottom: 4,
-    lineHeight: '16px',
-  },
-  name: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    margin: '2px 0',
-    lineHeight: '20px',
-  },
-  address: {
-    fontSize: 13,
-    color: '#555',
-    margin: '2px 0',
-  },
-  district: {
-    fontSize: 12,
-    color: '#999',
-    margin: '2px 0',
-  },
-  phone: {
-    fontSize: 13,
-    color: '#4a90d9',
-    textDecoration: 'none',
-    marginTop: 2,
-    display: 'inline-block',
-  },
-  routeCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: '50%',
-    background: '#4a90d9',
-    color: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 700,
-    fontSize: 14,
-    marginLeft: 12,
-    flexShrink: 0,
-  },
-};
+  if (!store) return null;
 
-export default function StoreCard({ store, isSelected, onSelect, routeIndex }) {
-  const chainColor = CHAIN_COLORS[store.chain] || '#888';
+  const borderClass = store.rxDistrict ? `border-d${store.rxDistrict}` : "";
 
-  const cardStyle = {
-    ...styles.card,
-    ...(isSelected ? styles.cardSelected : {}),
-  };
+  const badges = [];
+  if (store.target === true) badges.push({ label: "TARGET", className: "badge-target" });
+  if (store.fs24 === "Yes") badges.push({ label: "FS 24hr", className: "badge-fs24" });
+  if (store.rx24 === "Yes") badges.push({ label: "Rx 24hr", className: "badge-rx24" });
+  if (store.ymas === "Yes") badges.push({ label: "Y M\u00e1s", className: "badge-ymas" });
+  if (store.driveThru === "Yes") badges.push({ label: "Drive-Thru", className: "badge-drivethru" });
+  if (store.minuteClinic === "Yes") badges.push({ label: "MinuteClinic", className: "badge-minuteclinic" });
 
-  const address = [store.address, store.city, store.state, store.zip]
-    .filter(Boolean)
-    .join(', ')
-    .replace(/,\s*,/g, ',');
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}`;
 
   return (
     <div
-      className={isSelected ? 'store-card selected' : 'store-card'}
-      style={cardStyle}
-      onClick={() => onSelect(store)}
+      className={`store-card slide-up ${borderClass}`}
+      style={
+        store.rxDistrict && RX_COLORS[store.rxDistrict]
+          ? { borderTopColor: RX_COLORS[store.rxDistrict] }
+          : undefined
+      }
     >
-      <div style={styles.content}>
-        <span style={{ ...styles.chainBadge, backgroundColor: chainColor }}>
-          {store.chain}
+      {/* Header */}
+      <div className="store-card-header">
+        <span className="store-number">
+          CVS #{store.store}
+          {store.rxDistrict ? ` \u00b7 Rx D${store.rxDistrict}` : ""}
         </span>
-        <div style={styles.name}>{store.name}</div>
-        {address && <div style={styles.address}>{address}</div>}
-        {store.district && (
-          <div style={styles.district}>
-            District {store.district}
-            {store.territory ? ` \u00b7 ${store.territory}` : ''}
-          </div>
-        )}
-        {store.phone && (
-          <a
-            href={`tel:${store.phone}`}
-            style={styles.phone}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {store.phone}
-          </a>
-        )}
+        <button className="store-close" onClick={onClose} aria-label="Close">
+          ✕
+        </button>
       </div>
-      {routeIndex != null && (
-        <div style={styles.routeCircle}>{routeIndex}</div>
+
+      {/* Nickname */}
+      {store.nickname && <div className="store-nickname">{store.nickname}</div>}
+
+      {/* Address */}
+      {store.address && (
+        <div className="store-address">
+          {store.address}, {store.city}, FL {store.zip}
+        </div>
       )}
+
+      {/* Intersection */}
+      {store.intersection && (
+        <div className="store-address" style={{ fontSize: 12, color: "#71717a" }}>
+          {store.intersection}
+        </div>
+      )}
+
+      {/* Badges */}
+      {badges.length > 0 && (
+        <div style={{ marginTop: 6 }}>
+          {badges.map((b) => (
+            <span key={b.label} className={`badge ${b.className}`}>
+              {b.label}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* District info */}
+      {(store.rxDistrict || store.fsDistrict) && (
+        <div className="store-dl-info">
+          {store.rxDistrict && store.rxDL && (
+            <div>Rx D{store.rxDistrict}: {store.rxDL}</div>
+          )}
+          {store.fsDistrict && store.fsDL && (
+            <div>FS D{store.fsDistrict}: {store.fsDL}</div>
+          )}
+        </div>
+      )}
+
+      {/* Enriched view */}
+      {expanded && (
+        <div className="store-section fade-in">
+          {/* Phone numbers */}
+          {store.fsPhone && (
+            <div style={{ marginBottom: 6 }}>
+              <span className="store-section-label">Front Store Phone</span>
+              <div>
+                <a href={`tel:${store.fsPhone}`} style={{ color: "#4A9EFF", textDecoration: "none" }}>
+                  {store.fsPhone}
+                </a>
+              </div>
+            </div>
+          )}
+          {store.rxPhone && (
+            <div style={{ marginBottom: 6 }}>
+              <span className="store-section-label">Pharmacy Phone</span>
+              <div>
+                <a href={`tel:${store.rxPhone}`} style={{ color: "#4A9EFF", textDecoration: "none" }}>
+                  {store.rxPhone}
+                </a>
+              </div>
+            </div>
+          )}
+
+          {/* Hours */}
+          {store.fsHours && (
+            <div style={{ marginBottom: 6 }}>
+              <span className="store-section-label">Front Store Hours</span>
+              <div style={{ fontSize: 13, color: "#a1a1aa" }}>{store.fsHours}</div>
+            </div>
+          )}
+          {store.rxHours && (
+            <div style={{ marginBottom: 6 }}>
+              <span className="store-section-label">Pharmacy Hours</span>
+              <div style={{ fontSize: 13, color: "#a1a1aa" }}>{store.rxHours}</div>
+            </div>
+          )}
+
+          {/* Volume tier */}
+          {store.volumeTier && (
+            <div style={{ marginBottom: 6 }}>
+              <span className="store-section-label">Volume Tier</span>
+              <div>
+                <span className="badge" style={{ background: "rgba(139,92,246,0.15)", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)" }}>
+                  {store.volumeTier}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Notes */}
+          {store.notes && (
+            <div style={{ marginBottom: 6 }}>
+              <span className="store-section-label">Notes</span>
+              <div style={{ fontSize: 13, color: "#a1a1aa" }}>{store.notes}</div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Action buttons */}
+      <div className="store-actions">
+        {isInRoute ? (
+          <button className="btn btn-danger" style={{ flex: 1 }} onClick={() => onRemoveFromRoute(store)}>
+            Remove from Route
+          </button>
+        ) : (
+          <button className="btn btn-primary" onClick={() => onAddToRoute(store)}>
+            Add to Route
+          </button>
+        )}
+        <a
+          href={directionsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-secondary"
+          style={{ textDecoration: "none" }}
+        >
+          Get Directions
+        </a>
+      </div>
+
+      <div className="store-actions" style={{ marginTop: 8 }}>
+        <button className="btn btn-secondary" onClick={() => setExpanded(!expanded)}>
+          {expanded ? "Less Detail" : "More Detail"}
+        </button>
+      </div>
     </div>
   );
 }
