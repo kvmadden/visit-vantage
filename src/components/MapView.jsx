@@ -12,11 +12,11 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { RX_COLORS, FS_COLORS } from '../utils/colors';
 
-// Heart-shaped SVG icon for regular CVS stores
+// CVS angular heart — geometric/chevron style matching the CVS brand
 function createHeartIcon(color, size = 18, opacity = 0.9) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
-    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-      fill="${color}" fill-opacity="${opacity}" stroke="${darkenHexStr(color)}" stroke-width="1"/>
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 32 32">
+    <path d="M16 28 L3 15 L3 9 L9 3 L16 10 L23 3 L29 3 L29 15 Z"
+      fill="${color}" fill-opacity="${opacity}" stroke="${darkenHexStr(color)}" stroke-width="1" stroke-linejoin="miter"/>
   </svg>`;
   return L.divIcon({
     html: svg,
@@ -26,12 +26,11 @@ function createHeartIcon(color, size = 18, opacity = 0.9) {
   });
 }
 
-// Bullseye icon for Target stores (Target brand style)
+// Target bullseye — thick outer ring + filled center dot (no middle ring)
 function createBullseyeIcon(color, size = 18, opacity = 0.9) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="10" fill="none" stroke="${color}" stroke-width="2.5" opacity="${opacity}"/>
-    <circle cx="12" cy="12" r="5.5" fill="none" stroke="${color}" stroke-width="2.5" opacity="${opacity}"/>
-    <circle cx="12" cy="12" r="2" fill="${color}" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="9.5" fill="none" stroke="${color}" stroke-width="3" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="3" fill="${color}" opacity="${opacity}"/>
   </svg>`;
   return L.divIcon({
     html: svg,
