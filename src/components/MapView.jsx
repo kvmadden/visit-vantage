@@ -12,6 +12,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { RX_COLORS, FS_COLORS } from '../utils/colors';
+import districtGeoJSON from '../data/districts.json';
 
 // Standalone helper for SVG string context (no DOM access)
 function darkenHexStr(hex, amount = 40) {
@@ -357,6 +358,86 @@ const RoutePolyline = memo(function RoutePolyline({ routeStores }) {
 });
 
 // ---------------------------------------------------------------------------
+// DistrictClouds — colored territory overlays that fade as you zoom in
+// ---------------------------------------------------------------------------
+function DistrictClouds({ zoom, activeDistrict, showClouds }) {
+  const map = useMap();
+  const layerRef = useRef(null);
+
+  useEffect(() => {
+    if (!map || !showClouds) {
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current);
+        layerRef.current = null;
+      }
+      return;
+    }
+
+    // Opacity fades: full at z<=9, gone at z>=13
+    const baseOpacity = zoom <= 9 ? 0.18 : zoom >= 13 ? 0 : 0.18 * (13 - zoom) / 4;
+
+    if (baseOpacity <= 0) {
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current);
+        layerRef.current = null;
+      }
+      return;
+    }
+
+    if (layerRef.current) {
+      map.removeLayer(layerRef.current);
+    }
+
+    const layer = L.geoJSON(districtGeoJSON, {
+      style: (feature) => {
+        const d = feature.properties.district;
+        const isActive = activeDistrict == null || activeDistrict === d;
+        return {
+          fillColor: feature.properties.color,
+          fillOpacity: isActive ? baseOpacity : baseOpacity * 0.2,
+          color: feature.properties.color,
+          weight: isActive ? 1.5 : 0.5,
+          opacity: isActive ? 0.4 : 0.1,
+        };
+      },
+      onEachFeature: (feature, lyr) => {
+        // Add district label at centroid
+        const coords = feature.geometry.coordinates[0];
+        const lats = coords.map((c) => c[1]);
+        const lngs = coords.map((c) => c[0]);
+        const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+        const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+
+        const labelSize = zoom <= 9 ? 14 : 12;
+        const icon = L.divIcon({
+          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:600;font-size:${labelSize}px;color:${feature.properties.color};opacity:0.7;text-shadow:0 1px 3px rgba(0,0,0,0.15);white-space:nowrap">${feature.properties.label}</div>`,
+          className: 'district-label-icon',
+          iconSize: [60, 20],
+          iconAnchor: [30, 10],
+        });
+
+        const isActive = activeDistrict == null || activeDistrict === feature.properties.district;
+        if (isActive) {
+          L.marker([centerLat, centerLng], { icon, interactive: false }).addTo(layer);
+        }
+      },
+    });
+
+    layer.addTo(map);
+    layerRef.current = layer;
+
+    return () => {
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current);
+        layerRef.current = null;
+      }
+    };
+  }, [map, zoom, activeDistrict, showClouds]);
+
+  return null;
+}
+
+// ---------------------------------------------------------------------------
 // MapView
 // ---------------------------------------------------------------------------
 export default function MapView({
@@ -368,6 +449,7 @@ export default function MapView({
   districtMode = 'rx',
   gpsPosition = null,
   theme = 'light',
+  showClouds = true,
 }) {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const handleZoomChange = useCallback((z) => setZoom(z), []);
@@ -386,6 +468,8 @@ export default function MapView({
       <TileLayer key={theme} url={tileUrl} attribution={TILE_ATTRIBUTION} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <FitAllStores stores={stores} />
+
+      <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} />
 
       <ClusteredMarkers
         stores={stores}

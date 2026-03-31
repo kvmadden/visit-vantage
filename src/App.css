@@ -813,6 +813,11 @@ body {
   color: var(--text-muted) !important;
 }
 
+.district-label-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
 .cvs-heart-icon,
 .target-bullseye-icon,
 .cluster-heart-icon {
