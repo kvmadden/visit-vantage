@@ -445,26 +445,22 @@ function smoothFeature(feature, storePoints, iterations = 1) {
   if (f23) {
     const store3001 = [-82.8268, 27.9810];
 
-    // L-shaped bridge: narrow crossing at the causeway, then widen along island
+    // Narrow causeway bridge crossing to island, then north to store 3001.
+    // No southern dip — just cross and go north.
     const bridgeStrip = [
-      // Start at mainland coast, south side of causeway bridge
-      [-82.798, 27.963],
-      // Cross the Intracoastal (narrow, ~0.01 deg N-S)
-      [-82.820, 27.965],
-      // Reach barrier island, widen southward along island
-      [-82.838, 27.965],
-      [-82.838, 27.948],   // island, south extent
-      [-82.828, 27.948],   // island east edge, south
-      [-82.828, 27.960],   // island east edge back up
-      // Continue north along island to cover store 3001
-      [-82.838, 27.960],
-      [-82.838, 27.993],   // island north, past store
-      [-82.818, 27.993],   // island east edge, north
-      [-82.818, 27.975],   // island east edge, mid
-      // Back across the causeway, north side
-      [-82.798, 27.973],
+      // Mainland coast, south side of causeway
+      [-82.798, 27.964],
+      // Cross to island, south side
+      [-82.835, 27.966],
+      // North along island to cover store 3001
+      [-82.835, 27.993],
+      // Island east edge, north
+      [-82.820, 27.993],
+      [-82.820, 27.976],
+      // Back across causeway, north side
+      [-82.798, 27.974],
       // Close
-      [-82.798, 27.963],
+      [-82.798, 27.964],
     ];
 
     if (unionCorridor(f23, bridgeStrip)) {
@@ -473,8 +469,8 @@ function smoothFeature(feature, storePoints, iterations = 1) {
       } else {
         console.warn('Exception D23: bridge added but store 3001 still outside');
       }
-      // Smooth D23 after adding the bridge
-      smoothFeature(f23, districts[23], 1);
+      // Smooth D23 after adding the bridge (2 iterations for softer edges)
+      smoothFeature(f23, districts[23], 2);
     }
   }
 }
@@ -524,8 +520,8 @@ function smoothFeature(feature, storePoints, iterations = 1) {
         console.log('  → D24 re-clipped to coastline');
       }
 
-      // Smooth D24 after modifications
-      smoothFeature(f24, districts[24], 1);
+      // Smooth D24 after modifications (2 iterations for softer edges)
+      smoothFeature(f24, districts[24], 2);
 
       // Subtract the new D24 territory from D21 so they don't overlap
       if (f21) {
