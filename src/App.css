@@ -886,6 +886,11 @@ body {
   border: none !important;
 }
 
+.city-label-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
 .cvs-heart-icon,
 .target-bullseye-icon,
 .cluster-heart-icon {

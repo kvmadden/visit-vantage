@@ -89,32 +89,160 @@ const TILE_BASE = {
   light: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
   dark: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
 };
-const TILE_LABELS = {
-  light: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
-  dark: 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
-};
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>';
 
 const ROUTE_COLOR = '#4A9EFF';
 
-// Custom pane for city/road labels — renders above district overlays,
-// fades at higher zoom to reduce clutter with store markers
-function LabelPane({ zoom }) {
+// Tampa Bay area cities/places with min zoom at which they appear
+// tier 1 = major cities (always visible), tier 2 = medium (z>=10), tier 3 = neighborhoods (z>=11)
+const CITY_LABELS = [
+  // Tier 1 — major cities
+  { name: 'TAMPA', lat: 27.9506, lng: -82.4572, tier: 1 },
+  { name: 'ST. PETERSBURG', lat: 27.7676, lng: -82.6403, tier: 1 },
+  { name: 'CLEARWATER', lat: 27.9659, lng: -82.8001, tier: 1 },
+  { name: 'SARASOTA', lat: 27.3364, lng: -82.5307, tier: 1 },
+  { name: 'BRADENTON', lat: 27.4989, lng: -82.5748, tier: 1 },
+  { name: 'LAKELAND', lat: 28.0395, lng: -81.9498, tier: 1 },
+  // Tier 2 — medium cities
+  { name: 'Brandon', lat: 27.9378, lng: -82.2859, tier: 2 },
+  { name: 'Largo', lat: 27.9095, lng: -82.7873, tier: 2 },
+  { name: 'Palm Harbor', lat: 28.0836, lng: -82.7637, tier: 2 },
+  { name: 'Dunedin', lat: 28.0197, lng: -82.7718, tier: 2 },
+  { name: 'Wesley Chapel', lat: 28.2397, lng: -82.3271, tier: 2 },
+  { name: 'Spring Hill', lat: 28.4767, lng: -82.5276, tier: 2 },
+  { name: 'Riverview', lat: 27.8661, lng: -82.3265, tier: 2 },
+  { name: 'New Port Richey', lat: 28.2442, lng: -82.7193, tier: 2 },
+  { name: 'Venice', lat: 27.0998, lng: -82.4543, tier: 2 },
+  { name: 'Punta Gorda', lat: 26.9298, lng: -82.0454, tier: 2 },
+  { name: 'Englewood', lat: 26.9620, lng: -82.3526, tier: 2 },
+  // Tier 3 — neighborhoods/smaller places
+  { name: 'Temple Terrace', lat: 28.0353, lng: -82.3893, tier: 3 },
+  { name: 'Town \'n\' Country', lat: 28.0106, lng: -82.5762, tier: 3 },
+  { name: 'Pinellas Park', lat: 27.8428, lng: -82.6993, tier: 3 },
+  { name: 'Oldsmar', lat: 28.0342, lng: -82.6651, tier: 3 },
+  { name: 'Safety Harbor', lat: 28.0058, lng: -82.6929, tier: 3 },
+  { name: 'Lutz', lat: 28.1511, lng: -82.4615, tier: 3 },
+  { name: 'Bloomingdale', lat: 27.8936, lng: -82.2448, tier: 3 },
+  { name: 'Ruskin', lat: 27.7209, lng: -82.4331, tier: 3 },
+  { name: 'Apollo Beach', lat: 27.7731, lng: -82.4072, tier: 3 },
+  { name: 'Sun City Center', lat: 27.7181, lng: -82.3529, tier: 3 },
+  { name: 'Holiday', lat: 28.1875, lng: -82.7393, tier: 3 },
+  { name: 'Hudson', lat: 28.3644, lng: -82.6932, tier: 3 },
+  { name: 'Bayonet Point', lat: 28.3278, lng: -82.6835, tier: 3 },
+  { name: 'Brooksville', lat: 28.5553, lng: -82.3879, tier: 3 },
+  { name: 'Dade City', lat: 28.3647, lng: -82.1962, tier: 3 },
+  { name: 'Zephyrhills', lat: 28.2336, lng: -82.1812, tier: 3 },
+  { name: 'Gulfport', lat: 27.7481, lng: -82.7084, tier: 3 },
+  { name: 'Madeira Beach', lat: 27.7981, lng: -82.7973, tier: 3 },
+  { name: 'Seminole', lat: 27.8400, lng: -82.7901, tier: 3 },
+  { name: 'Valrico', lat: 27.9370, lng: -82.2365, tier: 3 },
+  { name: 'Plant City', lat: 28.0186, lng: -82.1193, tier: 3 },
+  { name: 'Gibsonton', lat: 27.8345, lng: -82.3810, tier: 3 },
+  { name: 'Palmetto', lat: 27.5214, lng: -82.5721, tier: 3 },
+  { name: 'Ellenton', lat: 27.5225, lng: -82.5276, tier: 3 },
+  { name: 'Northdale', lat: 28.1058, lng: -82.5262, tier: 3 },
+  { name: 'Citrus Park', lat: 28.0789, lng: -82.5790, tier: 3 },
+  { name: 'Lake Magdalene', lat: 28.0767, lng: -82.4678, tier: 3 },
+  { name: 'Keystone', lat: 28.1553, lng: -82.6215, tier: 3 },
+  { name: 'Odessa', lat: 28.1839, lng: -82.5936, tier: 3 },
+  { name: 'Westchase', lat: 28.0600, lng: -82.6100, tier: 3 },
+  { name: 'Carrollwood', lat: 28.0578, lng: -82.5101, tier: 3 },
+  { name: 'Clair-Mel City', lat: 27.8942, lng: -82.3570, tier: 3 },
+  { name: 'Progress Village', lat: 27.8978, lng: -82.3553, tier: 3 },
+  { name: 'Mango', lat: 27.9828, lng: -82.3062, tier: 3 },
+  { name: 'Seffner', lat: 27.9925, lng: -82.2726, tier: 3 },
+  { name: 'Dover', lat: 27.9939, lng: -82.2193, tier: 3 },
+  { name: 'Thonotosassa', lat: 28.0600, lng: -82.2900, tier: 3 },
+  { name: 'East Lake', lat: 28.1100, lng: -82.6914, tier: 3 },
+  { name: 'Trinity', lat: 28.1808, lng: -82.6725, tier: 3 },
+  { name: 'Land O\' Lakes', lat: 28.2186, lng: -82.4568, tier: 3 },
+  { name: 'Starkey Ranch', lat: 28.2050, lng: -82.5930, tier: 3 },
+  { name: 'Pebble Creek', lat: 28.1500, lng: -82.3450, tier: 3 },
+  { name: 'Cheval', lat: 28.1550, lng: -82.5200, tier: 3 },
+  { name: 'Lealman', lat: 27.8196, lng: -82.6792, tier: 3 },
+  { name: 'Kenneth City', lat: 27.8153, lng: -82.7220, tier: 3 },
+  { name: 'Treasure Island', lat: 27.7681, lng: -82.7707, tier: 3 },
+  { name: 'Indian Rocks Beach', lat: 27.8910, lng: -82.8520, tier: 3 },
+  { name: 'Belleair', lat: 27.9350, lng: -82.8087, tier: 3 },
+  { name: 'Tarpon Springs', lat: 28.1461, lng: -82.7568, tier: 3 },
+  { name: 'Port Richey', lat: 28.2717, lng: -82.7196, tier: 3 },
+  { name: 'Siesta Key', lat: 27.2676, lng: -82.5460, tier: 3 },
+  { name: 'Osprey', lat: 27.1990, lng: -82.4922, tier: 3 },
+  { name: 'Nokomis', lat: 27.1197, lng: -82.4434, tier: 3 },
+  { name: 'North Port', lat: 27.0443, lng: -82.2359, tier: 3 },
+  { name: 'Lakewood Ranch', lat: 27.4041, lng: -82.4046, tier: 3 },
+  { name: 'Parrish', lat: 27.5812, lng: -82.3571, tier: 3 },
+  { name: 'Sun City', lat: 27.6778, lng: -82.4590, tier: 3 },
+  { name: 'Wimauma', lat: 27.7119, lng: -82.3007, tier: 3 },
+  { name: 'Bartow', lat: 27.8964, lng: -81.8431, tier: 3 },
+  { name: 'Winter Haven', lat: 28.0222, lng: -81.7329, tier: 3 },
+  { name: 'Haines City', lat: 28.1142, lng: -81.6178, tier: 3 },
+  { name: 'Arcadia', lat: 27.2156, lng: -81.8587, tier: 3 },
+  { name: 'Wauchula', lat: 27.5478, lng: -81.8112, tier: 3 },
+  { name: 'Sebring', lat: 27.4956, lng: -81.4409, tier: 3 },
+  { name: 'Lake Wales', lat: 27.9014, lng: -81.5856, tier: 3 },
+];
+
+// ---------------------------------------------------------------------------
+// CityLabels — our own city name markers (replaces tile-based labels)
+// so we can run collision detection with store markers
+// ---------------------------------------------------------------------------
+function CityLabels({ zoom, theme }) {
   const map = useMap();
+  const layerRef = useRef(null);
+
   useEffect(() => {
-    if (!map.getPane('cityLabels')) {
-      map.createPane('cityLabels');
-      map.getPane('cityLabels').style.zIndex = 650;
-      map.getPane('cityLabels').style.pointerEvents = 'none';
+    if (!map) return;
+
+    if (layerRef.current) {
+      map.removeLayer(layerRef.current);
+      layerRef.current = null;
     }
-    // Fade labels at high zoom where minor place names clutter with stores
-    const pane = map.getPane('cityLabels');
-    if (pane) {
-      const opacity = zoom <= 10 ? 1.0 : zoom <= 12 ? 0.7 : 0.45;
-      pane.style.opacity = opacity;
-    }
-  }, [map, zoom]);
+
+    const group = L.layerGroup();
+
+    // Determine which tiers are visible at this zoom
+    const minTier = zoom >= 11 ? 3 : zoom >= 10 ? 2 : 1;
+
+    const visible = CITY_LABELS.filter((c) => c.tier <= minTier);
+
+    const textColor = theme === 'dark' ? '#d4d4d8' : '#52525b';
+    const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
+
+    visible.forEach((city) => {
+      const isMajor = city.tier === 1;
+      const fontSize = isMajor ? 13 : 11;
+      const fontWeight = isMajor ? 700 : 500;
+      const textTransform = isMajor ? 'uppercase' : 'none';
+      const letterSpacing = isMajor ? '1px' : '0.3px';
+
+      const icon = L.divIcon({
+        html: `<div class="city-label-custom" style="font-family:IBM Plex Sans,sans-serif;font-weight:${fontWeight};font-size:${fontSize}px;color:${textColor};text-transform:${textTransform};letter-spacing:${letterSpacing};white-space:nowrap;pointer-events:none;text-shadow:-1px 0 2px ${haloColor},1px 0 2px ${haloColor},0 -1px 2px ${haloColor},0 1px 2px ${haloColor}">${city.name}</div>`,
+        className: 'city-label-icon',
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
+      });
+
+      const marker = L.marker([city.lat, city.lng], {
+        icon,
+        interactive: false,
+        pane: 'markerPane', // same pane as store markers for z-ordering
+      });
+      group.addLayer(marker);
+    });
+
+    group.addTo(map);
+    layerRef.current = group;
+
+    return () => {
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current);
+        layerRef.current = null;
+      }
+    };
+  }, [map, zoom, theme]);
+
   return null;
 }
 const GPS_COLOR = '#22c55e';
@@ -265,58 +393,104 @@ function ClusteredMarkers({
       clusterGroupsRef.current.push(clusterGroup);
     });
 
-    // Nudge overlapping cluster icons from different districts apart
+    // Nudge overlapping cluster icons apart from each other AND from city labels
     function nudgeOverlaps() {
       try {
+      // Collect cluster pill icons
       const icons = [];
       clusterGroupsRef.current.forEach((group) => {
-        // Collect visible cluster icons using public eachLayer + duck-typing
         group.eachLayer((layer) => {
-          // Clusters have getChildCount; individual markers don't
           if (typeof layer.getChildCount === 'function' && layer._icon && layer._icon.offsetWidth > 0) {
-            const rect = layer._icon.getBoundingClientRect();
-            icons.push({ cluster: layer, rect });
+            icons.push({ el: layer._icon, movable: true });
           }
         });
       });
 
-      // Reset any previous nudges back to Leaflet's baseline
+      // Also collect individual store markers (hearts)
+      clusterGroupsRef.current.forEach((group) => {
+        group.eachLayer((layer) => {
+          if (typeof layer.getChildCount !== 'function' && layer._icon && layer._icon.offsetWidth > 0) {
+            icons.push({ el: layer._icon, movable: true });
+          }
+        });
+      });
+
+      // Collect city labels (fixed — we nudge pills away from these)
+      const cityEls = document.querySelectorAll('.city-label-custom');
+      cityEls.forEach((el) => {
+        if (el.offsetWidth > 0) {
+          icons.push({ el, movable: false });
+        }
+      });
+
+      // Collect district labels (fixed)
+      const districtEls = document.querySelectorAll('.district-label-icon > div');
+      districtEls.forEach((el) => {
+        if (el.offsetWidth > 0) {
+          icons.push({ el: el.parentElement, movable: false });
+        }
+      });
+
+      // Reset previous nudges on movable elements
       for (const item of icons) {
-        const el = item.cluster._icon;
-        if (el && el.dataset.baseTransform) {
-          el.style.transform = el.dataset.baseTransform;
-          delete el.dataset.baseTransform;
+        if (item.movable && item.el.dataset.baseTransform) {
+          item.el.style.transform = item.el.dataset.baseTransform;
+          delete item.el.dataset.baseTransform;
         }
       }
 
-      // Check pairwise for overlaps and nudge via CSS transform
-      for (let i = 0; i < icons.length; i++) {
-        for (let j = i + 1; j < icons.length; j++) {
-          const a = icons[i].rect;
-          const b = icons[j].rect;
-          const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
-          const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
-          if (overlapX > 0 && overlapY > 0) {
-            // Push them apart by half the overlap + small gap
-            const nudge = Math.min(overlapX, overlapY) * 0.3 + 2;
-            const aCx = a.left + a.width / 2;
-            const bCx = b.left + b.width / 2;
-            const aCy = a.top + a.height / 2;
-            const bCy = b.top + b.height / 2;
-            const dx = bCx - aCx || 1;
-            const dy = bCy - aCy || 1;
-            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-            const nx = dx / dist;
-            const ny = dy / dist;
+      // Get fresh rects after reset
+      const items = icons.map((item) => ({
+        ...item,
+        rect: item.el.getBoundingClientRect(),
+      }));
 
-            const iconA = icons[i].cluster._icon;
-            const iconB = icons[j].cluster._icon;
-            if (iconA && iconB) {
-              // Save Leaflet's original transform on first encounter
-              if (!iconA.dataset.baseTransform) iconA.dataset.baseTransform = iconA.style.transform || '';
-              if (!iconB.dataset.baseTransform) iconB.dataset.baseTransform = iconB.style.transform || '';
-              iconA.style.transform = iconA.dataset.baseTransform + ` translate(${-nx * nudge}px, ${-ny * nudge}px)`;
-              iconB.style.transform = iconB.dataset.baseTransform + ` translate(${nx * nudge}px, ${ny * nudge}px)`;
+      // Multiple passes to resolve overlaps
+      for (let pass = 0; pass < 3; pass++) {
+        for (let i = 0; i < items.length; i++) {
+          for (let j = i + 1; j < items.length; j++) {
+            // Skip if neither is movable
+            if (!items[i].movable && !items[j].movable) continue;
+
+            const a = items[i].rect;
+            const b = items[j].rect;
+            const pad = 3; // minimum gap in px
+            const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left) + pad;
+            const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) + pad;
+
+            if (overlapX > 0 && overlapY > 0) {
+              const nudge = Math.min(overlapX, overlapY) * 0.5 + 2;
+              const aCx = a.left + a.width / 2;
+              const bCx = b.left + b.width / 2;
+              const aCy = a.top + a.height / 2;
+              const bCy = b.top + b.height / 2;
+              const dx = bCx - aCx || 1;
+              const dy = bCy - aCy || 1;
+              const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+              const nx = dx / dist;
+              const ny = dy / dist;
+
+              // If both movable, push both; if only one, push only the movable one
+              if (items[i].movable && items[j].movable) {
+                const elA = items[i].el;
+                const elB = items[j].el;
+                if (!elA.dataset.baseTransform) elA.dataset.baseTransform = elA.style.transform || '';
+                if (!elB.dataset.baseTransform) elB.dataset.baseTransform = elB.style.transform || '';
+                elA.style.transform = elA.dataset.baseTransform + ` translate(${-nx * nudge}px, ${-ny * nudge}px)`;
+                elB.style.transform = elB.dataset.baseTransform + ` translate(${nx * nudge}px, ${ny * nudge}px)`;
+              } else {
+                // Push the movable one away from the fixed one
+                const movIdx = items[i].movable ? i : j;
+                const fixIdx = items[i].movable ? j : i;
+                const sign = movIdx < fixIdx ? -1 : 1;
+                const el = items[movIdx].el;
+                if (!el.dataset.baseTransform) el.dataset.baseTransform = el.style.transform || '';
+                el.style.transform = el.dataset.baseTransform + ` translate(${sign * -nx * nudge * 2}px, ${sign * -ny * nudge * 2}px)`;
+              }
+
+              // Update rects for subsequent passes
+              items[i].rect = items[i].el.getBoundingClientRect();
+              items[j].rect = items[j].el.getBoundingClientRect();
             }
           }
         }
@@ -708,7 +882,6 @@ export default function MapView({
   const handleZoomChange = useCallback((z) => setZoom(z), []);
 
   const baseUrl = TILE_BASE[theme] || TILE_BASE.light;
-  const labelsUrl = TILE_LABELS[theme] || TILE_LABELS.light;
 
   return (
     <MapContainer
@@ -720,14 +893,13 @@ export default function MapView({
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
-      <LabelPane zoom={zoom} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <FitAllStores stores={stores} />
       <HomeControl stores={stores} />
 
       <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} districtMode={districtMode} theme={theme} />
 
-      <TileLayer key={`labels-${theme}`} url={labelsUrl} attribution="" pane="cityLabels" />
+      <CityLabels zoom={zoom} theme={theme} />
 
       <ClusteredMarkers
         stores={stores}
