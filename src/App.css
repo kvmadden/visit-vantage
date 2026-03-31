@@ -725,9 +725,22 @@ body {
 }
 
 .cvs-heart-icon,
-.target-bullseye-icon {
+.target-bullseye-icon,
+.cluster-heart-icon {
   background: transparent !important;
   border: none !important;
+}
+
+/* Override default markercluster styles */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background: transparent !important;
+}
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background: transparent !important;
 }
 
 /* ============================================
