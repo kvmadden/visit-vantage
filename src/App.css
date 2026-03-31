@@ -134,6 +134,15 @@ body {
   color: var(--text-secondary);
 }
 
+.header-version {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
 .weather-widget {
   display: flex;
   align-items: center;

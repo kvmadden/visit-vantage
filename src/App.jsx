@@ -1,3 +1,5 @@
+const APP_VERSION = 'v0.5.0-label-priority';
+
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
 import MapView from './components/MapView';
@@ -170,6 +172,7 @@ export default function App() {
         <div className="header-right">
           <WeatherWidget />
           <span className="header-badge">REGION 41</span>
+          <span className="header-version">{APP_VERSION}</span>
           <button
             className="theme-toggle"
             onClick={handleThemeToggle}
