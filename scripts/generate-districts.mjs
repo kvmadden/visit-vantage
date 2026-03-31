@@ -403,58 +403,113 @@ function unionCorridor(feature, corridorCoords) {
   return false;
 }
 
+// Helper: re-clip a feature to coastline, preserving all store-containing fragments
+function reclipToCoast(feature, storePoints) {
+  try {
+    const landGeom = floridaLand.geometry;
+    const landFeature = landGeom.type === 'MultiPolygon'
+      ? multiPolygon(landGeom.coordinates)
+      : polygon(landGeom.coordinates);
+    const distPoly = polygon(feature.geometry.coordinates);
+    const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
+    if (clipped) {
+      const newGeom = ensurePolygon(clipped.geometry, storePoints);
+      // Verify no stores lost
+      const lost = storePoints.filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
+      if (lost.length === 0) {
+        feature.geometry = newGeom;
+        return true;
+      }
+    }
+  } catch (e) {}
+  return false;
+}
+
+// Helper: apply light Chaikin smoothing to a feature, preserving store containment
+function smoothFeature(feature, storePoints, iterations = 1) {
+  const smoothed = chaikinSmooth(feature.geometry.coordinates[0], iterations);
+  const lost = storePoints.filter(p => !pointInPolygon(p, smoothed));
+  if (lost.length === 0) {
+    feature.geometry = { type: 'Polygon', coordinates: [smoothed] };
+    return true;
+  }
+  return false;
+}
+
 // Exception 1: D23 — Clearwater Beach store 3001 (27.9810, -82.8268)
-// The barrier island is separated from mainland by the Intracoastal Waterway.
-// Instead of an enclave, create a bridge strip across the causeway area that
-// makes D23 one continuous shape from mainland to barrier island.
+// Narrow causeway bridge from mainland to barrier island, then a strip
+// running north along the island to cover store 3001. Shaped like an "L"
+// rather than a big rectangle over water.
 {
   const f23 = features.find(f => f.properties.district === 23);
   if (f23) {
     const store3001 = [-82.8268, 27.9810];
-    // Bridge polygon spanning from D23's mainland coast across the Intracoastal
-    // to the barrier island, covering the Clearwater causeway area.
-    // Wide enough (N-S) to look natural, not just a thin bridge.
+
+    // L-shaped bridge: narrow crossing at the causeway, then widen along island
     const bridgeStrip = [
-      [-82.800, 27.950],   // SE — mainland coast, south
-      [-82.800, 27.995],   // NE — mainland coast, north of store
-      [-82.840, 27.995],   // NW — barrier island, north
-      [-82.840, 27.950],   // SW — barrier island, south
-      [-82.800, 27.950],   // close
+      // Start at mainland coast, south side of causeway bridge
+      [-82.798, 27.963],
+      // Cross the Intracoastal (narrow, ~0.01 deg N-S)
+      [-82.820, 27.965],
+      // Reach barrier island, widen southward along island
+      [-82.838, 27.965],
+      [-82.838, 27.948],   // island, south extent
+      [-82.828, 27.948],   // island east edge, south
+      [-82.828, 27.960],   // island east edge back up
+      // Continue north along island to cover store 3001
+      [-82.838, 27.960],
+      [-82.838, 27.993],   // island north, past store
+      [-82.818, 27.993],   // island east edge, north
+      [-82.818, 27.975],   // island east edge, mid
+      // Back across the causeway, north side
+      [-82.798, 27.973],
+      // Close
+      [-82.798, 27.963],
     ];
 
     if (unionCorridor(f23, bridgeStrip)) {
       if (pointInPolygon(store3001, f23.geometry.coordinates[0])) {
-        console.log('Exception D23: bridge to Clearwater Beach — continuous shape');
+        console.log('Exception D23: causeway bridge to Clearwater Beach — continuous shape');
       } else {
         console.warn('Exception D23: bridge added but store 3001 still outside');
       }
+      // Smooth D23 after adding the bridge
+      smoothFeature(f23, districts[23], 1);
     }
   }
 }
 
 // Exception 2: D24 — Port Richey store 3217 (28.3308, -82.6985) at Bayonet Point.
-// D24 gets a coastal corridor west of US-19 running north from Holiday up to
-// Bayonet Point. The corridor stays narrow (west of D21 stores on US-19) until
-// lat ~28.29, then widens east to capture store 3217 at US-19 & SR-52.
-// D21 stores that must remain safe:
-//   #306  (28.2385, -82.7269) — on US-19, east of narrow corridor
-//   #5660 (28.2799, -82.6966) — east of narrow corridor
-//   #3583 (28.3317, -82.6671) — east of widened corridor
+// Coastal corridor west of US-19 with curved western edge following the coast.
+// Narrow in the middle (west of D21 stores), widening at top for store 3217.
+// After union, re-clip to coastline so western edge hugs the land.
 {
   const f24 = features.find(f => f.properties.district === 24);
   const f21 = features.find(f => f.properties.district === 21);
   if (f24) {
     const store3217 = [-82.6985, 28.3308];
 
-    // Coastal corridor: narrow strip west of US-19, widening at top for store 3217
+    // Coastal corridor with curved western edge approximating the coastline.
+    // The coast curves from ~-82.755 at Holiday to ~-82.735 at Hudson.
+    // Eastern edge is generous; coastline clipping trims the west to land.
     const corridor = [
-      [-82.760, 28.210],   // SW — connects to D24 body near Holiday
-      [-82.730, 28.210],   // SE — narrow east edge, west of US-19
-      [-82.730, 28.290],   // east edge stays narrow past D21 #306 and #5660
-      [-82.685, 28.310],   // widens east to capture store 3217
+      // Eastern edge (inland, west of US-19) — bottom to top
+      [-82.730, 28.210],   // SE — connects to D24 body near Holiday
+      [-82.730, 28.250],   // east edge, narrow
+      [-82.730, 28.290],   // east edge, past D21 #306 and #5660
+      [-82.710, 28.305],   // begin widening for store
+      [-82.685, 28.315],   // wide enough for store 3217
       [-82.685, 28.345],   // NE — north of store 3217
-      [-82.760, 28.345],   // NW — coast
-      [-82.760, 28.210],   // close
+      // Western edge (coastal) — top to bottom, following coast shape
+      [-82.755, 28.345],   // NW — coast at Hudson
+      [-82.752, 28.320],   // coast curves in
+      [-82.750, 28.300],   // coast at Bayonet Point
+      [-82.752, 28.275],   // coast bows out slightly
+      [-82.755, 28.250],   // coast at Port Richey
+      [-82.758, 28.230],   // coast approaching New Port Richey
+      [-82.760, 28.210],   // SW — coast at Holiday
+      // Close
+      [-82.730, 28.210],
     ];
 
     if (unionCorridor(f24, corridor)) {
@@ -463,6 +518,14 @@ function unionCorridor(feature, corridorCoords) {
       } else {
         console.warn('Exception D24: corridor added but store 3217 still outside');
       }
+
+      // Re-clip D24 to coastline so western edge hugs the land
+      if (reclipToCoast(f24, districts[24])) {
+        console.log('  → D24 re-clipped to coastline');
+      }
+
+      // Smooth D24 after modifications
+      smoothFeature(f24, districts[24], 1);
 
       // Subtract the new D24 territory from D21 so they don't overlap
       if (f21) {
