@@ -156,7 +156,7 @@ function ClusteredMarkers({
       const districtColor = colorMap[districtKey] || '#888';
 
       const clusterGroup = L.markerClusterGroup({
-        maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
+        maxClusterRadius: (z) => (z <= 10 ? 80 : z <= 12 ? 50 : 30),
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
