@@ -266,6 +266,15 @@ function ClusteredMarkers({
         }
       });
 
+      // Reset any previous nudges back to Leaflet's baseline
+      for (const item of icons) {
+        const el = item.cluster._icon;
+        if (el && el.dataset.baseTransform) {
+          el.style.transform = el.dataset.baseTransform;
+          delete el.dataset.baseTransform;
+        }
+      }
+
       // Check pairwise for overlaps and nudge via CSS transform
       for (let i = 0; i < icons.length; i++) {
         for (let j = i + 1; j < icons.length; j++) {
@@ -289,10 +298,11 @@ function ClusteredMarkers({
             const iconA = icons[i].cluster._icon;
             const iconB = icons[j].cluster._icon;
             if (iconA && iconB) {
-              const curA = iconA.style.transform || '';
-              const curB = iconB.style.transform || '';
-              iconA.style.transform = curA + ` translate(${-nx * nudge}px, ${-ny * nudge}px)`;
-              iconB.style.transform = curB + ` translate(${nx * nudge}px, ${ny * nudge}px)`;
+              // Save Leaflet's original transform on first encounter
+              if (!iconA.dataset.baseTransform) iconA.dataset.baseTransform = iconA.style.transform || '';
+              if (!iconB.dataset.baseTransform) iconB.dataset.baseTransform = iconB.style.transform || '';
+              iconA.style.transform = iconA.dataset.baseTransform + ` translate(${-nx * nudge}px, ${-ny * nudge}px)`;
+              iconB.style.transform = iconB.dataset.baseTransform + ` translate(${nx * nudge}px, ${ny * nudge}px)`;
             }
           }
         }

@@ -79,10 +79,14 @@ export default function App() {
     setRouteStats(localStats);
 
     // Then fetch OSRM for real road-network stats
-    getRouteStatsOSRM(routeStores, gpsPosition).then((stats) => {
-      setRouteStats(stats);
-      if (stats.geometry) setRouteGeometry(stats.geometry);
+    const controller = new AbortController();
+    getRouteStatsOSRM(routeStores, gpsPosition, controller.signal).then((stats) => {
+      if (!controller.signal.aborted) {
+        setRouteStats(stats);
+        if (stats.geometry) setRouteGeometry(stats.geometry);
+      }
     });
+    return () => controller.abort();
   }, [routeStores, gpsPosition]);
 
   const handleDistrictChange = useCallback((d) => {

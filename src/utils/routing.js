@@ -60,7 +60,7 @@ function localOptimize(stores, startPosition) {
  * Optimize route using OSRM trip API for road-network-based optimization.
  * Falls back to local nearest-neighbor if OSRM fails.
  */
-export async function optimizeRoute(stores, startPosition) {
+export async function optimizeRoute(stores, startPosition, signal) {
   if (stores.length <= 1) return { stores: [...stores], legs: [], geometry: null };
 
   try {
@@ -74,7 +74,7 @@ export async function optimizeRoute(stores, startPosition) {
     const sourceParam = startPosition ? 'first' : 'any';
     const url = `${OSRM_BASE}/trip/v1/driving/${coords.join(';')}?source=${sourceParam}&roundtrip=false&geometries=geojson&overview=full&steps=false&annotations=distance,duration`;
 
-    const res = await fetch(url);
+    const res = await fetch(url, signal ? { signal } : undefined);
     if (!res.ok) throw new Error(`OSRM ${res.status}`);
 
     const data = await res.json();
@@ -96,9 +96,9 @@ export async function optimizeRoute(stores, startPosition) {
     const optimized = wpOrder.map((wp) => stores[wp.origIdx]);
 
     // Extract leg details
-    const legs = trip.legs.map((leg) => ({
-      distance: leg.distance / 1609.34, // meters to miles
-      duration: leg.duration / 60, // seconds to minutes
+    const legs = (trip.legs || []).map((leg) => ({
+      distance: (leg.distance ?? 0) / 1609.34, // meters to miles
+      duration: (leg.duration ?? 0) / 60, // seconds to minutes
     }));
 
     // Extract route geometry for polyline
@@ -115,7 +115,7 @@ export async function optimizeRoute(stores, startPosition) {
 /**
  * Get route stats with between-stop estimates using OSRM route API.
  */
-export async function getRouteStatsOSRM(orderedStores, startPosition) {
+export async function getRouteStatsOSRM(orderedStores, startPosition, signal) {
   if (orderedStores.length === 0) return { totalDistance: 0, estimatedTime: 0, legs: [], geometry: null };
 
   try {
@@ -127,7 +127,7 @@ export async function getRouteStatsOSRM(orderedStores, startPosition) {
 
     const url = `${OSRM_BASE}/route/v1/driving/${coords.join(';')}?geometries=geojson&overview=full&steps=false&annotations=distance,duration`;
 
-    const res = await fetch(url);
+    const res = await fetch(url, signal ? { signal } : undefined);
     if (!res.ok) throw new Error(`OSRM ${res.status}`);
 
     const data = await res.json();
@@ -140,9 +140,9 @@ export async function getRouteStatsOSRM(orderedStores, startPosition) {
     const estimatedTime = route.duration / 60 + orderedStores.length * 5; // + 5 min per stop
     const geometry = route.geometry.coordinates.map(([lng, lat]) => [lat, lng]);
 
-    const legs = route.legs.map((leg) => ({
-      distance: leg.distance / 1609.34,
-      duration: leg.duration / 60,
+    const legs = (route.legs || []).map((leg) => ({
+      distance: (leg.distance ?? 0) / 1609.34,
+      duration: (leg.duration ?? 0) / 60,
     }));
 
     return { totalDistance, estimatedTime, legs, geometry };
