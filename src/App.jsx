@@ -182,7 +182,7 @@ export default function App() {
           routeStats={routeStats}
         />
       </div>
-      <footer className="footer">&copy; 2026 Madden Frameworks</footer>
+      <footer className="footer">&copy; 2026 Madden Frameworks &middot; v2</footer>
     </div>
   );
 }
