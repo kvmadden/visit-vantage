@@ -436,6 +436,8 @@ function DistrictClouds({ zoom, activeDistrict, showClouds }) {
       map.removeLayer(layerRef.current);
     }
 
+    const labelMarkers = [];
+
     const layer = L.geoJSON(districtGeoJSON, {
       style: (feature) => {
         const d = feature.properties.district;
@@ -448,8 +450,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds }) {
           opacity: isActive ? 0.4 : 0.1,
         };
       },
-      onEachFeature: (feature, lyr) => {
-        // Add district label at centroid
+      onEachFeature: (feature) => {
         const coords = feature.geometry.coordinates[0];
         const lats = coords.map((c) => c[1]);
         const lngs = coords.map((c) => c[0]);
@@ -466,10 +467,13 @@ function DistrictClouds({ zoom, activeDistrict, showClouds }) {
 
         const isActive = activeDistrict == null || activeDistrict === feature.properties.district;
         if (isActive) {
-          L.marker([centerLat, centerLng], { icon, interactive: false }).addTo(layer);
+          labelMarkers.push(L.marker([centerLat, centerLng], { icon, interactive: false }));
         }
       },
     });
+
+    // Add label markers after layer is created (avoids TDZ reference)
+    labelMarkers.forEach((m) => m.addTo(layer));
 
     layer.addTo(map);
     layerRef.current = layer;
