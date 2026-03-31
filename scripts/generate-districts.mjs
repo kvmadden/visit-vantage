@@ -7,8 +7,13 @@
  * while producing smooth, non-angular curves.
  */
 import { readFileSync, writeFileSync } from 'fs';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { intersect: turfIntersect } = require('@turf/intersect');
+const { polygon, multiPolygon, featureCollection } = require('@turf/helpers');
 
 const stores = JSON.parse(readFileSync('src/data/stores.json', 'utf-8'));
+const floridaLand = JSON.parse(readFileSync('src/data/florida-land.geojson', 'utf-8'));
 
 const RX_COLORS = {
   20: '#4A9EFF',
@@ -227,7 +232,26 @@ const features = Object.entries(districts).map(([district, points]) => {
   };
 });
 
-const geojson = { type: 'FeatureCollection', features };
+// Clip district polygons to Florida land (remove water areas)
+const landGeom = floridaLand.geometry;
+const landFeature = landGeom.type === 'MultiPolygon'
+  ? multiPolygon(landGeom.coordinates)
+  : polygon(landGeom.coordinates);
+
+const clippedFeatures = features.map(f => {
+  try {
+    const distPoly = polygon(f.geometry.coordinates);
+    const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
+    if (clipped) {
+      return { ...f, geometry: clipped.geometry };
+    }
+  } catch (e) {
+    console.warn(`D${f.properties.district}: clip failed (${e.message}), using unclipped`);
+  }
+  return f;
+});
+
+const geojson = { type: 'FeatureCollection', features: clippedFeatures };
 writeFileSync('src/data/districts.json', JSON.stringify(geojson));
 
 // Verify containment

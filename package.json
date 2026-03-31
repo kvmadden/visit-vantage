@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@turf/helpers": "^7.3.4",
+    "@turf/intersect": "^7.3.4",
     "jsdom": "^29.0.1",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
