@@ -34,21 +34,27 @@ function heartSvg(color, size, opacity = 0.9) {
   </svg>`;
 }
 
-// Cluster icon: stacked hearts with a count badge
-function clusterHeartSvg(color, size, opacity = 0.9, count = 2) {
+// Cluster icon: rounded pill with mini heart + count  [♥ 17]
+function clusterPillSvg(color, count = 2) {
   const stroke = darkenHexStr(color);
   const label = String(count);
-  const fontSize = label.length > 2 ? 8 : label.length > 1 ? 9 : 10;
-  // Shadow heart down-left, main heart on top, subtle badge top-right
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="-6 -4 42 38">
-    <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
-      fill="${color}" fill-opacity="${opacity * 0.4}" stroke="${stroke}" stroke-width="0.3" transform="translate(-4,3) scale(0.88)"/>
-    <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
-      fill="${color}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="0.5"/>
-    <circle cx="28" cy="2" r="7" fill="#fff" fill-opacity="0.7"/>
-    <circle cx="28" cy="2" r="5.8" fill="${color}"/>
-    <text x="28" y="2.5" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="${fontSize}" dominant-baseline="central">${label}</text>
-  </svg>`;
+  // Scale pill width based on digit count
+  const textWidth = label.length > 2 ? 24 : label.length > 1 ? 18 : 12;
+  const pillW = 20 + textWidth; // heart area + text area
+  const pillH = 22;
+  const r = pillH / 2; // fully rounded ends
+  const fontSize = label.length > 2 ? 10 : 11;
+  return {
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="${pillW}" height="${pillH}" viewBox="0 0 ${pillW} ${pillH}">
+      <rect x="0.5" y="0.5" width="${pillW - 1}" height="${pillH - 1}" rx="${r}" ry="${r}"
+        fill="${color}" stroke="${stroke}" stroke-width="0.8"/>
+      <path d="M10 16.5 C10 16.5 3.5 12.5 3.5 8.5 C3.5 6.2 5 4.5 7 4.5 C8.2 4.5 9.3 5.2 10 6.2 C10.7 5.2 11.8 4.5 13 4.5 C15 4.5 16.5 6.2 16.5 8.5 C16.5 12.5 10 16.5 10 16.5Z"
+        fill="#fff" fill-opacity="0.95"/>
+      <text x="${20 + textWidth / 2}" y="${pillH / 2 + 0.5}" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="${fontSize}" dominant-baseline="central">${label}</text>
+    </svg>`,
+    width: pillW,
+    height: pillH,
+  };
 }
 
 function createHeartIcon(color, size = 18, opacity = 0.9) {
@@ -181,12 +187,12 @@ function ClusteredMarkers({
         zoomToBoundsOnClick: true,
         iconCreateFunction: (cluster) => {
           const count = cluster.getChildCount();
-          const size = Math.round(30 + 5 * Math.sqrt(count));
+          const pill = clusterPillSvg(districtColor, count);
           return L.divIcon({
-            html: clusterHeartSvg(districtColor, size, 0.9, count),
-            className: 'cluster-heart-icon',
-            iconSize: [size, size],
-            iconAnchor: [size / 2, size / 2],
+            html: pill.html,
+            className: 'cluster-pill-icon',
+            iconSize: [pill.width, pill.height],
+            iconAnchor: [pill.width / 2, pill.height / 2],
           });
         },
         animate: true,
