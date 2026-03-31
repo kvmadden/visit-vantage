@@ -25,16 +25,29 @@ function darkenHexStr(hex, amount = 40) {
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
 }
 
-// Heart SVG path for both individual markers and cluster icons
-function heartSvg(color, size, opacity = 0.9, label = '') {
+// Heart SVG path for single-store markers
+function heartSvg(color, size, opacity = 0.9) {
   const stroke = darkenHexStr(color);
-  const textEl = label
-    ? `<text x="16" y="18" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="${label.length > 2 ? 9 : 11}" dominant-baseline="central">${label}</text>`
-    : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 32 32">
     <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
       fill="${color}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="0.5"/>
-    ${textEl}
+  </svg>`;
+}
+
+// Cluster icon: stacked hearts with a count badge
+function clusterHeartSvg(color, size, opacity = 0.9, count = 2) {
+  const stroke = darkenHexStr(color);
+  const label = String(count);
+  const fontSize = label.length > 2 ? 8 : label.length > 1 ? 9 : 10;
+  // Wider viewBox to fit the stacked heart + badge
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="-4 -2 40 36">
+    <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
+      fill="${color}" fill-opacity="${opacity * 0.35}" stroke="${stroke}" stroke-width="0.3" transform="translate(3,-1.5) scale(0.85)"/>
+    <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
+      fill="${color}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="0.5"/>
+    <circle cx="28" cy="4" r="8" fill="#fff"/>
+    <circle cx="28" cy="4" r="6.5" fill="${color}"/>
+    <text x="28" y="4.5" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="${fontSize}" dominant-baseline="central">${label}</text>
   </svg>`;
 }
 
@@ -168,10 +181,9 @@ function ClusteredMarkers({
         zoomToBoundsOnClick: true,
         iconCreateFunction: (cluster) => {
           const count = cluster.getChildCount();
-          // Continuous scaling: 26px at 1 store, grows with sqrt for visual area proportion
-          const size = Math.round(26 + 6 * Math.sqrt(count));
+          const size = Math.round(30 + 5 * Math.sqrt(count));
           return L.divIcon({
-            html: heartSvg(districtColor, size, 0.9, String(count)),
+            html: clusterHeartSvg(districtColor, size, 0.9, count),
             className: 'cluster-heart-icon',
             iconSize: [size, size],
             iconAnchor: [size / 2, size / 2],
