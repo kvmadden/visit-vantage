@@ -75,6 +75,87 @@ function chaikinSmooth(coords, iterations = 3) {
   return pts;
 }
 
+function cross(O, A, B) {
+  return (A[0] - O[0]) * (B[1] - O[1]) - (A[1] - O[1]) * (B[0] - O[0]);
+}
+
+function convexHull(points) {
+  const pts = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  if (pts.length <= 1) return pts;
+  const lower = [];
+  for (const p of pts) {
+    while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop();
+    lower.push(p);
+  }
+  const upper = [];
+  for (let i = pts.length - 1; i >= 0; i--) {
+    const p = pts[i];
+    while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
+    upper.push(p);
+  }
+  lower.pop(); upper.pop();
+  return lower.concat(upper);
+}
+
+function padHullNormals(hull, padDeg) {
+  const n = hull.length;
+  const result = [];
+  for (let i = 0; i < n; i++) {
+    const prev = hull[(i - 1 + n) % n];
+    const curr = hull[i];
+    const next = hull[(i + 1) % n];
+    const dx1 = curr[0] - prev[0], dy1 = curr[1] - prev[1];
+    const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1) || 1;
+    const dx2 = next[0] - curr[0], dy2 = next[1] - curr[1];
+    const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
+    let nx = -(dy1 / len1 + dy2 / len2) / 2;
+    let ny = (dx1 / len1 + dx2 / len2) / 2;
+    const nlen = Math.sqrt(nx * nx + ny * ny) || 1;
+    nx /= nlen; ny /= nlen;
+    result.push([curr[0] + nx * padDeg, curr[1] + ny * padDeg]);
+  }
+  let area = 0;
+  for (let i = 0; i < result.length; i++) {
+    const j = (i + 1) % result.length;
+    area += result[i][0] * result[j][1] - result[j][0] * result[i][1];
+  }
+  if (area > 0) {
+    const flipped = [];
+    for (let i = 0; i < n; i++) {
+      const prev = hull[(i - 1 + n) % n];
+      const curr = hull[i];
+      const next = hull[(i + 1) % n];
+      const dx1 = curr[0] - prev[0], dy1 = curr[1] - prev[1];
+      const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1) || 1;
+      const dx2 = next[0] - curr[0], dy2 = next[1] - curr[1];
+      const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
+      let nx = (dy1 / len1 + dy2 / len2) / 2;
+      let ny = -(dx1 / len1 + dx2 / len2) / 2;
+      const nlen = Math.sqrt(nx * nx + ny * ny) || 1;
+      nx /= nlen; ny /= nlen;
+      flipped.push([curr[0] + nx * padDeg, curr[1] + ny * padDeg]);
+    }
+    return flipped;
+  }
+  return result;
+}
+
+function densify(hull, maxSegLen = 0.03) {
+  const result = [];
+  for (let i = 0; i < hull.length; i++) {
+    const a = hull[i];
+    const b = hull[(i + 1) % hull.length];
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const segs = Math.max(1, Math.ceil(len / maxSegLen));
+    for (let s = 0; s < segs; s++) {
+      const t = s / segs;
+      result.push([a[0] + dx * t, a[1] + dy * t]);
+    }
+  }
+  return result;
+}
+
 // ---- Main ----
 
 // 1. Build store points with district info
@@ -119,7 +200,34 @@ for (const [district, cells] of Object.entries(districtCells)) {
 
     let geom = ensurePolygon(merged.geometry);
 
-    // 4. Clip to Florida coastline
+    // 4. Clip Voronoi region to a tight convex hull around stores
+    // This prevents districts from extending far beyond their stores
+    const pts = districts[district];
+    const hull = convexHull(pts);
+    if (hull.length >= 3) {
+      // Try progressively larger padding until all stores are contained
+      for (const pad of [0.05, 0.07, 0.09, 0.12]) {
+        const padded = padHullNormals(hull, pad);
+        const dense = densify(padded, 0.03);
+        const smoothHull = chaikinSmooth([...dense, dense[0]], 2);
+        try {
+          const hullPoly = polygon([smoothHull]);
+          const voronoiPoly = polygon(geom.coordinates);
+          const clipped = turfIntersect(featureCollection([voronoiPoly, hullPoly]));
+          if (clipped) {
+            const clippedGeom = ensurePolygon(clipped.geometry);
+            const ring = clippedGeom.coordinates[0];
+            const lost = pts.filter(p => !pointInPolygon(p, ring));
+            if (lost.length === 0) {
+              geom = clippedGeom;
+              break;
+            }
+          }
+        } catch (e) {}
+      }
+    }
+
+    // 5. Clip to Florida coastline
     const landGeom = floridaLand.geometry;
     const landFeature = landGeom.type === 'MultiPolygon'
       ? multiPolygon(landGeom.coordinates)
@@ -142,14 +250,11 @@ for (const [district, cells] of Object.entries(districtCells)) {
       // Keep unclipped if intersection fails
     }
 
-    // 5. Smooth the boundary (Voronoi produces angular edges)
-    // Use 2 iterations to keep boundaries tight and minimize smoothing-induced overlap
+    // 6. Light smoothing on final boundary
     const smoothedCoords = chaikinSmooth(geom.coordinates[0], 1);
-
-    // Verify containment after smoothing
-    const pts = districts[district];
-    const lost = pts.filter(p => !pointInPolygon(p, smoothedCoords));
-    const finalCoords = lost.length === 0 ? smoothedCoords : geom.coordinates[0];
+    const pts2 = districts[district];
+    const lost2 = pts2.filter(p => !pointInPolygon(p, smoothedCoords));
+    const finalCoords = lost2.length === 0 ? smoothedCoords : geom.coordinates[0];
 
     features.push({
       type: 'Feature',
