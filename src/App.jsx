@@ -7,6 +7,7 @@ import StoreCard from './components/StoreCard';
 import DistrictSummary from './components/DistrictSummary';
 import RoutePlanner from './components/RoutePlanner';
 import Legend from './components/Legend';
+import LayerPanel from './components/LayerPanel';
 import BottomSheet from './components/BottomSheet';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
@@ -21,6 +22,7 @@ export default function App() {
   const [routeStores, setRouteStores] = useState([]);
   const [gpsPosition, setGpsPosition] = useState(null);
   const [districtView, setDistrictView] = useState(false);
+  const [activeLayers, setActiveLayers] = useState({});
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('visitvantage-theme') || 'light';
   });
@@ -143,6 +145,10 @@ export default function App() {
     setSelectedStore(null);
   }, []);
 
+  const handleLayerChange = useCallback((layers) => {
+    setActiveLayers(layers);
+  }, []);
+
   const handleBottomSheetCollapse = useCallback(() => {
     setSelectedStore(null);
   }, []);
@@ -196,6 +202,7 @@ export default function App() {
             districtMode={districtMode}
             gpsPosition={gpsPosition}
             theme={theme}
+            showClouds={activeLayers.districts !== false}
           />
         </div>
 
@@ -213,6 +220,7 @@ export default function App() {
         )}
 
         <Legend districtMode={districtMode} theme={theme} />
+        <LayerPanel onLayerChange={handleLayerChange} />
 
         <BottomSheet
           forceOpen={selectedStore}

@@ -876,6 +876,105 @@ body {
 }
 
 /* ============================================
+   Layer Panel
+   ============================================ */
+
+.layer-toggle-btn {
+  position: fixed;
+  bottom: 60px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.layer-toggle-btn:active {
+  transform: scale(0.92);
+}
+
+.layer-panel {
+  position: fixed;
+  bottom: 60px;
+  right: 12px;
+  z-index: 600;
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  min-width: 200px;
+  max-width: 260px;
+}
+
+.layer-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.layer-group {
+  margin-bottom: 6px;
+}
+
+.layer-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.layer-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.layer-item-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.layer-item-icon {
+  font-size: 14px;
+}
+
+.layer-more-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+}
+
+@media (min-width: 768px) {
+  .layer-toggle-btn {
+    bottom: 72px;
+    right: 24px;
+  }
+
+  .layer-panel {
+    bottom: 72px;
+    right: 24px;
+  }
+}
+
+/* ============================================
    Bottom Sheet
    ============================================ */
 
