@@ -223,7 +223,7 @@ function CityLabels({ zoom, theme }) {
       const letterSpacing = isMajor ? '1px' : '0.3px';
 
       const icon = L.divIcon({
-        html: `<div class="city-label-custom" data-tier="${city.tier}" style="font-family:IBM Plex Sans,sans-serif;font-weight:${fontWeight};font-size:${fontSize}px;color:${textColor};text-transform:${textTransform};letter-spacing:${letterSpacing};white-space:nowrap;pointer-events:none;transition:opacity 0.3s;text-shadow:-1px 0 2px ${haloColor},1px 0 2px ${haloColor},0 -1px 2px ${haloColor},0 1px 2px ${haloColor}">${city.name}</div>`,
+        html: `<div class="city-label-custom" data-tier="${city.tier}" style="font-family:IBM Plex Sans,sans-serif;font-weight:${fontWeight};font-size:${fontSize}px;color:${textColor};text-transform:${textTransform};letter-spacing:${letterSpacing};white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.3s;text-shadow:-1px 0 2px ${haloColor},1px 0 2px ${haloColor},0 -1px 2px ${haloColor},0 1px 2px ${haloColor}">${city.name}</div>`,
         className: 'city-label-icon',
         iconSize: [0, 0],
         iconAnchor: [0, 0],
