@@ -302,7 +302,7 @@ function generateBoundaries(allStores, districtField, colorMap, storeFilter) {
       const pts = districts[district];
       const hull = convexHull(pts);
       if (hull.length >= 3) {
-        for (const pad of [0.06, 0.08, 0.10, 0.13]) {
+        for (const pad of [0.025, 0.035, 0.05, 0.07]) {
           const padded = padHullNormals(hull, pad);
           const dense = densify(padded, 0.03);
           const smoothHull = chaikinSmooth([...dense, dense[0]], 3);
@@ -554,7 +554,7 @@ const fsDistricts = fs.districts;
       const pts = fsDistricts[2];
       const hull = convexHull(pts);
       if (hull.length >= 3) {
-        for (const pad of [0.04, 0.06, 0.08, 0.10]) {
+        for (const pad of [0.025, 0.035, 0.05, 0.07]) {
           const padded = padHullNormals(hull, pad);
           const dense = densify(padded, 0.03);
           const smoothHull = chaikinSmooth([...dense, dense[0]], 3);
