@@ -191,8 +191,8 @@ function ClusteredMarkers({
         const zoomScale = Math.max(0.75, 1 + (zoom - 13) * 0.25);
         const baseHeart = isSelected ? 22 : 16;
         const baseBullseye = isSelected ? 15 : 11;
-        const heartSize = Math.max(12, Math.round(baseHeart * zoomScale));
-        const bullseyeSize = Math.max(9, Math.round(baseBullseye * zoomScale));
+        const heartSize = Math.max(20, Math.round(baseHeart * zoomScale));
+        const bullseyeSize = Math.max(16, Math.round(baseBullseye * zoomScale));
 
         const icon = isTarget
           ? createBullseyeIcon(displayColor, bullseyeSize, opacity)
