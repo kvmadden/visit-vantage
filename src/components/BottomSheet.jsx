@@ -19,6 +19,8 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
   useEffect(() => {
     if (forceOpen) {
       setDetent('full');
+    } else {
+      setDetent('collapsed');
     }
   }, [forceOpen]);
 

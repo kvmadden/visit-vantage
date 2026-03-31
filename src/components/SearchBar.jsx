@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { createPortal } from "react-dom";
 
 function highlightMatch(text, query) {
   if (!query || !text) return text;
@@ -63,7 +64,11 @@ export default function SearchBar({ stores, onStoreSelect, searchText, onSearchC
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, []);
 
   // Show dropdown when there are results and query is non-empty
@@ -134,8 +139,16 @@ export default function SearchBar({ stores, onStoreSelect, searchText, onSearchC
         </button>
       )}
 
-      {showDropdown && (
-        <div className="search-dropdown">
+      {showDropdown && containerRef.current && createPortal(
+        <div
+          className="search-dropdown"
+          style={{
+            position: 'fixed',
+            top: containerRef.current.getBoundingClientRect().bottom + 4,
+            left: containerRef.current.getBoundingClientRect().left,
+            width: containerRef.current.getBoundingClientRect().width,
+          }}
+        >
           {filteredStores.map((store) => {
             const nickname = store.nickname || "";
             const num = String(store.store);
@@ -152,7 +165,8 @@ export default function SearchBar({ stores, onStoreSelect, searchText, onSearchC
               </div>
             );
           })}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const LAYERS = {
   tier1: {
@@ -65,8 +65,13 @@ export default function LayerPanel({ onLayerChange }) {
   const [showTier3, setShowTier3] = useState(false);
   const [layers, setLayers] = useState(() => loadLayers());
 
+  const mountedRef = useRef(false);
   useEffect(() => {
     localStorage.setItem(LS_KEY, JSON.stringify(layers));
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      return;
+    }
     onLayerChange?.(layers);
   }, [layers, onLayerChange]);
 
