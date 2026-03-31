@@ -9,7 +9,7 @@ const DETENTS = {
 const FULL_RATIO = 0.72; // 72% of viewport height
 
 export default function BottomSheet({ children, forceOpen, onCollapse }) {
-  const [detent, setDetent] = useState('collapsed');
+  const [detent, setDetent] = useState('peek');
   const [dragOffset, setDragOffset] = useState(0);
   const sheetRef = useRef(null);
   const dragStartRef = useRef(null);

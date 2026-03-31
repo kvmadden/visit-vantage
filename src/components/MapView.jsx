@@ -427,24 +427,25 @@ function HomeControl({ stores }) {
 // ---------------------------------------------------------------------------
 // DistrictClouds — colored territory overlays that fade as you zoom in
 // ---------------------------------------------------------------------------
-// Hand-tuned label positions over water / clear areas for each district
+// Hand-tuned label positions pushed well into water/clear areas, with anchor
+// points on the nearest polygon edge for the connector line.
 const LABEL_POSITIONS = {
   rx: {
-    20: { lat: 27.99, lng: -82.59 },   // Tampa — over Tampa Bay
-    21: { lat: 28.38, lng: -82.56 },   // Pasco — push west toward Gulf
-    22: { lat: 27.74, lng: -82.83 },   // St Pete — over Gulf
-    23: { lat: 27.97, lng: -82.87 },   // Clearwater — over Gulf
-    24: { lat: 28.20, lng: -82.78 },   // Tarpon/Holiday — over Gulf
-    25: { lat: 27.72, lng: -82.20 },   // Brandon/east — push east into open area
-    26: { lat: 27.40, lng: -82.72 },   // Sarasota — over Gulf
-    27: { lat: 27.08, lng: -82.45 },   // Far south — push west toward Gulf
+    20: { lat: 28.02, lng: -82.64 },   // Tampa — over Tampa Bay
+    21: { lat: 28.42, lng: -82.60 },   // Pasco — northwest toward Gulf
+    22: { lat: 27.68, lng: -82.90 },   // St Pete — well into Gulf
+    23: { lat: 27.97, lng: -82.94 },   // Clearwater — well into Gulf
+    24: { lat: 28.22, lng: -82.85 },   // Tarpon/Holiday — into Gulf
+    25: { lat: 27.65, lng: -82.10 },   // Brandon/east — push further east
+    26: { lat: 27.35, lng: -82.80 },   // Sarasota — into Gulf
+    27: { lat: 27.00, lng: -82.52 },   // Far south — southwest toward Gulf
   },
   fs: {
-    1: { lat: 27.78, lng: -82.85 },    // D1 west coast — over Gulf
-    2: { lat: 28.30, lng: -82.78 },    // D2 north coast — over Gulf
-    3: { lat: 27.70, lng: -82.32 },    // D3 central — push east
-    4: { lat: 27.12, lng: -82.48 },    // D4 south — push west
-    5: { lat: 28.15, lng: -82.28 },    // D5 north inland — push east
+    1: { lat: 27.72, lng: -82.92 },    // D1 — well into Gulf
+    2: { lat: 28.35, lng: -82.85 },    // D2 — into Gulf
+    3: { lat: 27.62, lng: -82.15 },    // D3 — push east
+    4: { lat: 27.05, lng: -82.55 },    // D4 — southwest toward Gulf
+    5: { lat: 28.20, lng: -82.18 },    // D5 — push east
   },
 };
 
@@ -476,7 +477,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
       map.removeLayer(layerRef.current);
     }
 
-    const labelMarkers = [];
+    const labelData = [];
     const positions = LABEL_POSITIONS[districtMode] || {};
 
     const geoData = districtMode === 'fs' ? fsDistrictGeoJSON : rxDistrictGeoJSON;
@@ -498,48 +499,63 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         const isActive = activeDistrict == null || activeDistrict === d;
         if (!isActive) return;
 
-        // Use hand-tuned position if available, otherwise fall back to centroid
+        // Compute polygon centroid for connector line endpoint
+        const coords = feature.geometry.coordinates[0];
+        const lats = coords.map((c) => c[1]);
+        const lngs = coords.map((c) => c[0]);
+        const centroidLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+        const centroidLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+
+        // Label position: hand-tuned or fallback to centroid
         let labelLat, labelLng;
         if (positions[d]) {
           labelLat = positions[d].lat;
           labelLng = positions[d].lng;
         } else {
-          const coords = feature.geometry.coordinates[0];
-          const lats = coords.map((c) => c[1]);
-          const lngs = coords.map((c) => c[0]);
-          labelLat = (Math.min(...lats) + Math.max(...lats)) / 2;
-          labelLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+          labelLat = centroidLat;
+          labelLng = centroidLng;
         }
 
-        const labelSize = zoom <= 9 ? 13 : 11;
-        const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.8)';
-        const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
-        const icon = L.divIcon({
-          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:700;font-size:${labelSize}px;color:${feature.properties.color};opacity:0.85;text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 6px ${haloBlur};white-space:nowrap;pointer-events:none">${feature.properties.label}</div>`,
-          className: 'district-label-icon',
-          iconSize: [60, 20],
-          iconAnchor: [30, 10],
-        });
+        // Find the closest point on the polygon edge to use as connector anchor
+        let anchorLat = centroidLat, anchorLng = centroidLng;
+        let minDist = Infinity;
+        for (const c of coords) {
+          const dLat = c[1] - labelLat;
+          const dLng = c[0] - labelLng;
+          const dist = dLat * dLat + dLng * dLng;
+          if (dist < minDist) {
+            minDist = dist;
+            anchorLat = c[1];
+            anchorLng = c[0];
+          }
+        }
 
-        labelMarkers.push({ lat: labelLat, lng: labelLng, icon });
+        labelData.push({
+          lat: labelLat,
+          lng: labelLng,
+          anchorLat,
+          anchorLng,
+          color: feature.properties.color,
+          label: feature.properties.label,
+        });
       },
     });
 
     // Collision detection: nudge labels apart if they'd overlap on screen
-    const minGapPx = 20; // minimum gap between labels in pixels
-    const projected = labelMarkers.map((lm) => {
-      const pt = map.latLngToContainerPoint([lm.lat, lm.lng]);
-      return { ...lm, x: pt.x, y: pt.y };
+    const minGapPx = 24;
+    const projected = labelData.map((ld) => {
+      const pt = map.latLngToContainerPoint([ld.lat, ld.lng]);
+      return { ...ld, x: pt.x, y: pt.y };
     });
 
-    // Simple iterative repulsion (3 passes)
+    const labelW = 50;
     for (let pass = 0; pass < 3; pass++) {
       for (let i = 0; i < projected.length; i++) {
         for (let j = i + 1; j < projected.length; j++) {
           const dx = projected[j].x - projected[i].x;
           const dy = projected[j].y - projected[i].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const minDist = 60 + minGapPx; // ~60px label width + gap
+          const minDist = labelW + minGapPx;
           if (dist < minDist && dist > 0) {
             const overlap = (minDist - dist) / 2;
             const nx = dx / dist;
@@ -553,10 +569,29 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
       }
     }
 
-    // Convert back to lat/lng and add markers
+    // Add connector lines and label markers
+    const labelSize = zoom <= 9 ? 16 : zoom <= 11 ? 14 : 13;
+    const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.85)';
+    const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
+
     projected.forEach((p) => {
-      const latlng = map.containerPointToLatLng([p.x, p.y]);
-      L.marker([latlng.lat, latlng.lng], { icon: p.icon, interactive: false }).addTo(layer);
+      const finalLL = map.containerPointToLatLng([p.x, p.y]);
+
+      // Thin connector line from label to nearest polygon edge
+      const line = L.polyline(
+        [[finalLL.lat, finalLL.lng], [p.anchorLat, p.anchorLng]],
+        { color: p.color, weight: 1.5, opacity: 0.4, dashArray: '4,4', interactive: false }
+      );
+      line.addTo(layer);
+
+      const icon = L.divIcon({
+        html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:${labelSize}px;color:${p.color};text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${p.label}</div>`,
+        className: 'district-label-icon',
+        iconSize: [60, 24],
+        iconAnchor: [30, 12],
+      });
+
+      L.marker([finalLL.lat, finalLL.lng], { icon, interactive: false }).addTo(layer);
     });
 
     layer.addTo(map);
