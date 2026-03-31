@@ -1,6 +1,7 @@
 /**
  * Generate district boundary GeoJSON from store coordinates.
  *
+ * Generates BOTH Rx district (D20-D27) and FS district (D1-D5) boundaries.
  * Approach: Voronoi tessellation → merge cells by district → smooth →
  * clip to coastline. Voronoi guarantees zero overlap by construction.
  */
@@ -10,6 +11,7 @@ const require = createRequire(import.meta.url);
 const { voronoi } = require('@turf/voronoi');
 const { intersect: turfIntersect } = require('@turf/intersect');
 const { union: turfUnion } = require('@turf/union');
+const { difference: turfDifference } = require('@turf/difference');
 const { polygon, point, featureCollection, multiPolygon } = require('@turf/helpers');
 
 const stores = JSON.parse(readFileSync('src/data/stores.json', 'utf-8'));
@@ -19,14 +21,25 @@ const RX_COLORS = {
   20: '#4A9EFF',
   21: '#3D9A6D',
   22: '#f59e0b',
-  23: '#ef4444',
+  23: '#e879a8',
   24: '#8b5cf6',
   25: '#F472B6',
   26: '#06b6d4',
   27: '#fb923c',
 };
 
-// Check if point is inside polygon (ray casting)
+const FS_COLORS = {
+  1: '#e04040',
+  2: '#2196f3',
+  3: '#8bc34a',
+  4: '#ff9800',
+  5: '#9c27b0',
+};
+
+// ---------------------------------------------------------------------------
+// Geometry helpers
+// ---------------------------------------------------------------------------
+
 function pointInPolygon(pt, ring) {
   let inside = false;
   const [x, y] = pt;
@@ -42,12 +55,8 @@ function pointInPolygon(pt, ring) {
 
 function ensurePolygon(geom, storePoints) {
   if (geom.type === 'MultiPolygon') {
-    // If we have store points, keep the fragment with the most stores
-    // and union any other fragments that also have stores
     if (storePoints && storePoints.length > 0) {
       const partsWithStores = [];
-      let largestNoStores = null, maxAreaNoStores = 0;
-
       for (const poly of geom.coordinates) {
         const ring = poly[0];
         const hasStore = storePoints.some(p => pointInPolygon(p, ring));
@@ -56,25 +65,13 @@ function ensurePolygon(geom, storePoints) {
           area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
         }
         area = Math.abs(area);
-        if (hasStore) {
-          partsWithStores.push({ poly, area });
-        } else if (area > maxAreaNoStores) {
-          maxAreaNoStores = area;
-          largestNoStores = poly;
-        }
+        if (hasStore) partsWithStores.push({ poly, area });
       }
-
-      if (partsWithStores.length === 1) {
-        return { type: 'Polygon', coordinates: partsWithStores[0].poly };
-      }
-      if (partsWithStores.length > 1) {
-        // Pick the largest part that has stores
+      if (partsWithStores.length >= 1) {
         partsWithStores.sort((a, b) => b.area - a.area);
         return { type: 'Polygon', coordinates: partsWithStores[0].poly };
       }
     }
-
-    // Fallback: pick largest by area
     let largest = geom.coordinates[0];
     let maxArea = 0;
     for (const poly of geom.coordinates) {
@@ -91,9 +88,8 @@ function ensurePolygon(geom, storePoints) {
   return geom;
 }
 
-// Chaikin corner-cutting subdivision for smoothing
 function chaikinSmooth(coords, iterations = 3) {
-  let pts = coords.slice(0, -1); // remove closing point
+  let pts = coords.slice(0, -1);
   for (let iter = 0; iter < iterations; iter++) {
     const smoothed = [];
     for (let i = 0; i < pts.length; i++) {
@@ -104,7 +100,7 @@ function chaikinSmooth(coords, iterations = 3) {
     }
     pts = smoothed;
   }
-  pts.push(pts[0]); // re-close
+  pts.push(pts[0]);
   return pts;
 }
 
@@ -189,136 +185,6 @@ function densify(hull, maxSegLen = 0.03) {
   return result;
 }
 
-// ---- Main ----
-
-// 1. Build store points with district info
-const districts = {};
-const storePoints = [];
-stores.forEach((s) => {
-  const d = s.rxDistrict;
-  if (!d) return;
-  if (!districts[d]) districts[d] = [];
-  districts[d].push([s.lng, s.lat]);
-  storePoints.push(point([s.lng, s.lat], { district: d }));
-});
-
-// 2. Compute Voronoi cells for all stores
-// Use a bounding box that covers the full region with generous margin
-const bbox = [-83.5, 26.5, -81.5, 29.0];
-const voronoiCells = voronoi(featureCollection(storePoints), { bbox });
-
-// 3. Merge Voronoi cells by district
-const districtCells = {}; // district -> array of cell features
-voronoiCells.features.forEach((cell, idx) => {
-  if (!cell || !cell.geometry) return;
-  const d = storePoints[idx].properties.district;
-  if (!districtCells[d]) districtCells[d] = [];
-  districtCells[d].push(cell);
-});
-
-const features = [];
-
-for (const [district, cells] of Object.entries(districtCells)) {
-  try {
-    // Union all cells for this district
-    let merged = cells[0];
-    for (let i = 1; i < cells.length; i++) {
-      try {
-        const u = turfUnion(featureCollection([merged, cells[i]]));
-        if (u) merged = u;
-      } catch (e) {
-        // Skip problematic cells
-      }
-    }
-
-    let geom = ensurePolygon(merged.geometry);
-
-    // 4. Clip to Florida coastline FIRST (removes Gulf water)
-    const landGeom = floridaLand.geometry;
-    const landFeature = landGeom.type === 'MultiPolygon'
-      ? multiPolygon(landGeom.coordinates)
-      : polygon(landGeom.coordinates);
-
-    try {
-      const distPoly = polygon(geom.coordinates);
-      const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
-      if (clipped) {
-        const dPts = districts[district];
-        // For coastline clipping, accept even if a few stores end up on
-        // separate land fragments (barrier islands). Better to have the main
-        // polygon clipped to land than extending into the Gulf.
-        const clippedGeom = ensurePolygon(clipped.geometry, dPts);
-        geom = clippedGeom;
-      }
-    } catch (e) {
-      // Keep unclipped if intersection fails
-    }
-
-    // 5. Clip to padded convex hull (trims distant Voronoi edges to store area)
-    const pts = districts[district];
-    const hull = convexHull(pts);
-    if (hull.length >= 3) {
-      for (const pad of [0.06, 0.08, 0.10, 0.13]) {
-        const padded = padHullNormals(hull, pad);
-        const dense = densify(padded, 0.03);
-        const smoothHull = chaikinSmooth([...dense, dense[0]], 3);
-        try {
-          const hullPoly = polygon([smoothHull]);
-          const voronoiPoly = polygon(geom.coordinates);
-          const clipped = turfIntersect(featureCollection([voronoiPoly, hullPoly]));
-          if (clipped) {
-            const clippedGeom = ensurePolygon(clipped.geometry);
-            const ring = clippedGeom.coordinates[0];
-            const lost = pts.filter(p => !pointInPolygon(p, ring));
-            if (lost.length === 0) {
-              geom = clippedGeom;
-              break;
-            }
-          }
-        } catch (e) {}
-      }
-    }
-
-    // 6. Light smoothing on final boundary
-    const smoothedCoords = chaikinSmooth(geom.coordinates[0], 1);
-    const pts2 = districts[district];
-    const lost2 = pts2.filter(p => !pointInPolygon(p, smoothedCoords));
-    const finalCoords = lost2.length === 0 ? smoothedCoords : geom.coordinates[0];
-
-    features.push({
-      type: 'Feature',
-      properties: {
-        district: Number(district),
-        color: RX_COLORS[district] || '#888',
-        label: `D${district}`,
-        storeCount: districts[district].length,
-      },
-      geometry: {
-        type: 'Polygon',
-        coordinates: [finalCoords],
-      },
-    });
-  } catch (e) {
-    console.warn(`D${district}: failed (${e.message})`);
-  }
-}
-
-// Verify containment (pre-cleanup)
-let allGood = true;
-features.forEach(f => {
-  const d = f.properties.district;
-  const ring = f.geometry.coordinates[0];
-  const pts = districts[d];
-  const out = pts.filter(p => !pointInPolygon(p, ring));
-  if (out.length > 0) {
-    console.warn(`D${d}: ${out.length} stores outside (pre-exception)`);
-    allGood = false;
-  }
-});
-
-// Post-smoothing overlap cleanup: subtract tiny overlaps
-const { difference: turfDifference } = require('@turf/difference');
-
 function nearestStoreDist(pt, stores) {
   let min = Infinity;
   for (const s of stores) {
@@ -329,64 +195,6 @@ function nearestStoreDist(pt, stores) {
   return min;
 }
 
-for (let pass = 0; pass < 5; pass++) {
-  let fixed = 0;
-  for (let i = 0; i < features.length; i++) {
-    for (let j = i + 1; j < features.length; j++) {
-      try {
-        const pi = polygon(features[i].geometry.coordinates);
-        const pj = polygon(features[j].geometry.coordinates);
-        const o = turfIntersect(featureCollection([pi, pj]));
-        if (!o) continue;
-        const oGeom = ensurePolygon(o.geometry);
-        const oRing = oGeom.coordinates[0];
-        let area = 0;
-        for (let k = 0; k < oRing.length - 1; k++) {
-          area += oRing[k][0] * oRing[k + 1][1] - oRing[k + 1][0] * oRing[k][1];
-        }
-        if (Math.abs(area) < 0.0000001) continue;
-
-        const oPoly = polygon(oGeom.coordinates);
-        const di = features[i].properties.district;
-        const dj = features[j].properties.district;
-
-        // Determine which district should lose the overlap (farther stores)
-        const center = [
-          oRing.reduce((s, p) => s + p[0], 0) / oRing.length,
-          oRing.reduce((s, p) => s + p[1], 0) / oRing.length,
-        ];
-        const distI = nearestStoreDist(center, districts[di]);
-        const distJ = nearestStoreDist(center, districts[dj]);
-        const loserIdx = distI > distJ ? i : j;
-        const loserId = features[loserIdx].properties.district;
-
-        const loserPoly = polygon(features[loserIdx].geometry.coordinates);
-        const diff = turfDifference(featureCollection([loserPoly, oPoly]));
-        if (diff) {
-          const newGeom = ensurePolygon(diff.geometry);
-          const lost = districts[loserId].filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
-          if (lost.length === 0) {
-            features[loserIdx] = { ...features[loserIdx], geometry: newGeom };
-            fixed++;
-          }
-        }
-      } catch (e) {}
-    }
-  }
-  if (fixed === 0) break;
-}
-
-// ============================================================
-// MANUAL EXCEPTIONS — applied AFTER overlap cleanup so they
-// persist as final overrides. These are one-off adjustments
-// explicitly requested because certain stores were allocated
-// to districts for business reasons that don't follow geography.
-//
-// Both exceptions create CONTINUOUS extensions of the district
-// shape — no enclaves or disconnected fragments.
-// ============================================================
-
-// Helper: union a corridor polygon into a district feature
 function unionCorridor(feature, corridorCoords) {
   try {
     const distPoly = polygon(feature.geometry.coordinates);
@@ -403,7 +211,6 @@ function unionCorridor(feature, corridorCoords) {
   return false;
 }
 
-// Helper: re-clip a feature to coastline, preserving all store-containing fragments
 function reclipToCoast(feature, storePoints) {
   try {
     const landGeom = floridaLand.geometry;
@@ -414,7 +221,6 @@ function reclipToCoast(feature, storePoints) {
     const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
     if (clipped) {
       const newGeom = ensurePolygon(clipped.geometry, storePoints);
-      // Verify no stores lost
       const lost = storePoints.filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
       if (lost.length === 0) {
         feature.geometry = newGeom;
@@ -425,7 +231,6 @@ function reclipToCoast(feature, storePoints) {
   return false;
 }
 
-// Helper: apply light Chaikin smoothing to a feature, preserving store containment
 function smoothFeature(feature, storePoints, iterations = 1) {
   const smoothed = chaikinSmooth(feature.geometry.coordinates[0], iterations);
   const lost = storePoints.filter(p => !pointInPolygon(p, smoothed));
@@ -436,94 +241,259 @@ function smoothFeature(feature, storePoints, iterations = 1) {
   return false;
 }
 
-// Exception 1: D23 — Clearwater Beach store 3001 (27.9810, -82.8268)
-// Narrow causeway bridge from mainland to barrier island, then a strip
-// running north along the island to cover store 3001. Shaped like an "L"
-// rather than a big rectangle over water.
+// ---------------------------------------------------------------------------
+// Core pipeline: Voronoi → merge → clip → trim → smooth → cleanup
+// ---------------------------------------------------------------------------
+
+function generateBoundaries(allStores, districtField, colorMap, storeFilter) {
+  const districts = {};
+  const storePoints = [];
+  allStores.forEach((s) => {
+    if (storeFilter && !storeFilter(s)) return;
+    const d = s[districtField];
+    if (!d) return;
+    if (!districts[d]) districts[d] = [];
+    districts[d].push([s.lng, s.lat]);
+    storePoints.push(point([s.lng, s.lat], { district: d }));
+  });
+
+  const bbox = [-83.5, 26.5, -81.5, 29.0];
+  const voronoiCells = voronoi(featureCollection(storePoints), { bbox });
+
+  const districtCells = {};
+  voronoiCells.features.forEach((cell, idx) => {
+    if (!cell || !cell.geometry) return;
+    const d = storePoints[idx].properties.district;
+    if (!districtCells[d]) districtCells[d] = [];
+    districtCells[d].push(cell);
+  });
+
+  const features = [];
+
+  for (const [district, cells] of Object.entries(districtCells)) {
+    try {
+      let merged = cells[0];
+      for (let i = 1; i < cells.length; i++) {
+        try {
+          const u = turfUnion(featureCollection([merged, cells[i]]));
+          if (u) merged = u;
+        } catch (e) {}
+      }
+
+      let geom = ensurePolygon(merged.geometry);
+
+      // Clip to Florida coastline
+      const landGeom = floridaLand.geometry;
+      const landFeature = landGeom.type === 'MultiPolygon'
+        ? multiPolygon(landGeom.coordinates)
+        : polygon(landGeom.coordinates);
+
+      try {
+        const distPoly = polygon(geom.coordinates);
+        const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
+        if (clipped) {
+          const dPts = districts[district];
+          const clippedGeom = ensurePolygon(clipped.geometry, dPts);
+          geom = clippedGeom;
+        }
+      } catch (e) {}
+
+      // Clip to padded convex hull
+      const pts = districts[district];
+      const hull = convexHull(pts);
+      if (hull.length >= 3) {
+        for (const pad of [0.06, 0.08, 0.10, 0.13]) {
+          const padded = padHullNormals(hull, pad);
+          const dense = densify(padded, 0.03);
+          const smoothHull = chaikinSmooth([...dense, dense[0]], 3);
+          try {
+            const hullPoly = polygon([smoothHull]);
+            const voronoiPoly = polygon(geom.coordinates);
+            const clipped = turfIntersect(featureCollection([voronoiPoly, hullPoly]));
+            if (clipped) {
+              const clippedGeom = ensurePolygon(clipped.geometry);
+              const ring = clippedGeom.coordinates[0];
+              const lost = pts.filter(p => !pointInPolygon(p, ring));
+              if (lost.length === 0) {
+                geom = clippedGeom;
+                break;
+              }
+            }
+          } catch (e) {}
+        }
+      }
+
+      // Light smoothing
+      const smoothedCoords = chaikinSmooth(geom.coordinates[0], 1);
+      const lost2 = pts.filter(p => !pointInPolygon(p, smoothedCoords));
+      const finalCoords = lost2.length === 0 ? smoothedCoords : geom.coordinates[0];
+
+      features.push({
+        type: 'Feature',
+        properties: {
+          district: Number(district),
+          color: colorMap[district] || '#888',
+          label: `D${district}`,
+          storeCount: districts[district].length,
+        },
+        geometry: { type: 'Polygon', coordinates: [finalCoords] },
+      });
+    } catch (e) {
+      console.warn(`D${district}: failed (${e.message})`);
+    }
+  }
+
+  // Overlap cleanup (5 passes)
+  for (let pass = 0; pass < 5; pass++) {
+    let fixed = 0;
+    for (let i = 0; i < features.length; i++) {
+      for (let j = i + 1; j < features.length; j++) {
+        try {
+          const pi = polygon(features[i].geometry.coordinates);
+          const pj = polygon(features[j].geometry.coordinates);
+          const o = turfIntersect(featureCollection([pi, pj]));
+          if (!o) continue;
+          const oGeom = ensurePolygon(o.geometry);
+          const oRing = oGeom.coordinates[0];
+          let area = 0;
+          for (let k = 0; k < oRing.length - 1; k++) {
+            area += oRing[k][0] * oRing[k + 1][1] - oRing[k + 1][0] * oRing[k][1];
+          }
+          if (Math.abs(area) < 0.0000001) continue;
+
+          const oPoly = polygon(oGeom.coordinates);
+          const di = features[i].properties.district;
+          const dj = features[j].properties.district;
+          const center = [
+            oRing.reduce((s, p) => s + p[0], 0) / oRing.length,
+            oRing.reduce((s, p) => s + p[1], 0) / oRing.length,
+          ];
+          const distI = nearestStoreDist(center, districts[di]);
+          const distJ = nearestStoreDist(center, districts[dj]);
+          const loserIdx = distI > distJ ? i : j;
+          const loserId = features[loserIdx].properties.district;
+
+          const loserPoly = polygon(features[loserIdx].geometry.coordinates);
+          const diff = turfDifference(featureCollection([loserPoly, oPoly]));
+          if (diff) {
+            const newGeom = ensurePolygon(diff.geometry);
+            const lost = districts[loserId].filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
+            if (lost.length === 0) {
+              features[loserIdx] = { ...features[loserIdx], geometry: newGeom };
+              fixed++;
+            }
+          }
+        } catch (e) {}
+      }
+    }
+    if (fixed === 0) break;
+  }
+
+  return { features, districts };
+}
+
+// ---------------------------------------------------------------------------
+// Verification helpers
+// ---------------------------------------------------------------------------
+
+function verifyContainment(features, districts, label = '') {
+  let allGood = true;
+  features.forEach(f => {
+    const d = f.properties.district;
+    const ring = f.geometry.coordinates[0];
+    const pts = districts[d];
+    const out = pts.filter(p => !pointInPolygon(p, ring));
+    if (out.length > 0) {
+      console.warn(`${label}D${d}: ${out.length} stores outside`);
+      allGood = false;
+    }
+  });
+  return allGood;
+}
+
+function verifyNoOverlap(features, label = '') {
+  let overlapCount = 0;
+  for (let i = 0; i < features.length; i++) {
+    for (let j = i + 1; j < features.length; j++) {
+      try {
+        const pi = polygon(features[i].geometry.coordinates);
+        const pj = polygon(features[j].geometry.coordinates);
+        const o = turfIntersect(featureCollection([pi, pj]));
+        if (o) {
+          const ring = o.geometry.type === 'MultiPolygon' ? o.geometry.coordinates[0][0] : o.geometry.coordinates[0];
+          let area = 0;
+          for (let k = 0; k < ring.length - 1; k++) {
+            area += ring[k][0] * ring[k + 1][1] - ring[k + 1][0] * ring[k][1];
+          }
+          area = Math.abs(area) / 2 * 111 * 111;
+          if (area > 0.1) {
+            console.warn(`${label}D${features[i].properties.district}/D${features[j].properties.district}: ${area.toFixed(1)} sq km overlap`);
+            overlapCount++;
+          }
+        }
+      } catch (e) {}
+    }
+  }
+  return overlapCount;
+}
+
+// ====================================================================
+// Generate Rx district boundaries (D20-D27)
+// ====================================================================
+console.log('--- Rx Districts ---');
+const rx = generateBoundaries(stores, 'rxDistrict', RX_COLORS);
+const rxFeatures = rx.features;
+const rxDistricts = rx.districts;
+
+verifyContainment(rxFeatures, rxDistricts, '[pre-exception] Rx ');
+
+// Rx-specific exceptions
+// D23 — Clearwater Beach store 3001 on barrier island
 {
-  const f23 = features.find(f => f.properties.district === 23);
+  const f23 = rxFeatures.find(f => f.properties.district === 23);
   if (f23) {
     const store3001 = [-82.8268, 27.9810];
-
-    // Narrow causeway bridge crossing to island, then north to store 3001.
-    // No southern dip — just cross and go north.
     const bridgeStrip = [
-      // Mainland coast, south side of causeway
       [-82.798, 27.964],
-      // Cross to island, south side
       [-82.835, 27.966],
-      // North along island to cover store 3001
       [-82.835, 27.993],
-      // Island east edge, north
       [-82.820, 27.993],
       [-82.820, 27.976],
-      // Back across causeway, north side
       [-82.798, 27.974],
-      // Close
       [-82.798, 27.964],
     ];
-
     if (unionCorridor(f23, bridgeStrip)) {
       if (pointInPolygon(store3001, f23.geometry.coordinates[0])) {
         console.log('Exception D23: causeway bridge to Clearwater Beach — continuous shape');
       } else {
         console.warn('Exception D23: bridge added but store 3001 still outside');
       }
-      // Smooth D23 after adding the bridge (2 iterations for softer edges)
-      smoothFeature(f23, districts[23], 2);
+      smoothFeature(f23, rxDistricts[23], 2);
     }
   }
 }
 
-// Exception 2: D24 — Port Richey store 3217 (28.3308, -82.6985) at Bayonet Point.
-// Coastal corridor west of US-19 with curved western edge following the coast.
-// Narrow in the middle (west of D21 stores), widening at top for store 3217.
-// After union, re-clip to coastline so western edge hugs the land.
+// D24 — Port Richey store 3217, coastal corridor west of US-19
 {
-  const f24 = features.find(f => f.properties.district === 24);
-  const f21 = features.find(f => f.properties.district === 21);
+  const f24 = rxFeatures.find(f => f.properties.district === 24);
+  const f21 = rxFeatures.find(f => f.properties.district === 21);
   if (f24) {
     const store3217 = [-82.6985, 28.3308];
-
-    // Coastal corridor with curved western edge approximating the coastline.
-    // The coast curves from ~-82.755 at Holiday to ~-82.735 at Hudson.
-    // Eastern edge is generous; coastline clipping trims the west to land.
     const corridor = [
-      // Eastern edge (inland, west of US-19) — bottom to top
-      [-82.730, 28.210],   // SE — connects to D24 body near Holiday
-      [-82.730, 28.250],   // east edge, narrow
-      [-82.730, 28.290],   // east edge, past D21 #306 and #5660
-      [-82.710, 28.305],   // begin widening for store
-      [-82.685, 28.315],   // wide enough for store 3217
-      [-82.685, 28.345],   // NE — north of store 3217
-      // Western edge (coastal) — top to bottom, following coast shape
-      [-82.755, 28.345],   // NW — coast at Hudson
-      [-82.752, 28.320],   // coast curves in
-      [-82.750, 28.300],   // coast at Bayonet Point
-      [-82.752, 28.275],   // coast bows out slightly
-      [-82.755, 28.250],   // coast at Port Richey
-      [-82.758, 28.230],   // coast approaching New Port Richey
-      [-82.760, 28.210],   // SW — coast at Holiday
-      // Close
-      [-82.730, 28.210],
+      [-82.730, 28.210], [-82.730, 28.250], [-82.730, 28.290],
+      [-82.710, 28.305], [-82.685, 28.315], [-82.685, 28.345],
+      [-82.755, 28.345], [-82.752, 28.320], [-82.750, 28.300],
+      [-82.752, 28.275], [-82.755, 28.250], [-82.758, 28.230],
+      [-82.760, 28.210], [-82.730, 28.210],
     ];
-
     if (unionCorridor(f24, corridor)) {
       if (pointInPolygon(store3217, f24.geometry.coordinates[0])) {
         console.log('Exception D24: coastal corridor to Port Richey — continuous shape');
       } else {
         console.warn('Exception D24: corridor added but store 3217 still outside');
       }
-
-      // Re-clip D24 to coastline so western edge hugs the land
-      if (reclipToCoast(f24, districts[24])) {
-        console.log('  → D24 re-clipped to coastline');
-      }
-
-      // Smooth D24 after modifications (2 iterations for softer edges)
-      smoothFeature(f24, districts[24], 2);
-
-      // Subtract the new D24 territory from D21 so they don't overlap
+      reclipToCoast(f24, rxDistricts[24]);
+      smoothFeature(f24, rxDistricts[24], 2);
       if (f21) {
         try {
           const d21Poly = polygon(f21.geometry.coordinates);
@@ -531,7 +501,7 @@ function smoothFeature(feature, storePoints, iterations = 1) {
           const diff = turfDifference(featureCollection([d21Poly, d24Poly]));
           if (diff) {
             const newGeom = ensurePolygon(diff.geometry);
-            const lost = districts[21].filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
+            const lost = rxDistricts[21].filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
             if (lost.length === 0) {
               f21.geometry = newGeom;
               console.log('  → D21 trimmed along corridor (no stores lost)');
@@ -539,53 +509,52 @@ function smoothFeature(feature, storePoints, iterations = 1) {
               console.warn(`  → D21 would lose ${lost.length} stores — keeping small overlap`);
             }
           }
-        } catch (e) {
-          console.warn(`  → D21 subtraction failed: ${e.message}`);
-        }
+        } catch (e) {}
       }
     }
   }
 }
 
-// Re-verify containment after exceptions
-allGood = true;
-features.forEach(f => {
-  const d = f.properties.district;
-  const ring = f.geometry.coordinates[0];
-  const pts = districts[d];
-  const out = pts.filter(p => !pointInPolygon(p, ring));
-  if (out.length > 0) {
-    console.warn(`D${d}: ${out.length} stores STILL outside after exceptions!`);
-    allGood = false;
-  }
-});
+const rxContained = verifyContainment(rxFeatures, rxDistricts, 'Rx ');
+const rxOverlaps = verifyNoOverlap(rxFeatures, 'Rx ');
+const rxGeoJSON = { type: 'FeatureCollection', features: rxFeatures };
+writeFileSync('src/data/districts.json', JSON.stringify(rxGeoJSON));
+console.log(`Rx: ${rxFeatures.length} districts${rxContained ? ' — all stores contained' : ''}${rxOverlaps === 0 ? ' — ZERO overlaps' : ''}`);
 
-// Verify zero overlap
-const { intersect: checkIntersect } = require('@turf/intersect');
-let overlapCount = 0;
-for (let i = 0; i < features.length; i++) {
-  for (let j = i + 1; j < features.length; j++) {
-    try {
-      const pi = polygon(features[i].geometry.coordinates);
-      const pj = polygon(features[j].geometry.coordinates);
-      const o = checkIntersect(featureCollection([pi, pj]));
-      if (o) {
-        const ring = o.geometry.type === 'MultiPolygon' ? o.geometry.coordinates[0][0] : o.geometry.coordinates[0];
-        let area = 0;
-        for (let k = 0; k < ring.length - 1; k++) {
-          area += ring[k][0] * ring[k + 1][1] - ring[k + 1][0] * ring[k][1];
-        }
-        area = Math.abs(area) / 2 * 111 * 111;
-        if (area > 0.1) {
-          console.warn(`D${features[i].properties.district}/D${features[j].properties.district}: ${area.toFixed(1)} sq km overlap`);
-          overlapCount++;
-        }
+// ====================================================================
+// Generate FS district boundaries (D1-D5)
+// ====================================================================
+console.log('\n--- FS Districts ---');
+// Exclude Target stores (fsDistrict 98) from FS boundary generation
+const fs = generateBoundaries(stores, 'fsDistrict', FS_COLORS, (s) => s.target !== true);
+const fsFeatures = fs.features;
+const fsDistricts = fs.districts;
+
+// FS D2 — Clearwater Beach store 3001 on barrier island (same as Rx D23)
+{
+  const f2 = fsFeatures.find(f => f.properties.district === 2);
+  if (f2) {
+    const store3001 = [-82.8268, 27.9810];
+    const bridgeStrip = [
+      [-82.798, 27.964],
+      [-82.835, 27.966],
+      [-82.835, 27.993],
+      [-82.820, 27.993],
+      [-82.820, 27.976],
+      [-82.798, 27.974],
+      [-82.798, 27.964],
+    ];
+    if (unionCorridor(f2, bridgeStrip)) {
+      if (pointInPolygon(store3001, f2.geometry.coordinates[0])) {
+        console.log('Exception FS D2: causeway bridge to Clearwater Beach');
       }
-    } catch (e) {}
+      smoothFeature(f2, fsDistricts[2], 2);
+    }
   }
 }
 
-const geojson = { type: 'FeatureCollection', features };
-writeFileSync('src/data/districts.json', JSON.stringify(geojson));
-
-console.log(`Generated ${features.length} district boundaries${allGood ? ' — all stores contained' : ''}${overlapCount === 0 ? ' — ZERO overlaps' : ''}`);
+const fsContained = verifyContainment(fsFeatures, fsDistricts, 'FS ');
+const fsOverlaps = verifyNoOverlap(fsFeatures, 'FS ');
+const fsGeoJSON = { type: 'FeatureCollection', features: fsFeatures };
+writeFileSync('src/data/fs-districts.json', JSON.stringify(fsGeoJSON));
+console.log(`FS: ${fsFeatures.length} districts${fsContained ? ' — all stores contained' : ''}${fsOverlaps === 0 ? ' — ZERO overlaps' : ''}`);

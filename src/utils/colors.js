@@ -2,7 +2,7 @@ export const RX_COLORS = {
   20: '#4A9EFF',
   21: '#3D9A6D',
   22: '#f59e0b',
-  23: '#ef4444',
+  23: '#e879a8',
   24: '#8b5cf6',
   25: '#F472B6',
   26: '#06b6d4',
@@ -21,11 +21,11 @@ export const RX_LABELS = {
 };
 
 export const FS_COLORS = {
-  1: '#60a5fa',
-  2: '#34d399',
-  3: '#fbbf24',
-  4: '#f87171',
-  5: '#a78bfa',
+  1: '#e04040',
+  2: '#2196f3',
+  3: '#8bc34a',
+  4: '#ff9800',
+  5: '#9c27b0',
 };
 
 export const FS_LABELS = {

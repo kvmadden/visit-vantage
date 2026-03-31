@@ -13,7 +13,8 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { RX_COLORS, FS_COLORS } from '../utils/colors';
-import districtGeoJSON from '../data/districts.json';
+import rxDistrictGeoJSON from '../data/districts.json';
+import fsDistrictGeoJSON from '../data/fs-districts.json';
 import competitors from '../data/competitors.json';
 
 // Standalone helper for SVG string context (no DOM access)
@@ -426,7 +427,7 @@ function HomeControl({ stores }) {
 // ---------------------------------------------------------------------------
 // DistrictClouds — colored territory overlays that fade as you zoom in
 // ---------------------------------------------------------------------------
-function DistrictClouds({ zoom, activeDistrict, showClouds }) {
+function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode }) {
   const map = useMap();
   const layerRef = useRef(null);
 
@@ -456,7 +457,9 @@ function DistrictClouds({ zoom, activeDistrict, showClouds }) {
 
     const labelMarkers = [];
 
-    const layer = L.geoJSON(districtGeoJSON, {
+    const geoData = districtMode === 'fs' ? fsDistrictGeoJSON : rxDistrictGeoJSON;
+
+    const layer = L.geoJSON(geoData, {
       style: (feature) => {
         const d = feature.properties.district;
         const isActive = activeDistrict == null || activeDistrict === d;
@@ -502,7 +505,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds }) {
         layerRef.current = null;
       }
     };
-  }, [map, zoom, activeDistrict, showClouds]);
+  }, [map, zoom, activeDistrict, showClouds, districtMode]);
 
   return null;
 }
@@ -600,7 +603,7 @@ export default function MapView({
       <FitAllStores stores={stores} />
       <HomeControl stores={stores} />
 
-      <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} />
+      <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} districtMode={districtMode} />
 
       <ClusteredMarkers
         stores={stores}
