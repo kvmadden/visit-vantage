@@ -203,6 +203,7 @@ export default function App() {
             gpsPosition={gpsPosition}
             theme={theme}
             showClouds={activeLayers.districts !== false}
+            showCompetitors={activeLayers.competitors === true}
           />
         </div>
 

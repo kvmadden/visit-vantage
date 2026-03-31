@@ -839,6 +839,11 @@ body {
   color: var(--text-muted) !important;
 }
 
+.competitor-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
 .district-label-icon {
   background: transparent !important;
   border: none !important;

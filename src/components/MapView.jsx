@@ -13,6 +13,7 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { RX_COLORS, FS_COLORS } from '../utils/colors';
 import districtGeoJSON from '../data/districts.json';
+import competitors from '../data/competitors.json';
 
 // Standalone helper for SVG string context (no DOM access)
 function darkenHexStr(hex, amount = 40) {
@@ -472,6 +473,64 @@ function DistrictClouds({ zoom, activeDistrict, showClouds }) {
 }
 
 // ---------------------------------------------------------------------------
+// CompetitorMarkers — optional overlay of Walgreens, Walmart, Publix
+// ---------------------------------------------------------------------------
+const COMPETITOR_COLORS = {
+  Walgreens: '#1a6f3f',
+  Walmart: '#0071ce',
+  Publix: '#3d8b37',
+};
+
+function CompetitorMarkers({ showCompetitors }) {
+  const map = useMap();
+  const layerRef = useRef(null);
+
+  useEffect(() => {
+    if (!map) return;
+
+    if (layerRef.current) {
+      map.removeLayer(layerRef.current);
+      layerRef.current = null;
+    }
+
+    if (!showCompetitors) return;
+
+    const group = L.layerGroup();
+
+    competitors.forEach((c) => {
+      const color = COMPETITOR_COLORS[c.brand] || '#888';
+      const size = 8;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 16 16">
+        <rect x="1" y="1" width="14" height="14" rx="2" fill="${color}" opacity="0.7" stroke="${color}" stroke-width="0.5"/>
+        <text x="8" y="11" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" font-family="sans-serif">${c.brand[0]}</text>
+      </svg>`;
+      const icon = L.divIcon({
+        html: svg,
+        className: 'competitor-icon',
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+      });
+
+      const marker = L.marker([c.lat, c.lng], { icon, interactive: true });
+      marker.bindTooltip(`${c.brand} — ${c.address}`, { direction: 'top', offset: [0, -6] });
+      group.addLayer(marker);
+    });
+
+    group.addTo(map);
+    layerRef.current = group;
+
+    return () => {
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current);
+        layerRef.current = null;
+      }
+    };
+  }, [map, showCompetitors]);
+
+  return null;
+}
+
+// ---------------------------------------------------------------------------
 // MapView
 // ---------------------------------------------------------------------------
 export default function MapView({
@@ -485,6 +544,7 @@ export default function MapView({
   gpsPosition = null,
   theme = 'light',
   showClouds = true,
+  showCompetitors = false,
 }) {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const handleZoomChange = useCallback((z) => setZoom(z), []);
@@ -517,6 +577,7 @@ export default function MapView({
         theme={theme}
       />
 
+      <CompetitorMarkers showCompetitors={showCompetitors} />
       <RoutePolyline routeStores={routeStores} routeGeometry={routeGeometry} />
 
       {gpsPosition && <GpsMarker position={gpsPosition} />}
