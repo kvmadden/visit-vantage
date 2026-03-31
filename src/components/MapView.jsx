@@ -52,6 +52,7 @@ function darkenHexStr(hex, amount = 40) {
 
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
+const DOT_ZOOM = 10; // At or below this zoom, use small circle dots instead of branded icons
 
 const TILE_URL =
   'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
@@ -132,20 +133,44 @@ const StoreMarker = memo(function StoreMarker({
     onStoreSelect(store);
   }, [store, onStoreSelect]);
 
-  // Scale icons up once zoomed past level 11
-  // Base sizes: heart 18, bullseye 13
-  // At zoom 11 and below: base size. Each zoom level above 11 adds ~30%
+  const opacity = isFaded ? 0.2 : 0.9;
+  const activeColor = isTarget
+    ? (RX_COLORS[store.rxDistrict] || '#ef4444')
+    : color;
+  const displayColor = isFaded ? '#52525b' : activeColor;
+
+  // At low zoom, render lightweight canvas CircleMarkers instead of SVG divIcons
+  if (zoom <= DOT_ZOOM) {
+    const radius = isSelected ? 7 : (isTarget ? 3 : 4);
+    return (
+      <CircleMarker
+        center={[store.lat, store.lng]}
+        radius={radius}
+        pathOptions={{
+          fillColor: displayColor,
+          fillOpacity: opacity,
+          color: isSelected ? '#ffffff' : darkenHexStr(displayColor),
+          weight: isSelected ? 2 : 0.5,
+        }}
+        eventHandlers={{ click: handleClick }}
+      >
+        <Tooltip direction="top" offset={[0, -6]}>
+          {store.nickname} #{store.store}
+        </Tooltip>
+      </CircleMarker>
+    );
+  }
+
+  // At higher zoom, use branded heart/bullseye icons
   const zoomScale = zoom <= 11 ? 1 : 1 + (zoom - 11) * 0.3;
   const baseHeart = isSelected ? 24 : 18;
   const baseBullseye = isSelected ? 17 : 13;
   const heartSize = Math.round(baseHeart * zoomScale);
   const bullseyeSize = Math.round(baseBullseye * zoomScale);
 
-  const opacity = isFaded ? 0.2 : 0.9;
-
   const icon = isTarget
-    ? createBullseyeIcon(isFaded ? '#52525b' : (RX_COLORS[store.rxDistrict] || '#ef4444'), bullseyeSize, opacity)
-    : createHeartIcon(isFaded ? '#52525b' : color, heartSize, opacity);
+    ? createBullseyeIcon(displayColor, bullseyeSize, opacity)
+    : createHeartIcon(displayColor, heartSize, opacity);
 
   return (
     <Marker
@@ -246,6 +271,7 @@ export default function MapView({
       center={DEFAULT_CENTER}
       zoom={DEFAULT_ZOOM}
       zoomControl={false}
+      preferCanvas={true}
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
