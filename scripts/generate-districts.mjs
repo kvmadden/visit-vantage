@@ -1,6 +1,6 @@
 /**
  * Generate district boundary GeoJSON from store coordinates.
- * Creates padded convex hulls for each Rx district.
+ * Creates padded, heavily smoothed blob shapes for each Rx district.
  */
 import { readFileSync, writeFileSync } from 'fs';
 
@@ -47,8 +47,8 @@ function convexHull(points) {
   return lower.concat(upper);
 }
 
-// Pad hull outward from centroid
-function padHull(hull, padDeg = 0.04) {
+// Pad hull outward from centroid — generous padding so hearts fit inside
+function padHull(hull, padDeg = 0.06) {
   const cx = hull.reduce((s, p) => s + p[0], 0) / hull.length;
   const cy = hull.reduce((s, p) => s + p[1], 0) / hull.length;
 
@@ -63,8 +63,8 @@ function padHull(hull, padDeg = 0.04) {
   });
 }
 
-// Smooth the hull by adding midpoints and doing Chaikin subdivision
-function smoothHull(hull, iterations = 2) {
+// Chaikin corner-cutting subdivision — more iterations = smoother blob
+function chaikinSmooth(hull, iterations = 4) {
   let pts = hull;
   for (let iter = 0; iter < iterations; iter++) {
     const smoothed = [];
@@ -85,6 +85,18 @@ function smoothHull(hull, iterations = 2) {
   return pts;
 }
 
+// Insert midpoints between hull vertices to give Chaikin more material
+function densifyHull(hull) {
+  const result = [];
+  for (let i = 0; i < hull.length; i++) {
+    const a = hull[i];
+    const b = hull[(i + 1) % hull.length];
+    result.push(a);
+    result.push([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]);
+  }
+  return result;
+}
+
 // Group stores by Rx district
 const districts = {};
 stores.forEach((s) => {
@@ -95,9 +107,16 @@ stores.forEach((s) => {
 });
 
 const features = Object.entries(districts).map(([district, points]) => {
-  const hull = convexHull(points);
-  const padded = padHull(hull, 0.04);
-  const smooth = smoothHull(padded, 2);
+  let hull = convexHull(points);
+
+  // Pad outward generously so all markers (hearts) fit inside
+  hull = padHull(hull, 0.07);
+
+  // Densify — add midpoints so Chaikin has more vertices to work with
+  hull = densifyHull(hull);
+
+  // Heavy Chaikin smoothing — 4 iterations produces very smooth blobs
+  const smooth = chaikinSmooth(hull, 4);
 
   // Close the ring
   const ring = [...smooth, smooth[0]];
