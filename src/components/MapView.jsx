@@ -98,8 +98,9 @@ const TILE_ATTRIBUTION =
 
 const ROUTE_COLOR = '#4A9EFF';
 
-// Create a custom pane so city/road labels render above district overlays
-function LabelPane() {
+// Custom pane for city/road labels — renders above district overlays,
+// fades at higher zoom to reduce clutter with store markers
+function LabelPane({ zoom }) {
   const map = useMap();
   useEffect(() => {
     if (!map.getPane('cityLabels')) {
@@ -107,7 +108,13 @@ function LabelPane() {
       map.getPane('cityLabels').style.zIndex = 650;
       map.getPane('cityLabels').style.pointerEvents = 'none';
     }
-  }, [map]);
+    // Fade labels at high zoom where minor place names clutter with stores
+    const pane = map.getPane('cityLabels');
+    if (pane) {
+      const opacity = zoom <= 10 ? 1.0 : zoom <= 12 ? 0.7 : 0.45;
+      pane.style.opacity = opacity;
+    }
+  }, [map, zoom]);
   return null;
 }
 const GPS_COLOR = '#22c55e';
@@ -447,7 +454,7 @@ function HomeControl({ stores }) {
 // Hand-tuned label positions pushed into water/clear areas
 const LABEL_POSITIONS = {
   rx: {
-    20: { lat: 28.08, lng: -82.36 },   // Tampa — tuck between D21 and D25 (NE)
+    20: { lat: 28.05, lng: -82.20 },   // Tampa — far east, clear space
     21: { lat: 28.50, lng: -82.30 },   // Pasco — top-right of district
     22: { lat: 27.68, lng: -82.90 },   // St Pete — well into Gulf
     23: { lat: 27.97, lng: -82.94 },   // Clearwater — well into Gulf
@@ -572,7 +579,8 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     }
 
     // Add connector lines and label markers
-    const labelSize = zoom <= 9 ? 16 : zoom <= 11 ? 14 : 13;
+    // Lock district labels at a large, readable size at all zoom levels
+    const labelSize = 16;
     const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.85)';
     const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
 
@@ -712,7 +720,7 @@ export default function MapView({
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
-      <LabelPane />
+      <LabelPane zoom={zoom} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <FitAllStores stores={stores} />
       <HomeControl stores={stores} />
