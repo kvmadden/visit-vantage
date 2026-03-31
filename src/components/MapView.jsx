@@ -59,39 +59,6 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9) {
   });
 }
 
-// Cluster heart icon — a larger heart with the store count inside
-function createClusterIcon(cluster, districtMode) {
-  const childMarkers = cluster.getAllChildMarkers();
-  const count = childMarkers.length;
-
-  // Find the dominant district color in this cluster
-  const colorCounts = {};
-  childMarkers.forEach((m) => {
-    const store = m.options._store;
-    if (!store) return;
-    const colorMap = districtMode === 'fs' ? FS_COLORS : RX_COLORS;
-    const key = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
-    const c = colorMap[key] || '#888';
-    colorCounts[c] = (colorCounts[c] || 0) + 1;
-  });
-
-  let dominantColor = '#888';
-  let maxCount = 0;
-  for (const [c, n] of Object.entries(colorCounts)) {
-    if (n > maxCount) { maxCount = n; dominantColor = c; }
-  }
-
-  // Scale cluster heart size based on count
-  const size = count <= 3 ? 32 : count <= 10 ? 38 : count <= 25 ? 44 : 50;
-
-  return L.divIcon({
-    html: heartSvg(dominantColor, size, 0.9, String(count)),
-    className: 'cluster-heart-icon',
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-  });
-}
-
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
 
@@ -155,7 +122,7 @@ function ZoomTracker({ onZoomChange }) {
 }
 
 // ---------------------------------------------------------------------------
-// ClusteredMarkers — uses leaflet.markercluster directly on the Leaflet map
+// ClusteredMarkers — one cluster group per district so colors never mix
 // ---------------------------------------------------------------------------
 function ClusteredMarkers({
   stores,
@@ -166,75 +133,88 @@ function ClusteredMarkers({
   onStoreSelect,
 }) {
   const map = useMap();
-  const clusterGroupRef = useRef(null);
+  const clusterGroupsRef = useRef([]);
 
   useEffect(() => {
     if (!map) return;
 
-    // Remove old cluster group
-    if (clusterGroupRef.current) {
-      map.removeLayer(clusterGroupRef.current);
-    }
+    // Remove old cluster groups
+    clusterGroupsRef.current.forEach((g) => map.removeLayer(g));
+    clusterGroupsRef.current = [];
 
-    const clusterGroup = L.markerClusterGroup({
-      maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
-      iconCreateFunction: (cluster) => createClusterIcon(cluster, districtMode),
-      animate: true,
-    });
-
+    // Group stores by district color
+    const colorMap = districtMode === 'fs' ? FS_COLORS : RX_COLORS;
+    const buckets = {};
     stores.forEach((store) => {
-      const isTarget = store.target === true;
-      const colorMap = districtMode === 'fs' ? FS_COLORS : RX_COLORS;
-      const districtKey = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
-      const color = colorMap[districtKey] || '#888';
-      const activeColor = isTarget
-        ? (RX_COLORS[store.rxDistrict] || '#ef4444')
-        : color;
-
-      const isSelected =
-        selectedStore != null && selectedStore.store === store.store;
-      const isFaded =
-        activeDistrict != null && districtKey !== activeDistrict;
-      const opacity = isFaded ? 0.2 : 0.9;
-      const displayColor = isFaded ? '#52525b' : activeColor;
-
-      // Scale icons based on zoom
-      const zoomScale = Math.max(0.5, 1 + (zoom - 13) * 0.25);
-      const baseHeart = isSelected ? 22 : 16;
-      const baseBullseye = isSelected ? 15 : 11;
-      const heartSize = Math.round(baseHeart * zoomScale);
-      const bullseyeSize = Math.round(baseBullseye * zoomScale);
-
-      const icon = isTarget
-        ? createBullseyeIcon(displayColor, bullseyeSize, opacity)
-        : createHeartIcon(displayColor, heartSize, opacity);
-
-      const marker = L.marker([store.lat, store.lng], {
-        icon,
-        _store: store,
-      });
-
-      marker.bindTooltip(`${store.nickname} #${store.store}`, {
-        direction: 'top',
-        offset: [0, -10],
-      });
-
-      marker.on('click', () => onStoreSelect(store));
-
-      clusterGroup.addLayer(marker);
+      const key = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
+      if (!buckets[key]) buckets[key] = [];
+      buckets[key].push(store);
     });
 
-    map.addLayer(clusterGroup);
-    clusterGroupRef.current = clusterGroup;
+    // Create one cluster group per district
+    Object.entries(buckets).forEach(([districtKey, districtStores]) => {
+      const districtColor = colorMap[districtKey] || '#888';
+
+      const clusterGroup = L.markerClusterGroup({
+        maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true,
+        iconCreateFunction: (cluster) => {
+          const count = cluster.getChildCount();
+          const size = count <= 3 ? 32 : count <= 10 ? 38 : count <= 25 ? 44 : 50;
+          return L.divIcon({
+            html: heartSvg(districtColor, size, 0.9, String(count)),
+            className: 'cluster-heart-icon',
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size / 2],
+          });
+        },
+        animate: true,
+      });
+
+      districtStores.forEach((store) => {
+        const isTarget = store.target === true;
+        const activeColor = isTarget
+          ? (RX_COLORS[store.rxDistrict] || '#ef4444')
+          : districtColor;
+
+        const isSelected =
+          selectedStore != null && selectedStore.store === store.store;
+        const dk = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
+        const isFaded =
+          activeDistrict != null && dk !== activeDistrict;
+        const opacity = isFaded ? 0.2 : 0.9;
+        const displayColor = isFaded ? '#52525b' : activeColor;
+
+        const zoomScale = Math.max(0.5, 1 + (zoom - 13) * 0.25);
+        const baseHeart = isSelected ? 22 : 16;
+        const baseBullseye = isSelected ? 15 : 11;
+        const heartSize = Math.round(baseHeart * zoomScale);
+        const bullseyeSize = Math.round(baseBullseye * zoomScale);
+
+        const icon = isTarget
+          ? createBullseyeIcon(displayColor, bullseyeSize, opacity)
+          : createHeartIcon(displayColor, heartSize, opacity);
+
+        const marker = L.marker([store.lat, store.lng], { icon });
+
+        marker.bindTooltip(`${store.nickname} #${store.store}`, {
+          direction: 'top',
+          offset: [0, -10],
+        });
+
+        marker.on('click', () => onStoreSelect(store));
+        clusterGroup.addLayer(marker);
+      });
+
+      map.addLayer(clusterGroup);
+      clusterGroupsRef.current.push(clusterGroup);
+    });
 
     return () => {
-      if (clusterGroupRef.current) {
-        map.removeLayer(clusterGroupRef.current);
-        clusterGroupRef.current = null;
-      }
+      clusterGroupsRef.current.forEach((g) => map.removeLayer(g));
+      clusterGroupsRef.current = [];
     };
   }, [map, stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect]);
 
