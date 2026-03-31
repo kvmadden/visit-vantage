@@ -84,8 +84,13 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
 
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
-const MIN_ZOOM = 8; // Don't allow zooming out past the Tampa Bay region
+const MIN_ZOOM = 8;
 const MAX_ZOOM = 18;
+// Bounding box for the Tampa Bay region — prevents panning outside this area
+const MAX_BOUNDS = [
+  [26.4, -83.3], // SW corner
+  [29.0, -81.3], // NE corner
+];
 
 const TILE_BASE = {
   light: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
@@ -193,6 +198,15 @@ const CITY_LABELS = [
 function CityLabels({ zoom, theme }) {
   const map = useMap();
   const layerRef = useRef(null);
+  const [moveCount, setMoveCount] = useState(0);
+
+  // Re-run when map pans so collision checks use updated positions
+  useEffect(() => {
+    if (!map) return;
+    const handler = () => setMoveCount((n) => n + 1);
+    map.on('moveend', handler);
+    return () => map.off('moveend', handler);
+  }, [map]);
 
   useEffect(() => {
     if (!map) return;
@@ -202,19 +216,79 @@ function CityLabels({ zoom, theme }) {
       layerRef.current = null;
     }
 
+    // Delay slightly so cluster pills are rendered before we check collisions
+    const timer = setTimeout(() => {
     const group = L.layerGroup();
 
     // Determine which tiers are visible at this zoom
-    const minTier = zoom >= 11 ? 3 : zoom >= 10 ? 2 : 1;
-
+    const minTier = zoom >= 12 ? 3 : zoom >= 10 ? 2 : 1;
     const visible = CITY_LABELS.filter((c) => c.tier <= minTier);
+
+    // Collect screen positions of visible cluster pills and individual markers
+    const markerPoints = [];
+    document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
+      if (el.offsetWidth > 0) {
+        const rect = el.getBoundingClientRect();
+        const mapRect = map.getContainer().getBoundingClientRect();
+        markerPoints.push({
+          x: rect.left - mapRect.left + rect.width / 2,
+          y: rect.top - mapRect.top + rect.height / 2,
+          w: rect.width,
+          h: rect.height,
+        });
+      }
+    });
 
     const textColor = theme === 'dark' ? '#d4d4d8' : '#52525b';
     const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
 
+    // Track placed label rects for city-to-city collision
+    const placedRects = [];
+
     visible.forEach((city) => {
+      const cityPt = map.latLngToContainerPoint([city.lat, city.lng]);
+
+      // Estimate label width in pixels
       const isMajor = city.tier === 1;
       const fontSize = isMajor ? 13 : 11;
+      const estWidth = city.name.length * (isMajor ? 9 : 7);
+      const estHeight = fontSize + 4;
+
+      // Check if this label would collide with any visible marker/pill
+      const labelLeft = cityPt.x - estWidth * 0.3;
+      const labelRight = cityPt.x + estWidth * 0.7;
+      const labelTop = cityPt.y - estHeight / 2;
+      const labelBottom = cityPt.y + estHeight / 2;
+      const tooCloseToStore = markerPoints.some((mp) => {
+        const pad = 6; // small gap
+        const mLeft = mp.x - mp.w / 2;
+        const mRight = mp.x + mp.w / 2;
+        const mTop = mp.y - mp.h / 2;
+        const mBottom = mp.y + mp.h / 2;
+        return labelLeft < mRight + pad && labelRight > mLeft - pad &&
+               labelTop < mBottom + pad && labelBottom > mTop - pad;
+      });
+
+      // Check city-to-city collision
+      const labelRect = {
+        left: cityPt.x - estWidth * 0.3,
+        right: cityPt.x + estWidth * 0.7,
+        top: cityPt.y - estHeight / 2,
+        bottom: cityPt.y + estHeight / 2,
+      };
+      const tooCloseToLabel = placedRects.some((r) => {
+        const pad = 8;
+        return labelRect.left < r.right + pad && labelRect.right > r.left - pad &&
+               labelRect.top < r.bottom + pad && labelRect.bottom > r.top - pad;
+      });
+
+      // Major cities always show; others hide if colliding
+      if (!isMajor && (tooCloseToStore || tooCloseToLabel)) return;
+      // Even major cities hide if overlapping another major city
+      if (isMajor && tooCloseToLabel) return;
+
+      placedRects.push(labelRect);
+
       const fontWeight = isMajor ? 700 : 500;
       const textTransform = isMajor ? 'uppercase' : 'none';
       const letterSpacing = isMajor ? '1px' : '0.3px';
@@ -229,21 +303,22 @@ function CityLabels({ zoom, theme }) {
       const marker = L.marker([city.lat, city.lng], {
         icon,
         interactive: false,
-        pane: 'markerPane', // same pane as store markers for z-ordering
       });
       group.addLayer(marker);
     });
 
     group.addTo(map);
     layerRef.current = group;
+    }, 350); // wait for cluster pills to settle
 
     return () => {
+      clearTimeout(timer);
       if (layerRef.current) {
         map.removeLayer(layerRef.current);
         layerRef.current = null;
       }
     };
-  }, [map, zoom, theme]);
+  }, [map, zoom, theme, moveCount]);
 
   return null;
 }
@@ -337,7 +412,7 @@ function ClusteredMarkers({
       const districtColor = colorMap[districtKey] || '#888';
 
       const clusterGroup = L.markerClusterGroup({
-        maxClusterRadius: (z) => (z <= 10 ? 80 : z <= 12 ? 50 : 30),
+        maxClusterRadius: (z) => (z <= 10 ? 100 : z <= 12 ? 65 : 40),
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
@@ -395,109 +470,57 @@ function ClusteredMarkers({
       clusterGroupsRef.current.push(clusterGroup);
     });
 
-    // Nudge overlapping cluster icons apart from each other AND from city labels
+    // Simple nudge: push overlapping cluster pills apart from each other
     function nudgeOverlaps() {
       try {
-      // Collect cluster pill icons
-      const icons = [];
-      clusterGroupsRef.current.forEach((group) => {
-        group.eachLayer((layer) => {
-          if (typeof layer.getChildCount === 'function' && layer._icon && layer._icon.offsetWidth > 0) {
-            icons.push({ el: layer._icon, movable: true });
-          }
+        const icons = [];
+        clusterGroupsRef.current.forEach((group) => {
+          group.eachLayer((layer) => {
+            if (typeof layer.getChildCount === 'function' && layer._icon && layer._icon.offsetWidth > 0) {
+              const rect = layer._icon.getBoundingClientRect();
+              icons.push({ el: layer._icon, rect });
+            }
+          });
         });
-      });
 
-      // Also collect individual store markers (hearts)
-      clusterGroupsRef.current.forEach((group) => {
-        group.eachLayer((layer) => {
-          if (typeof layer.getChildCount !== 'function' && layer._icon && layer._icon.offsetWidth > 0) {
-            icons.push({ el: layer._icon, movable: true });
+        // Reset previous nudges
+        for (const item of icons) {
+          if (item.el.dataset.baseTransform) {
+            item.el.style.transform = item.el.dataset.baseTransform;
+            delete item.el.dataset.baseTransform;
+            item.rect = item.el.getBoundingClientRect();
           }
-        });
-      });
-
-      // Collect city labels (fixed — we nudge pills away from these)
-      const cityEls = document.querySelectorAll('.city-label-custom');
-      cityEls.forEach((el) => {
-        if (el.offsetWidth > 0) {
-          icons.push({ el, movable: false });
         }
-      });
 
-      // Collect district labels (fixed)
-      const districtEls = document.querySelectorAll('.district-label-icon > div');
-      districtEls.forEach((el) => {
-        if (el.offsetWidth > 0) {
-          icons.push({ el: el.parentElement, movable: false });
-        }
-      });
-
-      // Reset previous nudges on movable elements
-      for (const item of icons) {
-        if (item.movable && item.el.dataset.baseTransform) {
-          item.el.style.transform = item.el.dataset.baseTransform;
-          delete item.el.dataset.baseTransform;
-        }
-      }
-
-      // Get fresh rects after reset
-      const items = icons.map((item) => ({
-        ...item,
-        rect: item.el.getBoundingClientRect(),
-      }));
-
-      // Multiple passes to resolve overlaps
-      for (let pass = 0; pass < 3; pass++) {
-        for (let i = 0; i < items.length; i++) {
-          for (let j = i + 1; j < items.length; j++) {
-            // Skip if neither is movable
-            if (!items[i].movable && !items[j].movable) continue;
-
-            const a = items[i].rect;
-            const b = items[j].rect;
-            const pad = 3; // minimum gap in px
-            const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left) + pad;
-            const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) + pad;
-
-            if (overlapX > 0 && overlapY > 0) {
-              const nudge = Math.min(overlapX, overlapY) * 0.5 + 2;
-              const aCx = a.left + a.width / 2;
-              const bCx = b.left + b.width / 2;
-              const aCy = a.top + a.height / 2;
-              const bCy = b.top + b.height / 2;
-              const dx = bCx - aCx || 1;
-              const dy = bCy - aCy || 1;
-              const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-              const nx = dx / dist;
-              const ny = dy / dist;
-
-              // If both movable, push both; if only one, push only the movable one
-              if (items[i].movable && items[j].movable) {
-                const elA = items[i].el;
-                const elB = items[j].el;
+        // Push overlapping pills apart
+        for (let pass = 0; pass < 2; pass++) {
+          for (let i = 0; i < icons.length; i++) {
+            for (let j = i + 1; j < icons.length; j++) {
+              const a = icons[i].rect;
+              const b = icons[j].rect;
+              const pad = 4;
+              const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left) + pad;
+              const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) + pad;
+              if (overlapX > 0 && overlapY > 0) {
+                const nudge = Math.min(overlapX, overlapY) * 0.5 + 2;
+                const dx = (b.left + b.width / 2) - (a.left + a.width / 2) || 1;
+                const dy = (b.top + b.height / 2) - (a.top + a.height / 2) || 1;
+                const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                const nx = dx / dist;
+                const ny = dy / dist;
+                const elA = icons[i].el;
+                const elB = icons[j].el;
                 if (!elA.dataset.baseTransform) elA.dataset.baseTransform = elA.style.transform || '';
                 if (!elB.dataset.baseTransform) elB.dataset.baseTransform = elB.style.transform || '';
                 elA.style.transform = elA.dataset.baseTransform + ` translate(${-nx * nudge}px, ${-ny * nudge}px)`;
                 elB.style.transform = elB.dataset.baseTransform + ` translate(${nx * nudge}px, ${ny * nudge}px)`;
-              } else {
-                // Push the movable one away from the fixed one
-                const movIdx = items[i].movable ? i : j;
-                const fixIdx = items[i].movable ? j : i;
-                const sign = movIdx < fixIdx ? -1 : 1;
-                const el = items[movIdx].el;
-                if (!el.dataset.baseTransform) el.dataset.baseTransform = el.style.transform || '';
-                el.style.transform = el.dataset.baseTransform + ` translate(${sign * -nx * nudge * 2}px, ${sign * -ny * nudge * 2}px)`;
+                icons[i].rect = elA.getBoundingClientRect();
+                icons[j].rect = elB.getBoundingClientRect();
               }
-
-              // Update rects for subsequent passes
-              items[i].rect = items[i].el.getBoundingClientRect();
-              items[j].rect = items[j].el.getBoundingClientRect();
             }
           }
         }
-      }
-      } catch (_) { /* nudge is best-effort */ }
+      } catch (_) { /* best-effort */ }
     }
 
     // Run nudge after clusters settle
@@ -894,6 +917,8 @@ export default function MapView({
       zoomDelta={0.5}
       minZoom={MIN_ZOOM}
       maxZoom={MAX_ZOOM}
+      maxBounds={MAX_BOUNDS}
+      maxBoundsViscosity={1.0}
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
