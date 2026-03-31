@@ -381,103 +381,109 @@ for (let pass = 0; pass < 5; pass++) {
 // persist as final overrides. These are one-off adjustments
 // explicitly requested because certain stores were allocated
 // to districts for business reasons that don't follow geography.
+//
+// Both exceptions create CONTINUOUS extensions of the district
+// shape — no enclaves or disconnected fragments.
 // ============================================================
 
-// Helper: Create a visible protrusion from a polygon to include an outlier store.
-// Finds the two closest boundary vertices to the store and inserts a rectangular
-// detour that encompasses the store with a visible margin.
-function addProtrusion(feature, store, margin, districtStores) {
-  const ring = feature.geometry.coordinates[0];
-  if (pointInPolygon(store, ring)) return true;
-
-  // Find the two closest boundary vertices
-  const dists = ring.slice(0, -1).map((pt, i) => ({
-    i, d: Math.sqrt((pt[0]-store[0])**2 + (pt[1]-store[1])**2)
-  })).sort((a,b) => a.d - b.d);
-  const idx1 = dists[0].i;
-
-  // Direction from closest vertex to store
-  const base = ring[idx1];
-  const dx = store[0] - base[0], dy = store[1] - base[1];
-  const len = Math.sqrt(dx*dx + dy*dy);
-  const ux = dx/len, uy = dy/len;
-  const px = -uy, py = ux; // perpendicular unit vector
-
-  // Build a trapezoidal protrusion: narrow at base, wider at store
-  const baseW = margin * 0.5;
-  const tipW = margin * 1.2;
-  const overshoot = margin; // extend past store
-  const steps = Math.max(6, Math.ceil(len / 0.003));
-
-  // Left side going out, right side coming back
-  const outward = [];
-  const inward = [];
-  for (let s = 0; s <= steps; s++) {
-    const t = s / steps;
-    const w = baseW + (tipW - baseW) * t;
-    const x = base[0] + dx * t + ux * overshoot * (t === 1 ? 1 : 0);
-    const y = base[1] + dy * t + uy * overshoot * (t === 1 ? 1 : 0);
-    outward.push([x + px * w, y + py * w]);
-    inward.push([x - px * w, y - py * w]);
-  }
-
-  const newRing = [
-    ...ring.slice(0, idx1 + 1),
-    ...outward,
-    ...inward.reverse(),
-    ...ring.slice(idx1),
-  ];
-  newRing[newRing.length - 1] = newRing[0].slice();
-
-  if (pointInPolygon(store, newRing)) {
-    feature.geometry = { type: 'Polygon', coordinates: [newRing] };
-    return true;
+// Helper: union a corridor polygon into a district feature
+function unionCorridor(feature, corridorCoords) {
+  try {
+    const distPoly = polygon(feature.geometry.coordinates);
+    const corrPoly = polygon([corridorCoords]);
+    const merged = turfUnion(featureCollection([distPoly, corrPoly]));
+    if (merged) {
+      const geom = ensurePolygon(merged.geometry);
+      feature.geometry = geom;
+      return true;
+    }
+  } catch (e) {
+    console.warn(`  unionCorridor failed: ${e.message}`);
   }
   return false;
 }
 
-// Exception 1: D24 — Port Richey store (28.3308, -82.6985) at Bayonet Point.
-// D24 and D21 stores interleave here, so a small overlap with D21 is accepted.
+// Exception 1: D23 — Clearwater Beach store 3001 (27.9810, -82.8268)
+// The barrier island is separated from mainland by the Intracoastal Waterway.
+// Instead of an enclave, create a bridge strip across the causeway area that
+// makes D23 one continuous shape from mainland to barrier island.
+{
+  const f23 = features.find(f => f.properties.district === 23);
+  if (f23) {
+    const store3001 = [-82.8268, 27.9810];
+    // Bridge polygon spanning from D23's mainland coast across the Intracoastal
+    // to the barrier island, covering the Clearwater causeway area.
+    // Wide enough (N-S) to look natural, not just a thin bridge.
+    const bridgeStrip = [
+      [-82.800, 27.950],   // SE — mainland coast, south
+      [-82.800, 27.995],   // NE — mainland coast, north of store
+      [-82.840, 27.995],   // NW — barrier island, north
+      [-82.840, 27.950],   // SW — barrier island, south
+      [-82.800, 27.950],   // close
+    ];
+
+    if (unionCorridor(f23, bridgeStrip)) {
+      if (pointInPolygon(store3001, f23.geometry.coordinates[0])) {
+        console.log('Exception D23: bridge to Clearwater Beach — continuous shape');
+      } else {
+        console.warn('Exception D23: bridge added but store 3001 still outside');
+      }
+    }
+  }
+}
+
+// Exception 2: D24 — Port Richey store 3217 (28.3308, -82.6985) at Bayonet Point.
+// D24 gets a coastal corridor west of US-19 running north from Holiday up to
+// Bayonet Point. The corridor stays narrow (west of D21 stores on US-19) until
+// lat ~28.29, then widens east to capture store 3217 at US-19 & SR-52.
+// D21 stores that must remain safe:
+//   #306  (28.2385, -82.7269) — on US-19, east of narrow corridor
+//   #5660 (28.2799, -82.6966) — east of narrow corridor
+//   #3583 (28.3317, -82.6671) — east of widened corridor
 {
   const f24 = features.find(f => f.properties.district === 24);
+  const f21 = features.find(f => f.properties.district === 21);
   if (f24) {
-    const store = [-82.6985, 28.3308];
-    if (addProtrusion(f24, store, 0.01, districts[24])) {
-      console.log('Exception: D24 protrusion added for Port Richey store');
-      // Try subtracting from D21
-      const f21 = features.find(f => f.properties.district === 21);
+    const store3217 = [-82.6985, 28.3308];
+
+    // Coastal corridor: narrow strip west of US-19, widening at top for store 3217
+    const corridor = [
+      [-82.760, 28.210],   // SW — connects to D24 body near Holiday
+      [-82.730, 28.210],   // SE — narrow east edge, west of US-19
+      [-82.730, 28.290],   // east edge stays narrow past D21 #306 and #5660
+      [-82.685, 28.310],   // widens east to capture store 3217
+      [-82.685, 28.345],   // NE — north of store 3217
+      [-82.760, 28.345],   // NW — coast
+      [-82.760, 28.210],   // close
+    ];
+
+    if (unionCorridor(f24, corridor)) {
+      if (pointInPolygon(store3217, f24.geometry.coordinates[0])) {
+        console.log('Exception D24: coastal corridor to Port Richey — continuous shape');
+      } else {
+        console.warn('Exception D24: corridor added but store 3217 still outside');
+      }
+
+      // Subtract the new D24 territory from D21 so they don't overlap
       if (f21) {
         try {
           const d21Poly = polygon(f21.geometry.coordinates);
-          const d24New = polygon(f24.geometry.coordinates);
-          const diff = turfDifference(featureCollection([d21Poly, d24New]));
+          const d24Poly = polygon(f24.geometry.coordinates);
+          const diff = turfDifference(featureCollection([d21Poly, d24Poly]));
           if (diff) {
             const newGeom = ensurePolygon(diff.geometry);
             const lost = districts[21].filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
             if (lost.length === 0) {
               f21.geometry = newGeom;
-              console.log('  → Subtracted from D21 (no stores lost)');
+              console.log('  → D21 trimmed along corridor (no stores lost)');
             } else {
-              console.log(`  → D21 has ${lost.length} interleaved stores, small overlap accepted`);
+              console.warn(`  → D21 would lose ${lost.length} stores — keeping small overlap`);
             }
           }
-        } catch(e) {}
+        } catch (e) {
+          console.warn(`  → D21 subtraction failed: ${e.message}`);
+        }
       }
-    } else {
-      console.warn('Exception D24: protrusion did not contain store');
-    }
-  }
-}
-
-// Exception 2: D23 — Clearwater Beach store (27.9810, -82.8268) on barrier island.
-{
-  const f23 = features.find(f => f.properties.district === 23);
-  if (f23) {
-    const store = [-82.8268, 27.9810];
-    if (addProtrusion(f23, store, 0.012, districts[23])) {
-      console.log('Exception: D23 protrusion added for Clearwater Beach store');
-    } else {
-      console.warn('Exception D23: protrusion did not contain store');
     }
   }
 }
