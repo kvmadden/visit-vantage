@@ -187,11 +187,11 @@ function ClusteredMarkers({
         const opacity = isFaded ? 0.2 : 0.9;
         const displayColor = isFaded ? '#52525b' : activeColor;
 
-        const zoomScale = Math.max(0.5, 1 + (zoom - 13) * 0.25);
+        const zoomScale = Math.max(0.75, 1 + (zoom - 13) * 0.25);
         const baseHeart = isSelected ? 22 : 16;
         const baseBullseye = isSelected ? 15 : 11;
-        const heartSize = Math.round(baseHeart * zoomScale);
-        const bullseyeSize = Math.round(baseBullseye * zoomScale);
+        const heartSize = Math.max(12, Math.round(baseHeart * zoomScale));
+        const bullseyeSize = Math.max(9, Math.round(baseBullseye * zoomScale));
 
         const icon = isTarget
           ? createBullseyeIcon(displayColor, bullseyeSize, opacity)
