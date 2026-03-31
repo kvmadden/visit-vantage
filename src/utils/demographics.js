@@ -13,13 +13,13 @@ const ZIP_TAGS = {
   '33603': ['Urban Core'],
   '33604': ['Urban Core'],
   '33605': ['Urban Core'],
-  '33606': ['Urban Core', 'High-Income Residential'],
+  '33606': ['Urban Core', 'High-Income Residential', 'Medical Corridor'],
   '33607': ['Urban Core'],
   '33609': ['High-Income Residential'],
   '33610': ['Urban Core'],
   '33611': ['Urban Core'],
-  '33612': ['Urban Core'],
-  '33613': ['Urban Core'],
+  '33612': ['Urban Core', 'Medical Corridor'],
+  '33613': ['Urban Core', 'Medical Corridor'],
   '33614': ['Urban Core'],
   '33615': ['Suburban'],
   '33616': ['Military Adjacent'], // MacDill AFB area
@@ -206,11 +206,6 @@ const ZIP_TAGS = {
   '33981': ['Suburban'], // Port Charlotte
   '33982': ['Suburban'], // Port Charlotte
   '33983': ['Suburban'], // Port Charlotte
-
-  // Medical corridors (near major hospitals)
-  '33606': ['Medical Corridor'], // Tampa General area
-  '33612': ['Medical Corridor'], // Florida Hospital area
-  '33613': ['Medical Corridor'], // University Community Hospital
 };
 
 // City-based fallback tags

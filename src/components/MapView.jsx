@@ -283,11 +283,13 @@ function ClusteredMarkers({
 
     // Run nudge after clusters settle
     const timer = setTimeout(nudgeOverlaps, 300);
-    map.on('zoomend moveend', nudgeOverlaps);
+    map.on('zoomend', nudgeOverlaps);
+    map.on('moveend', nudgeOverlaps);
 
     return () => {
       clearTimeout(timer);
-      map.off('zoomend moveend', nudgeOverlaps);
+      map.off('zoomend', nudgeOverlaps);
+      map.off('moveend', nudgeOverlaps);
       clusterGroupsRef.current.forEach((g) => map.removeLayer(g));
       clusterGroupsRef.current = [];
     };
@@ -374,7 +376,8 @@ function HomeControl({ stores }) {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </a>`;
       L.DomEvent.disableClickPropagation(btn);
-      btn.querySelector('a').addEventListener('click', (e) => {
+      const anchor = btn.querySelector('a');
+      const handleClick = (e) => {
         e.preventDefault();
         if (!stores || stores.length === 0) return;
         const lats = stores.map((s) => s.lat);
@@ -383,11 +386,20 @@ function HomeControl({ stores }) {
           [[Math.min(...lats), Math.min(...lngs)], [Math.max(...lats), Math.max(...lngs)]],
           { padding: [20, 20] }
         );
-      });
+      };
+      anchor.addEventListener('click', handleClick);
+      btn._handleClick = handleClick;
+      btn._anchor = anchor;
       return btn;
     };
     control.addTo(map);
-    return () => control.remove();
+    return () => {
+      const container = control.getContainer();
+      if (container?._anchor && container?._handleClick) {
+        container._anchor.removeEventListener('click', container._handleClick);
+      }
+      control.remove();
+    };
   }, [map, stores]);
 
   return null;
@@ -588,8 +600,8 @@ export default function MapView({
             center={[selectedStore.lat, selectedStore.lng]}
             radius={4023} // ~2.5 miles ≈ 5 min at 30mph
             pathOptions={{
-              color: 'var(--accent)',
-              fillColor: 'var(--accent)',
+              color: '#4A9EFF',
+              fillColor: '#4A9EFF',
               fillOpacity: 0.04,
               weight: 1,
               dashArray: '4, 4',
@@ -600,8 +612,8 @@ export default function MapView({
             center={[selectedStore.lat, selectedStore.lng]}
             radius={8047} // ~5 miles ≈ 10 min at 30mph
             pathOptions={{
-              color: 'var(--accent)',
-              fillColor: 'var(--accent)',
+              color: '#4A9EFF',
+              fillColor: '#4A9EFF',
               fillOpacity: 0.02,
               weight: 1,
               dashArray: '6, 6',
