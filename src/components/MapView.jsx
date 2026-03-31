@@ -402,7 +402,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds }) {
 
   useEffect(() => {
     if (!map || !showClouds) {
-      if (layerRef.current) {
+      if (layerRef.current && map) {
         map.removeLayer(layerRef.current);
         layerRef.current = null;
       }

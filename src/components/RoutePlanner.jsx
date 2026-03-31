@@ -143,7 +143,7 @@ export default function RoutePlanner({
                 <span className="route-stop-name">
                   {store.nickname} #{store.store}
                 </span>
-                <span className="route-stop-address">{store.address}</span>
+                <span className="route-stop-addr">{store.address}</span>
               </div>
               <button
                 className="route-stop-remove"

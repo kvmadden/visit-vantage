@@ -408,9 +408,11 @@ body {
   transition: transform 0.3s ease;
 }
 
-/* Inline store card (inside bottom sheet) */
+/* Inline store card (inside bottom sheet) — inherits .store-card visuals without fixed positioning */
 .store-card-inline {
+  background: var(--bg-surface);
   border-top: 2px solid var(--accent);
+  border-radius: 0;
   padding-top: 12px;
 }
 
@@ -418,6 +420,38 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.store-card-inline .store-number {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.store-card-inline .store-nickname {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 4px 0;
+}
+
+.store-card-inline .store-address {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 4px 0;
+}
+
+.store-card-inline .store-close {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 /* District-colored top borders */
@@ -738,6 +772,11 @@ body {
   gap: 8px;
   margin-top: 12px;
   flex-wrap: wrap;
+}
+
+.route-inline {
+  display: flex;
+  flex-direction: column;
 }
 
 .route-leg-info {

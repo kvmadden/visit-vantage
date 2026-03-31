@@ -125,7 +125,7 @@ export async function getRouteStatsOSRM(orderedStores, startPosition) {
     }
     orderedStores.forEach((s) => coords.push(`${s.lng},${s.lat}`));
 
-    const url = `${OSRM_BASE}/route/v1/driving/${coords.join(';')}?geometries=geojson&overview=full&steps=false`;
+    const url = `${OSRM_BASE}/route/v1/driving/${coords.join(';')}?geometries=geojson&overview=full&steps=false&annotations=distance,duration`;
 
     const res = await fetch(url);
     if (!res.ok) throw new Error(`OSRM ${res.status}`);

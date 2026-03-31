@@ -64,7 +64,6 @@ const ZIP_TAGS = {
 
   // Beaches
   '33706': ['Beach Community', 'Tourist Zone'], // St Pete Beach
-  '33708': ['Beach Community'], // Madeira Beach area
   '33785': ['Beach Community', 'Tourist Zone'], // Indian Rocks Beach
   '33770': ['Suburban'], // Largo
   '33771': ['Suburban'], // Largo
@@ -106,7 +105,6 @@ const ZIP_TAGS = {
   // Temple Terrace / USF area
   '33637': ['College Area'], // USF area
   '33620': ['College Area'], // USF campus
-  '33617': ['Suburban'],
 
   // Sun City Center
   '33573': ['Retirement Community'], // Sun City Center
@@ -142,14 +140,11 @@ const ZIP_TAGS = {
   '34601': ['Suburban'], // Brooksville
   '34602': ['Suburban'], // Brooksville
   '34606': ['Suburban'], // Spring Hill
-  '34607': ['Suburban'], // Spring Hill
+  '34607': ['Suburban', 'Tourist Zone'], // Spring Hill / Weeki Wachee
   '34608': ['Suburban'], // Spring Hill
   '34609': ['Suburban'], // Spring Hill
   '34613': ['Suburban'], // Brooksville
   '34614': ['Suburban'], // Brooksville
-
-  // Weeki Wachee
-  '34607': ['Suburban', 'Tourist Zone'],
 
   // Bradenton / Manatee
   '34201': ['Suburban'], // Bradenton

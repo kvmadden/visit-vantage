@@ -63,7 +63,7 @@ function loadLayers() {
 export default function LayerPanel({ onLayerChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showTier3, setShowTier3] = useState(false);
-  const [layers, setLayers] = useState(loadLayers);
+  const [layers, setLayers] = useState(() => loadLayers());
 
   useEffect(() => {
     localStorage.setItem(LS_KEY, JSON.stringify(layers));
