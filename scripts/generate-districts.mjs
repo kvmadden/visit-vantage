@@ -243,7 +243,23 @@ const clippedFeatures = features.map(f => {
     const distPoly = polygon(f.geometry.coordinates);
     const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
     if (clipped) {
-      return { ...f, geometry: clipped.geometry };
+      let geom = clipped.geometry;
+      // If clipping produced a MultiPolygon, keep only the largest polygon
+      if (geom.type === 'MultiPolygon') {
+        let largest = geom.coordinates[0];
+        let maxArea = 0;
+        for (const poly of geom.coordinates) {
+          const ring = poly[0];
+          let area = 0;
+          for (let i = 0; i < ring.length - 1; i++) {
+            area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+          }
+          area = Math.abs(area);
+          if (area > maxArea) { maxArea = area; largest = poly; }
+        }
+        geom = { type: 'Polygon', coordinates: largest };
+      }
+      return { ...f, geometry: geom };
     }
   } catch (e) {
     console.warn(`D${f.properties.district}: clip failed (${e.message}), using unclipped`);
