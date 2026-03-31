@@ -195,24 +195,19 @@ const features = Object.entries(districts).map(([district, points]) => {
 
   // Pad outward along edge normals — preserves shape proportions
   // Try progressively larger padding until all stores are contained
-  let padded;
-  for (const pad of [0.065, 0.085, 0.11, 0.14]) {
-    padded = padHullNormals(hull, pad);
-    const outside = points.filter(p => !pointInPolygon(p, padded));
+  // AFTER the full smoothing pipeline (smoothing shrinks polygons inward)
+  let smooth;
+  for (const pad of [0.07, 0.09, 0.12, 0.15, 0.19]) {
+    const padded = padHullNormals(hull, pad);
+    const dense = densify(padded, 0.03);
+    const ironed = laplacianSmooth(dense, 4, 0.5);
+    smooth = chaikinSmooth(ironed, 5);
+    const outside = points.filter(p => !pointInPolygon(p, smooth));
     if (outside.length === 0) break;
-    if (pad === 0.14) {
+    if (pad === 0.19) {
       console.warn(`D${district}: ${outside.length} stores still outside at max padding`);
     }
   }
-
-  // Densify long edges so smoothing has enough vertices to work with
-  const dense = densify(padded, 0.03);
-
-  // Laplacian smoothing irons out wobbles/sharp angles
-  const ironed = laplacianSmooth(dense, 4, 0.5);
-
-  // Chaikin corner-cutting rounds remaining corners into curves
-  const smooth = chaikinSmooth(ironed, 5);
 
   // Close the ring
   const ring = [...smooth, smooth[0]];
