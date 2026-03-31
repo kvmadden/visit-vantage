@@ -85,14 +85,31 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
 
-const TILE_URLS = {
-  light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-  dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+const TILE_BASE = {
+  light: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
+  dark: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+};
+const TILE_LABELS = {
+  light: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
+  dark: 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
 };
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>';
 
 const ROUTE_COLOR = '#4A9EFF';
+
+// Create a custom pane so city/road labels render above district overlays
+function LabelPane() {
+  const map = useMap();
+  useEffect(() => {
+    if (!map.getPane('cityLabels')) {
+      map.createPane('cityLabels');
+      map.getPane('cityLabels').style.zIndex = 650;
+      map.getPane('cityLabels').style.pointerEvents = 'none';
+    }
+  }, [map]);
+  return null;
+}
 const GPS_COLOR = '#22c55e';
 
 // ---------------------------------------------------------------------------
@@ -427,12 +444,11 @@ function HomeControl({ stores }) {
 // ---------------------------------------------------------------------------
 // DistrictClouds — colored territory overlays that fade as you zoom in
 // ---------------------------------------------------------------------------
-// Hand-tuned label positions pushed well into water/clear areas, with anchor
-// points on the nearest polygon edge for the connector line.
+// Hand-tuned label positions pushed into water/clear areas
 const LABEL_POSITIONS = {
   rx: {
-    20: { lat: 28.02, lng: -82.64 },   // Tampa — over Tampa Bay
-    21: { lat: 28.42, lng: -82.60 },   // Pasco — northwest toward Gulf
+    20: { lat: 28.08, lng: -82.36 },   // Tampa — tuck between D21 and D25 (NE)
+    21: { lat: 28.50, lng: -82.30 },   // Pasco — top-right of district
     22: { lat: 27.68, lng: -82.90 },   // St Pete — well into Gulf
     23: { lat: 27.97, lng: -82.94 },   // Clearwater — well into Gulf
     24: { lat: 28.22, lng: -82.85 },   // Tarpon/Holiday — into Gulf
@@ -516,25 +532,11 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
           labelLng = centroidLng;
         }
 
-        // Find the closest point on the polygon edge to use as connector anchor
-        let anchorLat = centroidLat, anchorLng = centroidLng;
-        let minDist = Infinity;
-        for (const c of coords) {
-          const dLat = c[1] - labelLat;
-          const dLng = c[0] - labelLng;
-          const dist = dLat * dLat + dLng * dLng;
-          if (dist < minDist) {
-            minDist = dist;
-            anchorLat = c[1];
-            anchorLng = c[0];
-          }
-        }
-
         labelData.push({
           lat: labelLat,
           lng: labelLng,
-          anchorLat,
-          anchorLng,
+          centroidLat,
+          centroidLng,
           color: feature.properties.color,
           label: feature.properties.label,
         });
@@ -577,12 +579,24 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     projected.forEach((p) => {
       const finalLL = map.containerPointToLatLng([p.x, p.y]);
 
-      // Thin connector line from label to nearest polygon edge
-      const line = L.polyline(
-        [[finalLL.lat, finalLL.lng], [p.anchorLat, p.anchorLng]],
-        { color: p.color, weight: 1.5, opacity: 0.4, dashArray: '4,4', interactive: false }
-      );
-      line.addTo(layer);
+      // Solid thin connector line from label toward district centroid,
+      // shortened on both ends so it doesn't touch either
+      const dLat = p.centroidLat - finalLL.lat;
+      const dLng = p.centroidLng - finalLL.lng;
+      const totalDist = Math.sqrt(dLat * dLat + dLng * dLng);
+      const startFrac = 0.15; // start 15% away from label
+      const endFrac = 0.75;   // stop 75% of the way (25% gap before centroid)
+      if (totalDist > 0.01) { // only draw if label isn't already on centroid
+        const startLat = finalLL.lat + dLat * startFrac;
+        const startLng = finalLL.lng + dLng * startFrac;
+        const endLat = finalLL.lat + dLat * endFrac;
+        const endLng = finalLL.lng + dLng * endFrac;
+        const line = L.polyline(
+          [[startLat, startLng], [endLat, endLng]],
+          { color: p.color, weight: 1.2, opacity: 0.35, interactive: false }
+        );
+        line.addTo(layer);
+      }
 
       const icon = L.divIcon({
         html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:${labelSize}px;color:${p.color};text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${p.label}</div>`,
@@ -685,7 +699,8 @@ export default function MapView({
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const handleZoomChange = useCallback((z) => setZoom(z), []);
 
-  const tileUrl = TILE_URLS[theme] || TILE_URLS.light;
+  const baseUrl = TILE_BASE[theme] || TILE_BASE.light;
+  const labelsUrl = TILE_LABELS[theme] || TILE_LABELS.light;
 
   return (
     <MapContainer
@@ -696,12 +711,15 @@ export default function MapView({
       zoomDelta={0.5}
       style={{ height: '100%', width: '100%' }}
     >
-      <TileLayer key={theme} url={tileUrl} attribution={TILE_ATTRIBUTION} />
+      <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
+      <LabelPane />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <FitAllStores stores={stores} />
       <HomeControl stores={stores} />
 
       <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} districtMode={districtMode} theme={theme} />
+
+      <TileLayer key={`labels-${theme}`} url={labelsUrl} attribution="" pane="cityLabels" />
 
       <ClusteredMarkers
         stores={stores}
