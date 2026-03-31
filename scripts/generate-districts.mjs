@@ -194,12 +194,15 @@ const features = Object.entries(districts).map(([district, points]) => {
   }
 
   // Pad outward along edge normals — preserves shape proportions
-  let padded = padHullNormals(hull, 0.055);
-
-  // Check containment and increase padding if needed
-  const outside = points.filter(p => !pointInPolygon(p, padded));
-  if (outside.length > 0) {
-    padded = padHullNormals(hull, 0.08);
+  // Try progressively larger padding until all stores are contained
+  let padded;
+  for (const pad of [0.065, 0.085, 0.11, 0.14]) {
+    padded = padHullNormals(hull, pad);
+    const outside = points.filter(p => !pointInPolygon(p, padded));
+    if (outside.length === 0) break;
+    if (pad === 0.14) {
+      console.warn(`D${district}: ${outside.length} stores still outside at max padding`);
+    }
   }
 
   // Densify long edges so smoothing has enough vertices to work with
