@@ -84,6 +84,8 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
 
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
+const MIN_ZOOM = 8; // Don't allow zooming out past the Tampa Bay region
+const MAX_ZOOM = 18;
 
 const TILE_BASE = {
   light: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
@@ -890,6 +892,8 @@ export default function MapView({
       zoomControl={false}
       zoomSnap={0.25}
       zoomDelta={0.5}
+      minZoom={MIN_ZOOM}
+      maxZoom={MAX_ZOOM}
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
