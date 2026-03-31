@@ -303,7 +303,7 @@ for (const [district, cells] of Object.entries(districtCells)) {
   }
 }
 
-// Verify containment
+// Verify containment (pre-cleanup)
 let allGood = true;
 features.forEach(f => {
   const d = f.properties.district;
@@ -311,7 +311,7 @@ features.forEach(f => {
   const pts = districts[d];
   const out = pts.filter(p => !pointInPolygon(p, ring));
   if (out.length > 0) {
-    console.warn(`D${d}: ${out.length} stores outside!`);
+    console.warn(`D${d}: ${out.length} stores outside (pre-exception)`);
     allGood = false;
   }
 });
@@ -375,6 +375,127 @@ for (let pass = 0; pass < 5; pass++) {
   }
   if (fixed === 0) break;
 }
+
+// ============================================================
+// MANUAL EXCEPTIONS — applied AFTER overlap cleanup so they
+// persist as final overrides. These are one-off adjustments
+// explicitly requested because certain stores were allocated
+// to districts for business reasons that don't follow geography.
+// ============================================================
+
+// Helper: insert a narrow arm into a polygon ring, extending from the nearest
+// boundary point to a target point. Creates a thin out-and-back spike that
+// keeps the polygon as a single valid Polygon (no MultiPolygon issues).
+function insertArm(ring, target, halfWidth) {
+  // Find closest ring vertex to target
+  let minD = Infinity, minIdx = 0;
+  for (let i = 0; i < ring.length - 1; i++) {
+    const dx = ring[i][0] - target[0], dy = ring[i][1] - target[1];
+    const d = dx * dx + dy * dy;
+    if (d < minD) { minD = d; minIdx = i; }
+  }
+  const base = ring[minIdx];
+  // Direction from base to target
+  const dx = target[0] - base[0], dy = target[1] - base[1];
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len, uy = dy / len;
+  // Perpendicular
+  const px = -uy * halfWidth, py = ux * halfWidth;
+  // Build arm vertices: go out to target on one side, come back on the other
+  const armLeft = [];
+  const armRight = [];
+  const steps = Math.max(4, Math.ceil(len / 0.005));
+  for (let s = 0; s <= steps; s++) {
+    const t = s / steps;
+    armLeft.push([base[0] + dx * t + px, base[1] + dy * t + py]);
+    armRight.push([base[0] + dx * t - px, base[1] + dy * t - py]);
+  }
+  // Tip: extend slightly past target
+  const tip = [target[0] + ux * halfWidth * 1.5, target[1] + uy * halfWidth * 1.5];
+  // Insert: ...ring up to minIdx, armLeft out to tip, armRight back, ring from minIdx...
+  const newRing = [
+    ...ring.slice(0, minIdx + 1),
+    ...armLeft,
+    tip,
+    ...armRight.reverse(),
+    ...ring.slice(minIdx),
+  ];
+  // Ensure closed
+  newRing[newRing.length - 1] = newRing[0].slice();
+  return newRing;
+}
+
+// Exception 1: D24 — Port Richey store (28.3308, -82.6985) at Bayonet Point
+// Insert a narrow arm from D24's boundary up to this store, then subtract from D21.
+{
+  const f24 = features.find(f => f.properties.district === 24);
+  const f21 = features.find(f => f.properties.district === 21);
+  if (f24) {
+    const store = [-82.6985, 28.3308];
+    const ring = f24.geometry.coordinates[0];
+    if (!pointInPolygon(store, ring)) {
+      const newRing = insertArm(ring, store, 0.006);
+      if (pointInPolygon(store, newRing)) {
+        f24.geometry = { type: 'Polygon', coordinates: [newRing] };
+        console.log('Exception: D24 arm inserted for Port Richey store');
+        // Subtract from D21 to maintain zero overlap
+        if (f21) {
+          try {
+            const d21Poly = polygon(f21.geometry.coordinates);
+            const d24New = polygon(f24.geometry.coordinates);
+            const diff = turfDifference(featureCollection([d21Poly, d24New]));
+            if (diff) {
+              const newGeom = ensurePolygon(diff.geometry);
+              const lost = districts[21].filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
+              if (lost.length === 0) {
+                f21.geometry = newGeom;
+                console.log('  → Subtracted arm from D21 (no stores lost)');
+              } else {
+                console.warn(`  → D21 would lose ${lost.length} stores, skipping subtraction`);
+              }
+            }
+          } catch (e) {
+            console.warn('  → D21 subtraction failed:', e.message);
+          }
+        }
+      } else {
+        console.warn('Exception D24: arm did not contain store');
+      }
+    }
+  }
+}
+
+// Exception 2: D23 — Clearwater Beach store (27.9810, -82.8268)
+// Insert a narrow arm from D23's boundary to this barrier island store.
+{
+  const f23 = features.find(f => f.properties.district === 23);
+  if (f23) {
+    const store = [-82.8268, 27.9810];
+    const ring = f23.geometry.coordinates[0];
+    if (!pointInPolygon(store, ring)) {
+      const newRing = insertArm(ring, store, 0.006);
+      if (pointInPolygon(store, newRing)) {
+        f23.geometry = { type: 'Polygon', coordinates: [newRing] };
+        console.log('Exception: D23 arm inserted for Clearwater Beach store');
+      } else {
+        console.warn('Exception D23: arm did not contain store');
+      }
+    }
+  }
+}
+
+// Re-verify containment after exceptions
+allGood = true;
+features.forEach(f => {
+  const d = f.properties.district;
+  const ring = f.geometry.coordinates[0];
+  const pts = districts[d];
+  const out = pts.filter(p => !pointInPolygon(p, ring));
+  if (out.length > 0) {
+    console.warn(`D${d}: ${out.length} stores STILL outside after exceptions!`);
+    allGood = false;
+  }
+});
 
 // Verify zero overlap
 const { intersect: checkIntersect } = require('@turf/intersect');
