@@ -412,7 +412,7 @@ function ClusteredMarkers({
       const districtColor = colorMap[districtKey] || '#888';
 
       const clusterGroup = L.markerClusterGroup({
-        maxClusterRadius: (z) => (z <= 9 ? 160 : z <= 10 ? 120 : z <= 12 ? 65 : 40),
+        maxClusterRadius: (z) => (z <= 9 ? 200 : z <= 10 ? 140 : z <= 12 ? 65 : 40),
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
@@ -701,12 +701,19 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         const isActive = activeDistrict == null || activeDistrict === d;
         if (!isActive || labelOpacity <= 0) return;
 
-        // Place label at polygon centroid — inside the district
+        // Place label at true polygon centroid (area-weighted)
         const coords = feature.geometry.coordinates[0];
-        const lats = coords.map((c) => c[1]);
-        const lngs = coords.map((c) => c[0]);
-        const centroidLat = (Math.min(...lats) + Math.max(...lats)) / 2;
-        const centroidLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+        let area = 0, cx = 0, cy = 0;
+        for (let i = 0, len = coords.length; i < len; i++) {
+          const j = (i + 1) % len;
+          const cross = coords[i][0] * coords[j][1] - coords[j][0] * coords[i][1];
+          area += cross;
+          cx += (coords[i][0] + coords[j][0]) * cross;
+          cy += (coords[i][1] + coords[j][1]) * cross;
+        }
+        area /= 2;
+        const centroidLng = cx / (6 * area);
+        const centroidLat = cy / (6 * area);
 
         labelData.push({
           lat: centroidLat,
@@ -724,13 +731,26 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     let labelTimer = null;
     if (labelOpacity > 0) {
       labelTimer = setTimeout(() => {
-      // Collect visible city label rects for collision avoidance (city labels are higher priority)
+      // Collect visible city label rects (must avoid — higher priority)
       const mapRect = map.getContainer().getBoundingClientRect();
       const cityRects = [];
       document.querySelectorAll('.city-label-custom').forEach((el) => {
         if (el.offsetWidth > 0 && parseFloat(el.style.opacity) > 0) {
           const r = el.getBoundingClientRect();
           cityRects.push({
+            left: r.left - mapRect.left,
+            right: r.right - mapRect.left,
+            top: r.top - mapRect.top,
+            bottom: r.bottom - mapRect.top,
+          });
+        }
+      });
+      // Collect pill rects (try to avoid — lower priority)
+      const pillRects = [];
+      document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
+        if (el.offsetWidth > 0) {
+          const r = el.getBoundingClientRect();
+          pillRects.push({
             left: r.left - mapRect.left,
             right: r.right - mapRect.left,
             top: r.top - mapRect.top,
@@ -752,13 +772,18 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         const right = cx + estLabelW / 2;
         const top = cy - estLabelH / 2;
         const bottom = cy + estLabelH / 2;
-        // Check city labels (higher priority — district labels must avoid them)
+        // Check city labels (must avoid)
         for (const r of cityRects) {
           if (left < r.right + pad && right > r.left - pad &&
               top < r.bottom + pad && bottom > r.top - pad) return true;
         }
         // Check already-placed district labels
         for (const r of placedDistrictRects) {
+          if (left < r.right + pad && right > r.left - pad &&
+              top < r.bottom + pad && bottom > r.top - pad) return true;
+        }
+        // Check pills (try to avoid)
+        for (const r of pillRects) {
           if (left < r.right + pad && right > r.left - pad &&
               top < r.bottom + pad && bottom > r.top - pad) return true;
         }
@@ -776,10 +801,10 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         let bestY = centroidPt.y;
 
         if (hitsAnything(bestX, bestY)) {
-          // Search candidate positions: offset from centroid in a spiral pattern
+          // Search candidate positions: spiral pattern, wider range
           const offsets = [];
-          for (let r = 30; r <= 120; r += 30) {
-            for (let angle = 0; angle < 360; angle += 45) {
+          for (let r = 20; r <= 200; r += 20) {
+            for (let angle = 0; angle < 360; angle += 30) {
               const rad = angle * Math.PI / 180;
               offsets.push({ dx: Math.cos(rad) * r, dy: Math.sin(rad) * r });
             }
@@ -797,14 +822,15 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
             }
           }
 
-          // If no clear spot found, pick the offset furthest from any city label
+          // If no clear spot found, pick offset furthest from all obstacles
           if (!found) {
+            const allObstacles = [...cityRects, ...pillRects, ...placedDistrictRects];
             let maxMinDist = 0;
             for (const off of offsets) {
               const cx = centroidPt.x + off.dx;
               const cy = centroidPt.y + off.dy;
               let minDist = Infinity;
-              for (const r of cityRects) {
+              for (const r of allObstacles) {
                 const rcx = (r.left + r.right) / 2;
                 const rcy = (r.top + r.bottom) / 2;
                 const d = Math.sqrt((cx - rcx) ** 2 + (cy - rcy) ** 2);
