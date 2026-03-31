@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { RX_COLORS, RX_LABELS, FS_COLORS, FS_LABELS } from '../utils/colors';
 
-export default function Legend({ districtMode = 'rx' }) {
+export default function Legend({ districtMode = 'rx', theme = 'light' }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const isRx = districtMode === 'rx';
   const colorMap = isRx ? RX_COLORS : FS_COLORS;
   const labelMap = isRx ? RX_LABELS : FS_LABELS;
+  const bullseyeInner = theme === 'dark' ? '#18181b' : '#ffffff';
 
   if (!isOpen) {
     return (
@@ -20,8 +21,8 @@ export default function Legend({ districtMode = 'rx' }) {
           width: 36,
           height: 36,
           borderRadius: '50%',
-          border: '1px solid #3f3f46',
-          background: '#27272a',
+          border: '1px solid var(--border)',
+          background: 'var(--bg-surface)',
           cursor: 'pointer',
           display: 'flex',
           flexDirection: 'column',
@@ -48,13 +49,13 @@ export default function Legend({ districtMode = 'rx' }) {
         position: 'fixed',
         bottom: 16,
         right: 16,
-        background: '#18181b',
-        border: '1px solid #3f3f46',
+        background: 'var(--bg-base)',
+        border: '1px solid var(--border)',
         borderRadius: 8,
         padding: '12px 16px',
         zIndex: 1000,
         minWidth: 150,
-        color: '#e4e4e7',
+        color: 'var(--text-primary)',
         fontSize: 13,
         fontFamily: 'inherit',
       }}
@@ -67,7 +68,7 @@ export default function Legend({ districtMode = 'rx' }) {
           right: 8,
           background: 'none',
           border: 'none',
-          color: '#a1a1aa',
+          color: 'var(--text-secondary)',
           cursor: 'pointer',
           fontSize: 14,
           lineHeight: 1,
@@ -105,14 +106,14 @@ export default function Legend({ districtMode = 'rx' }) {
           <hr
             style={{
               border: 'none',
-              borderTop: '1px solid #3f3f46',
+              borderTop: '1px solid var(--border)',
               margin: '8px 0',
             }}
           />
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <svg width="10" height="10" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
               <circle cx="12" cy="12" r="10.5" fill="#71717a" />
-              <circle cx="12" cy="12" r="7.5" fill="#18181b" />
+              <circle cx="12" cy="12" r="7.5" fill={bullseyeInner} />
               <circle cx="12" cy="12" r="4.5" fill="#71717a" />
             </svg>
             <span>Target</span>

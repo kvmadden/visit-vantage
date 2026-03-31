@@ -50,7 +50,7 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
 
       {/* Intersection */}
       {store.intersection && (
-        <div className="store-address" style={{ fontSize: 12, color: "#71717a" }}>
+        <div className="store-address" style={{ fontSize: 12, color: "var(--text-muted)" }}>
           {store.intersection}
         </div>
       )}
@@ -86,7 +86,7 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
             <div style={{ marginBottom: 6 }}>
               <span className="store-section-label">Front Store Phone</span>
               <div>
-                <a href={`tel:${store.fsPhone}`} style={{ color: "#4A9EFF", textDecoration: "none" }}>
+                <a href={`tel:${store.fsPhone}`} style={{ color: "var(--accent)", textDecoration: "none" }}>
                   {store.fsPhone}
                 </a>
               </div>
@@ -96,7 +96,7 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
             <div style={{ marginBottom: 6 }}>
               <span className="store-section-label">Pharmacy Phone</span>
               <div>
-                <a href={`tel:${store.rxPhone}`} style={{ color: "#4A9EFF", textDecoration: "none" }}>
+                <a href={`tel:${store.rxPhone}`} style={{ color: "var(--accent)", textDecoration: "none" }}>
                   {store.rxPhone}
                 </a>
               </div>
@@ -107,13 +107,13 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
           {store.fsHours && (
             <div style={{ marginBottom: 6 }}>
               <span className="store-section-label">Front Store Hours</span>
-              <div style={{ fontSize: 13, color: "#a1a1aa" }}>{store.fsHours}</div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{store.fsHours}</div>
             </div>
           )}
           {store.rxHours && (
             <div style={{ marginBottom: 6 }}>
               <span className="store-section-label">Pharmacy Hours</span>
-              <div style={{ fontSize: 13, color: "#a1a1aa" }}>{store.rxHours}</div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{store.rxHours}</div>
             </div>
           )}
 
@@ -133,7 +133,7 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
           {store.notes && (
             <div style={{ marginBottom: 6 }}>
               <span className="store-section-label">Notes</span>
-              <div style={{ fontSize: 13, color: "#a1a1aa" }}>{store.notes}</div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{store.notes}</div>
             </div>
           )}
         </div>

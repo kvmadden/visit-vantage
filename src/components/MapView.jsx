@@ -45,10 +45,10 @@ function createHeartIcon(color, size = 18, opacity = 0.9) {
 }
 
 // Target bullseye — thick outer ring, white gap, filled inner circle
-function createBullseyeIcon(color, size = 13, opacity = 0.9) {
+function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#ffffff') {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10.5" fill="${color}" opacity="${opacity}"/>
-    <circle cx="12" cy="12" r="7.5" fill="#18181b" opacity="${opacity}"/>
+    <circle cx="12" cy="12" r="7.5" fill="${bullseyeInner}" opacity="${opacity}"/>
     <circle cx="12" cy="12" r="4.5" fill="${color}" opacity="${opacity}"/>
   </svg>`;
   return L.divIcon({
@@ -62,8 +62,10 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9) {
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
 
-const TILE_URL =
-  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const TILE_URLS = {
+  light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+  dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+};
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>';
 
@@ -131,6 +133,7 @@ function ClusteredMarkers({
   districtMode,
   zoom,
   onStoreSelect,
+  theme,
 }) {
   const map = useMap();
   const clusterGroupsRef = useRef([]);
@@ -194,8 +197,9 @@ function ClusteredMarkers({
         const heartSize = Math.max(20, Math.round(baseHeart * zoomScale));
         const bullseyeSize = Math.max(16, Math.round(baseBullseye * zoomScale));
 
+        const bullseyeInner = theme === 'dark' ? '#18181b' : '#ffffff';
         const icon = isTarget
-          ? createBullseyeIcon(displayColor, bullseyeSize, opacity)
+          ? createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner)
           : createHeartIcon(displayColor, heartSize, opacity);
 
         const marker = L.marker([store.lat, store.lng], { icon });
@@ -284,7 +288,7 @@ function ClusteredMarkers({
       clusterGroupsRef.current.forEach((g) => map.removeLayer(g));
       clusterGroupsRef.current = [];
     };
-  }, [map, stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect]);
+  }, [map, stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect, theme]);
 
   return null;
 }
@@ -363,9 +367,12 @@ export default function MapView({
   activeDistrict = null,
   districtMode = 'rx',
   gpsPosition = null,
+  theme = 'light',
 }) {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const handleZoomChange = useCallback((z) => setZoom(z), []);
+
+  const tileUrl = TILE_URLS[theme] || TILE_URLS.light;
 
   return (
     <MapContainer
@@ -376,7 +383,7 @@ export default function MapView({
       zoomDelta={0.5}
       style={{ height: '100%', width: '100%' }}
     >
-      <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
+      <TileLayer key={theme} url={tileUrl} attribution={TILE_ATTRIBUTION} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <FitAllStores stores={stores} />
 
@@ -387,6 +394,7 @@ export default function MapView({
         districtMode={districtMode}
         zoom={zoom}
         onStoreSelect={onStoreSelect}
+        theme={theme}
       />
 
       <RoutePolyline routeStores={routeStores} />
