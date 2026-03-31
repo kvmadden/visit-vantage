@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@turf/bbox": "^7.3.4",
+    "@turf/centroid": "^7.3.4",
+    "@turf/difference": "^7.3.4",
     "@turf/helpers": "^7.3.4",
     "@turf/intersect": "^7.3.4",
     "jsdom": "^29.0.1",

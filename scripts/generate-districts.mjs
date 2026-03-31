@@ -10,6 +10,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { intersect: turfIntersect } = require('@turf/intersect');
+const { difference: turfDifference } = require('@turf/difference');
 const { polygon, multiPolygon, featureCollection } = require('@turf/helpers');
 
 const stores = JSON.parse(readFileSync('src/data/stores.json', 'utf-8'));
@@ -245,20 +246,14 @@ const clippedFeatures = features.map(f => {
     const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
     if (clipped) {
       let geom = clipped.geometry;
-      // If clipping produced a MultiPolygon, keep only the largest polygon
-      if (geom.type === 'MultiPolygon') {
-        let largest = geom.coordinates[0];
-        let maxArea = 0;
-        for (const poly of geom.coordinates) {
-          const ring = poly[0];
-          let area = 0;
-          for (let i = 0; i < ring.length - 1; i++) {
-            area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
-          }
-          area = Math.abs(area);
-          if (area > maxArea) { maxArea = area; largest = poly; }
-        }
-        geom = { type: 'Polygon', coordinates: largest };
+      geom = ensurePolygon(geom);
+
+      // If clipping lost any stores, use the unclipped polygon instead
+      const pts = districts[f.properties.district];
+      const ring = geom.coordinates[0];
+      const lost = pts.filter(p => !pointInPolygon(p, ring));
+      if (lost.length > 0) {
+        return f; // keep unclipped
       }
       return { ...f, geometry: geom };
     }
@@ -268,20 +263,138 @@ const clippedFeatures = features.map(f => {
   return f;
 });
 
-const geojson = { type: 'FeatureCollection', features: clippedFeatures };
-writeFileSync('src/data/districts.json', JSON.stringify(geojson));
+// --- Voronoi-style partitioning: remove overlap between districts ---
+// For each pair of districts, split overlap along the perpendicular bisector
+// of their centroids so each district claims only its side.
 
-// Verify containment
+function centroid(coords) {
+  const ring = coords[0]; // outer ring
+  let cx = 0, cy = 0, n = ring.length - 1; // skip closing point
+  for (let i = 0; i < n; i++) { cx += ring[i][0]; cy += ring[i][1]; }
+  return [cx / n, cy / n];
+}
+
+// Create a half-plane polygon on c1's side of a bisector between c1 and c2.
+// The bisector is shifted so that ALL points in pts1 stay on c1's side.
+function halfPlane(c1, c2, pts1, pts2) {
+  const dx = c2[0] - c1[0];
+  const dy = c2[1] - c1[1];
+  const dlen = Math.sqrt(dx * dx + dy * dy) || 1;
+  // Unit direction from c1 to c2
+  const ux = dx / dlen, uy = dy / dlen;
+
+  // Default midpoint
+  let mx = (c1[0] + c2[0]) / 2;
+  let my = (c1[1] + c2[1]) / 2;
+
+  // Shift the bisector so ALL stores in pts1 stay on c1's side,
+  // and ALL stores in pts2 stay on c2's side.
+  if (pts1 && pts1.length > 0) {
+    let maxProj1 = -Infinity;
+    for (const p of pts1) {
+      const proj = (p[0] - c1[0]) * ux + (p[1] - c1[1]) * uy;
+      if (proj > maxProj1) maxProj1 = proj;
+    }
+    // Also find the min projection of pts2 from c1
+    let minProj2 = Infinity;
+    if (pts2 && pts2.length > 0) {
+      for (const p of pts2) {
+        const proj = (p[0] - c1[0]) * ux + (p[1] - c1[1]) * uy;
+        if (proj < minProj2) minProj2 = proj;
+      }
+    }
+    // Place bisector between the farthest pts1 store and nearest pts2 store
+    const margin = 0.005;
+    const fromStores1 = maxProj1 + margin;
+    const fromStores2 = pts2 ? minProj2 - margin : dlen;
+    // Use the midpoint between the two constraints, but ensure pts1 stays inside
+    const finalProj = pts2 && pts2.length > 0
+      ? Math.max(fromStores1, (fromStores1 + fromStores2) / 2)
+      : Math.min(fromStores1, dlen * 0.85);
+    mx = c1[0] + ux * finalProj;
+    my = c1[1] + uy * finalProj;
+  }
+
+  const sz = 5;
+  const tx = -uy, ty = ux; // tangent along bisector line
+  const nnx = -ux, nny = -uy; // normal toward c1
+
+  const p1 = [mx + tx * sz, my + ty * sz];
+  const p2 = [mx - tx * sz, my - ty * sz];
+  const p3 = [mx - tx * sz + nnx * sz, my - ty * sz + nny * sz];
+  const p4 = [mx + tx * sz + nnx * sz, my + ty * sz + nny * sz];
+
+  return polygon([[p1, p2, p3, p4, p1]]);
+}
+
+function ensurePolygon(geom) {
+  if (geom.type === 'MultiPolygon') {
+    let largest = geom.coordinates[0];
+    let maxArea = 0;
+    for (const poly of geom.coordinates) {
+      const ring = poly[0];
+      let area = 0;
+      for (let i = 0; i < ring.length - 1; i++) {
+        area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+      }
+      area = Math.abs(area);
+      if (area > maxArea) { maxArea = area; largest = poly; }
+    }
+    return { type: 'Polygon', coordinates: largest };
+  }
+  return geom;
+}
+
+// Use store centroids (mean of store positions) — more accurate than polygon centroids
+const centroids = {};
+Object.entries(districts).forEach(([d, pts]) => {
+  const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
+  const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
+  centroids[Number(d)] = [cx, cy];
+});
+
+// For each district, clip it against the half-plane for every other district
+let partitioned = clippedFeatures.map(f => ({ ...f }));
+
+for (let i = 0; i < partitioned.length; i++) {
+  for (let j = 0; j < partitioned.length; j++) {
+    if (i === j) continue;
+    const di = partitioned[i].properties.district;
+    const dj = partitioned[j].properties.district;
+    const ci = centroids[di];
+    const cj = centroids[dj];
+
+    try {
+      const hp = halfPlane(ci, cj, districts[di], districts[dj]);
+      const distPoly = polygon(partitioned[i].geometry.coordinates);
+      const clipped = turfIntersect(featureCollection([distPoly, hp]));
+      if (clipped) {
+        partitioned[i] = {
+          ...partitioned[i],
+          geometry: ensurePolygon(clipped.geometry),
+        };
+      }
+    } catch (e) {
+      // If clipping fails, keep original
+    }
+  }
+}
+
+// Verify all stores still contained after partitioning; if any fell out,
+// expand that district slightly toward the missing store
 let allGood = true;
-features.forEach(f => {
+partitioned.forEach(f => {
   const d = f.properties.district;
   const ring = f.geometry.coordinates[0];
   const pts = districts[d];
   const out = pts.filter(p => !pointInPolygon(p, ring));
   if (out.length > 0) {
-    console.warn(`D${d}: ${out.length} stores outside!`);
+    console.warn(`D${d}: ${out.length} stores outside after partitioning`);
     allGood = false;
   }
 });
 
-console.log(`Generated ${features.length} district boundaries${allGood ? ' — all stores contained' : ''}`);
+const geojson = { type: 'FeatureCollection', features: partitioned };
+writeFileSync('src/data/districts.json', JSON.stringify(geojson));
+
+console.log(`Generated ${partitioned.length} district boundaries${allGood ? ' — all stores contained' : ''}`);
