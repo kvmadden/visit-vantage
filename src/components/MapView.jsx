@@ -427,7 +427,28 @@ function HomeControl({ stores }) {
 // ---------------------------------------------------------------------------
 // DistrictClouds — colored territory overlays that fade as you zoom in
 // ---------------------------------------------------------------------------
-function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode }) {
+// Hand-tuned label positions over water / clear areas for each district
+const LABEL_POSITIONS = {
+  rx: {
+    20: { lat: 27.99, lng: -82.59 },   // Tampa — over Tampa Bay
+    21: { lat: 28.38, lng: -82.56 },   // Pasco — push west toward Gulf
+    22: { lat: 27.74, lng: -82.83 },   // St Pete — over Gulf
+    23: { lat: 27.97, lng: -82.87 },   // Clearwater — over Gulf
+    24: { lat: 28.20, lng: -82.78 },   // Tarpon/Holiday — over Gulf
+    25: { lat: 27.72, lng: -82.20 },   // Brandon/east — push east into open area
+    26: { lat: 27.40, lng: -82.72 },   // Sarasota — over Gulf
+    27: { lat: 27.08, lng: -82.45 },   // Far south — push west toward Gulf
+  },
+  fs: {
+    1: { lat: 27.78, lng: -82.85 },    // D1 west coast — over Gulf
+    2: { lat: 28.30, lng: -82.78 },    // D2 north coast — over Gulf
+    3: { lat: 27.70, lng: -82.32 },    // D3 central — push east
+    4: { lat: 27.12, lng: -82.48 },    // D4 south — push west
+    5: { lat: 28.15, lng: -82.28 },    // D5 north inland — push east
+  },
+};
+
+function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme }) {
   const map = useMap();
   const layerRef = useRef(null);
 
@@ -456,6 +477,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode }) {
     }
 
     const labelMarkers = [];
+    const positions = LABEL_POSITIONS[districtMode] || {};
 
     const geoData = districtMode === 'fs' ? fsDistrictGeoJSON : rxDistrictGeoJSON;
 
@@ -472,29 +494,70 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode }) {
         };
       },
       onEachFeature: (feature) => {
-        const coords = feature.geometry.coordinates[0];
-        const lats = coords.map((c) => c[1]);
-        const lngs = coords.map((c) => c[0]);
-        const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
-        const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+        const d = feature.properties.district;
+        const isActive = activeDistrict == null || activeDistrict === d;
+        if (!isActive) return;
 
-        const labelSize = zoom <= 9 ? 14 : 12;
+        // Use hand-tuned position if available, otherwise fall back to centroid
+        let labelLat, labelLng;
+        if (positions[d]) {
+          labelLat = positions[d].lat;
+          labelLng = positions[d].lng;
+        } else {
+          const coords = feature.geometry.coordinates[0];
+          const lats = coords.map((c) => c[1]);
+          const lngs = coords.map((c) => c[0]);
+          labelLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+          labelLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+        }
+
+        const labelSize = zoom <= 9 ? 13 : 11;
+        const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.8)';
+        const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
         const icon = L.divIcon({
-          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:600;font-size:${labelSize}px;color:${feature.properties.color};opacity:0.7;text-shadow:0 1px 3px rgba(0,0,0,0.15);white-space:nowrap">${feature.properties.label}</div>`,
+          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:700;font-size:${labelSize}px;color:${feature.properties.color};opacity:0.85;text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 6px ${haloBlur};white-space:nowrap;pointer-events:none">${feature.properties.label}</div>`,
           className: 'district-label-icon',
           iconSize: [60, 20],
           iconAnchor: [30, 10],
         });
 
-        const isActive = activeDistrict == null || activeDistrict === feature.properties.district;
-        if (isActive) {
-          labelMarkers.push(L.marker([centerLat, centerLng], { icon, interactive: false }));
-        }
+        labelMarkers.push({ lat: labelLat, lng: labelLng, icon });
       },
     });
 
-    // Add label markers after layer is created (avoids TDZ reference)
-    labelMarkers.forEach((m) => m.addTo(layer));
+    // Collision detection: nudge labels apart if they'd overlap on screen
+    const minGapPx = 20; // minimum gap between labels in pixels
+    const projected = labelMarkers.map((lm) => {
+      const pt = map.latLngToContainerPoint([lm.lat, lm.lng]);
+      return { ...lm, x: pt.x, y: pt.y };
+    });
+
+    // Simple iterative repulsion (3 passes)
+    for (let pass = 0; pass < 3; pass++) {
+      for (let i = 0; i < projected.length; i++) {
+        for (let j = i + 1; j < projected.length; j++) {
+          const dx = projected[j].x - projected[i].x;
+          const dy = projected[j].y - projected[i].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const minDist = 60 + minGapPx; // ~60px label width + gap
+          if (dist < minDist && dist > 0) {
+            const overlap = (minDist - dist) / 2;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            projected[i].x -= nx * overlap;
+            projected[i].y -= ny * overlap;
+            projected[j].x += nx * overlap;
+            projected[j].y += ny * overlap;
+          }
+        }
+      }
+    }
+
+    // Convert back to lat/lng and add markers
+    projected.forEach((p) => {
+      const latlng = map.containerPointToLatLng([p.x, p.y]);
+      L.marker([latlng.lat, latlng.lng], { icon: p.icon, interactive: false }).addTo(layer);
+    });
 
     layer.addTo(map);
     layerRef.current = layer;
@@ -505,7 +568,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode }) {
         layerRef.current = null;
       }
     };
-  }, [map, zoom, activeDistrict, showClouds, districtMode]);
+  }, [map, zoom, activeDistrict, showClouds, districtMode, theme]);
 
   return null;
 }
@@ -603,7 +666,7 @@ export default function MapView({
       <FitAllStores stores={stores} />
       <HomeControl stores={stores} />
 
-      <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} districtMode={districtMode} />
+      <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} districtMode={districtMode} theme={theme} />
 
       <ClusteredMarkers
         stores={stores}
