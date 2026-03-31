@@ -40,6 +40,7 @@ const ZIP_TAGS = {
   '33759': ['Suburban'],
   '33760': ['Suburban'],
   '33761': ['Suburban'],
+  '33762': ['Suburban'], // Clearwater
   '33763': ['Suburban'],
   '33764': ['Suburban'],
   '33765': ['Suburban'],
@@ -64,6 +65,8 @@ const ZIP_TAGS = {
 
   // Beaches
   '33706': ['Beach Community', 'Tourist Zone'], // St Pete Beach
+  '33781': ['Suburban'], // Pinellas Park
+  '33782': ['Suburban'], // Pinellas Park
   '33785': ['Beach Community', 'Tourist Zone'], // Indian Rocks Beach
   '33770': ['Suburban'], // Largo
   '33771': ['Suburban'], // Largo
@@ -80,6 +83,7 @@ const ZIP_TAGS = {
   '34685': ['Suburban', 'High-Income Residential'], // Palm Harbor
   '34688': ['Suburban'], // Tarpon Springs
   '34689': ['Tourist Zone'], // Tarpon Springs - sponge docks
+  '34677': ['Suburban'], // Clearwater
   '34690': ['Suburban'], // Holiday
   '34691': ['Suburban'], // Holiday
   '34695': ['Suburban'], // Safety Harbor
@@ -139,6 +143,7 @@ const ZIP_TAGS = {
   // Hernando County
   '34601': ['Suburban'], // Brooksville
   '34602': ['Suburban'], // Brooksville
+  '34604': ['Suburban'], // Brooksville
   '34606': ['Suburban'], // Spring Hill
   '34607': ['Suburban', 'Tourist Zone'], // Spring Hill / Weeki Wachee
   '34608': ['Suburban'], // Spring Hill

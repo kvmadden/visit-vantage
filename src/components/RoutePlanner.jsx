@@ -91,7 +91,7 @@ export default function RoutePlanner({
             Open in Maps
           </button>
           <button className="btn btn-danger" onClick={onClearRoute}>
-            Clear
+            Clear Route
           </button>
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function RoutePlanner({
             Open in Maps
           </button>
           <button className="btn btn-danger" onClick={onClearRoute}>
-            Clear All
+            Clear Route
           </button>
         </div>
       </div>

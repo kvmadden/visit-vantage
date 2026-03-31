@@ -16,26 +16,36 @@ export default function WeatherWidget() {
     const key = OWM_KEY || localStorage.getItem('visitvantage-owm-key');
     if (!key) return;
 
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${TAMPA_LAT}&lon=${TAMPA_LNG}&units=imperial&appid=${key}`
-    )
-      .then((res) => {
-        if (!res.ok) throw new Error('Weather fetch failed');
-        return res.json();
-      })
-      .then((data) => {
-        setWeather({
-          temp: Math.round(data.main.temp),
-          feels: Math.round(data.main.feels_like),
-          desc: data.weather[0]?.description || '',
-          icon: data.weather[0]?.icon || '01d',
-          humidity: data.main.humidity,
-          wind: Math.round(data.wind.speed),
+    function fetchWeather() {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${TAMPA_LAT}&lon=${TAMPA_LNG}&units=imperial&appid=${key}`,
+        { signal: controller.signal }
+      )
+        .then((res) => {
+          clearTimeout(timeout);
+          if (!res.ok) throw new Error('Weather fetch failed');
+          return res.json();
+        })
+        .then((data) => {
+          setWeather({
+            temp: Math.round(data.main.temp),
+            feels: Math.round(data.main.feels_like),
+            desc: data.weather[0]?.description || '',
+            icon: data.weather[0]?.icon || '01d',
+            humidity: data.main.humidity,
+            wind: Math.round(data.wind.speed),
+          });
+        })
+        .catch(() => {
+          clearTimeout(timeout);
         });
-      })
-      .catch(() => {
-        // Silently fail — widget just won't show
-      });
+    }
+
+    fetchWeather();
+    const interval = setInterval(fetchWeather, 15 * 60 * 1000); // refresh every 15 min
+    return () => clearInterval(interval);
   }, []);
 
   if (!weather) return null;

@@ -141,21 +141,29 @@ export default function LayerPanel({ onLayerChange }) {
           More layers...
         </button>
       ) : (
-        <div className="layer-group">
-          {LAYERS.tier3.items.map((item) => (
-            <label key={item.key} className="layer-item">
-              <input
-                type="checkbox"
-                checked={layers[item.key]}
-                onChange={() => toggle(item.key)}
-              />
-              <span className="layer-item-label">
-                <span className="layer-item-icon">{item.icon}</span>
-                {item.label}
-              </span>
-            </label>
-          ))}
-        </div>
+        <>
+          <div className="layer-group">
+            {LAYERS.tier3.items.map((item) => (
+              <label key={item.key} className="layer-item">
+                <input
+                  type="checkbox"
+                  checked={layers[item.key]}
+                  onChange={() => toggle(item.key)}
+                />
+                <span className="layer-item-label">
+                  <span className="layer-item-icon">{item.icon}</span>
+                  {item.label}
+                </span>
+              </label>
+            ))}
+          </div>
+          <button
+            className="layer-more-btn"
+            onClick={() => setShowTier3(false)}
+          >
+            Show less
+          </button>
+        </>
       )}
 
       <div className="layer-group" style={{ borderTop: '1px solid var(--border)', paddingTop: 8 }}>

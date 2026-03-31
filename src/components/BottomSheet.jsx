@@ -68,6 +68,36 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
     dragStartRef.current = null;
   }, [dragOffset, onCollapse]);
 
+  // Mouse drag support for desktop
+  const handleMouseDown = useCallback((e) => {
+    dragStartRef.current = e.clientY;
+    startHeightRef.current = getHeight(detent);
+    const onMouseMove = (ev) => {
+      if (dragStartRef.current === null) return;
+      const delta = dragStartRef.current - ev.clientY;
+      setDragOffset(delta);
+    };
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      handleTouchEnd();
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }, [detent, getHeight, handleTouchEnd]);
+
+  // Keyboard: Escape collapses
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape' && detent !== 'collapsed') {
+        setDetent('collapsed');
+        onCollapse?.();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [detent, onCollapse]);
+
   const handleHandleClick = useCallback(() => {
     if (detent === 'collapsed') {
       setDetent('peek');
@@ -93,7 +123,11 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
         onClick={handleHandleClick}
+        role="button"
+        tabIndex={0}
+        aria-label="Drag to resize panel"
       >
         <div className="bottom-sheet-grip" />
       </div>
