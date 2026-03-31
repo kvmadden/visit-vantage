@@ -192,133 +192,165 @@ const CITY_LABELS = [
 ];
 
 // ---------------------------------------------------------------------------
-// CityLabels — our own city name markers (replaces tile-based labels)
-// so we can run collision detection with store markers
+// CityLabels — custom city name markers with collision avoidance
+// Labels are created once, then visibility is toggled (no flashing)
 // ---------------------------------------------------------------------------
 function CityLabels({ zoom, theme }) {
   const map = useMap();
-  const layerRef = useRef(null);
-  const [moveCount, setMoveCount] = useState(0);
+  const groupRef = useRef(null);
+  const markersRef = useRef([]); // { marker, city, el } for visibility toggling
 
-  // Re-run when map pans so collision checks use updated positions
-  useEffect(() => {
-    if (!map) return;
-    const handler = () => setMoveCount((n) => n + 1);
-    map.on('moveend', handler);
-    return () => map.off('moveend', handler);
-  }, [map]);
-
+  // Create all markers once
   useEffect(() => {
     if (!map) return;
 
-    if (layerRef.current) {
-      map.removeLayer(layerRef.current);
-      layerRef.current = null;
+    if (groupRef.current) {
+      map.removeLayer(groupRef.current);
+      groupRef.current = null;
+      markersRef.current = [];
     }
 
-    // Delay slightly so cluster pills are rendered before we check collisions
-    const timer = setTimeout(() => {
     const group = L.layerGroup();
-
-    // Determine which tiers are visible at this zoom
-    const minTier = zoom >= 12 ? 3 : zoom >= 10 ? 2 : 1;
-    const visible = CITY_LABELS.filter((c) => c.tier <= minTier);
-
-    // Collect screen positions of visible cluster pills and individual markers
-    const markerPoints = [];
-    document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
-      if (el.offsetWidth > 0) {
-        const rect = el.getBoundingClientRect();
-        const mapRect = map.getContainer().getBoundingClientRect();
-        markerPoints.push({
-          x: rect.left - mapRect.left + rect.width / 2,
-          y: rect.top - mapRect.top + rect.height / 2,
-          w: rect.width,
-          h: rect.height,
-        });
-      }
-    });
-
+    const markers = [];
     const textColor = theme === 'dark' ? '#d4d4d8' : '#52525b';
     const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
 
-    // Track placed label rects for city-to-city collision
-    const placedRects = [];
-
-    visible.forEach((city) => {
-      const cityPt = map.latLngToContainerPoint([city.lat, city.lng]);
-
-      // Estimate label width in pixels
+    CITY_LABELS.forEach((city) => {
       const isMajor = city.tier === 1;
       const fontSize = isMajor ? 13 : 11;
-      const estWidth = city.name.length * (isMajor ? 9 : 7);
-      const estHeight = fontSize + 4;
-
-      // Check if this label would collide with any visible marker/pill
-      const labelLeft = cityPt.x - estWidth * 0.3;
-      const labelRight = cityPt.x + estWidth * 0.7;
-      const labelTop = cityPt.y - estHeight / 2;
-      const labelBottom = cityPt.y + estHeight / 2;
-      const tooCloseToStore = markerPoints.some((mp) => {
-        const pad = 6; // small gap
-        const mLeft = mp.x - mp.w / 2;
-        const mRight = mp.x + mp.w / 2;
-        const mTop = mp.y - mp.h / 2;
-        const mBottom = mp.y + mp.h / 2;
-        return labelLeft < mRight + pad && labelRight > mLeft - pad &&
-               labelTop < mBottom + pad && labelBottom > mTop - pad;
-      });
-
-      // Check city-to-city collision
-      const labelRect = {
-        left: cityPt.x - estWidth * 0.3,
-        right: cityPt.x + estWidth * 0.7,
-        top: cityPt.y - estHeight / 2,
-        bottom: cityPt.y + estHeight / 2,
-      };
-      const tooCloseToLabel = placedRects.some((r) => {
-        const pad = 8;
-        return labelRect.left < r.right + pad && labelRect.right > r.left - pad &&
-               labelRect.top < r.bottom + pad && labelRect.bottom > r.top - pad;
-      });
-
-      // Major cities always show; others hide if colliding
-      if (!isMajor && (tooCloseToStore || tooCloseToLabel)) return;
-      // Even major cities hide if overlapping another major city
-      if (isMajor && tooCloseToLabel) return;
-
-      placedRects.push(labelRect);
-
       const fontWeight = isMajor ? 700 : 500;
       const textTransform = isMajor ? 'uppercase' : 'none';
       const letterSpacing = isMajor ? '1px' : '0.3px';
 
       const icon = L.divIcon({
-        html: `<div class="city-label-custom" style="font-family:IBM Plex Sans,sans-serif;font-weight:${fontWeight};font-size:${fontSize}px;color:${textColor};text-transform:${textTransform};letter-spacing:${letterSpacing};white-space:nowrap;pointer-events:none;text-shadow:-1px 0 2px ${haloColor},1px 0 2px ${haloColor},0 -1px 2px ${haloColor},0 1px 2px ${haloColor}">${city.name}</div>`,
+        html: `<div class="city-label-custom" data-tier="${city.tier}" style="font-family:IBM Plex Sans,sans-serif;font-weight:${fontWeight};font-size:${fontSize}px;color:${textColor};text-transform:${textTransform};letter-spacing:${letterSpacing};white-space:nowrap;pointer-events:none;transition:opacity 0.3s;text-shadow:-1px 0 2px ${haloColor},1px 0 2px ${haloColor},0 -1px 2px ${haloColor},0 1px 2px ${haloColor}">${city.name}</div>`,
         className: 'city-label-icon',
         iconSize: [0, 0],
         iconAnchor: [0, 0],
       });
 
-      const marker = L.marker([city.lat, city.lng], {
-        icon,
-        interactive: false,
-      });
+      const marker = L.marker([city.lat, city.lng], { icon, interactive: false });
       group.addLayer(marker);
+      markers.push({ marker, city });
     });
 
     group.addTo(map);
-    layerRef.current = group;
-    }, 350); // wait for cluster pills to settle
+    groupRef.current = group;
+    markersRef.current = markers;
 
     return () => {
-      clearTimeout(timer);
-      if (layerRef.current) {
-        map.removeLayer(layerRef.current);
-        layerRef.current = null;
+      if (groupRef.current) {
+        map.removeLayer(groupRef.current);
+        groupRef.current = null;
+        markersRef.current = [];
       }
     };
-  }, [map, zoom, theme, moveCount]);
+  }, [map, theme]);
+
+  // Toggle visibility based on zoom + collision — no destroy/recreate
+  useEffect(() => {
+    if (!map || markersRef.current.length === 0) return;
+
+    function updateVisibility() {
+      const currentZoom = map.getZoom();
+      const minTier = currentZoom >= 12 ? 3 : currentZoom >= 10 ? 2 : 1;
+
+      // City labels fade at high zoom — once you're deep in one city you don't need the name
+      const cityOpacity = currentZoom <= 10 ? 0.9 : currentZoom <= 12 ? 0.6 : currentZoom <= 13 ? 0.35 : 0;
+
+      // Collect all visible pill/marker rects from DOM
+      const mapRect = map.getContainer().getBoundingClientRect();
+      const pillRects = [];
+      document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
+        if (el.offsetWidth > 0) {
+          const r = el.getBoundingClientRect();
+          pillRects.push({
+            left: r.left - mapRect.left,
+            right: r.right - mapRect.left,
+            top: r.top - mapRect.top,
+            bottom: r.bottom - mapRect.top,
+          });
+        }
+      });
+
+      // Also collect district label rects
+      document.querySelectorAll('.district-label-icon').forEach((el) => {
+        if (el.offsetWidth > 0) {
+          const r = el.getBoundingClientRect();
+          pillRects.push({
+            left: r.left - mapRect.left,
+            right: r.right - mapRect.left,
+            top: r.top - mapRect.top,
+            bottom: r.bottom - mapRect.top,
+          });
+        }
+      });
+
+      const placedRects = [];
+      const bounds = map.getBounds();
+
+      markersRef.current.forEach(({ marker, city }) => {
+        const el = marker._icon?.querySelector('.city-label-custom');
+        if (!el) return;
+
+        // Hide if tier not visible at this zoom, or if off-screen
+        if (city.tier > minTier || cityOpacity <= 0 ||
+            !bounds.contains([city.lat, city.lng])) {
+          el.style.opacity = '0';
+          return;
+        }
+
+        const pt = map.latLngToContainerPoint([city.lat, city.lng]);
+        const isMajor = city.tier === 1;
+        const estW = city.name.length * (isMajor ? 9 : 7);
+        const estH = (isMajor ? 13 : 11) + 4;
+
+        const rect = {
+          left: pt.x - estW * 0.3,
+          right: pt.x + estW * 0.7,
+          top: pt.y - estH / 2,
+          bottom: pt.y + estH / 2,
+        };
+
+        const pad = 6;
+
+        // Check collision with pills/markers
+        const hitsMarker = pillRects.some((r) =>
+          rect.left < r.right + pad && rect.right > r.left - pad &&
+          rect.top < r.bottom + pad && rect.bottom > r.top - pad
+        );
+
+        // Check collision with already-placed city labels
+        const hitsLabel = placedRects.some((r) =>
+          rect.left < r.right + 8 && rect.right > r.left - 8 &&
+          rect.top < r.bottom + 8 && rect.bottom > r.top - 8
+        );
+
+        if (hitsMarker || hitsLabel) {
+          el.style.opacity = '0';
+        } else {
+          el.style.opacity = String(cityOpacity);
+          placedRects.push(rect);
+        }
+      });
+    }
+
+    // Run after cluster pills settle
+    let pending = null;
+    const debounced = () => {
+      if (pending) clearTimeout(pending);
+      pending = setTimeout(updateVisibility, 400);
+    };
+    debounced(); // initial run
+    map.on('zoomend', debounced);
+    map.on('moveend', debounced);
+
+    return () => {
+      if (pending) clearTimeout(pending);
+      map.off('zoomend', debounced);
+      map.off('moveend', debounced);
+    };
+  }, [map, zoom]);
 
   return null;
 }
@@ -649,28 +681,8 @@ function HomeControl({ stores }) {
 
 // ---------------------------------------------------------------------------
 // DistrictClouds — colored territory overlays that fade as you zoom in
+// District labels placed at polygon centroid, inside the district
 // ---------------------------------------------------------------------------
-// Hand-tuned label positions pushed into water/clear areas
-const LABEL_POSITIONS = {
-  rx: {
-    20: { lat: 28.05, lng: -82.20 },   // Tampa — far east, clear space
-    21: { lat: 28.50, lng: -82.30 },   // Pasco — top-right of district
-    22: { lat: 27.68, lng: -82.90 },   // St Pete — well into Gulf
-    23: { lat: 27.97, lng: -82.94 },   // Clearwater — well into Gulf
-    24: { lat: 28.22, lng: -82.85 },   // Tarpon/Holiday — into Gulf
-    25: { lat: 27.65, lng: -82.10 },   // Brandon/east — push further east
-    26: { lat: 27.35, lng: -82.80 },   // Sarasota — into Gulf
-    27: { lat: 27.00, lng: -82.52 },   // Far south — southwest toward Gulf
-  },
-  fs: {
-    1: { lat: 27.72, lng: -82.92 },    // D1 — well into Gulf
-    2: { lat: 28.35, lng: -82.85 },    // D2 — into Gulf
-    3: { lat: 27.62, lng: -82.15 },    // D3 — push east
-    4: { lat: 27.05, lng: -82.55 },    // D4 — southwest toward Gulf
-    5: { lat: 28.20, lng: -82.18 },    // D5 — push east
-  },
-};
-
 function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme }) {
   const map = useMap();
   const layerRef = useRef(null);
@@ -684,10 +696,12 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
       return;
     }
 
-    // Opacity fades: full at z<=9, gone at z>=13
+    // Polygon opacity: full at z<=9, gone at z>=13
     const baseOpacity = zoom <= 9 ? 0.18 : zoom >= 13 ? 0 : 0.18 * (13 - zoom) / 4;
+    // District label opacity: fades earlier and faster than polygons
+    const labelOpacity = zoom <= 9 ? 0.9 : zoom >= 12 ? 0 : 0.9 * (12 - zoom) / 3;
 
-    if (baseOpacity <= 0) {
+    if (baseOpacity <= 0 && labelOpacity <= 0) {
       if (layerRef.current) {
         map.removeLayer(layerRef.current);
         layerRef.current = null;
@@ -700,7 +714,6 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     }
 
     const labelData = [];
-    const positions = LABEL_POSITIONS[districtMode] || {};
 
     const geoData = districtMode === 'fs' ? fsDistrictGeoJSON : rxDistrictGeoJSON;
 
@@ -719,101 +732,66 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
       onEachFeature: (feature) => {
         const d = feature.properties.district;
         const isActive = activeDistrict == null || activeDistrict === d;
-        if (!isActive) return;
+        if (!isActive || labelOpacity <= 0) return;
 
-        // Compute polygon centroid for connector line endpoint
+        // Place label at polygon centroid — inside the district
         const coords = feature.geometry.coordinates[0];
         const lats = coords.map((c) => c[1]);
         const lngs = coords.map((c) => c[0]);
         const centroidLat = (Math.min(...lats) + Math.max(...lats)) / 2;
         const centroidLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
 
-        // Label position: hand-tuned or fallback to centroid
-        let labelLat, labelLng;
-        if (positions[d]) {
-          labelLat = positions[d].lat;
-          labelLng = positions[d].lng;
-        } else {
-          labelLat = centroidLat;
-          labelLng = centroidLng;
-        }
-
         labelData.push({
-          lat: labelLat,
-          lng: labelLng,
-          centroidLat,
-          centroidLng,
+          lat: centroidLat,
+          lng: centroidLng,
           color: feature.properties.color,
           label: feature.properties.label,
         });
       },
     });
 
-    // Collision detection: nudge labels apart if they'd overlap on screen
-    const minGapPx = 24;
-    const projected = labelData.map((ld) => {
-      const pt = map.latLngToContainerPoint([ld.lat, ld.lng]);
-      return { ...ld, x: pt.x, y: pt.y };
-    });
+    if (labelOpacity > 0) {
+      // Nudge district labels apart if they'd overlap
+      const projected = labelData.map((ld) => {
+        const pt = map.latLngToContainerPoint([ld.lat, ld.lng]);
+        return { ...ld, x: pt.x, y: pt.y };
+      });
 
-    const labelW = 50;
-    for (let pass = 0; pass < 3; pass++) {
-      for (let i = 0; i < projected.length; i++) {
-        for (let j = i + 1; j < projected.length; j++) {
-          const dx = projected[j].x - projected[i].x;
-          const dy = projected[j].y - projected[i].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const minDist = labelW + minGapPx;
-          if (dist < minDist && dist > 0) {
-            const overlap = (minDist - dist) / 2;
-            const nx = dx / dist;
-            const ny = dy / dist;
-            projected[i].x -= nx * overlap;
-            projected[i].y -= ny * overlap;
-            projected[j].x += nx * overlap;
-            projected[j].y += ny * overlap;
+      for (let pass = 0; pass < 3; pass++) {
+        for (let i = 0; i < projected.length; i++) {
+          for (let j = i + 1; j < projected.length; j++) {
+            const dx = projected[j].x - projected[i].x;
+            const dy = projected[j].y - projected[i].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const minDist = 70;
+            if (dist < minDist && dist > 0) {
+              const overlap = (minDist - dist) / 2;
+              const nx = dx / dist;
+              const ny = dy / dist;
+              projected[i].x -= nx * overlap;
+              projected[i].y -= ny * overlap;
+              projected[j].x += nx * overlap;
+              projected[j].y += ny * overlap;
+            }
           }
         }
       }
-    }
 
-    // Add connector lines and label markers
-    // Lock district labels at a large, readable size at all zoom levels
-    const labelSize = 16;
-    const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.85)';
-    const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
+      const labelSize = 16;
+      const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.85)';
+      const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
 
-    projected.forEach((p) => {
-      const finalLL = map.containerPointToLatLng([p.x, p.y]);
-
-      // Solid thin connector line from label toward district centroid,
-      // shortened on both ends so it doesn't touch either
-      const dLat = p.centroidLat - finalLL.lat;
-      const dLng = p.centroidLng - finalLL.lng;
-      const totalDist = Math.sqrt(dLat * dLat + dLng * dLng);
-      const startFrac = 0.15; // start 15% away from label
-      const endFrac = 0.75;   // stop 75% of the way (25% gap before centroid)
-      if (totalDist > 0.01) { // only draw if label isn't already on centroid
-        const startLat = finalLL.lat + dLat * startFrac;
-        const startLng = finalLL.lng + dLng * startFrac;
-        const endLat = finalLL.lat + dLat * endFrac;
-        const endLng = finalLL.lng + dLng * endFrac;
-        const line = L.polyline(
-          [[startLat, startLng], [endLat, endLng]],
-          { color: p.color, weight: 1.2, opacity: 0.35, interactive: false }
-        );
-        line.addTo(layer);
-      }
-
-      const icon = L.divIcon({
-        html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:${labelSize}px;color:${p.color};text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${p.label}</div>`,
-        className: 'district-label-icon',
-        iconSize: [60, 24],
-        iconAnchor: [30, 12],
+      projected.forEach((p) => {
+        const finalLL = map.containerPointToLatLng([p.x, p.y]);
+        const icon = L.divIcon({
+          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:${labelSize}px;color:${p.color};opacity:${labelOpacity};text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${p.label}</div>`,
+          className: 'district-label-icon',
+          iconSize: [60, 24],
+          iconAnchor: [30, 12],
+        });
+        L.marker([finalLL.lat, finalLL.lng], { icon, interactive: false }).addTo(layer);
       });
-
-      L.marker([finalLL.lat, finalLL.lng], { icon, interactive: false }).addTo(layer);
-    });
+    }
 
     layer.addTo(map);
     layerRef.current = layer;
