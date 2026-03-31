@@ -109,6 +109,7 @@ function FlyToStore({ selectedStore, activeDistrict, stores }) {
   }, [selectedStore, map]);
 
   useEffect(() => {
+    if (selectedStore) return; // store flyTo takes priority
     if (activeDistrict == null || !stores || stores.length === 0) return;
 
     const districtStores = stores.filter(
@@ -212,7 +213,8 @@ function ClusteredMarkers({
         const opacity = isFaded ? 0.2 : 0.9;
         const displayColor = isFaded ? '#52525b' : activeColor;
 
-        const zoomScale = Math.max(0.75, 1 + (zoom - 13) * 0.25);
+        const currentZoom = map.getZoom();
+        const zoomScale = Math.max(0.75, 1 + (currentZoom - 13) * 0.25);
         const baseHeart = isSelected ? 22 : 16;
         const baseBullseye = isSelected ? 15 : 11;
         const heartSize = Math.max(20, Math.round(baseHeart * zoomScale));
@@ -240,30 +242,17 @@ function ClusteredMarkers({
 
     // Nudge overlapping cluster icons from different districts apart
     function nudgeOverlaps() {
+      try {
       const icons = [];
       clusterGroupsRef.current.forEach((group) => {
-        // Get visible cluster markers (not individual markers)
-        group.getLayers().forEach(() => {}); // ensure initialized
-        const visible = [];
+        // Collect visible cluster icons using public eachLayer + duck-typing
         group.eachLayer((layer) => {
-          if (layer._icon && layer._icon.offsetWidth > 0) {
+          // Clusters have getChildCount; individual markers don't
+          if (typeof layer.getChildCount === 'function' && layer._icon && layer._icon.offsetWidth > 0) {
             const rect = layer._icon.getBoundingClientRect();
-            visible.push({ layer, rect, group });
+            icons.push({ cluster: layer, rect });
           }
         });
-        // Also check cluster parents
-        if (group._topClusterLevel) {
-          const collectClusters = (cluster) => {
-            if (cluster._icon && cluster._icon.offsetWidth > 0) {
-              const rect = cluster._icon.getBoundingClientRect();
-              icons.push({ cluster, rect });
-            }
-            if (cluster._childClusters) {
-              cluster._childClusters.forEach(collectClusters);
-            }
-          };
-          collectClusters(group._topClusterLevel);
-        }
       });
 
       // Reset any previous nudges back to Leaflet's baseline
@@ -307,6 +296,7 @@ function ClusteredMarkers({
           }
         }
       }
+      } catch (_) { /* nudge is best-effort */ }
     }
 
     // Run nudge after clusters settle
@@ -321,7 +311,7 @@ function ClusteredMarkers({
       clusterGroupsRef.current.forEach((g) => map.removeLayer(g));
       clusterGroupsRef.current = [];
     };
-  }, [map, stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect, theme]);
+  }, [map, stores, selectedStore, activeDistrict, districtMode, onStoreSelect, theme]);
 
   return null;
 }
