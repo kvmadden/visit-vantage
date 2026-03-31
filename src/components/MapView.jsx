@@ -250,7 +250,7 @@ function ClusteredMarkers({
           const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
           if (overlapX > 0 && overlapY > 0) {
             // Push them apart by half the overlap + small gap
-            const nudge = Math.min(overlapX, overlapY) / 2 + 4;
+            const nudge = Math.min(overlapX, overlapY) * 0.3 + 2;
             const aCx = a.left + a.width / 2;
             const bCx = b.left + b.width / 2;
             const aCy = a.top + a.height / 2;
