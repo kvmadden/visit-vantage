@@ -1,9 +1,10 @@
 /**
  * Generate district boundary GeoJSON from store coordinates.
- * Creates smooth, blobby territory shapes for each Rx district.
+ * Creates smooth, shape-preserving territory outlines for each Rx district.
  *
- * Approach: convex hull → pad along normals → convert to polar coords →
- * resample at uniform angles → smooth radii → Chaikin subdivision → blob!
+ * Approach: convex hull → pad along edge normals → densify edges →
+ * heavy Chaikin smoothing. This preserves natural corridor/elongated shapes
+ * while producing smooth, non-angular curves.
  */
 import { readFileSync, writeFileSync } from 'fs';
 
@@ -45,41 +46,40 @@ function convexHull(points) {
   return lower.concat(upper);
 }
 
-// Pad hull outward along edge normals (uniform expansion, not centroid-based)
+// Pad hull outward along edge normals (uniform buffer that preserves shape)
 function padHullNormals(hull, padDeg) {
   const n = hull.length;
-  const padded = [];
+  const result = [];
+
   for (let i = 0; i < n; i++) {
     const prev = hull[(i - 1 + n) % n];
     const curr = hull[i];
     const next = hull[(i + 1) % n];
 
-    // Normals of the two adjacent edges (outward for CCW winding)
+    // Edge normals
     const dx1 = curr[0] - prev[0], dy1 = curr[1] - prev[1];
     const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1) || 1;
-    const nx1 = -dy1 / len1, ny1 = dx1 / len1;
-
     const dx2 = next[0] - curr[0], dy2 = next[1] - curr[1];
     const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
-    const nx2 = -dy2 / len2, ny2 = dx2 / len2;
 
-    // Average normal at vertex
-    let nx = (nx1 + nx2) / 2, ny = (ny1 + ny2) / 2;
+    // Average outward normal at vertex
+    let nx = -(dy1 / len1 + dy2 / len2) / 2;
+    let ny = (dx1 / len1 + dx2 / len2) / 2;
     const nlen = Math.sqrt(nx * nx + ny * ny) || 1;
     nx /= nlen;
     ny /= nlen;
 
-    padded.push([curr[0] + nx * padDeg, curr[1] + ny * padDeg]);
+    result.push([curr[0] + nx * padDeg, curr[1] + ny * padDeg]);
   }
 
-  // Verify winding — if padding inverted the polygon, flip normals
+  // Verify winding — if we expanded inward, flip
   let area = 0;
-  for (let i = 0; i < padded.length; i++) {
-    const j = (i + 1) % padded.length;
-    area += padded[i][0] * padded[j][1] - padded[j][0] * padded[i][1];
+  for (let i = 0; i < result.length; i++) {
+    const j = (i + 1) % result.length;
+    area += result[i][0] * result[j][1] - result[j][0] * result[i][1];
   }
   if (area > 0) {
-    // Normals went inward — redo with flipped direction
+    // Flip normals
     const flipped = [];
     for (let i = 0; i < n; i++) {
       const prev = hull[(i - 1 + n) % n];
@@ -90,92 +90,35 @@ function padHullNormals(hull, padDeg) {
       const dx2 = next[0] - curr[0], dy2 = next[1] - curr[1];
       const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
       let nx = (dy1 / len1 + dy2 / len2) / 2;
-      let ny = (-dx1 / len1 + -dx2 / len2) / 2;
+      let ny = -(dx1 / len1 + dx2 / len2) / 2;
       const nlen = Math.sqrt(nx * nx + ny * ny) || 1;
       nx /= nlen; ny /= nlen;
       flipped.push([curr[0] + nx * padDeg, curr[1] + ny * padDeg]);
     }
     return flipped;
   }
-  return padded;
+  return result;
 }
 
-// Convert polygon to polar representation around centroid
-function toPolar(points, cx, cy) {
-  return points.map(([x, y]) => {
-    const dx = x - cx, dy = y - cy;
-    return { angle: Math.atan2(dy, dx), radius: Math.sqrt(dx * dx + dy * dy) };
-  }).sort((a, b) => a.angle - b.angle);
-}
-
-// Resample polar curve at uniform angle intervals
-function resamplePolar(polar, numSamples) {
+// Densify: add evenly-spaced midpoints along each edge
+function densify(hull, maxSegLen = 0.02) {
   const result = [];
-  for (let i = 0; i < numSamples; i++) {
-    const targetAngle = -Math.PI + (2 * Math.PI * i) / numSamples;
-    // Find the two polar points that bracket this angle
-    let r = interpolateRadius(polar, targetAngle);
-    result.push({ angle: targetAngle, radius: r });
+  for (let i = 0; i < hull.length; i++) {
+    const a = hull[i];
+    const b = hull[(i + 1) % hull.length];
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const segs = Math.max(1, Math.ceil(len / maxSegLen));
+    for (let s = 0; s < segs; s++) {
+      const t = s / segs;
+      result.push([a[0] + dx * t, a[1] + dy * t]);
+    }
   }
   return result;
 }
 
-function interpolateRadius(polar, targetAngle) {
-  const n = polar.length;
-  // Find bracketing points
-  let lo = n - 1, hi = 0;
-  for (let i = 0; i < n; i++) {
-    if (polar[i].angle <= targetAngle) lo = i;
-    if (polar[i].angle >= targetAngle && hi === 0) hi = i;
-  }
-  // Better search
-  for (let i = 0; i < n; i++) {
-    const j = (i + 1) % n;
-    let a1 = polar[i].angle, a2 = polar[j].angle;
-    // Handle wrap-around
-    if (j === 0) a2 = polar[j].angle + 2 * Math.PI;
-    if (targetAngle >= a1 && targetAngle <= a2) {
-      const t = (a2 - a1) === 0 ? 0 : (targetAngle - a1) / (a2 - a1);
-      return polar[i].radius * (1 - t) + polar[j].radius * t;
-    }
-  }
-  // Wrap case: between last and first
-  const last = polar[n - 1], first = polar[0];
-  let a1 = last.angle, a2 = first.angle + 2 * Math.PI;
-  const adjTarget = targetAngle < a1 ? targetAngle + 2 * Math.PI : targetAngle;
-  const t = (a2 - a1) === 0 ? 0 : (adjTarget - a1) / (a2 - a1);
-  return last.radius * (1 - t) + first.radius * t;
-}
-
-// Smooth radius values (circular moving average)
-function smoothRadii(polar, passes = 3, windowSize = 5) {
-  let radii = polar.map(p => p.radius);
-  const n = radii.length;
-  for (let pass = 0; pass < passes; pass++) {
-    const smoothed = [];
-    const half = Math.floor(windowSize / 2);
-    for (let i = 0; i < n; i++) {
-      let sum = 0;
-      for (let j = -half; j <= half; j++) {
-        sum += radii[(i + j + n) % n];
-      }
-      smoothed.push(sum / windowSize);
-    }
-    radii = smoothed;
-  }
-  return polar.map((p, i) => ({ angle: p.angle, radius: radii[i] }));
-}
-
-// Convert polar back to cartesian
-function toCartesian(polar, cx, cy) {
-  return polar.map(p => [
-    cx + p.radius * Math.cos(p.angle),
-    cy + p.radius * Math.sin(p.angle),
-  ]);
-}
-
-// Chaikin corner-cutting for final polish
-function chaikinSmooth(points, iterations = 3) {
+// Chaikin corner-cutting subdivision
+function chaikinSmooth(points, iterations = 5) {
   let pts = points;
   for (let iter = 0; iter < iterations; iter++) {
     const smoothed = [];
@@ -190,42 +133,18 @@ function chaikinSmooth(points, iterations = 3) {
   return pts;
 }
 
-// Ensure every store point is inside the polygon with margin
-function ensureContainment(blobPoints, storePoints, cx, cy, margin = 0.03) {
-  const blobPolar = toPolar(blobPoints, cx, cy);
-  const storePolar = storePoints.map(([x, y]) => {
-    const dx = x - cx, dy = y - cy;
-    return { angle: Math.atan2(dy, dx), radius: Math.sqrt(dx * dx + dy * dy) };
-  });
-
-  // For each store, check if the blob radius at that angle is big enough
-  let needsExpand = false;
-  const expanded = blobPolar.map(bp => ({ ...bp }));
-
-  for (const sp of storePolar) {
-    const requiredRadius = sp.radius + margin;
-    // Find the nearest blob point by angle and expand if needed
-    let bestIdx = 0, bestDiff = Infinity;
-    for (let i = 0; i < expanded.length; i++) {
-      let diff = Math.abs(expanded[i].angle - sp.angle);
-      if (diff > Math.PI) diff = 2 * Math.PI - diff;
-      if (diff < bestDiff) { bestDiff = diff; bestIdx = i; }
-    }
-    // Expand this point and its neighbors
-    const spread = 3;
-    for (let d = -spread; d <= spread; d++) {
-      const idx = (bestIdx + d + expanded.length) % expanded.length;
-      const factor = 1 - Math.abs(d) / (spread + 1); // taper
-      const needed = expanded[idx].radius + (requiredRadius - expanded[idx].radius) * factor;
-      if (needed > expanded[idx].radius) {
-        expanded[idx].radius = needed;
-        needsExpand = true;
-      }
+// Check if point is inside polygon (ray casting)
+function pointInPolygon(point, polygon) {
+  let inside = false;
+  const [x, y] = point;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const [xi, yi] = polygon[i];
+    const [xj, yj] = polygon[j];
+    if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+      inside = !inside;
     }
   }
-
-  if (!needsExpand) return blobPoints;
-  return toCartesian(expanded, cx, cy);
+  return inside;
 }
 
 // ---- Main ----
@@ -239,46 +158,36 @@ stores.forEach((s) => {
 });
 
 const features = Object.entries(districts).map(([district, points]) => {
-  // Centroid of all stores in district
-  const cx = points.reduce((s, p) => s + p[0], 0) / points.length;
-  const cy = points.reduce((s, p) => s + p[1], 0) / points.length;
-
-  // Convex hull
   let hull = convexHull(points);
+
   if (hull.length < 3) {
-    // Degenerate — make a circle
-    hull = Array.from({ length: 24 }, (_, i) => {
-      const a = (2 * Math.PI * i) / 24;
-      return [cx + 0.05 * Math.cos(a), cy + 0.05 * Math.sin(a)];
+    // Degenerate — make a small ellipse
+    const cx = points.reduce((s, p) => s + p[0], 0) / points.length;
+    const cy = points.reduce((s, p) => s + p[1], 0) / points.length;
+    hull = Array.from({ length: 12 }, (_, i) => {
+      const a = (2 * Math.PI * i) / 12;
+      return [cx + 0.04 * Math.cos(a), cy + 0.04 * Math.sin(a)];
     });
   }
 
-  // Pad outward along edge normals (uniform buffer)
-  const padded = padHullNormals(hull, 0.06);
+  // Pad outward along edge normals — preserves shape proportions
+  let padded = padHullNormals(hull, 0.055);
 
-  // Convert to polar, resample uniformly, smooth radii
-  const polar = toPolar(padded, cx, cy);
-  const resampled = resamplePolar(polar, 72); // 72 points = every 5°
-  const smoothed = smoothRadii(resampled, 5, 7); // 5 passes, window of 7
+  // Check containment and increase padding if needed
+  const outside = points.filter(p => !pointInPolygon(p, padded));
+  if (outside.length > 0) {
+    padded = padHullNormals(hull, 0.08);
+  }
 
-  // Back to cartesian
-  let blob = toCartesian(smoothed, cx, cy);
+  // Densify long edges so Chaikin has enough vertices to round corners
+  const dense = densify(padded, 0.015);
 
-  // Ensure every store fits inside with margin — run twice for stubborn outliers
-  blob = ensureContainment(blob, points, cx, cy, 0.045);
-  blob = ensureContainment(blob, points, cx, cy, 0.03);
-
-  // Re-smooth after containment expansion (in polar space)
-  const polar2 = toPolar(blob, cx, cy);
-  const resampled2 = resamplePolar(polar2, 72);
-  const smoothed2 = smoothRadii(resampled2, 3, 5);
-  blob = toCartesian(smoothed2, cx, cy);
-
-  // Final Chaikin polish
-  blob = chaikinSmooth(blob, 3);
+  // Heavy Chaikin smoothing — 5 iterations rounds corners into curves
+  // while preserving the elongated/corridor shape
+  const smooth = chaikinSmooth(dense, 5);
 
   // Close the ring
-  const ring = [...blob, blob[0]];
+  const ring = [...smooth, smooth[0]];
 
   return {
     type: 'Feature',
@@ -297,4 +206,18 @@ const features = Object.entries(districts).map(([district, points]) => {
 
 const geojson = { type: 'FeatureCollection', features };
 writeFileSync('src/data/districts.json', JSON.stringify(geojson));
-console.log(`Generated ${features.length} district boundaries`);
+
+// Verify containment
+let allGood = true;
+features.forEach(f => {
+  const d = f.properties.district;
+  const ring = f.geometry.coordinates[0];
+  const pts = districts[d];
+  const out = pts.filter(p => !pointInPolygon(p, ring));
+  if (out.length > 0) {
+    console.warn(`D${d}: ${out.length} stores outside!`);
+    allGood = false;
+  }
+});
+
+console.log(`Generated ${features.length} district boundaries${allGood ? ' — all stores contained' : ''}`);
