@@ -139,12 +139,12 @@ const StoreMarker = memo(function StoreMarker({
   const displayColor = isFaded ? '#52525b' : activeColor;
 
   // Scale icons based on zoom: tiny at zoom 9, full size at zoom 13+
-  // zoom 9: 8px heart / 6px bullseye  (tiny dots)
-  // zoom 10: 10px / 7px
-  // zoom 11: 12px / 9px
-  // zoom 12: 14px / 10px
-  // zoom 13+: 16px+ / 11px+ (full branded icons with continued scaling)
-  const zoomScale = Math.max(0.5, 1 + (zoom - 13) * 0.3);
+  // zoom 9:  5px heart / 4px bullseye
+  // zoom 10: 8px / 6px
+  // zoom 11: 11px / 7px
+  // zoom 12: 13px / 9px
+  // zoom 13+: 16px+ / 11px+
+  const zoomScale = Math.max(0.3, 1 + (zoom - 13) * 0.25);
   const baseHeart = isSelected ? 22 : 16;
   const baseBullseye = isSelected ? 15 : 11;
   const heartSize = Math.round(baseHeart * zoomScale);
