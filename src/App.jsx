@@ -7,13 +7,14 @@ import StoreCard from './components/StoreCard';
 import DistrictSummary from './components/DistrictSummary';
 import RoutePlanner from './components/RoutePlanner';
 import Legend from './components/Legend';
+import BottomSheet from './components/BottomSheet';
 import { optimizeRoute, getRouteStats, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import './App.css';
 
 export default function App() {
   const [activeDistrict, setActiveDistrict] = useState(null);
-  const [districtMode, setDistrictMode] = useState('rx'); // 'rx' or 'fs'
+  const [districtMode, setDistrictMode] = useState('rx');
   const [flags, setFlags] = useState({ fs24: false, rx24: false, ymas: false, target: false });
   const [searchText, setSearchText] = useState('');
   const [selectedStore, setSelectedStore] = useState(null);
@@ -21,12 +22,12 @@ export default function App() {
   const [gpsPosition, setGpsPosition] = useState(null);
   const [districtView, setDistrictView] = useState(false);
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('storesprint-theme') || 'light';
+    return localStorage.getItem('visitvantage-theme') || 'light';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('storesprint-theme', theme);
+    localStorage.setItem('visitvantage-theme', theme);
   }, [theme]);
 
   const handleThemeToggle = useCallback(() => {
@@ -35,9 +36,7 @@ export default function App() {
 
   const filteredStores = useMemo(() => {
     return stores.filter((store) => {
-      // In FS mode, hide Target stores (fsDistrict 98)
       if (districtMode === 'fs' && store.target === true) return false;
-
       const districtField = districtMode === 'rx' ? 'rxDistrict' : 'fsDistrict';
       if (activeDistrict != null && store[districtField] !== activeDistrict) return false;
       if (flags.fs24 && store.fs24 !== 'Yes') return false;
@@ -73,7 +72,7 @@ export default function App() {
 
   const handleDistrictModeChange = useCallback((mode) => {
     setDistrictMode(mode);
-    setActiveDistrict(null); // reset filter when switching modes
+    setActiveDistrict(null);
   }, []);
 
   const handleFlagToggle = useCallback((flag) => {
@@ -126,11 +125,18 @@ export default function App() {
     setSelectedStore(null);
   }, []);
 
+  const handleBottomSheetCollapse = useCallback(() => {
+    setSelectedStore(null);
+  }, []);
+
   return (
     <div className="app">
       <header className="header">
         <div className="header-left">
-          <span className="header-title">StoreSprint</span>
+          <span className="header-title">
+            <span className="wordmark-visit">Visit</span>
+            <span className="wordmark-vantage">Vantage</span>
+          </span>
         </div>
         <div className="header-right">
           <span className="header-badge">REGION 41</span>
@@ -159,23 +165,7 @@ export default function App() {
           </button>
         </div>
       </header>
-      <FilterBar
-        activeDistrict={activeDistrict}
-        onDistrictChange={handleDistrictChange}
-        districtMode={districtMode}
-        onDistrictModeChange={handleDistrictModeChange}
-        flags={flags}
-        onFlagToggle={handleFlagToggle}
-        storeCount={filteredStores.length}
-        districtView={districtView}
-        onDistrictViewToggle={handleDistrictViewToggle}
-      />
-      <SearchBar
-        stores={stores}
-        onStoreSelect={handleStoreSelect}
-        searchText={searchText}
-        onSearchChange={handleSearchChange}
-      />
+
       <div className="app-main">
         <div className="map-container">
           <MapView
@@ -189,6 +179,7 @@ export default function App() {
             theme={theme}
           />
         </div>
+
         {districtView && activeDistrict && (
           <DistrictSummary
             district={activeDistrict}
@@ -201,28 +192,72 @@ export default function App() {
             }
           />
         )}
+
         <Legend districtMode={districtMode} theme={theme} />
-        {selectedStore && (
-          <StoreCard
-            store={selectedStore}
-            onClose={handleCloseCard}
-            onAddToRoute={handleAddToRoute}
-            onRemoveFromRoute={handleRemoveFromRoute}
-            isInRoute={routeStores.some((s) => s.store === selectedStore.store)}
-          />
-        )}
-        <RoutePlanner
-          routeStores={routeStores}
-          onRemoveFromRoute={handleRemoveFromRoute}
-          onOptimizeRoute={handleOptimizeRoute}
-          onClearRoute={handleClearRoute}
-          onOpenInMaps={handleOpenInMaps}
-          gpsPosition={gpsPosition}
-          onRequestGps={handleRequestGps}
-          routeStats={routeStats}
-        />
+
+        <BottomSheet
+          forceOpen={selectedStore}
+          onCollapse={handleBottomSheetCollapse}
+        >
+          {/* Filter pills */}
+          <div className="bs-section">
+            <FilterBar
+              activeDistrict={activeDistrict}
+              onDistrictChange={handleDistrictChange}
+              districtMode={districtMode}
+              onDistrictModeChange={handleDistrictModeChange}
+              flags={flags}
+              onFlagToggle={handleFlagToggle}
+              storeCount={filteredStores.length}
+              districtView={districtView}
+              onDistrictViewToggle={handleDistrictViewToggle}
+            />
+          </div>
+
+          {/* Search */}
+          <div className="bs-section">
+            <SearchBar
+              stores={stores}
+              onStoreSelect={handleStoreSelect}
+              searchText={searchText}
+              onSearchChange={handleSearchChange}
+            />
+          </div>
+
+          {/* Store card */}
+          {selectedStore && (
+            <div className="bs-section bs-store-card">
+              <StoreCard
+                store={selectedStore}
+                onClose={handleCloseCard}
+                onAddToRoute={handleAddToRoute}
+                onRemoveFromRoute={handleRemoveFromRoute}
+                isInRoute={routeStores.some((s) => s.store === selectedStore.store)}
+                inline
+              />
+            </div>
+          )}
+
+          {/* Route planner */}
+          {routeStores.length > 0 && (
+            <div className="bs-section bs-route">
+              <RoutePlanner
+                routeStores={routeStores}
+                onRemoveFromRoute={handleRemoveFromRoute}
+                onOptimizeRoute={handleOptimizeRoute}
+                onClearRoute={handleClearRoute}
+                onOpenInMaps={handleOpenInMaps}
+                gpsPosition={gpsPosition}
+                onRequestGps={handleRequestGps}
+                routeStats={routeStats}
+                inline
+              />
+            </div>
+          )}
+        </BottomSheet>
       </div>
-      <footer className="footer">&copy; 2026 Madden Frameworks &middot; v2</footer>
+
+      <footer className="footer">Madden Frameworks &middot; Smart systems. Better judgment.</footer>
     </div>
   );
 }

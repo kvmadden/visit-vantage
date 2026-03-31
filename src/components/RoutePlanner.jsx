@@ -18,6 +18,7 @@ export default function RoutePlanner({
   gpsPosition,
   onRequestGps,
   routeStats,
+  inline,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -25,6 +26,68 @@ export default function RoutePlanner({
     return null;
   }
 
+  // Inline mode: render flat content inside the bottom sheet
+  if (inline) {
+    return (
+      <div className="route-inline">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+          <span style={{ fontWeight: 600, fontSize: 15 }}>Route</span>
+          <span className="route-badge">{routeStores.length}</span>
+          <button className="btn btn-secondary" style={{ marginLeft: 'auto', minHeight: 32, padding: '0 10px', fontSize: 12 }} onClick={onRequestGps}>
+            GPS
+          </button>
+        </div>
+
+        {gpsPosition && (
+          <div className="route-gps-status">
+            GPS active ({gpsPosition.lat.toFixed(4)}, {gpsPosition.lng.toFixed(4)})
+          </div>
+        )}
+
+        {routeStats && (
+          <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>
+            <span>{routeStats.totalDistance.toFixed(1)} mi</span>
+            <span>{formatTime(routeStats.estimatedTime)}</span>
+            <span>{routeStores.length} stops</span>
+          </div>
+        )}
+
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {routeStores.map((store, index) => (
+            <li key={store.store} className="route-stop">
+              <span className="route-stop-number">{index + 1}</span>
+              <div className="route-stop-info">
+                <span className="route-stop-name">
+                  {store.nickname} #{store.store}
+                </span>
+                <span className="route-stop-addr">{store.address}</span>
+              </div>
+              <button
+                className="route-stop-remove"
+                onClick={() => onRemoveFromRoute(store)}
+              >
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <div className="route-actions">
+          <button className="btn btn-primary" onClick={onOptimizeRoute} disabled={routeStores.length < 2}>
+            Optimize
+          </button>
+          <button className="btn btn-secondary" onClick={onOpenInMaps} disabled={routeStores.length < 1}>
+            Open in Maps
+          </button>
+          <button className="btn btn-danger" onClick={onClearRoute}>
+            Clear
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Legacy fixed-position mode (fallback)
   return (
     <div
       className="route-planner"
@@ -42,7 +105,6 @@ export default function RoutePlanner({
       </div>
 
       <div className="route-body">
-        {/* GPS section */}
         <div className="route-gps-section">
           <button className="route-gps-btn" onClick={onRequestGps}>
             Use GPS
@@ -54,7 +116,6 @@ export default function RoutePlanner({
           )}
         </div>
 
-        {/* Route stats */}
         {routeStats && (
           <div className="route-stats">
             <span>{routeStats.totalDistance.toFixed(1)} mi</span>
@@ -63,7 +124,6 @@ export default function RoutePlanner({
           </div>
         )}
 
-        {/* Numbered stop list */}
         <ul className="route-stop-list">
           {routeStores.map((store, index) => (
             <li key={store.store} className="route-stop">
@@ -84,26 +144,14 @@ export default function RoutePlanner({
           ))}
         </ul>
 
-        {/* Action buttons */}
         <div className="route-actions">
-          <button
-            className="route-btn route-btn-primary"
-            onClick={onOptimizeRoute}
-            disabled={routeStores.length < 2}
-          >
+          <button className="btn btn-primary" onClick={onOptimizeRoute} disabled={routeStores.length < 2}>
             Optimize
           </button>
-          <button
-            className="route-btn route-btn-secondary"
-            onClick={onOpenInMaps}
-            disabled={routeStores.length < 1}
-          >
+          <button className="btn btn-secondary" onClick={onOpenInMaps} disabled={routeStores.length < 1}>
             Open in Maps
           </button>
-          <button
-            className="route-btn route-btn-danger"
-            onClick={onClearRoute}
-          >
+          <button className="btn btn-danger" onClick={onClearRoute}>
             Clear All
           </button>
         </div>

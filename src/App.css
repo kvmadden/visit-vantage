@@ -103,9 +103,17 @@ body {
 }
 
 .header-title {
-  font-weight: 700;
   font-size: 20px;
   color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.wordmark-visit {
+  font-weight: 700;
+}
+
+.wordmark-vantage {
+  font-weight: 300;
 }
 
 .header-right {
@@ -150,9 +158,8 @@ body {
    ============================================ */
 
 .filter-bar {
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
-  padding: 8px 12px;
+  background: transparent;
+  padding: 4px 0;
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -253,9 +260,8 @@ body {
    ============================================ */
 
 .search-bar {
-  background: var(--bg-surface);
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
+  background: transparent;
+  padding: 8px 0;
   position: relative;
   flex-shrink: 0;
 }
@@ -376,6 +382,18 @@ body {
   overflow-y: auto;
   box-shadow: 0 -4px 24px var(--shadow-heavy);
   transition: transform 0.3s ease;
+}
+
+/* Inline store card (inside bottom sheet) */
+.store-card-inline {
+  border-top: 2px solid var(--accent);
+  padding-top: 12px;
+}
+
+.store-card-inline .store-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 /* District-colored top borders */
@@ -824,6 +842,88 @@ body {
 .marker-cluster-medium div,
 .marker-cluster-large div {
   background: transparent !important;
+}
+
+/* ============================================
+   Bottom Sheet
+   ============================================ */
+
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 800;
+  background: var(--bg-surface);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -2px 20px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-sheet-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  cursor: grab;
+  flex-shrink: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.bottom-sheet-handle:active {
+  cursor: grabbing;
+}
+
+.bottom-sheet-grip {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.bottom-sheet-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Bottom sheet sections */
+.bs-section {
+  padding: 0 16px;
+}
+
+.bs-section + .bs-section {
+  border-top: 1px solid var(--border);
+}
+
+.bs-filters {
+  padding: 4px 0 8px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.bs-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.bs-search {
+  padding: 8px 16px;
+}
+
+.bs-store-card {
+  padding: 12px 16px;
+}
+
+.bs-route {
+  padding: 12px 16px;
 }
 
 /* ============================================

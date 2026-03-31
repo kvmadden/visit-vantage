@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RX_COLORS } from "../utils/colors";
 
-export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRoute, isInRoute }) {
+export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRoute, isInRoute, inline }) {
   const [expanded, setExpanded] = useState(false);
 
   if (!store) return null;
@@ -20,7 +20,7 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
 
   return (
     <div
-      className={`store-card slide-up ${borderClass}`}
+      className={`${inline ? 'store-card-inline' : 'store-card slide-up'} ${borderClass}`}
       style={
         store.rxDistrict && RX_COLORS[store.rxDistrict]
           ? { borderTopColor: RX_COLORS[store.rxDistrict] }
