@@ -52,7 +52,6 @@ function darkenHexStr(hex, amount = 40) {
 
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
-const DOT_ZOOM = 12; // At or below this zoom, use small circle dots instead of branded icons
 
 const TILE_URL =
   'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
@@ -139,32 +138,13 @@ const StoreMarker = memo(function StoreMarker({
     : color;
   const displayColor = isFaded ? '#52525b' : activeColor;
 
-  // At low zoom, render lightweight canvas CircleMarkers instead of SVG divIcons
-  if (zoom <= DOT_ZOOM) {
-    const dotScale = zoom <= 9 ? 0 : (zoom - 9) * 1.5;
-    const baseRadius = isTarget ? 3 : 4;
-    const radius = isSelected ? 7 : baseRadius + dotScale;
-    return (
-      <CircleMarker
-        center={[store.lat, store.lng]}
-        radius={radius}
-        pathOptions={{
-          fillColor: displayColor,
-          fillOpacity: opacity,
-          color: isSelected ? '#ffffff' : darkenHexStr(displayColor),
-          weight: isSelected ? 2 : 0.5,
-        }}
-        eventHandlers={{ click: handleClick }}
-      >
-        <Tooltip direction="top" offset={[0, -6]}>
-          {store.nickname} #{store.store}
-        </Tooltip>
-      </CircleMarker>
-    );
-  }
-
-  // At higher zoom, use branded heart/bullseye icons
-  const zoomScale = 1 + (zoom - DOT_ZOOM - 1) * 0.3;
+  // Scale icons based on zoom: tiny at zoom 9, full size at zoom 13+
+  // zoom 9: 8px heart / 6px bullseye  (tiny dots)
+  // zoom 10: 10px / 7px
+  // zoom 11: 12px / 9px
+  // zoom 12: 14px / 10px
+  // zoom 13+: 16px+ / 11px+ (full branded icons with continued scaling)
+  const zoomScale = Math.max(0.5, 1 + (zoom - 13) * 0.3);
   const baseHeart = isSelected ? 22 : 16;
   const baseBullseye = isSelected ? 15 : 11;
   const heartSize = Math.round(baseHeart * zoomScale);
@@ -273,7 +253,7 @@ export default function MapView({
       center={DEFAULT_CENTER}
       zoom={DEFAULT_ZOOM}
       zoomControl={false}
-      preferCanvas={true}
+
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
