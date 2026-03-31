@@ -339,10 +339,11 @@ const GpsMarker = memo(function GpsMarker({ position }) {
 // ---------------------------------------------------------------------------
 // Route polyline
 // ---------------------------------------------------------------------------
-const RoutePolyline = memo(function RoutePolyline({ routeStores }) {
+const RoutePolyline = memo(function RoutePolyline({ routeStores, routeGeometry }) {
   if (!routeStores || routeStores.length === 0) return null;
 
-  const positions = routeStores.map((s) => [s.lat, s.lng]);
+  // Use OSRM road geometry if available, otherwise straight lines
+  const positions = routeGeometry || routeStores.map((s) => [s.lat, s.lng]);
 
   return (
     <Polyline
@@ -350,7 +351,7 @@ const RoutePolyline = memo(function RoutePolyline({ routeStores }) {
       pathOptions={{
         color: ROUTE_COLOR,
         weight: 3,
-        dashArray: '8, 6',
+        dashArray: routeGeometry ? undefined : '8, 6',
         opacity: 0.8,
       }}
     />
@@ -478,6 +479,7 @@ export default function MapView({
   selectedStore = null,
   onStoreSelect,
   routeStores = [],
+  routeGeometry = null,
   activeDistrict = null,
   districtMode = 'rx',
   gpsPosition = null,
@@ -515,7 +517,7 @@ export default function MapView({
         theme={theme}
       />
 
-      <RoutePolyline routeStores={routeStores} />
+      <RoutePolyline routeStores={routeStores} routeGeometry={routeGeometry} />
 
       {gpsPosition && <GpsMarker position={gpsPosition} />}
 

@@ -1,3 +1,5 @@
+const OSRM_BASE = 'https://router.project-osrm.org';
+
 export function haversine(lat1, lng1, lat2, lng2) {
   const R = 3959; // Earth radius in miles
   const toRad = (deg) => (deg * Math.PI) / 180;
@@ -17,7 +19,8 @@ export function haversine(lat1, lng1, lat2, lng2) {
   return R * c;
 }
 
-export function optimizeRoute(stores, startPosition) {
+// Local nearest-neighbor fallback
+function localOptimize(stores, startPosition) {
   if (stores.length <= 1) return [...stores];
 
   const remaining = [...stores];
@@ -26,7 +29,6 @@ export function optimizeRoute(stores, startPosition) {
   let currentLat = startPosition?.lat ?? remaining[0].lat;
   let currentLng = startPosition?.lng ?? remaining[0].lng;
 
-  // If no startPosition, pull the first store out as starting point
   if (!startPosition) {
     ordered.push(remaining.shift());
     currentLat = ordered[0].lat;
@@ -54,35 +56,126 @@ export function optimizeRoute(stores, startPosition) {
   return ordered;
 }
 
+/**
+ * Optimize route using OSRM trip API for road-network-based optimization.
+ * Falls back to local nearest-neighbor if OSRM fails.
+ */
+export async function optimizeRoute(stores, startPosition) {
+  if (stores.length <= 1) return { stores: [...stores], legs: [], geometry: null };
+
+  try {
+    // Build coordinates string: lng,lat pairs
+    const coords = [];
+    if (startPosition) {
+      coords.push(`${startPosition.lng},${startPosition.lat}`);
+    }
+    stores.forEach((s) => coords.push(`${s.lng},${s.lat}`));
+
+    const sourceParam = startPosition ? 'first' : 'any';
+    const url = `${OSRM_BASE}/trip/v1/driving/${coords.join(';')}?source=${sourceParam}&roundtrip=false&geometries=geojson&overview=full&steps=false&annotations=distance,duration`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`OSRM ${res.status}`);
+
+    const data = await res.json();
+    if (data.code !== 'Ok' || !data.trips || data.trips.length === 0) {
+      throw new Error('OSRM returned no trips');
+    }
+
+    const trip = data.trips[0];
+    const waypoints = data.waypoints;
+
+    // Map waypoints back to stores in optimized order
+    // waypoints have waypoint_index (position in trip) and trips_index
+    const storeStartIdx = startPosition ? 1 : 0;
+    const wpOrder = waypoints
+      .slice(storeStartIdx) // skip GPS position if present
+      .map((wp, origIdx) => ({ origIdx, tripIdx: wp.waypoint_index }))
+      .sort((a, b) => a.tripIdx - b.tripIdx);
+
+    const optimized = wpOrder.map((wp) => stores[wp.origIdx]);
+
+    // Extract leg details
+    const legs = trip.legs.map((leg) => ({
+      distance: leg.distance / 1609.34, // meters to miles
+      duration: leg.duration / 60, // seconds to minutes
+    }));
+
+    // Extract route geometry for polyline
+    const geometry = trip.geometry.coordinates.map(([lng, lat]) => [lat, lng]);
+
+    return { stores: optimized, legs, geometry };
+  } catch (err) {
+    console.warn('OSRM optimization failed, using local fallback:', err.message);
+    const optimized = localOptimize(stores, startPosition);
+    return { stores: optimized, legs: [], geometry: null };
+  }
+}
+
+/**
+ * Get route stats with between-stop estimates using OSRM route API.
+ */
+export async function getRouteStatsOSRM(orderedStores, startPosition) {
+  if (orderedStores.length === 0) return { totalDistance: 0, estimatedTime: 0, legs: [], geometry: null };
+
+  try {
+    const coords = [];
+    if (startPosition) {
+      coords.push(`${startPosition.lng},${startPosition.lat}`);
+    }
+    orderedStores.forEach((s) => coords.push(`${s.lng},${s.lat}`));
+
+    const url = `${OSRM_BASE}/route/v1/driving/${coords.join(';')}?geometries=geojson&overview=full&steps=false`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`OSRM ${res.status}`);
+
+    const data = await res.json();
+    if (data.code !== 'Ok' || !data.routes || data.routes.length === 0) {
+      throw new Error('OSRM returned no routes');
+    }
+
+    const route = data.routes[0];
+    const totalDistance = route.distance / 1609.34; // meters to miles
+    const estimatedTime = route.duration / 60 + orderedStores.length * 5; // + 5 min per stop
+    const geometry = route.geometry.coordinates.map(([lng, lat]) => [lat, lng]);
+
+    const legs = route.legs.map((leg) => ({
+      distance: leg.distance / 1609.34,
+      duration: leg.duration / 60,
+    }));
+
+    return { totalDistance, estimatedTime, legs, geometry };
+  } catch (err) {
+    console.warn('OSRM route stats failed, using haversine fallback:', err.message);
+    return getRouteStats(orderedStores, startPosition);
+  }
+}
+
 export function getRouteStats(orderedStores, startPosition) {
-  if (orderedStores.length === 0) return { totalDistance: 0, estimatedTime: 0 };
+  if (orderedStores.length === 0) return { totalDistance: 0, estimatedTime: 0, legs: [], geometry: null };
 
   let totalDistance = 0;
+  const legs = [];
 
-  // Distance from startPosition to first store
   if (startPosition) {
-    totalDistance += haversine(
-      startPosition.lat,
-      startPosition.lng,
-      orderedStores[0].lat,
-      orderedStores[0].lng
-    );
+    const d = haversine(startPosition.lat, startPosition.lng, orderedStores[0].lat, orderedStores[0].lng);
+    totalDistance += d;
+    legs.push({ distance: d, duration: (d / 25) * 60 });
   }
 
-  // Distance between consecutive stores
   for (let i = 0; i < orderedStores.length - 1; i++) {
-    totalDistance += haversine(
-      orderedStores[i].lat,
-      orderedStores[i].lng,
-      orderedStores[i + 1].lat,
-      orderedStores[i + 1].lng
+    const d = haversine(
+      orderedStores[i].lat, orderedStores[i].lng,
+      orderedStores[i + 1].lat, orderedStores[i + 1].lng
     );
+    totalDistance += d;
+    legs.push({ distance: d, duration: (d / 25) * 60 });
   }
 
-  // 25 mph average + 5 min per stop
   const estimatedTime = (totalDistance / 25) * 60 + orderedStores.length * 5;
 
-  return { totalDistance, estimatedTime };
+  return { totalDistance, estimatedTime, legs, geometry: null };
 }
 
 export function buildMapsUrl(orderedStores, startPosition) {
@@ -90,14 +183,12 @@ export function buildMapsUrl(orderedStores, startPosition) {
 
   let stops = orderedStores;
 
-  // Sample if too many stops
   if (stops.length > WAYPOINT_LIMIT) {
     const step = Math.ceil(stops.length / WAYPOINT_LIMIT);
     const sampled = [];
     for (let i = 0; i < stops.length; i += step) {
       sampled.push(stops[i]);
     }
-    // Always include the last stop
     if (sampled[sampled.length - 1] !== stops[stops.length - 1]) {
       sampled.push(stops[stops.length - 1]);
     }

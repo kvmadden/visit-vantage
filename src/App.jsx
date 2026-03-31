@@ -8,7 +8,7 @@ import DistrictSummary from './components/DistrictSummary';
 import RoutePlanner from './components/RoutePlanner';
 import Legend from './components/Legend';
 import BottomSheet from './components/BottomSheet';
-import { optimizeRoute, getRouteStats, buildMapsUrl } from './utils/routing';
+import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import './App.css';
 
@@ -61,9 +61,25 @@ export default function App() {
     });
   }, [activeDistrict, districtMode, flags, searchText, stores]);
 
-  const routeStats = useMemo(() => {
-    if (routeStores.length === 0) return null;
-    return getRouteStats(routeStores, gpsPosition);
+  const [routeStats, setRouteStats] = useState(null);
+  const [routeGeometry, setRouteGeometry] = useState(null);
+
+  // Fetch OSRM route stats when route changes
+  useEffect(() => {
+    if (routeStores.length === 0) {
+      setRouteStats(null);
+      setRouteGeometry(null);
+      return;
+    }
+    // Start with haversine estimate immediately
+    const localStats = getRouteStats(routeStores, gpsPosition);
+    setRouteStats(localStats);
+
+    // Then fetch OSRM for real road-network stats
+    getRouteStatsOSRM(routeStores, gpsPosition).then((stats) => {
+      setRouteStats(stats);
+      if (stats.geometry) setRouteGeometry(stats.geometry);
+    });
   }, [routeStores, gpsPosition]);
 
   const handleDistrictChange = useCallback((d) => {
@@ -99,9 +115,11 @@ export default function App() {
     setRouteStores((prev) => prev.filter((s) => s.store !== store.store));
   }, []);
 
-  const handleOptimizeRoute = useCallback(() => {
-    setRouteStores((prev) => optimizeRoute(prev, gpsPosition));
-  }, [gpsPosition]);
+  const handleOptimizeRoute = useCallback(async () => {
+    const result = await optimizeRoute(routeStores, gpsPosition);
+    setRouteStores(result.stores);
+    if (result.geometry) setRouteGeometry(result.geometry);
+  }, [routeStores, gpsPosition]);
 
   const handleClearRoute = useCallback(() => {
     setRouteStores([]);
@@ -173,6 +191,7 @@ export default function App() {
             selectedStore={selectedStore}
             onStoreSelect={handleStoreSelect}
             routeStores={routeStores}
+            routeGeometry={routeGeometry}
             activeDistrict={districtView ? activeDistrict : null}
             districtMode={districtMode}
             gpsPosition={gpsPosition}

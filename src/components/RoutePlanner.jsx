@@ -53,23 +53,34 @@ export default function RoutePlanner({
         )}
 
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          {routeStores.map((store, index) => (
-            <li key={store.store} className="route-stop">
-              <span className="route-stop-number">{index + 1}</span>
-              <div className="route-stop-info">
-                <span className="route-stop-name">
-                  {store.nickname} #{store.store}
-                </span>
-                <span className="route-stop-addr">{store.address}</span>
-              </div>
-              <button
-                className="route-stop-remove"
-                onClick={() => onRemoveFromRoute(store)}
-              >
-                ✕
-              </button>
-            </li>
-          ))}
+          {routeStores.map((store, index) => {
+            const legIdx = gpsPosition ? index : index - 1;
+            const leg = routeStats?.legs?.[legIdx];
+            return (
+              <li key={store.store}>
+                {leg && (
+                  <div className="route-leg-info">
+                    {leg.distance.toFixed(1)} mi &middot; {formatTime(leg.duration)}
+                  </div>
+                )}
+                <div className="route-stop">
+                  <span className="route-stop-number">{index + 1}</span>
+                  <div className="route-stop-info">
+                    <span className="route-stop-name">
+                      {store.nickname} #{store.store}
+                    </span>
+                    <span className="route-stop-addr">{store.address}</span>
+                  </div>
+                  <button
+                    className="route-stop-remove"
+                    onClick={() => onRemoveFromRoute(store)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="route-actions">
