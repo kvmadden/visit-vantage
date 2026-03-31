@@ -1,4 +1,4 @@
-const APP_VERSION = 'v0.5.2-layout-hints';
+const APP_VERSION = 'v0.6.0-no-overlap';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';

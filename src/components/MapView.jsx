@@ -304,11 +304,11 @@ function CityLabels({ zoom, theme }) {
       });
     }
 
-    // Run after cluster pills settle
+    // City labels run FIRST (200ms) — everything else must wait for them
     let pending = null;
     const debounced = () => {
       if (pending) clearTimeout(pending);
-      pending = setTimeout(updateVisibility, 400);
+      pending = setTimeout(updateVisibility, 200);
     };
     debounced(); // initial run
     map.on('zoomend', debounced);
@@ -492,10 +492,12 @@ function ClusteredMarkers({
       districtForGroup.push(districtKey);
     });
 
-    // Nudge cluster pills: pull toward district centroid + push apart overlaps
+    // Nudge pills: centroid pull → push apart → push away from labels
     function nudgeOverlaps() {
       try {
         const mapRect = map.getContainer().getBoundingClientRect();
+
+        // Collect pill icons with their district centroid
         const icons = [];
         clusterGroupsRef.current.forEach((group, gi) => {
           const dk = districtForGroup[gi];
@@ -509,6 +511,19 @@ function ClusteredMarkers({
           });
         });
 
+        // Collect immovable label rects (city labels + district labels)
+        const labelRects = [];
+        document.querySelectorAll('.city-label-custom').forEach((el) => {
+          if (el.offsetWidth > 0 && parseFloat(el.style.opacity) > 0) {
+            labelRects.push(el.getBoundingClientRect());
+          }
+        });
+        document.querySelectorAll('.district-label-icon').forEach((el) => {
+          if (el.offsetWidth > 0) {
+            labelRects.push(el.getBoundingClientRect());
+          }
+        });
+
         // Reset previous nudges
         for (const item of icons) {
           if (item.el.dataset.baseTransform) {
@@ -518,7 +533,7 @@ function ClusteredMarkers({
           }
         }
 
-        // Pull each pill gently toward its district centroid
+        // 1) Pull each pill toward its district centroid
         for (const item of icons) {
           if (!item.centroidPt) continue;
           const pillCx = item.rect.left + item.rect.width / 2 - mapRect.left;
@@ -526,7 +541,6 @@ function ClusteredMarkers({
           const dx = item.centroidPt.x - pillCx;
           const dy = item.centroidPt.y - pillCy;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          // Pull toward centroid — 30% pull, max 40px
           if (dist > 25) {
             const pull = Math.min(dist * 0.3, 40);
             const nx = dx / dist;
@@ -537,7 +551,7 @@ function ClusteredMarkers({
           }
         }
 
-        // Push overlapping pills apart
+        // 2) Push overlapping pills apart
         for (let pass = 0; pass < 2; pass++) {
           for (let i = 0; i < icons.length; i++) {
             for (let j = i + 1; j < icons.length; j++) {
@@ -565,18 +579,43 @@ function ClusteredMarkers({
             }
           }
         }
+
+        // 3) Push pills away from city labels and district labels (RULE #1)
+        for (let pass = 0; pass < 3; pass++) {
+          for (const item of icons) {
+            for (const lr of labelRects) {
+              const pr = item.rect;
+              const pad = 6;
+              const overlapX = Math.min(pr.right, lr.right) - Math.max(pr.left, lr.left) + pad;
+              const overlapY = Math.min(pr.bottom, lr.bottom) - Math.max(pr.top, lr.top) + pad;
+              if (overlapX > 0 && overlapY > 0) {
+                // Push pill away from label
+                const dx = (pr.left + pr.width / 2) - (lr.left + lr.width / 2) || 1;
+                const dy = (pr.top + pr.height / 2) - (lr.top + lr.height / 2) || 1;
+                const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                const nudge = Math.max(overlapX, overlapY) * 0.6 + 4;
+                const nx = dx / dist;
+                const ny = dy / dist;
+                if (!item.el.dataset.baseTransform) item.el.dataset.baseTransform = item.el.style.transform || '';
+                item.el.style.transform = item.el.dataset.baseTransform + ` translate(${nx * nudge}px, ${ny * nudge}px)`;
+                item.rect = item.el.getBoundingClientRect();
+              }
+            }
+          }
+        }
       } catch (_) { /* best-effort */ }
     }
 
-    // Run nudge after clusters settle
-    const timer = setTimeout(nudgeOverlaps, 300);
-    map.on('zoomend', nudgeOverlaps);
-    map.on('moveend', nudgeOverlaps);
+    // Run AFTER district labels are placed (500ms) — pills are lowest priority
+    const timer = setTimeout(nudgeOverlaps, 700);
+    const debouncedNudge = () => setTimeout(nudgeOverlaps, 700);
+    map.on('zoomend', debouncedNudge);
+    map.on('moveend', debouncedNudge);
 
     return () => {
       clearTimeout(timer);
-      map.off('zoomend', nudgeOverlaps);
-      map.off('moveend', nudgeOverlaps);
+      map.off('zoomend', debouncedNudge);
+      map.off('moveend', debouncedNudge);
       clusterGroupsRef.current.forEach((g) => map.removeLayer(g));
       clusterGroupsRef.current = [];
     };
@@ -785,15 +824,19 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     layer.addTo(map);
     layerRef.current = layer;
 
-    // Delay label placement so cluster pills are rendered first
+    // Delay label placement — AFTER city labels are visible (200ms) and pills settle
     let labelTimer = null;
     if (labelOpacity > 0) {
       labelTimer = setTimeout(() => {
-      // Collect visible city label rects (must avoid — higher priority)
+      const currentZoom = map.getZoom();
+      const minTier = currentZoom >= 12 ? 3 : currentZoom >= 10 ? 2 : 1;
+      // Collect city label rects — check by tier visibility, NOT opacity
+      // (city labels are always the correct position even if transitioning)
       const mapRect = map.getContainer().getBoundingClientRect();
       const cityRects = [];
       document.querySelectorAll('.city-label-custom').forEach((el) => {
-        if (el.offsetWidth > 0 && parseFloat(el.style.opacity) > 0) {
+        const tier = parseInt(el.dataset.tier);
+        if (el.offsetWidth > 0 && tier <= minTier) {
           const r = el.getBoundingClientRect();
           cityRects.push({
             left: r.left - mapRect.left,
@@ -803,7 +846,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
           });
         }
       });
-      // Collect pill rects (try to avoid — lower priority)
+      // Collect pill rects (must also avoid)
       const pillRects = [];
       document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
         if (el.offsetWidth > 0) {
@@ -919,7 +962,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         });
         L.marker([finalLL.lat, finalLL.lng], { icon, interactive: false }).addTo(layer);
       });
-      }, 350); // wait for cluster pills to settle
+      }, 500); // runs AFTER city labels (200ms) and pill initial render
     }
 
     return () => {
