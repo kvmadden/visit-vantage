@@ -211,7 +211,7 @@ function ClusteredMarkers({
         const isFaded =
           activeDistrict != null && dk !== activeDistrict;
         const opacity = isFaded ? 0.2 : 0.9;
-        const displayColor = isFaded ? '#52525b' : activeColor;
+        const displayColor = isFaded ? (theme === 'dark' ? '#a1a1aa' : '#71717a') : activeColor;
 
         const currentZoom = map.getZoom();
         const zoomScale = Math.max(0.75, 1 + (currentZoom - 13) * 0.25);

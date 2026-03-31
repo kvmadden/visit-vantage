@@ -72,7 +72,12 @@ export default function Legend({ districtMode = 'rx', theme = 'light' }) {
           cursor: 'pointer',
           fontSize: 14,
           lineHeight: 1,
-          padding: 2,
+          padding: 10,
+          minWidth: 44,
+          minHeight: 44,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
         aria-label="Close legend"
       >

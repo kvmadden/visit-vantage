@@ -11,7 +11,7 @@
   --border: #d4d4d8;
   --text-primary: #18181b;
   --text-secondary: #71717a;
-  --text-muted: #a1a1aa;
+  --text-muted: #71717a;
   --accent: #4A9EFF;
   --shadow-color: rgba(0, 0, 0, 0.12);
   --shadow-heavy: rgba(0, 0, 0, 0.18);
@@ -29,7 +29,7 @@
   --border: #3f3f46;
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
-  --text-muted: #52525b;
+  --text-muted: #a1a1aa;
   --accent: #4A9EFF;
   --shadow-color: rgba(0, 0, 0, 0.4);
   --shadow-heavy: rgba(0, 0, 0, 0.5);
@@ -208,7 +208,7 @@ body {
   background: var(--bg-base);
   color: var(--text-secondary);
   user-select: none;
-  min-height: 36px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
 }
@@ -455,14 +455,14 @@ body {
 }
 
 /* District-colored top borders */
-.store-card.border-d20 { border-top-color: #4A9EFF; }
-.store-card.border-d21 { border-top-color: #3D9A6D; }
-.store-card.border-d22 { border-top-color: #f59e0b; }
-.store-card.border-d23 { border-top-color: #ef4444; }
-.store-card.border-d24 { border-top-color: #8b5cf6; }
-.store-card.border-d25 { border-top-color: #F472B6; }
-.store-card.border-d26 { border-top-color: #06b6d4; }
-.store-card.border-d27 { border-top-color: #fb923c; }
+.store-card.border-d20, .store-card-inline.border-d20 { border-top-color: #4A9EFF; }
+.store-card.border-d21, .store-card-inline.border-d21 { border-top-color: #3D9A6D; }
+.store-card.border-d22, .store-card-inline.border-d22 { border-top-color: #f59e0b; }
+.store-card.border-d23, .store-card-inline.border-d23 { border-top-color: #ef4444; }
+.store-card.border-d24, .store-card-inline.border-d24 { border-top-color: #8b5cf6; }
+.store-card.border-d25, .store-card-inline.border-d25 { border-top-color: #F472B6; }
+.store-card.border-d26, .store-card-inline.border-d26 { border-top-color: #06b6d4; }
+.store-card.border-d27, .store-card-inline.border-d27 { border-top-color: #fb923c; }
 
 .store-card-header {
   display: flex;
@@ -656,12 +656,35 @@ body {
   font-weight: 700;
 }
 
+.district-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.district-summary-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.district-summary-dl {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
 .district-summary-stats {
   display: flex;
   gap: 16px;
   margin-top: 6px;
   font-size: 13px;
   color: var(--text-secondary);
+}
+
+.district-summary-stat {
+  white-space: nowrap;
 }
 
 /* ============================================
@@ -870,7 +893,7 @@ body {
   padding: 6px 0;
   font-size: 11px;
   color: var(--text-muted);
-  border-top: 1px solid var(--bg-surface);
+  border-top: 1px solid var(--border);
   flex-shrink: 0;
 }
 
