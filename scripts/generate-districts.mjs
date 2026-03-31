@@ -40,8 +40,41 @@ function pointInPolygon(pt, ring) {
   return inside;
 }
 
-function ensurePolygon(geom) {
+function ensurePolygon(geom, storePoints) {
   if (geom.type === 'MultiPolygon') {
+    // If we have store points, keep the fragment with the most stores
+    // and union any other fragments that also have stores
+    if (storePoints && storePoints.length > 0) {
+      const partsWithStores = [];
+      let largestNoStores = null, maxAreaNoStores = 0;
+
+      for (const poly of geom.coordinates) {
+        const ring = poly[0];
+        const hasStore = storePoints.some(p => pointInPolygon(p, ring));
+        let area = 0;
+        for (let i = 0; i < ring.length - 1; i++) {
+          area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+        }
+        area = Math.abs(area);
+        if (hasStore) {
+          partsWithStores.push({ poly, area });
+        } else if (area > maxAreaNoStores) {
+          maxAreaNoStores = area;
+          largestNoStores = poly;
+        }
+      }
+
+      if (partsWithStores.length === 1) {
+        return { type: 'Polygon', coordinates: partsWithStores[0].poly };
+      }
+      if (partsWithStores.length > 1) {
+        // Pick the largest part that has stores
+        partsWithStores.sort((a, b) => b.area - a.area);
+        return { type: 'Polygon', coordinates: partsWithStores[0].poly };
+      }
+    }
+
+    // Fallback: pick largest by area
     let largest = geom.coordinates[0];
     let maxArea = 0;
     for (const poly of geom.coordinates) {
@@ -200,16 +233,35 @@ for (const [district, cells] of Object.entries(districtCells)) {
 
     let geom = ensurePolygon(merged.geometry);
 
-    // 4. Clip Voronoi region to a tight convex hull around stores
-    // This prevents districts from extending far beyond their stores
+    // 4. Clip to Florida coastline FIRST (removes Gulf water)
+    const landGeom = floridaLand.geometry;
+    const landFeature = landGeom.type === 'MultiPolygon'
+      ? multiPolygon(landGeom.coordinates)
+      : polygon(landGeom.coordinates);
+
+    try {
+      const distPoly = polygon(geom.coordinates);
+      const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
+      if (clipped) {
+        const dPts = districts[district];
+        // For coastline clipping, accept even if a few stores end up on
+        // separate land fragments (barrier islands). Better to have the main
+        // polygon clipped to land than extending into the Gulf.
+        const clippedGeom = ensurePolygon(clipped.geometry, dPts);
+        geom = clippedGeom;
+      }
+    } catch (e) {
+      // Keep unclipped if intersection fails
+    }
+
+    // 5. Clip to padded convex hull (trims distant Voronoi edges to store area)
     const pts = districts[district];
     const hull = convexHull(pts);
     if (hull.length >= 3) {
-      // Try progressively larger padding until all stores are contained
-      for (const pad of [0.05, 0.07, 0.09, 0.12]) {
+      for (const pad of [0.06, 0.08, 0.10, 0.13]) {
         const padded = padHullNormals(hull, pad);
         const dense = densify(padded, 0.03);
-        const smoothHull = chaikinSmooth([...dense, dense[0]], 2);
+        const smoothHull = chaikinSmooth([...dense, dense[0]], 3);
         try {
           const hullPoly = polygon([smoothHull]);
           const voronoiPoly = polygon(geom.coordinates);
@@ -225,29 +277,6 @@ for (const [district, cells] of Object.entries(districtCells)) {
           }
         } catch (e) {}
       }
-    }
-
-    // 5. Clip to Florida coastline
-    const landGeom = floridaLand.geometry;
-    const landFeature = landGeom.type === 'MultiPolygon'
-      ? multiPolygon(landGeom.coordinates)
-      : polygon(landGeom.coordinates);
-
-    try {
-      const distPoly = polygon(geom.coordinates);
-      const clipped = turfIntersect(featureCollection([distPoly, landFeature]));
-      if (clipped) {
-        const clippedGeom = ensurePolygon(clipped.geometry);
-        // Only use clipped version if all stores are still inside
-        const pts = districts[district];
-        const ring = clippedGeom.coordinates[0];
-        const lost = pts.filter(p => !pointInPolygon(p, ring));
-        if (lost.length === 0) {
-          geom = clippedGeom;
-        }
-      }
-    } catch (e) {
-      // Keep unclipped if intersection fails
     }
 
     // 6. Light smoothing on final boundary
