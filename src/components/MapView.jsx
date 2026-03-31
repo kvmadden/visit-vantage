@@ -104,19 +104,18 @@ const ROUTE_COLOR = '#4A9EFF';
 // Tampa Bay area cities/places with min zoom at which they appear
 // tier 1 = major cities (always visible), tier 2 = medium (z>=10), tier 3 = neighborhoods (z>=11)
 const CITY_LABELS = [
-  // Tier 1 — major cities
+  // Tier 1 — major cities (always try to show, will reposition to avoid collisions)
   { name: 'TAMPA', lat: 27.9506, lng: -82.4572, tier: 1 },
   { name: 'ST. PETERSBURG', lat: 27.7676, lng: -82.6403, tier: 1 },
   { name: 'CLEARWATER', lat: 27.9659, lng: -82.8001, tier: 1 },
   { name: 'SARASOTA', lat: 27.3364, lng: -82.5307, tier: 1 },
   { name: 'BRADENTON', lat: 27.4989, lng: -82.5748, tier: 1 },
-  { name: 'LAKELAND', lat: 28.0395, lng: -81.9498, tier: 1 },
+  { name: 'WESLEY CHAPEL', lat: 28.2397, lng: -82.3271, tier: 1 },
   // Tier 2 — medium cities
   { name: 'Brandon', lat: 27.9378, lng: -82.2859, tier: 2 },
   { name: 'Largo', lat: 27.9095, lng: -82.7873, tier: 2 },
   { name: 'Palm Harbor', lat: 28.0836, lng: -82.7637, tier: 2 },
   { name: 'Dunedin', lat: 28.0197, lng: -82.7718, tier: 2 },
-  { name: 'Wesley Chapel', lat: 28.2397, lng: -82.3271, tier: 2 },
   { name: 'Spring Hill', lat: 28.4767, lng: -82.5276, tier: 2 },
   { name: 'Riverview', lat: 27.8661, lng: -82.3265, tier: 2 },
   { name: 'New Port Richey', lat: 28.2442, lng: -82.7193, tier: 2 },
@@ -300,37 +299,95 @@ function CityLabels({ zoom, theme }) {
           return;
         }
 
-        const pt = map.latLngToContainerPoint([city.lat, city.lng]);
+        const basePt = map.latLngToContainerPoint([city.lat, city.lng]);
         const isMajor = city.tier === 1;
         const estW = city.name.length * (isMajor ? 9 : 7);
         const estH = (isMajor ? 13 : 11) + 4;
-
-        const rect = {
-          left: pt.x - estW * 0.3,
-          right: pt.x + estW * 0.7,
-          top: pt.y - estH / 2,
-          bottom: pt.y + estH / 2,
-        };
-
         const pad = 6;
 
-        // Check collision with pills/markers
-        const hitsMarker = pillRects.some((r) =>
-          rect.left < r.right + pad && rect.right > r.left - pad &&
-          rect.top < r.bottom + pad && rect.bottom > r.top - pad
-        );
+        function makeRect(cx, cy) {
+          return {
+            left: cx - estW * 0.3,
+            right: cx + estW * 0.7,
+            top: cy - estH / 2,
+            bottom: cy + estH / 2,
+          };
+        }
 
-        // Check collision with already-placed city labels
-        const hitsLabel = placedRects.some((r) =>
-          rect.left < r.right + 8 && rect.right > r.left - 8 &&
-          rect.top < r.bottom + 8 && rect.bottom > r.top - 8
-        );
+        function hitsAnything(r) {
+          const hitsPill = pillRects.some((pr) =>
+            r.left < pr.right + pad && r.right > pr.left - pad &&
+            r.top < pr.bottom + pad && r.bottom > pr.top - pad
+          );
+          const hitsPlaced = placedRects.some((pr) =>
+            r.left < pr.right + 8 && r.right > pr.left - 8 &&
+            r.top < pr.bottom + 8 && r.bottom > pr.top - 8
+          );
+          return hitsPill || hitsPlaced;
+        }
 
-        if (hitsMarker || hitsLabel) {
+        let finalRect = makeRect(basePt.x, basePt.y);
+        let finalX = basePt.x;
+        let finalY = basePt.y;
+        let placed = !hitsAnything(finalRect);
+
+        // For tier 1 (major cities), try offset positions to find clear spot
+        if (!placed && isMajor) {
+          const offsets = [];
+          for (let r = 25; r <= 100; r += 25) {
+            for (let angle = 0; angle < 360; angle += 30) {
+              const rad = angle * Math.PI / 180;
+              offsets.push({ dx: Math.cos(rad) * r, dy: Math.sin(rad) * r });
+            }
+          }
+          for (const off of offsets) {
+            const cx = basePt.x + off.dx;
+            const cy = basePt.y + off.dy;
+            const r = makeRect(cx, cy);
+            if (!hitsAnything(r)) {
+              finalRect = r;
+              finalX = cx;
+              finalY = cy;
+              placed = true;
+              break;
+            }
+          }
+          // If still no clear spot, pick furthest from any pill
+          if (!placed) {
+            let maxMinDist = 0;
+            for (const off of offsets) {
+              const cx = basePt.x + off.dx;
+              const cy = basePt.y + off.dy;
+              let minD = Infinity;
+              for (const pr of pillRects) {
+                const pcx = (pr.left + pr.right) / 2;
+                const pcy = (pr.top + pr.bottom) / 2;
+                const d = Math.sqrt((cx - pcx) ** 2 + (cy - pcy) ** 2);
+                if (d < minD) minD = d;
+              }
+              if (minD > maxMinDist) {
+                maxMinDist = minD;
+                finalX = cx;
+                finalY = cy;
+                finalRect = makeRect(cx, cy);
+              }
+            }
+            placed = true; // major cities always show
+          }
+        }
+
+        if (!placed) {
           el.style.opacity = '0';
         } else {
+          // Reposition the marker if we moved it
+          const offsetX = finalX - basePt.x;
+          const offsetY = finalY - basePt.y;
+          if (Math.abs(offsetX) > 1 || Math.abs(offsetY) > 1) {
+            const newLL = map.containerPointToLatLng([finalX, finalY]);
+            marker.setLatLng([newLL.lat, newLL.lng]);
+          }
           el.style.opacity = String(cityOpacity);
-          placedRects.push(rect);
+          placedRects.push(finalRect);
         }
       });
     }
