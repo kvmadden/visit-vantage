@@ -110,8 +110,8 @@ const CITY_LABELS = [
   { name: 'CLEARWATER', lat: 27.9659, lng: -82.8001, tier: 1 },
   { name: 'SARASOTA', lat: 27.3364, lng: -82.5307, tier: 1 },
   { name: 'BRADENTON', lat: 27.4989, lng: -82.5748, tier: 1 },
-  { name: 'WESLEY CHAPEL', lat: 28.2397, lng: -82.3271, tier: 1 },
   // Tier 2 — medium cities
+  { name: 'Wesley Chapel', lat: 28.2397, lng: -82.3271, tier: 2 },
   { name: 'Brandon', lat: 27.9378, lng: -82.2859, tier: 2 },
   { name: 'Largo', lat: 27.9095, lng: -82.7873, tier: 2 },
   { name: 'Palm Harbor', lat: 28.0836, lng: -82.7637, tier: 2 },
