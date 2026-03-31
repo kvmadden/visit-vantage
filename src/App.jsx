@@ -1,4 +1,4 @@
-const APP_VERSION = 'v0.5.0-label-priority';
+const APP_VERSION = 'v0.5.1-city-on-top';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';

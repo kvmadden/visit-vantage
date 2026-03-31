@@ -106,8 +106,8 @@ const ROUTE_COLOR = '#4A9EFF';
 const CITY_LABELS = [
   // Tier 1 — major cities (always try to show, will reposition to avoid collisions)
   { name: 'TAMPA', lat: 27.9506, lng: -82.4572, tier: 1 },
-  { name: 'ST. PETERSBURG', lat: 27.7676, lng: -82.6403, tier: 1 },
-  { name: 'CLEARWATER', lat: 27.9659, lng: -82.8001, tier: 1 },
+  { name: 'ST. PETERSBURG', lat: 27.7676, lng: -82.6793, tier: 1 },
+  { name: 'CLEARWATER', lat: 27.9659, lng: -82.8101, tier: 1 },
   { name: 'SARASOTA', lat: 27.3364, lng: -82.5307, tier: 1 },
   { name: 'BRADENTON', lat: 27.4989, lng: -82.5748, tier: 1 },
   // Tier 2 — medium cities
@@ -228,7 +228,7 @@ function CityLabels({ zoom, theme }) {
         iconAnchor: [0, 0],
       });
 
-      const marker = L.marker([city.lat, city.lng], { icon, interactive: false });
+      const marker = L.marker([city.lat, city.lng], { icon, interactive: false, zIndexOffset: 10000 });
       group.addLayer(marker);
       markers.push({ marker, city });
     });
@@ -407,6 +407,26 @@ function ClusteredMarkers({
       buckets[key].push(store);
     });
 
+    // Pre-compute district centroids for pill nudging
+    const geoData = districtMode === 'fs' ? fsDistrictGeoJSON : rxDistrictGeoJSON;
+    const districtCentroids = {};
+    (geoData.features || []).forEach((f) => {
+      const d = f.properties.district;
+      const coords = f.geometry.coordinates[0];
+      let area = 0, cx = 0, cy = 0;
+      for (let i = 0, len = coords.length; i < len; i++) {
+        const j = (i + 1) % len;
+        const cross = coords[i][0] * coords[j][1] - coords[j][0] * coords[i][1];
+        area += cross;
+        cx += (coords[i][0] + coords[j][0]) * cross;
+        cy += (coords[i][1] + coords[j][1]) * cross;
+      }
+      area /= 2;
+      districtCentroids[d] = { lat: cy / (6 * area), lng: cx / (6 * area) };
+    });
+
+    const districtForGroup = [];
+
     // Create one cluster group per district
     Object.entries(buckets).forEach(([districtKey, districtStores]) => {
       const districtColor = colorMap[districtKey] || '#888';
@@ -468,17 +488,22 @@ function ClusteredMarkers({
 
       map.addLayer(clusterGroup);
       clusterGroupsRef.current.push(clusterGroup);
+      districtForGroup.push(districtKey);
     });
 
-    // Simple nudge: push overlapping cluster pills apart from each other
+    // Nudge cluster pills: pull toward district centroid + push apart overlaps
     function nudgeOverlaps() {
       try {
+        const mapRect = map.getContainer().getBoundingClientRect();
         const icons = [];
-        clusterGroupsRef.current.forEach((group) => {
+        clusterGroupsRef.current.forEach((group, gi) => {
+          const dk = districtForGroup[gi];
+          const centroid = districtCentroids[dk];
+          const centroidPt = centroid ? map.latLngToContainerPoint([centroid.lat, centroid.lng]) : null;
           group.eachLayer((layer) => {
             if (typeof layer.getChildCount === 'function' && layer._icon && layer._icon.offsetWidth > 0) {
               const rect = layer._icon.getBoundingClientRect();
-              icons.push({ el: layer._icon, rect });
+              icons.push({ el: layer._icon, rect, centroidPt });
             }
           });
         });
@@ -488,6 +513,25 @@ function ClusteredMarkers({
           if (item.el.dataset.baseTransform) {
             item.el.style.transform = item.el.dataset.baseTransform;
             delete item.el.dataset.baseTransform;
+            item.rect = item.el.getBoundingClientRect();
+          }
+        }
+
+        // Pull each pill gently toward its district centroid
+        for (const item of icons) {
+          if (!item.centroidPt) continue;
+          const pillCx = item.rect.left + item.rect.width / 2 - mapRect.left;
+          const pillCy = item.rect.top + item.rect.height / 2 - mapRect.top;
+          const dx = item.centroidPt.x - pillCx;
+          const dy = item.centroidPt.y - pillCy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          // Only nudge if pill is far from centroid (>40px) — gentle 20% pull
+          if (dist > 40) {
+            const pull = Math.min(dist * 0.2, 25);
+            const nx = dx / dist;
+            const ny = dy / dist;
+            if (!item.el.dataset.baseTransform) item.el.dataset.baseTransform = item.el.style.transform || '';
+            item.el.style.transform = item.el.dataset.baseTransform + ` translate(${nx * pull}px, ${ny * pull}px)`;
             item.rect = item.el.getBoundingClientRect();
           }
         }

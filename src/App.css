@@ -898,6 +898,7 @@ body {
 .city-label-icon {
   background: transparent !important;
   border: none !important;
+  z-index: 9999 !important;
 }
 
 .cvs-heart-icon,
