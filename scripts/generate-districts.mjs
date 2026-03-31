@@ -101,7 +101,7 @@ function padHullNormals(hull, padDeg) {
 }
 
 // Densify: add evenly-spaced midpoints along each edge
-function densify(hull, maxSegLen = 0.02) {
+function densify(hull, maxSegLen = 0.03) {
   const result = [];
   for (let i = 0; i < hull.length; i++) {
     const a = hull[i];
@@ -115,6 +115,29 @@ function densify(hull, maxSegLen = 0.02) {
     }
   }
   return result;
+}
+
+// Laplacian smoothing: average each vertex with its neighbors (circular)
+// This irons out wobbles while preserving the overall shape
+function laplacianSmooth(points, passes = 4, weight = 0.5) {
+  let pts = points.map(p => [...p]);
+  const n = pts.length;
+  for (let pass = 0; pass < passes; pass++) {
+    const next = [];
+    for (let i = 0; i < n; i++) {
+      const prev = pts[(i - 1 + n) % n];
+      const curr = pts[i];
+      const nxt = pts[(i + 1) % n];
+      const avgX = (prev[0] + nxt[0]) / 2;
+      const avgY = (prev[1] + nxt[1]) / 2;
+      next.push([
+        curr[0] + (avgX - curr[0]) * weight,
+        curr[1] + (avgY - curr[1]) * weight,
+      ]);
+    }
+    pts = next;
+  }
+  return pts;
 }
 
 // Chaikin corner-cutting subdivision
@@ -179,12 +202,14 @@ const features = Object.entries(districts).map(([district, points]) => {
     padded = padHullNormals(hull, 0.08);
   }
 
-  // Densify long edges so Chaikin has enough vertices to round corners
-  const dense = densify(padded, 0.015);
+  // Densify long edges so smoothing has enough vertices to work with
+  const dense = densify(padded, 0.03);
 
-  // Heavy Chaikin smoothing — 5 iterations rounds corners into curves
-  // while preserving the elongated/corridor shape
-  const smooth = chaikinSmooth(dense, 5);
+  // Laplacian smoothing irons out wobbles/sharp angles
+  const ironed = laplacianSmooth(dense, 4, 0.5);
+
+  // Chaikin corner-cutting rounds remaining corners into curves
+  const smooth = chaikinSmooth(ironed, 5);
 
   // Close the ring
   const ring = [...smooth, smooth[0]];
