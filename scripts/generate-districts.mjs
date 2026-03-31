@@ -548,6 +548,34 @@ const fsDistricts = fs.districts;
       if (pointInPolygon(store3001, f2.geometry.coordinates[0])) {
         console.log('Exception FS D2: causeway bridge to Clearwater Beach');
       }
+
+      // Re-clip to padded convex hull — the bridge exception fixes the hull
+      // check that previously failed (store 3001 was outside after coastline clip)
+      const pts = fsDistricts[2];
+      const hull = convexHull(pts);
+      if (hull.length >= 3) {
+        for (const pad of [0.04, 0.06, 0.08, 0.10]) {
+          const padded = padHullNormals(hull, pad);
+          const dense = densify(padded, 0.03);
+          const smoothHull = chaikinSmooth([...dense, dense[0]], 3);
+          try {
+            const hullPoly = polygon([smoothHull]);
+            const distPoly = polygon(f2.geometry.coordinates);
+            const clipped = turfIntersect(featureCollection([distPoly, hullPoly]));
+            if (clipped) {
+              const clippedGeom = ensurePolygon(clipped.geometry);
+              const ring = clippedGeom.coordinates[0];
+              const lost = pts.filter(p => !pointInPolygon(p, ring));
+              if (lost.length === 0) {
+                f2.geometry = clippedGeom;
+                console.log(`  → D2 re-trimmed to hull (pad=${pad})`);
+                break;
+              }
+            }
+          } catch (e) {}
+        }
+      }
+
       smoothFeature(f2, fsDistricts[2], 2);
     }
   }
