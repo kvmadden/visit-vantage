@@ -9,6 +9,7 @@ import RoutePlanner from './components/RoutePlanner';
 import Legend from './components/Legend';
 import LayerPanel from './components/LayerPanel';
 import BottomSheet from './components/BottomSheet';
+import WeatherWidget from './components/WeatherWidget';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import './App.css';
@@ -163,6 +164,7 @@ export default function App() {
           </span>
         </div>
         <div className="header-right">
+          <WeatherWidget />
           <span className="header-badge">REGION 41</span>
           <button
             className="theme-toggle"

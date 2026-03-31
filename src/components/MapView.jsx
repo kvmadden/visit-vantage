@@ -3,6 +3,7 @@ import {
   MapContainer,
   TileLayer,
   Polyline,
+  Circle,
   CircleMarker,
   Tooltip,
   useMap,
@@ -579,6 +580,36 @@ export default function MapView({
 
       <CompetitorMarkers showCompetitors={showCompetitors} />
       <RoutePolyline routeStores={routeStores} routeGeometry={routeGeometry} />
+
+      {/* Drive-time rings around selected store */}
+      {selectedStore && (
+        <>
+          <Circle
+            center={[selectedStore.lat, selectedStore.lng]}
+            radius={4023} // ~2.5 miles ≈ 5 min at 30mph
+            pathOptions={{
+              color: 'var(--accent)',
+              fillColor: 'var(--accent)',
+              fillOpacity: 0.04,
+              weight: 1,
+              dashArray: '4, 4',
+              opacity: 0.3,
+            }}
+          />
+          <Circle
+            center={[selectedStore.lat, selectedStore.lng]}
+            radius={8047} // ~5 miles ≈ 10 min at 30mph
+            pathOptions={{
+              color: 'var(--accent)',
+              fillColor: 'var(--accent)',
+              fillOpacity: 0.02,
+              weight: 1,
+              dashArray: '6, 6',
+              opacity: 0.2,
+            }}
+          />
+        </>
+      )}
 
       {gpsPosition && <GpsMarker position={gpsPosition} />}
 

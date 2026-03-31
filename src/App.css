@@ -134,6 +134,30 @@ body {
   color: var(--text-secondary);
 }
 
+.weather-widget {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.weather-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.weather-temp {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.weather-desc {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
 .theme-toggle {
   width: 36px;
   height: 36px;
