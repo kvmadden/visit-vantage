@@ -263,10 +263,10 @@ const clippedFeatures = features.map(f => {
   return f;
 });
 
-// --- Minimize overlap: for each district, subtract tight hulls of other districts ---
-// Build a tight hull (small buffer) around each district's stores, then for each
-// district polygon, subtract other districts' tight hulls. This carves away the
-// portions of a district that intrude into another district's core territory.
+// --- Zero-overlap partitioning ---
+// For each pair of overlapping districts, compute the overlap region,
+// determine which district should claim it (nearest store wins),
+// and subtract it from the losing district.
 
 function ensurePolygon(geom) {
   if (geom.type === 'MultiPolygon') {
@@ -286,48 +286,176 @@ function ensurePolygon(geom) {
   return geom;
 }
 
-// Build tight hulls for each district (convex hull + very small padding + light smoothing)
-const tightHulls = {};
-Object.entries(districts).forEach(([d, pts]) => {
-  let hull = convexHull(pts);
-  if (hull.length < 3) return;
-  const padded = padHullNormals(hull, 0.01); // very tight ~1km
-  const dense = densify(padded, 0.03);
-  const smooth = chaikinSmooth(dense, 3);
-  const ring = [...smooth, smooth[0]];
-  tightHulls[Number(d)] = ring;
-});
+function dist2(a, b) {
+  const dx = a[0] - b[0], dy = a[1] - b[1];
+  return dx * dx + dy * dy;
+}
 
-// For each district, subtract tight hulls of all other districts
+function nearestStoreDist(point, stores) {
+  let min = Infinity;
+  for (const s of stores) {
+    const d = dist2(point, s);
+    if (d < min) min = d;
+  }
+  return min;
+}
+
+// Centroid of a polygon ring
+function ringCentroid(ring) {
+  let cx = 0, cy = 0, n = 0;
+  for (let i = 0; i < ring.length - 1; i++) {
+    cx += ring[i][0]; cy += ring[i][1]; n++;
+  }
+  return [cx / n, cy / n];
+}
+
 let partitioned = clippedFeatures.map(f => ({ ...f }));
 
-for (let i = 0; i < partitioned.length; i++) {
-  const di = partitioned[i].properties.district;
-  const myStores = districts[di];
+// Sequential subtraction: each district subtracts all others.
+// For each pair, the one whose stores are farther from the overlap loses the overlap.
+// Run multiple passes until stable.
+for (let pass = 0; pass < 10; pass++) {
+  let resolved = 0;
+  for (let i = 0; i < partitioned.length; i++) {
+    for (let j = i + 1; j < partitioned.length; j++) {
+      const di = partitioned[i].properties.district;
+      const dj = partitioned[j].properties.district;
 
-  for (let j = 0; j < partitioned.length; j++) {
-    if (i === j) continue;
-    const dj = partitioned[j].properties.district;
-    const otherHull = tightHulls[dj];
-    if (!otherHull) continue;
+      try {
+        const polyI = polygon(partitioned[i].geometry.coordinates);
+        const polyJ = polygon(partitioned[j].geometry.coordinates);
 
-    try {
-      const distPoly = polygon(partitioned[i].geometry.coordinates);
-      const otherPoly = polygon([otherHull]);
-      const diff = turfDifference(featureCollection([distPoly, otherPoly]));
-      if (diff) {
-        const newGeom = ensurePolygon(diff.geometry);
-        // Only accept if all our stores are still inside
-        const ring = newGeom.coordinates[0];
-        const lost = myStores.filter(p => !pointInPolygon(p, ring));
-        if (lost.length === 0) {
-          partitioned[i] = { ...partitioned[i], geometry: newGeom };
+        const overlap = turfIntersect(featureCollection([polyI, polyJ]));
+        if (!overlap) continue;
+
+        const overlapGeom = ensurePolygon(overlap.geometry);
+        const overlapRing = overlapGeom.coordinates[0];
+
+        // Skip tiny overlaps
+        let area = 0;
+        for (let k = 0; k < overlapRing.length - 1; k++) {
+          area += overlapRing[k][0] * overlapRing[k + 1][1] - overlapRing[k + 1][0] * overlapRing[k][1];
         }
-      }
-    } catch (e) {
-      // If difference fails, keep current
+        if (Math.abs(area) < 0.000001) continue;
+
+        const overlapPoly = polygon(overlapGeom.coordinates);
+
+        // Try subtracting from i
+        const diffI = turfDifference(featureCollection([polyI, overlapPoly]));
+        const canSubI = diffI ? (() => {
+          const g = ensurePolygon(diffI.geometry);
+          return districts[di].filter(p => !pointInPolygon(p, g.coordinates[0])).length === 0 ? g : null;
+        })() : null;
+
+        // Try subtracting from j
+        const diffJ = turfDifference(featureCollection([polyJ, overlapPoly]));
+        const canSubJ = diffJ ? (() => {
+          const g = ensurePolygon(diffJ.geometry);
+          return districts[dj].filter(p => !pointInPolygon(p, g.coordinates[0])).length === 0 ? g : null;
+        })() : null;
+
+        if (canSubI && canSubJ) {
+          // Both can give up the overlap — give it to whoever has closer stores
+          const center = ringCentroid(overlapRing);
+          const dI = nearestStoreDist(center, districts[di]);
+          const dJ = nearestStoreDist(center, districts[dj]);
+          if (dI <= dJ) {
+            // i is closer — subtract from j
+            partitioned[j] = { ...partitioned[j], geometry: canSubJ };
+          } else {
+            partitioned[i] = { ...partitioned[i], geometry: canSubI };
+          }
+          resolved++;
+        } else if (canSubI) {
+          partitioned[i] = { ...partitioned[i], geometry: canSubI };
+          resolved++;
+        } else if (canSubJ) {
+          partitioned[j] = { ...partitioned[j], geometry: canSubJ };
+          resolved++;
+        }
+        // Neither can give up the full overlap — both have stores there.
+        // Split the overlap using nearest-store Voronoi: build a dividing
+        // polyline through the overlap based on which district's store is closest.
+        const overlapPoly2 = polygon(overlapGeom.coordinates);
+        try {
+          // Use the actual stores in the overlap to compute the split line
+          const storesInI = districts[di].filter(p => pointInPolygon(p, overlapRing));
+          const storesInJ = districts[dj].filter(p => pointInPolygon(p, overlapRing));
+
+          if (storesInI.length > 0 && storesInJ.length > 0) {
+            // Centroid of each district's stores in the overlap
+            const ciX = storesInI.reduce((s, p) => s + p[0], 0) / storesInI.length;
+            const ciY = storesInI.reduce((s, p) => s + p[1], 0) / storesInI.length;
+            const cjX = storesInJ.reduce((s, p) => s + p[0], 0) / storesInJ.length;
+            const cjY = storesInJ.reduce((s, p) => s + p[1], 0) / storesInJ.length;
+
+            // Build half-plane between these two centers, shifted so both
+            // sets of stores stay on their correct side
+            const dx = cjX - ciX, dy = cjY - ciY;
+            const dlen = Math.sqrt(dx * dx + dy * dy) || 1;
+            const ux = dx / dlen, uy = dy / dlen;
+
+            // Project stores onto this axis to find the safe gap
+            let maxProjI = -Infinity, minProjJ = Infinity;
+            for (const p of storesInI) {
+              const proj = (p[0] - ciX) * ux + (p[1] - ciY) * uy;
+              if (proj > maxProjI) maxProjI = proj;
+            }
+            for (const p of storesInJ) {
+              const proj = (p[0] - ciX) * ux + (p[1] - ciY) * uy;
+              if (proj < minProjJ) minProjJ = proj;
+            }
+            // Place in the gap (or midpoint if interleaved)
+            const bisProj = (maxProjI + minProjJ) / 2;
+            const mx = ciX + ux * bisProj;
+            const my = ciY + uy * bisProj;
+            const sz = 5;
+            const tx = -uy, ty = ux;
+            const nnx = -ux, nny = -uy;
+            const p1 = [mx + tx * sz, my + ty * sz];
+            const p2 = [mx - tx * sz, my - ty * sz];
+            const p3 = [mx - tx * sz + nnx * sz, my - ty * sz + nny * sz];
+            const p4 = [mx + tx * sz + nnx * sz, my + ty * sz + nny * sz];
+            const hp = polygon([[p1, p2, p3, p4, p1]]);
+
+            // i gets overlap ∩ half-plane-toward-i; j loses that part
+            // j gets overlap ∩ half-plane-toward-j; i loses that part
+            const overlapForI = turfIntersect(featureCollection([overlapPoly2, hp]));
+            if (overlapForI) {
+              const removeFromJ = ensurePolygon(overlapForI.geometry);
+              const remPoly = polygon(removeFromJ.coordinates);
+              const newJ = turfDifference(featureCollection([polyJ, remPoly]));
+              if (newJ) {
+                const gJ = ensurePolygon(newJ.geometry);
+                const lostJ = districts[dj].filter(p => !pointInPolygon(p, gJ.coordinates[0]));
+                if (lostJ.length === 0) {
+                  partitioned[j] = { ...partitioned[j], geometry: gJ };
+                  resolved++;
+                }
+              }
+            }
+
+            const overlapForJ = turfDifference(featureCollection([overlapPoly2, hp]));
+            if (overlapForJ) {
+              const removeFromI = ensurePolygon(overlapForJ.geometry);
+              const remPoly = polygon(removeFromI.coordinates);
+              const newI = turfDifference(featureCollection([polyI, remPoly]));
+              if (newI) {
+                const gI = ensurePolygon(newI.geometry);
+                const lostI = districts[di].filter(p => !pointInPolygon(p, gI.coordinates[0]));
+                if (lostI.length === 0) {
+                  partitioned[i] = { ...partitioned[i], geometry: gI };
+                  resolved++;
+                }
+              }
+            }
+          }
+        } catch (e) {}
+      } catch (e) {}
     }
   }
+  if (resolved === 0) break;
+  console.log(`Pass ${pass + 1}: resolved ${resolved} overlaps`);
 }
 
 // Verify containment
