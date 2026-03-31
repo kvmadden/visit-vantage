@@ -105,11 +105,12 @@ const ROUTE_COLOR = '#4A9EFF';
 // tier 1 = major cities (always visible), tier 2 = medium (z>=10), tier 3 = neighborhoods (z>=11)
 const CITY_LABELS = [
   // Tier 1 — major cities (always try to show, will reposition to avoid collisions)
-  { name: 'TAMPA', lat: 27.9506, lng: -82.4572, tier: 1 },
-  { name: 'ST. PETERSBURG', lat: 27.7676, lng: -82.6793, tier: 1 },
-  { name: 'CLEARWATER', lat: 27.9659, lng: -82.8101, tier: 1 },
-  { name: 'SARASOTA', lat: 27.3364, lng: -82.5307, tier: 1 },
-  { name: 'BRADENTON', lat: 27.4989, lng: -82.5748, tier: 1 },
+  // Positioned so the middle of the name sits on land (extending into water is fine)
+  { name: 'TAMPA', lat: 27.99, lng: -82.53, tier: 1 },
+  { name: 'ST. PETERSBURG', lat: 27.7676, lng: -82.79, tier: 1 },
+  { name: 'CLEARWATER', lat: 27.9659, lng: -82.88, tier: 1 },
+  { name: 'SARASOTA', lat: 27.3364, lng: -82.58, tier: 1 },
+  { name: 'BRADENTON', lat: 27.52, lng: -82.63, tier: 1 },
   // Tier 2 — medium cities
   { name: 'Wesley Chapel', lat: 28.2397, lng: -82.3271, tier: 2 },
   { name: 'Brandon', lat: 27.9378, lng: -82.2859, tier: 2 },
@@ -525,9 +526,9 @@ function ClusteredMarkers({
           const dx = item.centroidPt.x - pillCx;
           const dy = item.centroidPt.y - pillCy;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          // Only nudge if pill is far from centroid (>40px) — gentle 20% pull
-          if (dist > 40) {
-            const pull = Math.min(dist * 0.2, 25);
+          // Pull toward centroid — 30% pull, max 40px
+          if (dist > 25) {
+            const pull = Math.min(dist * 0.3, 40);
             const nx = dx / dist;
             const ny = dy / dist;
             if (!item.el.dataset.baseTransform) item.el.dataset.baseTransform = item.el.style.transform || '';
@@ -691,9 +692,20 @@ function HomeControl({ stores }) {
   return null;
 }
 
+// Per-district label position biases (lat/lng offsets from centroid)
+// Positive dlat = north, negative dlng = west
+const DISTRICT_LABEL_HINTS = {
+  20: { dlat: -0.06, dlng: 0 },      // below Tampa
+  21: { dlat: 0.04, dlng: 0.02 },    // upper area, nudge right
+  22: { dlat: -0.08, dlng: -0.04 },  // down near coast tip, left
+  24: { dlat: 0.06, dlng: 0 },       // move up
+  26: { dlat: -0.02, dlng: -0.02 },  // slight down-left under Bradenton
+  27: { dlat: 0, dlng: 0.06 },       // move right
+};
+
 // ---------------------------------------------------------------------------
 // DistrictClouds — colored territory overlays that fade as you zoom in
-// District labels placed at polygon centroid, inside the district
+// District labels placed at polygon centroid with per-district hints
 // ---------------------------------------------------------------------------
 function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme }) {
   const map = useMap();
@@ -759,9 +771,11 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         const centroidLng = cx / (6 * area);
         const centroidLat = cy / (6 * area);
 
+        // Apply per-district position hint if available
+        const hint = DISTRICT_LABEL_HINTS[d] || { dlat: 0, dlng: 0 };
         labelData.push({
-          lat: centroidLat,
-          lng: centroidLng,
+          lat: centroidLat + (hint.dlat || 0),
+          lng: centroidLng + (hint.dlng || 0),
           color: feature.properties.color,
           label: feature.properties.label,
         });

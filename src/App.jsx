@@ -1,4 +1,4 @@
-const APP_VERSION = 'v0.5.1-city-on-top';
+const APP_VERSION = 'v0.5.2-layout-hints';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
