@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RX_COLORS } from "../utils/colors";
+import { getDemoTags } from "../utils/demographics";
 
 export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRoute, isInRoute, inline }) {
   const [expanded, setExpanded] = useState(false);
@@ -7,6 +8,8 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
   if (!store) return null;
 
   const borderClass = store.rxDistrict ? `border-d${store.rxDistrict}` : "";
+
+  const demoTags = getDemoTags(store);
 
   const badges = [];
   if (store.target === true) badges.push({ label: "TARGET", className: "badge-target" });
@@ -52,6 +55,15 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
       {store.intersection && (
         <div className="store-address" style={{ fontSize: 12, color: "var(--text-muted)" }}>
           {store.intersection}
+        </div>
+      )}
+
+      {/* Demographic context tags */}
+      {demoTags.length > 0 && (
+        <div className="store-demo-tags">
+          {demoTags.map((tag) => (
+            <span key={tag} className="demo-tag">{tag}</span>
+          ))}
         </div>
       )}
 

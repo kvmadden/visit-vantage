@@ -358,6 +358,39 @@ const RoutePolyline = memo(function RoutePolyline({ routeStores }) {
 });
 
 // ---------------------------------------------------------------------------
+// HomeControl — reset map to full Region 41 view
+// ---------------------------------------------------------------------------
+function HomeControl({ stores }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const control = L.control({ position: 'topright' });
+    control.onAdd = () => {
+      const btn = L.DomUtil.create('div', 'leaflet-bar leaflet-control home-control');
+      btn.innerHTML = `<a href="#" title="Region 41 Home" role="button" aria-label="Reset to Region 41 view" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--bg-surface);color:var(--text-primary);text-decoration:none;font-size:16px;border-radius:4px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </a>`;
+      L.DomEvent.disableClickPropagation(btn);
+      btn.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!stores || stores.length === 0) return;
+        const lats = stores.map((s) => s.lat);
+        const lngs = stores.map((s) => s.lng);
+        map.fitBounds(
+          [[Math.min(...lats), Math.min(...lngs)], [Math.max(...lats), Math.max(...lngs)]],
+          { padding: [20, 20] }
+        );
+      });
+      return btn;
+    };
+    control.addTo(map);
+    return () => control.remove();
+  }, [map, stores]);
+
+  return null;
+}
+
+// ---------------------------------------------------------------------------
 // DistrictClouds — colored territory overlays that fade as you zoom in
 // ---------------------------------------------------------------------------
 function DistrictClouds({ zoom, activeDistrict, showClouds }) {
@@ -468,6 +501,7 @@ export default function MapView({
       <TileLayer key={theme} url={tileUrl} attribution={TILE_ATTRIBUTION} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <FitAllStores stores={stores} />
+      <HomeControl stores={stores} />
 
       <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} />
 

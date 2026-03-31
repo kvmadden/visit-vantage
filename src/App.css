@@ -444,6 +444,26 @@ body {
   flex-shrink: 0;
 }
 
+/* Demographic context tags */
+.store-demo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.demo-tag {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+
 /* Badges */
 .badge {
   display: inline-flex;
