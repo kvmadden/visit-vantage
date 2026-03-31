@@ -201,15 +201,16 @@ const features = Object.entries(districts).map(([district, points]) => {
   // Pad outward along edge normals — preserves shape proportions
   // Try progressively larger padding until all stores are contained
   // AFTER the full smoothing pipeline (smoothing shrinks polygons inward)
+  // Use lighter Laplacian (2 passes, 0.35 weight) to reduce shrinkage → less padding → less overlap
   let smooth;
-  for (const pad of [0.07, 0.09, 0.12, 0.15, 0.19]) {
+  for (const pad of [0.04, 0.055, 0.07, 0.09, 0.12, 0.15]) {
     const padded = padHullNormals(hull, pad);
     const dense = densify(padded, 0.03);
-    const ironed = laplacianSmooth(dense, 4, 0.5);
-    smooth = chaikinSmooth(ironed, 5);
+    const ironed = laplacianSmooth(dense, 2, 0.35);
+    smooth = chaikinSmooth(ironed, 4);
     const outside = points.filter(p => !pointInPolygon(p, smooth));
     if (outside.length === 0) break;
-    if (pad === 0.19) {
+    if (pad === 0.15) {
       console.warn(`D${district}: ${outside.length} stores still outside at max padding`);
     }
   }
