@@ -39,15 +39,15 @@ function clusterHeartSvg(color, size, opacity = 0.9, count = 2) {
   const stroke = darkenHexStr(color);
   const label = String(count);
   const fontSize = label.length > 2 ? 8 : label.length > 1 ? 9 : 10;
-  // Wider viewBox to fit the stacked heart + badge
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="-4 -2 40 36">
+  // Shadow heart down-left, main heart on top, subtle badge top-right
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="-6 -4 42 38">
     <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
-      fill="${color}" fill-opacity="${opacity * 0.35}" stroke="${stroke}" stroke-width="0.3" transform="translate(3,-1.5) scale(0.85)"/>
+      fill="${color}" fill-opacity="${opacity * 0.4}" stroke="${stroke}" stroke-width="0.3" transform="translate(-4,3) scale(0.88)"/>
     <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
       fill="${color}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="0.5"/>
-    <circle cx="28" cy="4" r="8" fill="#fff"/>
-    <circle cx="28" cy="4" r="6.5" fill="${color}"/>
-    <text x="28" y="4.5" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="${fontSize}" dominant-baseline="central">${label}</text>
+    <circle cx="28" cy="2" r="7" fill="#fff" fill-opacity="0.7"/>
+    <circle cx="28" cy="2" r="5.8" fill="${color}"/>
+    <text x="28" y="2.5" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="${fontSize}" dominant-baseline="central">${label}</text>
   </svg>`;
 }
 
