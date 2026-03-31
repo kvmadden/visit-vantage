@@ -14,23 +14,6 @@ export default function Legend({ districtMode = 'rx', theme = 'light' }) {
       <button
         className="legend-toggle"
         onClick={() => setIsOpen(true)}
-        style={{
-          position: 'fixed',
-          bottom: 16,
-          right: 16,
-          width: 36,
-          height: 36,
-          borderRadius: '50%',
-          border: '1px solid var(--border)',
-          background: 'var(--bg-surface)',
-          cursor: 'pointer',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 3,
-          zIndex: 1000,
-        }}
         aria-label="Open legend"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -43,61 +26,21 @@ export default function Legend({ districtMode = 'rx', theme = 'light' }) {
   }
 
   return (
-    <div
-      className="legend fade-in"
-      style={{
-        position: 'fixed',
-        bottom: 16,
-        right: 16,
-        background: 'var(--bg-base)',
-        border: '1px solid var(--border)',
-        borderRadius: 8,
-        padding: '12px 16px',
-        zIndex: 1000,
-        minWidth: 150,
-        color: 'var(--text-primary)',
-        fontSize: 13,
-        fontFamily: 'inherit',
-      }}
-    >
+    <div className="legend-panel fade-in">
       <button
+        className="legend-close"
         onClick={() => setIsOpen(false)}
-        style={{
-          position: 'absolute',
-          top: 6,
-          right: 8,
-          background: 'none',
-          border: 'none',
-          color: 'var(--text-secondary)',
-          cursor: 'pointer',
-          fontSize: 14,
-          lineHeight: 1,
-          padding: 10,
-          minWidth: 44,
-          minHeight: 44,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
         aria-label="Close legend"
       >
         ✕
       </button>
 
-      <div style={{ fontWeight: 600, marginBottom: 8 }}>
+      <div className="legend-title">
         {isRx ? 'Rx Districts' : 'FS Districts'}
       </div>
 
       {Object.keys(colorMap).map((key) => (
-        <div
-          key={key}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            marginBottom: 4,
-          }}
-        >
+        <div key={key} className="legend-item">
           <svg width="12" height="12" viewBox="0 0 32 32" style={{ flexShrink: 0 }}>
             <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
               fill={colorMap[key]} />
@@ -108,14 +51,8 @@ export default function Legend({ districtMode = 'rx', theme = 'light' }) {
 
       {isRx && (
         <>
-          <hr
-            style={{
-              border: 'none',
-              borderTop: '1px solid var(--border)',
-              margin: '8px 0',
-            }}
-          />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <hr className="legend-separator" />
+          <div className="legend-item">
             <svg width="10" height="10" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
               <circle cx="12" cy="12" r="10.5" fill="#71717a" />
               <circle cx="12" cy="12" r="7.5" fill={bullseyeInner} />
