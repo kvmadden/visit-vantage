@@ -714,7 +714,6 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     }
 
     const labelData = [];
-
     const geoData = districtMode === 'fs' ? fsDistrictGeoJSON : rxDistrictGeoJSON;
 
     const layer = L.geoJSON(geoData, {
@@ -750,53 +749,129 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
       },
     });
 
+    layer.addTo(map);
+    layerRef.current = layer;
+
+    // Delay label placement so cluster pills are rendered first
+    let labelTimer = null;
     if (labelOpacity > 0) {
-      // Nudge district labels apart if they'd overlap
-      const projected = labelData.map((ld) => {
-        const pt = map.latLngToContainerPoint([ld.lat, ld.lng]);
-        return { ...ld, x: pt.x, y: pt.y };
+      labelTimer = setTimeout(() => {
+      // Collect visible pill/marker rects for collision avoidance
+      const mapRect = map.getContainer().getBoundingClientRect();
+      const pillRects = [];
+      document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
+        if (el.offsetWidth > 0) {
+          const r = el.getBoundingClientRect();
+          pillRects.push({
+            left: r.left - mapRect.left,
+            right: r.right - mapRect.left,
+            top: r.top - mapRect.top,
+            bottom: r.bottom - mapRect.top,
+          });
+        }
       });
 
-      for (let pass = 0; pass < 3; pass++) {
-        for (let i = 0; i < projected.length; i++) {
-          for (let j = i + 1; j < projected.length; j++) {
-            const dx = projected[j].x - projected[i].x;
-            const dy = projected[j].y - projected[i].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const minDist = 70;
-            if (dist < minDist && dist > 0) {
-              const overlap = (minDist - dist) / 2;
-              const nx = dx / dist;
-              const ny = dy / dist;
-              projected[i].x -= nx * overlap;
-              projected[i].y -= ny * overlap;
-              projected[j].x += nx * overlap;
-              projected[j].y += ny * overlap;
-            }
-          }
+      const labelSize = 16;
+      const estLabelW = 45; // approximate width of "D20" etc at 16px
+      const estLabelH = 22;
+      const pad = 8;
+
+      // For each district, find best position that avoids pills
+      const placedDistrictRects = [];
+
+      function hitsAnything(cx, cy) {
+        const left = cx - estLabelW / 2;
+        const right = cx + estLabelW / 2;
+        const top = cy - estLabelH / 2;
+        const bottom = cy + estLabelH / 2;
+        // Check pills
+        for (const r of pillRects) {
+          if (left < r.right + pad && right > r.left - pad &&
+              top < r.bottom + pad && bottom > r.top - pad) return true;
         }
+        // Check already-placed district labels
+        for (const r of placedDistrictRects) {
+          if (left < r.right + pad && right > r.left - pad &&
+              top < r.bottom + pad && bottom > r.top - pad) return true;
+        }
+        return false;
       }
 
-      const labelSize = 16;
       const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.85)';
       const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
 
-      projected.forEach((p) => {
-        const finalLL = map.containerPointToLatLng([p.x, p.y]);
+      labelData.forEach((ld) => {
+        const centroidPt = map.latLngToContainerPoint([ld.lat, ld.lng]);
+
+        // Try centroid first, then search in a grid of offsets within the polygon area
+        let bestX = centroidPt.x;
+        let bestY = centroidPt.y;
+
+        if (hitsAnything(bestX, bestY)) {
+          // Search candidate positions: offset from centroid in a spiral pattern
+          const offsets = [];
+          for (let r = 30; r <= 120; r += 30) {
+            for (let angle = 0; angle < 360; angle += 45) {
+              const rad = angle * Math.PI / 180;
+              offsets.push({ dx: Math.cos(rad) * r, dy: Math.sin(rad) * r });
+            }
+          }
+
+          let found = false;
+          for (const off of offsets) {
+            const cx = centroidPt.x + off.dx;
+            const cy = centroidPt.y + off.dy;
+            if (!hitsAnything(cx, cy)) {
+              bestX = cx;
+              bestY = cy;
+              found = true;
+              break;
+            }
+          }
+
+          // If no clear spot found, pick the offset furthest from any pill
+          if (!found) {
+            let maxMinDist = 0;
+            for (const off of offsets) {
+              const cx = centroidPt.x + off.dx;
+              const cy = centroidPt.y + off.dy;
+              let minDist = Infinity;
+              for (const r of pillRects) {
+                const rcx = (r.left + r.right) / 2;
+                const rcy = (r.top + r.bottom) / 2;
+                const d = Math.sqrt((cx - rcx) ** 2 + (cy - rcy) ** 2);
+                if (d < minDist) minDist = d;
+              }
+              if (minDist > maxMinDist) {
+                maxMinDist = minDist;
+                bestX = cx;
+                bestY = cy;
+              }
+            }
+          }
+        }
+
+        placedDistrictRects.push({
+          left: bestX - estLabelW / 2,
+          right: bestX + estLabelW / 2,
+          top: bestY - estLabelH / 2,
+          bottom: bestY + estLabelH / 2,
+        });
+
+        const finalLL = map.containerPointToLatLng([bestX, bestY]);
         const icon = L.divIcon({
-          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:${labelSize}px;color:${p.color};opacity:${labelOpacity};text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${p.label}</div>`,
+          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:${labelSize}px;color:${ld.color};opacity:${labelOpacity};text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${ld.label}</div>`,
           className: 'district-label-icon',
           iconSize: [60, 24],
           iconAnchor: [30, 12],
         });
         L.marker([finalLL.lat, finalLL.lng], { icon, interactive: false }).addTo(layer);
       });
+      }, 350); // wait for cluster pills to settle
     }
 
-    layer.addTo(map);
-    layerRef.current = layer;
-
     return () => {
+      if (labelTimer) clearTimeout(labelTimer);
       if (layerRef.current) {
         map.removeLayer(layerRef.current);
         layerRef.current = null;
