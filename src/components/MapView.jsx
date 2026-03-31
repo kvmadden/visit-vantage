@@ -254,37 +254,10 @@ function CityLabels({ zoom, theme }) {
       const currentZoom = map.getZoom();
       const minTier = currentZoom >= 12 ? 3 : currentZoom >= 10 ? 2 : 1;
 
-      // City labels fade at high zoom — once you're deep in one city you don't need the name
+      // City labels fade at high zoom
       const cityOpacity = currentZoom <= 10 ? 0.9 : currentZoom <= 12 ? 0.6 : currentZoom <= 13 ? 0.35 : 0;
 
-      // Collect all visible pill/marker rects from DOM
-      const mapRect = map.getContainer().getBoundingClientRect();
-      const pillRects = [];
-      document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
-        if (el.offsetWidth > 0) {
-          const r = el.getBoundingClientRect();
-          pillRects.push({
-            left: r.left - mapRect.left,
-            right: r.right - mapRect.left,
-            top: r.top - mapRect.top,
-            bottom: r.bottom - mapRect.top,
-          });
-        }
-      });
-
-      // Also collect district label rects
-      document.querySelectorAll('.district-label-icon').forEach((el) => {
-        if (el.offsetWidth > 0) {
-          const r = el.getBoundingClientRect();
-          pillRects.push({
-            left: r.left - mapRect.left,
-            right: r.right - mapRect.left,
-            top: r.top - mapRect.top,
-            bottom: r.bottom - mapRect.top,
-          });
-        }
-      });
-
+      // City labels are FIRST PRIORITY — only check against other city labels
       const placedRects = [];
       const bounds = map.getBounds();
 
@@ -292,102 +265,40 @@ function CityLabels({ zoom, theme }) {
         const el = marker._icon?.querySelector('.city-label-custom');
         if (!el) return;
 
-        // Hide if tier not visible at this zoom, or if off-screen
+        // Reset position to natural lat/lng each pass
+        marker.setLatLng([city.lat, city.lng]);
+
+        // Hide if tier not visible at this zoom, or off-screen
         if (city.tier > minTier || cityOpacity <= 0 ||
             !bounds.contains([city.lat, city.lng])) {
           el.style.opacity = '0';
           return;
         }
 
-        const basePt = map.latLngToContainerPoint([city.lat, city.lng]);
+        const pt = map.latLngToContainerPoint([city.lat, city.lng]);
         const isMajor = city.tier === 1;
         const estW = city.name.length * (isMajor ? 9 : 7);
         const estH = (isMajor ? 13 : 11) + 4;
-        const pad = 6;
 
-        function makeRect(cx, cy) {
-          return {
-            left: cx - estW * 0.3,
-            right: cx + estW * 0.7,
-            top: cy - estH / 2,
-            bottom: cy + estH / 2,
-          };
-        }
+        const rect = {
+          left: pt.x - estW * 0.3,
+          right: pt.x + estW * 0.7,
+          top: pt.y - estH / 2,
+          bottom: pt.y + estH / 2,
+        };
 
-        function hitsAnything(r) {
-          const hitsPill = pillRects.some((pr) =>
-            r.left < pr.right + pad && r.right > pr.left - pad &&
-            r.top < pr.bottom + pad && r.bottom > pr.top - pad
-          );
-          const hitsPlaced = placedRects.some((pr) =>
-            r.left < pr.right + 8 && r.right > pr.left - 8 &&
-            r.top < pr.bottom + 8 && r.bottom > pr.top - 8
-          );
-          return hitsPill || hitsPlaced;
-        }
+        // Only check city-to-city collision (cities are top priority)
+        const hitsOtherCity = placedRects.some((r) =>
+          rect.left < r.right + 8 && rect.right > r.left - 8 &&
+          rect.top < r.bottom + 8 && rect.bottom > r.top - 8
+        );
 
-        let finalRect = makeRect(basePt.x, basePt.y);
-        let finalX = basePt.x;
-        let finalY = basePt.y;
-        let placed = !hitsAnything(finalRect);
-
-        // For tier 1 (major cities), try offset positions to find clear spot
-        if (!placed && isMajor) {
-          const offsets = [];
-          for (let r = 25; r <= 100; r += 25) {
-            for (let angle = 0; angle < 360; angle += 30) {
-              const rad = angle * Math.PI / 180;
-              offsets.push({ dx: Math.cos(rad) * r, dy: Math.sin(rad) * r });
-            }
-          }
-          for (const off of offsets) {
-            const cx = basePt.x + off.dx;
-            const cy = basePt.y + off.dy;
-            const r = makeRect(cx, cy);
-            if (!hitsAnything(r)) {
-              finalRect = r;
-              finalX = cx;
-              finalY = cy;
-              placed = true;
-              break;
-            }
-          }
-          // If still no clear spot, pick furthest from any pill
-          if (!placed) {
-            let maxMinDist = 0;
-            for (const off of offsets) {
-              const cx = basePt.x + off.dx;
-              const cy = basePt.y + off.dy;
-              let minD = Infinity;
-              for (const pr of pillRects) {
-                const pcx = (pr.left + pr.right) / 2;
-                const pcy = (pr.top + pr.bottom) / 2;
-                const d = Math.sqrt((cx - pcx) ** 2 + (cy - pcy) ** 2);
-                if (d < minD) minD = d;
-              }
-              if (minD > maxMinDist) {
-                maxMinDist = minD;
-                finalX = cx;
-                finalY = cy;
-                finalRect = makeRect(cx, cy);
-              }
-            }
-            placed = true; // major cities always show
-          }
-        }
-
-        if (!placed) {
+        // Tier 1 always shows; tier 2/3 hide if overlapping another city
+        if (hitsOtherCity && !isMajor) {
           el.style.opacity = '0';
         } else {
-          // Reposition the marker if we moved it
-          const offsetX = finalX - basePt.x;
-          const offsetY = finalY - basePt.y;
-          if (Math.abs(offsetX) > 1 || Math.abs(offsetY) > 1) {
-            const newLL = map.containerPointToLatLng([finalX, finalY]);
-            marker.setLatLng([newLL.lat, newLL.lng]);
-          }
           el.style.opacity = String(cityOpacity);
-          placedRects.push(finalRect);
+          placedRects.push(rect);
         }
       });
     }
@@ -501,7 +412,7 @@ function ClusteredMarkers({
       const districtColor = colorMap[districtKey] || '#888';
 
       const clusterGroup = L.markerClusterGroup({
-        maxClusterRadius: (z) => (z <= 10 ? 100 : z <= 12 ? 65 : 40),
+        maxClusterRadius: (z) => (z <= 9 ? 160 : z <= 10 ? 120 : z <= 12 ? 65 : 40),
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
@@ -813,13 +724,13 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     let labelTimer = null;
     if (labelOpacity > 0) {
       labelTimer = setTimeout(() => {
-      // Collect visible pill/marker rects for collision avoidance
+      // Collect visible city label rects for collision avoidance (city labels are higher priority)
       const mapRect = map.getContainer().getBoundingClientRect();
-      const pillRects = [];
-      document.querySelectorAll('.cluster-pill-icon, .cvs-heart-icon, .target-bullseye-icon').forEach((el) => {
-        if (el.offsetWidth > 0) {
+      const cityRects = [];
+      document.querySelectorAll('.city-label-custom').forEach((el) => {
+        if (el.offsetWidth > 0 && parseFloat(el.style.opacity) > 0) {
           const r = el.getBoundingClientRect();
-          pillRects.push({
+          cityRects.push({
             left: r.left - mapRect.left,
             right: r.right - mapRect.left,
             top: r.top - mapRect.top,
@@ -841,8 +752,8 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         const right = cx + estLabelW / 2;
         const top = cy - estLabelH / 2;
         const bottom = cy + estLabelH / 2;
-        // Check pills
-        for (const r of pillRects) {
+        // Check city labels (higher priority — district labels must avoid them)
+        for (const r of cityRects) {
           if (left < r.right + pad && right > r.left - pad &&
               top < r.bottom + pad && bottom > r.top - pad) return true;
         }
@@ -886,14 +797,14 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
             }
           }
 
-          // If no clear spot found, pick the offset furthest from any pill
+          // If no clear spot found, pick the offset furthest from any city label
           if (!found) {
             let maxMinDist = 0;
             for (const off of offsets) {
               const cx = centroidPt.x + off.dx;
               const cy = centroidPt.y + off.dy;
               let minDist = Infinity;
-              for (const r of pillRects) {
+              for (const r of cityRects) {
                 const rcx = (r.left + r.right) / 2;
                 const rcy = (r.top + r.bottom) / 2;
                 const d = Math.sqrt((cx - rcx) ** 2 + (cy - rcy) ** 2);
