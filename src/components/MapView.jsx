@@ -52,7 +52,7 @@ function darkenHexStr(hex, amount = 40) {
 
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
-const DOT_ZOOM = 10; // At or below this zoom, use small circle dots instead of branded icons
+const DOT_ZOOM = 12; // At or below this zoom, use small circle dots instead of branded icons
 
 const TILE_URL =
   'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
@@ -141,7 +141,9 @@ const StoreMarker = memo(function StoreMarker({
 
   // At low zoom, render lightweight canvas CircleMarkers instead of SVG divIcons
   if (zoom <= DOT_ZOOM) {
-    const radius = isSelected ? 7 : (isTarget ? 3 : 4);
+    const dotScale = zoom <= 9 ? 0 : (zoom - 9) * 1.5;
+    const baseRadius = isTarget ? 3 : 4;
+    const radius = isSelected ? 7 : baseRadius + dotScale;
     return (
       <CircleMarker
         center={[store.lat, store.lng]}
@@ -162,9 +164,9 @@ const StoreMarker = memo(function StoreMarker({
   }
 
   // At higher zoom, use branded heart/bullseye icons
-  const zoomScale = zoom <= 11 ? 1 : 1 + (zoom - 11) * 0.3;
-  const baseHeart = isSelected ? 24 : 18;
-  const baseBullseye = isSelected ? 17 : 13;
+  const zoomScale = 1 + (zoom - DOT_ZOOM - 1) * 0.3;
+  const baseHeart = isSelected ? 22 : 16;
+  const baseBullseye = isSelected ? 15 : 11;
   const heartSize = Math.round(baseHeart * zoomScale);
   const bullseyeSize = Math.round(baseBullseye * zoomScale);
 
