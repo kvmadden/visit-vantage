@@ -222,8 +222,27 @@ function ClusteredMarkers({
 }
 
 // ---------------------------------------------------------------------------
-// GPS position marker
+// FitAllStores — on initial load, fit map to show all stores
 // ---------------------------------------------------------------------------
+function FitAllStores({ stores }) {
+  const map = useMap();
+  const hasFit = useRef(false);
+
+  useEffect(() => {
+    if (hasFit.current || !stores || stores.length === 0) return;
+    hasFit.current = true;
+
+    const lats = stores.map((s) => s.lat);
+    const lngs = stores.map((s) => s.lng);
+    const bounds = [
+      [Math.min(...lats), Math.min(...lngs)],
+      [Math.max(...lats), Math.max(...lngs)],
+    ];
+    map.fitBounds(bounds, { padding: [20, 20], animate: false });
+  }, [stores, map]);
+
+  return null;
+}
 const GpsMarker = memo(function GpsMarker({ position }) {
   return (
     <CircleMarker
@@ -285,10 +304,13 @@ export default function MapView({
       center={DEFAULT_CENTER}
       zoom={DEFAULT_ZOOM}
       zoomControl={false}
+      zoomSnap={0.25}
+      zoomDelta={0.5}
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
       <ZoomTracker onZoomChange={handleZoomChange} />
+      <FitAllStores stores={stores} />
 
       <ClusteredMarkers
         stores={stores}
