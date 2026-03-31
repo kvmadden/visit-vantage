@@ -268,7 +268,7 @@
     "address": "7351 W Hillsborough Ave",
     "city": "Tampa",
     "zip": "33634",
-    "nickname": "Hillsborough y Más",
+    "nickname": "Hillsborough y M\u00e1s",
     "intersection": null,
     "fs24": "No",
     "rx24": "No",
@@ -359,8 +359,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.25217,
-    "lng": -82.18881,
+    "lat": 28.2518924,
+    "lng": -82.1889941,
     "target": false
   },
   {
@@ -489,8 +489,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.09893,
-    "lng": -82.38511,
+    "lat": 27.0989595,
+    "lng": -82.3851273,
     "target": false
   },
   {
@@ -931,8 +931,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.0882,
-    "lng": -82.4673,
+    "lat": 28.0886251,
+    "lng": -82.4671052,
     "target": false
   },
   {
@@ -1373,8 +1373,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.76897,
-    "lng": -82.391988,
+    "lat": 27.7689705,
+    "lng": -82.3919881,
     "target": false
   },
   {
@@ -1425,8 +1425,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.33945,
-    "lng": -82.46293,
+    "lat": 27.3377206,
+    "lng": -82.4611819,
     "target": false
   },
   {
@@ -2101,8 +2101,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 28.1807,
-    "lng": -82.3227,
+    "lat": 28.1760224,
+    "lng": -82.3465725,
     "target": false
   },
   {
@@ -3583,8 +3583,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.89536,
-    "lng": -82.333087,
+    "lat": 27.8936884,
+    "lng": -82.3342699,
     "target": true
   },
   {
@@ -3713,8 +3713,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.49678,
-    "lng": -82.471603,
+    "lat": 27.4967815,
+    "lng": -82.4716034,
     "target": true
   }
 ]
