@@ -162,7 +162,8 @@ function ClusteredMarkers({
         zoomToBoundsOnClick: true,
         iconCreateFunction: (cluster) => {
           const count = cluster.getChildCount();
-          const size = count <= 3 ? 32 : count <= 10 ? 38 : count <= 25 ? 44 : 50;
+          // Continuous scaling: 26px at 1 store, grows with sqrt for visual area proportion
+          const size = Math.round(26 + 6 * Math.sqrt(count));
           return L.divIcon({
             html: heartSvg(districtColor, size, 0.9, String(count)),
             className: 'cluster-heart-icon',
@@ -212,7 +213,74 @@ function ClusteredMarkers({
       clusterGroupsRef.current.push(clusterGroup);
     });
 
+    // Nudge overlapping cluster icons from different districts apart
+    function nudgeOverlaps() {
+      const icons = [];
+      clusterGroupsRef.current.forEach((group) => {
+        // Get visible cluster markers (not individual markers)
+        group.getLayers().forEach(() => {}); // ensure initialized
+        const visible = [];
+        group.eachLayer((layer) => {
+          if (layer._icon && layer._icon.offsetWidth > 0) {
+            const rect = layer._icon.getBoundingClientRect();
+            visible.push({ layer, rect, group });
+          }
+        });
+        // Also check cluster parents
+        if (group._topClusterLevel) {
+          const collectClusters = (cluster) => {
+            if (cluster._icon && cluster._icon.offsetWidth > 0) {
+              const rect = cluster._icon.getBoundingClientRect();
+              icons.push({ cluster, rect });
+            }
+            if (cluster._childClusters) {
+              cluster._childClusters.forEach(collectClusters);
+            }
+          };
+          collectClusters(group._topClusterLevel);
+        }
+      });
+
+      // Check pairwise for overlaps and nudge via CSS transform
+      for (let i = 0; i < icons.length; i++) {
+        for (let j = i + 1; j < icons.length; j++) {
+          const a = icons[i].rect;
+          const b = icons[j].rect;
+          const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+          const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+          if (overlapX > 0 && overlapY > 0) {
+            // Push them apart by half the overlap + small gap
+            const nudge = Math.min(overlapX, overlapY) / 2 + 4;
+            const aCx = a.left + a.width / 2;
+            const bCx = b.left + b.width / 2;
+            const aCy = a.top + a.height / 2;
+            const bCy = b.top + b.height / 2;
+            const dx = bCx - aCx || 1;
+            const dy = bCy - aCy || 1;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            const iconA = icons[i].cluster._icon;
+            const iconB = icons[j].cluster._icon;
+            if (iconA && iconB) {
+              const curA = iconA.style.transform || '';
+              const curB = iconB.style.transform || '';
+              iconA.style.transform = curA + ` translate(${-nx * nudge}px, ${-ny * nudge}px)`;
+              iconB.style.transform = curB + ` translate(${nx * nudge}px, ${ny * nudge}px)`;
+            }
+          }
+        }
+      }
+    }
+
+    // Run nudge after clusters settle
+    const timer = setTimeout(nudgeOverlaps, 300);
+    map.on('zoomend moveend', nudgeOverlaps);
+
     return () => {
+      clearTimeout(timer);
+      map.off('zoomend moveend', nudgeOverlaps);
       clusterGroupsRef.current.forEach((g) => map.removeLayer(g));
       clusterGroupsRef.current = [];
     };
