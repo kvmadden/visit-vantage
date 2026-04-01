@@ -84,12 +84,12 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
 
 const DEFAULT_CENTER = [27.85, -82.48];
 const DEFAULT_ZOOM = 9;
-const MIN_ZOOM = 8;
+const MIN_ZOOM = 9;
 const MAX_ZOOM = 18;
 // Bounding box for the Tampa Bay region — prevents panning outside this area
 const MAX_BOUNDS = [
-  [26.4, -83.3], // SW corner
-  [29.0, -81.3], // NE corner
+  [26.8, -83.1], // SW corner
+  [28.7, -81.5], // NE corner
 ];
 
 const TILE_BASE = {

@@ -1,4 +1,4 @@
-const APP_VERSION = 'v0.6.0-no-overlap';
+const APP_VERSION = 'v0.6.1-lock-view';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
