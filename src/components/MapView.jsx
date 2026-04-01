@@ -16,6 +16,7 @@ import { RX_COLORS, FS_COLORS } from '../utils/colors';
 import rxDistrictGeoJSON from '../data/districts.json';
 import fsDistrictGeoJSON from '../data/fs-districts.json';
 import competitors from '../data/competitors.json';
+import EasterEggs from './EasterEggs';
 import { LABEL_POSITIONS } from '../config/labelPositions';
 
 // Standalone helper for SVG string context (no DOM access)
@@ -1002,6 +1003,7 @@ export default function MapView({
       />
 
       <CompetitorMarkers showCompetitors={showCompetitors} />
+      <EasterEggs zoom={zoom} theme={theme} />
       <RoutePolyline routeStores={routeStores} routeGeometry={routeGeometry} />
 
       {/* Drive-time rings around selected store */}
