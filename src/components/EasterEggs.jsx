@@ -1308,6 +1308,10 @@ export default function EasterEggs({ zoom, theme }) {
     foundRef.current = markFound(egg.id);
     marker.setPopupContent(buildPopupHtml(egg, foundRef.current));
 
+    // Clear any existing auto-fade timers
+    if (marker._eggFadeTimer) clearTimeout(marker._eggFadeTimer);
+    if (marker._eggCloseTimer) clearTimeout(marker._eggCloseTimer);
+
     // Swap to activated SVG
     const gen = SVG_GENERATORS[egg.svgKey];
     if (gen) {
@@ -1322,8 +1326,14 @@ export default function EasterEggs({ zoom, theme }) {
         iconAnchor: [w / 2, 0],
         popupAnchor: [0, -4],
       }));
-      // Revert after 2s
-      setTimeout(() => {
+
+      // Revert icon when popup closes (not on a fixed timer)
+      marker.once('popupclose', () => {
+        clearTimeout(marker._eggFadeTimer);
+        clearTimeout(marker._eggCloseTimer);
+        // Reset popup opacity for next open
+        const el = marker.getPopup()?._container;
+        if (el) { el.style.transition = ''; el.style.opacity = ''; }
         animatingRef.current.delete(egg.id);
         const restingSvg = svgCacheRef.current[egg.id];
         if (restingSvg) {
@@ -1338,7 +1348,20 @@ export default function EasterEggs({ zoom, theme }) {
             popupAnchor: [0, -4],
           }));
         }
-      }, 3000);
+      });
+
+      // Auto-fade popup after 8s reading time
+      marker._eggFadeTimer = setTimeout(() => {
+        const popup = marker.getPopup();
+        const el = popup?._container;
+        if (el && marker.isPopupOpen()) {
+          el.style.transition = 'opacity 1.5s ease';
+          el.style.opacity = '0';
+          marker._eggCloseTimer = setTimeout(() => {
+            marker.closePopup();
+          }, 1500);
+        }
+      }, 8000);
     }
   }, [theme, map]);
 

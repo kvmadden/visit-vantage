@@ -15,7 +15,7 @@ export const EASTER_EGGS = [
     id: 'kraken',
     lat: 27.62,
     lng: -82.82,
-    minZoom: 9,
+    minZoom: 10,
     maxZoom: 16,
     size: [54, 38],
     title: 'Release the Kraken!',
