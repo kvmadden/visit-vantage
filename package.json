@@ -21,6 +21,7 @@
     "@turf/intersect": "^7.3.4",
     "@turf/union": "^7.3.4",
     "@turf/voronoi": "^7.3.4",
+    "html2canvas": "^1.4.1",
     "jsdom": "^29.0.1",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",

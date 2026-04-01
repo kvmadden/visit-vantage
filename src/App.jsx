@@ -20,6 +20,9 @@ import QuickFilterChips, { CHIPS } from './components/QuickFilterChips';
 import CommuteCard from './components/CommuteCard';
 import ProximityAlert from './components/ProximityAlert';
 import MapBookmarks from './components/MapBookmarks';
+import RouteExport from './components/RouteExport';
+import StoreComparison from './components/StoreComparison';
+import MapAnnotations from './components/MapAnnotations';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import { markStoreViewed, getViewedStores } from './utils/storeStatus';
@@ -42,6 +45,8 @@ export default function App() {
   const [sessionConfig, setSessionConfig] = useState(null);
   const [quickFilters, setQuickFilters] = useState([]);
   const [mapRef, setMapRef] = useState(null);
+  const [compareStores, setCompareStores] = useState([]);
+  const [annotations, setAnnotations] = useState([]);
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('visitvantage-theme') || 'light';
   });
@@ -250,6 +255,29 @@ export default function App() {
     if (mapRef) mapRef.flyTo([bm.lat, bm.lng], bm.zoom, { duration: 0.6 });
   }, [mapRef]);
 
+  const handleAddToCompare = useCallback((store) => {
+    setCompareStores((prev) => {
+      if (prev.some((s) => s.store === store.store)) return prev;
+      return [...prev, store].slice(0, 3);
+    });
+  }, []);
+
+  const handleCloseCompare = useCallback(() => {
+    setCompareStores([]);
+  }, []);
+
+  const handleAddAnnotation = useCallback((text) => {
+    setAnnotations((prev) => [...prev, { text, timestamp: Date.now() }]);
+  }, []);
+
+  const handleRemoveAnnotation = useCallback((index) => {
+    setAnnotations((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const handleClearAnnotations = useCallback(() => {
+    setAnnotations([]);
+  }, []);
+
   const handleBottomSheetCollapse = useCallback(() => {
     setSelectedStore(null);
   }, []);
@@ -440,10 +468,21 @@ export default function App() {
                 routeStores={routeStores}
                 onStoreSelect={handleStoreSelect}
                 showWeekendFilter={quickFilters.includes('weekendHours')}
+                onAddToCompare={handleAddToCompare}
                 inline
               />
             </div>
           )}
+
+          {/* Map annotations */}
+          <div className="bs-section">
+            <MapAnnotations
+              annotations={annotations}
+              onAdd={handleAddAnnotation}
+              onRemove={handleRemoveAnnotation}
+              onClear={handleClearAnnotations}
+            />
+          </div>
 
           {/* Route planner */}
           {routeStores.length > 0 && (
@@ -464,6 +503,14 @@ export default function App() {
                 onStopStatusChange={handleStopStatusChange}
                 inline
               />
+              <RouteExport routeStores={routeStores} routeStats={routeStats} sessionConfig={sessionConfig} />
+            </div>
+          )}
+
+          {/* Store comparison */}
+          {compareStores.length >= 2 && (
+            <div className="bs-section">
+              <StoreComparison stores={compareStores} onClose={handleCloseCompare} onStoreSelect={handleStoreSelect} />
             </div>
           )}
         </BottomSheet>

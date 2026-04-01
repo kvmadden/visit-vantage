@@ -63,7 +63,7 @@ function getNearbyStores(store, allStores, activeDistrict, districtMode) {
 export default function StoreCard({
   store, onClose, onAddToRoute, onRemoveFromRoute, isInRoute, inline,
   allStores, activeDistrict, districtMode, routeStores, onStoreSelect,
-  showWeekendFilter,
+  showWeekendFilter, onAddToCompare,
 }) {
   var expanded = useState(false);
   var isExpanded = expanded[0];
@@ -386,6 +386,11 @@ export default function StoreCard({
           Directions ↗
           <span className="directions-sublabel">Opens in Maps</span>
         </a>
+        {onAddToCompare && (
+          <button className="btn btn-secondary" style={{ fontSize: 12, padding: '6px 12px' }} onClick={function () { onAddToCompare(store); }}>
+            Compare
+          </button>
+        )}
       </div>
 
       <div className="store-actions" style={{ marginTop: 8 }}>
