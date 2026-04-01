@@ -1259,10 +1259,10 @@ const SVG_GENERATORS = {
 // Zoom-responsive sizing — more aggressive scaling so eggs grow with zoom
 // ---------------------------------------------------------------------------
 function scaledSize(baseSize, currentZoom) {
-  const zoomScale = Math.max(0.8, 1 + (currentZoom - 11) * 0.3);
+  const zoomScale = Math.max(0.85, 1 + (currentZoom - 11) * 0.35);
   return [
-    Math.max(Math.round(baseSize[0] * 0.7), Math.round(baseSize[0] * zoomScale)),
-    Math.max(Math.round(baseSize[1] * 0.7), Math.round(baseSize[1] * zoomScale)),
+    Math.max(Math.round(baseSize[0] * 0.75), Math.round(baseSize[0] * zoomScale)),
+    Math.max(Math.round(baseSize[1] * 0.75), Math.round(baseSize[1] * zoomScale)),
   ];
 }
 
@@ -1272,8 +1272,10 @@ function scaledSize(baseSize, currentZoom) {
 function zoomOpacity(currentZoom, minZoom, maxZoom) {
   const range = Math.max(1, maxZoom - minZoom);
   const progress = Math.min(1, Math.max(0, (currentZoom - minZoom) / range));
-  // 0.12 at minZoom → 0.85 at maxZoom
-  return 0.12 + progress * 0.73;
+  // 0.4 at minZoom → 1.0 at maxZoom
+  // Internal SVG opacity (c.op ~0.35-0.4) already provides subtlety,
+  // so container opacity just controls zoom-based fade-in
+  return 0.4 + progress * 0.6;
 }
 
 // ---------------------------------------------------------------------------
