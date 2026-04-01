@@ -368,6 +368,12 @@ export default function App() {
                 onAddToRoute={handleAddToRoute}
                 onRemoveFromRoute={handleRemoveFromRoute}
                 isInRoute={routeStores.some((s) => s.store === selectedStore.store)}
+                allStores={stores}
+                activeDistrict={activeDistrict}
+                districtMode={districtMode}
+                routeStores={routeStores}
+                onStoreSelect={handleStoreSelect}
+                showWeekendFilter={quickFilters.includes('weekendHours')}
                 inline
               />
             </div>

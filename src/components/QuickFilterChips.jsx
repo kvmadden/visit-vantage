@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { getPharmacyStatus } from '../utils/storeHours';
+import { getPharmacyStatus, hasWeekendDifference } from '../utils/storeHours';
 
 const CHIPS = [
   { key: 'openNow', label: 'Open now', filter: (s, now) => getPharmacyStatus(s, now) === 'open' },
@@ -9,6 +9,7 @@ const CHIPS = [
   { key: 'minuteClinic', label: 'MinuteClinic', filter: (s) => s.minuteClinic === 'Yes' },
   { key: 'driveThru', label: 'Drive-Thru', filter: (s) => s.driveThru === 'Yes' },
   { key: 'ymas', label: 'y más', filter: (s) => s.ymas === 'Yes' },
+  { key: 'weekendHours', label: 'Wknd diff', filter: (s) => hasWeekendDifference(s) },
 ];
 
 export default function QuickFilterChips({ stores, activeChips, onToggleChip }) {
