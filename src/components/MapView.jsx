@@ -288,8 +288,9 @@ function CityLabels({ zoom, theme }) {
 
     function updateVisibility() {
       const currentZoom = map.getZoom();
-      const minTier = currentZoom >= 12 ? 3 : currentZoom >= 10 ? 2 : 1;
-      const cityOpacity = currentZoom <= 10 ? 0.9 : currentZoom <= 12 ? 0.6 : currentZoom <= 13 ? 0.35 : 0;
+      // At zoom 11+, CARTO label tiles handle city/street names — hide custom labels
+      const minTier = currentZoom >= 11 ? 0 : currentZoom >= 10 ? 2 : 1;
+      const cityOpacity = currentZoom < 11 ? 0.9 : 0;
 
       markersRef.current.forEach(({ marker, city }) => {
         const el = marker._icon?.querySelector('.city-label-custom');
