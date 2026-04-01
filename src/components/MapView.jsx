@@ -517,28 +517,6 @@ function ClusteredMarkers({
   return null;
 }
 
-// ---------------------------------------------------------------------------
-// FitAllStores — on initial load, fit map to show all stores
-// ---------------------------------------------------------------------------
-function FitAllStores({ stores }) {
-  const map = useMap();
-  const hasFit = useRef(false);
-
-  useEffect(() => {
-    if (hasFit.current || !stores || stores.length === 0) return;
-    hasFit.current = true;
-
-    const lats = stores.map((s) => s.lat);
-    const lngs = stores.map((s) => s.lng);
-    const bounds = [
-      [Math.min(...lats), Math.min(...lngs)],
-      [Math.max(...lats), Math.max(...lngs)],
-    ];
-    map.fitBounds(bounds, { padding: [20, 20], animate: false });
-  }, [stores, map]);
-
-  return null;
-}
 const GpsMarker = memo(function GpsMarker({ position }) {
   return (
     <CircleMarker
@@ -807,7 +785,6 @@ export default function MapView({
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <ViewTracker />
-      <FitAllStores stores={stores} />
       <HomeControl stores={stores} />
 
       <DistrictClouds zoom={zoom} activeDistrict={activeDistrict} showClouds={showClouds} districtMode={districtMode} theme={theme} />

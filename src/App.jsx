@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.1.6-wider-bounds';
+const APP_VERSION = 'v1.1.7-no-fitbounds';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
