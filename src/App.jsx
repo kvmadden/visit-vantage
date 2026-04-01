@@ -1,4 +1,4 @@
-const APP_VERSION = 'v0.6.2-tight-bounds';
+const APP_VERSION = 'v1.0.0-hardcoded';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
