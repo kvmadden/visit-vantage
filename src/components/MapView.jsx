@@ -452,45 +452,60 @@ function ClusteredMarkers({
 
     if (currentZoom < 9) {
       // ---- HARDCODED PILLS at max zoom-out (8.5) ----
-      // One pill per district at config position, showing total store count
+      // One or two pills per district depending on config
       Object.entries(buckets).forEach(([dk, districtStores]) => {
-        const pos = LABEL_POSITIONS.pills[dk];
-        if (!pos) return;
+        const posConfig = LABEL_POSITIONS.pills[dk];
+        if (!posConfig) return;
 
         const districtColor = colorMap[dk] || '#888';
         const isActive = activeDistrict == null || activeDistrict == dk;
-        const count = districtStores.length;
-        const pill = clusterPillSvg(districtColor, count);
+        const positions = Array.isArray(posConfig) ? posConfig : [posConfig];
 
-        const icon = L.divIcon({
-          html: pill.html,
-          className: 'cluster-pill-icon',
-          iconSize: [pill.width, pill.height],
-          iconAnchor: [pill.width / 2, pill.height / 2],
+        // For split districts, divide stores geographically by latitude median
+        let subGroups;
+        if (positions.length > 1) {
+          const sorted = [...districtStores].sort((a, b) => b.lat - a.lat);
+          const mid = Math.ceil(sorted.length / 2);
+          subGroups = [sorted.slice(0, mid), sorted.slice(mid)];
+        } else {
+          subGroups = [districtStores];
+        }
+
+        positions.forEach((pos, idx) => {
+          const groupStores = subGroups[idx] || subGroups[0];
+          const count = groupStores.length;
+          const pill = clusterPillSvg(districtColor, count);
+
+          const icon = L.divIcon({
+            html: pill.html,
+            className: 'cluster-pill-icon',
+            iconSize: [pill.width, pill.height],
+            iconAnchor: [pill.width / 2, pill.height / 2],
+          });
+
+          const marker = L.marker([pos.lat, pos.lng], {
+            icon,
+            opacity: isActive ? 1 : 0.3,
+          });
+
+          // Click to zoom into the sub-group's bounds
+          marker.on('click', () => {
+            const lats = groupStores.map((s) => s.lat);
+            const lngs = groupStores.map((s) => s.lng);
+            map.fitBounds(
+              [[Math.min(...lats), Math.min(...lngs)], [Math.max(...lats), Math.max(...lngs)]],
+              { padding: [40, 40] }
+            );
+          });
+
+          marker.bindTooltip(`District ${dk}: ${count} stores`, {
+            direction: 'top',
+            offset: [0, -12],
+          });
+
+          marker.addTo(map);
+          layerRef.current.push(marker);
         });
-
-        const marker = L.marker([pos.lat, pos.lng], {
-          icon,
-          opacity: isActive ? 1 : 0.3,
-        });
-
-        // Click to zoom into district
-        marker.on('click', () => {
-          const lats = districtStores.map((s) => s.lat);
-          const lngs = districtStores.map((s) => s.lng);
-          map.fitBounds(
-            [[Math.min(...lats), Math.min(...lngs)], [Math.max(...lats), Math.max(...lngs)]],
-            { padding: [40, 40] }
-          );
-        });
-
-        marker.bindTooltip(`District ${dk}: ${count} stores`, {
-          direction: 'top',
-          offset: [0, -12],
-        });
-
-        marker.addTo(map);
-        layerRef.current.push(marker);
       });
     } else {
       // Helper to build a marker icon for a single store

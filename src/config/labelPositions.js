@@ -18,15 +18,25 @@ export const LABEL_POSITIONS = {
 
   // Heart pill badges (store count per district) — shown at zoom <= 10
   // At zoom > 10, markerCluster takes over and positions dynamically
+  // Arrays = split into sub-clusters (sorted north-to-south by lat)
   pills: {
     20: { lat: 28.03, lng: -82.50 },
-    21: { lat: 28.30, lng: -82.30 },
+    21: [
+      { lat: 28.44, lng: -82.52 },
+      { lat: 28.20, lng: -82.36 },
+    ],
     22: { lat: 27.82, lng: -82.75 },
     23: { lat: 27.90, lng: -82.66 },
     24: { lat: 28.15, lng: -82.55 },
-    25: { lat: 27.88, lng: -82.32 },
+    25: [
+      { lat: 27.96, lng: -82.30 },
+      { lat: 27.72, lng: -82.38 },
+    ],
     26: { lat: 27.49, lng: -82.55 },
-    27: { lat: 27.06, lng: -82.22 },
+    27: [
+      { lat: 27.21, lng: -82.47 },
+      { lat: 27.00, lng: -82.20 },
+    ],
   },
 
   // City names — tier 1 only (tier 2/3 use their geographic positions)
