@@ -373,6 +373,107 @@ const SVG_GENERATORS = {
       <path d="M0 15 Q4 14 8 15 Q12 16 16 15" fill="none" stroke="${c.water}" stroke-width="0.4" stroke-opacity="${c.op * 0.3}"/>
     </svg>`;
   },
+
+  // --- Batch 3: Food & History ---
+
+  cubanSandwich(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 12">
+      <path d="M2 3 Q12 1 22 3" fill="${c.accent}" fill-opacity="${c.op * 0.3}" stroke="${c.accent}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <rect x="2" y="3" width="20" height="6" rx="3" fill="${c.accent}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <line x1="4" y1="5" x2="20" y2="5" stroke="${c.green}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}"/>
+      <line x1="4" y1="6.5" x2="20" y2="6.5" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op * 0.4}"/>
+      <line x1="4" y1="8" x2="20" y2="8" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <line x1="6" y1="2" x2="8" y2="10" stroke="${c.stroke}" stroke-width="0.2" stroke-opacity="${c.op * 0.3}"/>
+      <line x1="12" y1="2" x2="14" y2="10" stroke="${c.stroke}" stroke-width="0.2" stroke-opacity="${c.op * 0.3}"/>
+      <line x1="18" y1="2" x2="20" y2="10" stroke="${c.stroke}" stroke-width="0.2" stroke-opacity="${c.op * 0.3}"/>
+    </svg>`;
+  },
+
+  grouper(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
+      <path d="M3 7 Q5 3 10 3 Q15 3 18 5 Q20 6 20 7 Q20 8 18 9 Q15 11 10 11 Q5 11 3 7Z" fill="${c.brown}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M18 5 L21 3 L21 5" fill="${c.brown}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <path d="M18 9 L21 11 L21 9" fill="${c.brown}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <circle cx="6" cy="6" r="0.6" fill="${c.stroke}" fill-opacity="${c.op * 0.6}"/>
+      <path d="M3 7 L1 6.5" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
+      <circle cx="9" cy="5" r="0.3" fill="${c.stroke}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="12" cy="6" r="0.3" fill="${c.stroke}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="14" cy="8" r="0.3" fill="${c.stroke}" fill-opacity="${c.op * 0.3}"/>
+    </svg>`;
+  },
+
+  orange(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+      <circle cx="8" cy="9" r="6" fill="${c.accent}" fill-opacity="${c.op * 0.35}" stroke="${c.accent}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M8 3 L8 2 Q9 1 10 2" fill="none" stroke="${c.green}" stroke-width="0.6" stroke-opacity="${c.op}" stroke-linecap="round"/>
+      <path d="M8 3 Q6 2 7 1" fill="${c.green}" fill-opacity="${c.op * 0.5}" stroke="${c.green}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <circle cx="6" cy="8" r="0.3" fill="${c.accent}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="10" cy="10" r="0.3" fill="${c.accent}" fill-opacity="${c.op * 0.3}"/>
+    </svg>`;
+  },
+
+  craftBeer(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+      <rect x="2" y="4" width="8" height="12" rx="1" fill="${c.accent}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M2 4 Q6 2 10 4" fill="${c.accent}" fill-opacity="${c.op * 0.35}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <path d="M10 7 L12 7 Q13 7 13 8 L13 11 Q13 12 12 12 L10 12" fill="none" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <line x1="3" y1="8" x2="9" y2="8" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+    </svg>`;
+  },
+
+  flamingo(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="22" viewBox="0 0 14 22">
+      <circle cx="7" cy="3" r="1.5" fill="${c.red}" fill-opacity="${c.op * 0.3}" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <path d="M7 3.5 L9 4 L7 4.5" fill="${c.stroke}" fill-opacity="${c.op * 0.4}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <circle cx="6.3" cy="2.8" r="0.3" fill="${c.stroke}" fill-opacity="${c.op * 0.6}"/>
+      <path d="M7 4.5 Q7 7 6 9 Q5 11 5 13" stroke="${c.red}" stroke-width="0.7" stroke-opacity="${c.op}" fill="none" stroke-linecap="round"/>
+      <ellipse cx="5.5" cy="13" rx="2.5" ry="1.5" fill="${c.red}" fill-opacity="${c.op * 0.2}" stroke="${c.red}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <line x1="4.5" y1="14.5" x2="4" y2="21" stroke="${c.red}" stroke-width="0.6" stroke-opacity="${c.op}" stroke-linecap="round"/>
+      <line x1="6.5" y1="14.5" x2="7" y2="21" stroke="${c.red}" stroke-width="0.6" stroke-opacity="${c.op}" stroke-linecap="round"/>
+    </svg>`;
+  },
+
+  galleonAnchor(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" viewBox="0 0 16 22">
+      <circle cx="8" cy="3" r="2" fill="none" stroke="${c.stroke}" stroke-width="0.7" stroke-opacity="${c.op}"/>
+      <line x1="8" y1="5" x2="8" y2="18" stroke="${c.stroke}" stroke-width="0.8" stroke-opacity="${c.op}"/>
+      <line x1="4" y1="8" x2="12" y2="8" stroke="${c.stroke}" stroke-width="0.7" stroke-opacity="${c.op}" stroke-linecap="round"/>
+      <path d="M3 18 Q5 15 8 14 Q11 15 13 18" fill="none" stroke="${c.stroke}" stroke-width="0.8" stroke-opacity="${c.op}" stroke-linecap="round"/>
+      <path d="M3 18 L4 16" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}" stroke-linecap="round"/>
+      <path d="M13 18 L12 16" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}" stroke-linecap="round"/>
+    </svg>`;
+  },
+
+  shuffleboard(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+      <rect x="1" y="2" width="18" height="10" rx="0.5" fill="${c.accent}" fill-opacity="${c.op * 0.1}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <line x1="10" y1="2" x2="10" y2="12" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
+      <path d="M7 2 L4 5 L7 8 L4 11 L7 12" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <path d="M13 2 L16 5 L13 8 L16 11 L13 12" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <circle cx="6" cy="5" r="1" fill="${c.accent}" fill-opacity="${c.op * 0.4}" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <circle cx="14" cy="9" r="1" fill="${c.red}" fill-opacity="${c.op * 0.4}" stroke="${c.red}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+    </svg>`;
+  },
+
+  tikiHut(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+      <path d="M1 10 L9 3 L17 10" fill="${c.accent}" fill-opacity="${c.op * 0.25}" stroke="${c.accent}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M0 10 L9 2 L18 10" fill="none" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <path d="M0 10 L-1 11" stroke="${c.accent}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}" stroke-linecap="round"/>
+      <path d="M18 10 L19 11" stroke="${c.accent}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}" stroke-linecap="round"/>
+      <line x1="5" y1="10" x2="5" y2="17" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <line x1="13" y1="10" x2="13" y2="17" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <line x1="4" y1="13" x2="14" y2="13" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
+    </svg>`;
+  },
 };
 
 // ---------------------------------------------------------------------------
