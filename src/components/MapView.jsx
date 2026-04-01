@@ -520,8 +520,8 @@ function ClusteredMarkers({
         return baseSvg;
       };
 
-      if (currentZoom >= 12) {
-        // ---- INDIVIDUAL MARKERS at high zoom (no clustering) ----
+      if (currentZoom >= 10) {
+        // ---- INDIVIDUAL MARKERS at zoom 10+ (no clustering) ----
         const group = L.layerGroup();
         Object.entries(buckets).forEach(([districtKey, districtStores]) => {
           const districtColor = colorMap[districtKey] || '#888';
@@ -539,12 +539,12 @@ function ClusteredMarkers({
         group.addTo(map);
         layerRef.current.push(group);
       } else {
-        // ---- MARKER CLUSTER at mid zoom (9-11) ----
+        // ---- MARKER CLUSTER at zoom 9 only ----
         Object.entries(buckets).forEach(([districtKey, districtStores]) => {
           const districtColor = colorMap[districtKey] || '#888';
 
           const clusterGroup = L.markerClusterGroup({
-            maxClusterRadius: (z) => (z <= 10 ? 45 : 30),
+            maxClusterRadius: 45,
             spiderfyOnMaxZoom: true,
             showCoverageOnHover: false,
             zoomToBoundsOnClick: true,
