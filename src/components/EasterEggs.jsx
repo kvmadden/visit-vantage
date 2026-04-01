@@ -1380,17 +1380,7 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-popup',
         maxWidth: 220,
         closeButton: true,
-      });
-
-      // Dynamically offset popup above icon based on current scaled size
-      marker.on('popupopen', () => {
-        const z = map.getZoom();
-        const [, curH] = scaledSize(egg.size, z);
-        const popup = marker.getPopup();
-        if (popup) {
-          popup.options.offset = [0, -(curH / 2 + 4)];
-          popup.update();
-        }
+        offset: [0, -14],
       });
 
       marker.on('click', () => handleEggClick(egg, marker));
