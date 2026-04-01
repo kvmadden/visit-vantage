@@ -1465,8 +1465,12 @@ export default function EasterEggs({ zoom, theme }) {
         const overTop = m.top - r.top;
         const overBottom = r.bottom - m.bottom;
         const maxOver = Math.max(0, overLeft, overRight, overTop, overBottom);
-        // Fade from 1→0 over 60px of overshoot
+        // Fade from 1→0 over 60px of overshoot; close once faded enough
         const opacity = Math.max(0, 1 - maxOver / 60);
+        if (opacity <= 0.3) {
+          marker.closePopup();
+          return;
+        }
         el.style.opacity = opacity;
       });
     }
