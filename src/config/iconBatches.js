@@ -19,7 +19,7 @@ export const EASTER_EGG_SPECS = [
   { svgKey: 'strawberry', viewBox: '0 0 16 20', size: [26, 32], category: 'food', batch: 1, description: 'Plant City strawberry — the Winter Strawberry Capital of the World, home of the annual Strawberry Festival' },
   { svgKey: 'lightning', viewBox: '0 0 20 28', size: [30, 42], category: 'culture', batch: 1, description: 'Lightning bolt over Lightning Alley — Tampa Bay is the lightning capital of North America' },
   { svgKey: 'mermaid', viewBox: '0 0 18 24', size: [28, 38], category: 'culture', batch: 2, description: 'Weeki Wachee mermaid — the iconic live mermaid shows at Weeki Wachee Springs, running since 1947' },
-  { svgKey: 'cigar', viewBox: '0 0 28 10', size: [42, 16], category: 'food', batch: 2, description: 'Hand-rolled Ybor City cigar — Tampa was once the Cigar Capital of the World with 200+ factories' },
+  { svgKey: 'cigar', viewBox: '0 0 28 12', size: [42, 18], category: 'food', batch: 2, description: 'Hand-rolled Ybor City cigar — Tampa was once the Cigar Capital of the World with 200+ factories' },
   { svgKey: 'dolphin', viewBox: '0 0 24 16', size: [38, 26], category: 'water', batch: 2, description: 'Bottlenose dolphin leaping — commonly spotted playing in Tampa Bay and along the Gulf Coast' },
   { svgKey: 'pelican', viewBox: '0 0 18 22', size: [28, 34], category: 'bird', batch: 2, description: 'Brown pelican diving — an iconic coastal bird seen on every pier and dock around the Bay' },
   { svgKey: 'osprey', viewBox: '0 0 22 22', size: [34, 34], category: 'bird', batch: 2, description: 'Osprey in flight — fish hawks that nest on power poles and channel markers all around Tampa Bay' },

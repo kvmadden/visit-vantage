@@ -406,13 +406,17 @@ export const SVG_GENERATORS = {
       <circle cx="5" cy="22" r="0.5" fill="${teal}" fill-opacity="${o * 0.2}"/>
       <circle cx="13" cy="23" r="0.4" fill="${teal}" fill-opacity="${o * 0.2}"/>
     </svg>`;
-    // INACTIVE: tail fins poking out of water + bubbles
+    // INACTIVE: mermaid tail fluke sticking up from water
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
-      <path d="M0 12 Q4.5 11 9 12 Q13.5 13 18 12" fill="none" stroke="${teal}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M7 12 Q5 14 3 15 Q2 16 1.5 15.5 Q2.5 14 4 13.5" fill="${teal}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}"/>
-      <path d="M11 12 Q13 14 15 15 Q16 16 16.5 15.5 Q15.5 14 14 13.5" fill="${teal}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}"/>
-      <circle cx="6" cy="10" r="0.5" fill="${teal}" fill-opacity="${o * 0.5}"/>
-      <circle cx="13" cy="10.5" r="0.4" fill="${teal}" fill-opacity="${o * 0.4}"/>
+      <path d="M0 14 Q4.5 13 9 14 Q13.5 15 18 14" fill="none" stroke="${teal}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- tail rising out of water -->
+      <path d="M9 14 Q9.5 12 10 10 Q10.5 8 10 7" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- fluke fins spread at top -->
+      <path d="M10 7 Q7 5 5 4 Q4 4 5 5.5 Q6.5 6.5 9 8" fill="${teal}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
+      <path d="M10 7 Q13 5 15 4 Q16 4 15 5.5 Q13.5 6.5 11 8" fill="${teal}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
+      <!-- water drips -->
+      <circle cx="7" cy="10" r="0.4" fill="${teal}" fill-opacity="${o * 0.5}"/>
+      <circle cx="12" cy="11" r="0.35" fill="${teal}" fill-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -421,41 +425,36 @@ export const SVG_GENERATORS = {
     const k = '#FB923C';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
-    const red = '#EF4444';
-    const gray = '#9CA3AF';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="-1 -2 30 14">
-      <!-- cigar body — main cylinder -->
-      <rect x="3" y="4" width="18" height="3.5" rx="1.8" ry="1.8" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
-      <!-- wrapper leaf texture lines -->
-      <line x1="6" y1="4.2" x2="5.5" y2="7.3" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
-      <line x1="9" y1="4.2" x2="8.5" y2="7.3" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
-      <line x1="12" y1="4.2" x2="11.5" y2="7.3" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
-      <!-- cigar band/ring -->
-      <rect x="14" y="3.8" width="3.5" height="4" rx="0.5" fill="${k}" fill-opacity="${o * 0.7}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
-      <rect x="14.3" y="4.5" width="2.9" height="1" rx="0.3" fill="${brown}" fill-opacity="${o * 0.4}"/>
-      <rect x="14.3" y="6" width="2.9" height="0.6" rx="0.2" fill="${brown}" fill-opacity="${o * 0.3}"/>
-      <!-- lit end — ember glow -->
-      <circle cx="2.5" cy="5.8" r="1.8" fill="${red}" fill-opacity="${o * 0.5}" stroke="${red}" stroke-width="0.8" stroke-opacity="${o * 0.7}"/>
-      <circle cx="2.5" cy="5.8" r="1" fill="${red}" fill-opacity="${o * 0.7}"/>
-      <circle cx="2.5" cy="5.8" r="0.4" fill="${k}" fill-opacity="${o * 0.9}"/>
-      <!-- ash tip -->
-      <path d="M3 4 L4.5 4 L4.5 7.5 L3 7.5" fill="${gray}" fill-opacity="${o * 0.3}" stroke="${gray}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <!-- smoke wisps — curling upward -->
-      <path d="M21 5 Q23 2.5 21.5 0 Q20 -1.5 21 -2" fill="none" stroke="${gray}" stroke-width="0.8" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
-      <path d="M22.5 6 Q25 3 23.5 0 Q22.5 -1 23.5 -2" fill="none" stroke="${gray}" stroke-width="0.7" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M20 4.5 Q21 2 20 0" fill="none" stroke="${gray}" stroke-width="0.6" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
-      <path d="M24 5 Q26 2 25 -1" fill="none" stroke="${gray}" stroke-width="0.5" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <!-- smoke haze -->
-      <ellipse cx="22.5" cy="0" rx="4" ry="2.5" fill="${gray}" fill-opacity="${o * 0.08}"/>
-      <!-- cigar tip taper -->
-      <path d="M21 4 Q22 5.8 21 7.5" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+    const wood = '#D97706';
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
+      <!-- box base -->
+      <rect x="2" y="5" width="24" height="7" rx="1" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
+      <!-- box lid open, angled back -->
+      <path d="M2 5 L2 1 Q2 0 3 0 L25 0 Q26 0 26 1 L26 5" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.7}"/>
+      <!-- lid hinge line -->
+      <line x1="2" y1="5" x2="26" y2="5" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
+      <!-- lid label/branding -->
+      <rect x="8" y="1.2" width="12" height="2.5" rx="0.5" fill="${wood}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
+      <line x1="10" y1="2.5" x2="18" y2="2.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <!-- cigars lined up inside the box -->
+      <rect x="4" y="6" width="20" height="1.2" rx="0.6" fill="${brown}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
+      <rect x="4" y="7.5" width="20" height="1.2" rx="0.6" fill="${brown}" fill-opacity="${o * 0.55}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.45}"/>
+      <rect x="4" y="9" width="20" height="1.2" rx="0.6" fill="${brown}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
+      <!-- cigar bands on top row -->
+      <rect x="15" y="6" width="2" height="1.2" rx="0.3" fill="${k}" fill-opacity="${o * 0.7}"/>
+      <rect x="15" y="7.5" width="2" height="1.2" rx="0.3" fill="${k}" fill-opacity="${o * 0.65}"/>
+      <rect x="15" y="9" width="2" height="1.2" rx="0.3" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <!-- wood grain on box sides -->
+      <line x1="3" y1="7" x2="3" y2="11" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
+      <line x1="25" y1="7" x2="25" y2="11" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
+      <!-- box clasp -->
+      <rect x="12.5" y="4" width="3" height="2" rx="0.5" fill="${wood}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
     </svg>`;
-    // INACTIVE: a few curling smoke wisps
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="-1 -2 30 14">
-      <path d="M13 6 Q15 3 13.5 0 Q12.5 -1 13 -2" fill="none" stroke="${gray}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M15 7 Q17 4 15.5 1" fill="none" stroke="${gray}" stroke-width="0.6" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <path d="M11 7 Q12 5 11.5 2" fill="none" stroke="${gray}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <circle cx="13.5" cy="8" r="0.8" fill="${red}" fill-opacity="${o * 0.6}"/>
+    // INACTIVE: closed cigar box
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
+      <rect x="4" y="3" width="20" height="7" rx="1" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
+      <line x1="4" y1="5.5" x2="24" y2="5.5" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
+      <rect x="10" y="4.5" width="8" height="2" rx="0.5" fill="${wood}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -465,42 +464,40 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const dark = '#0D9488';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-1 -1 26 18">
-      <!-- water surface -->
-      <path d="M-1 12 Q6 11 12 12 Q18 13 25 12" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- water -->
+      <path d="M-1 12 Q6 11 12 12 Q18 13 25 12" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
       <path d="M-1 14 Q6 13 12 14 Q18 15 25 14" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <!-- dolphin body — arching leap -->
-      <path d="M4 12 Q3 9 4 6 Q5 3 7 1.5 Q9 0 10.5 0.5 Q11.5 1 11 3 Q11 5 12 6 Q13 7.5 15 9 Q17 10.5 19 11.5 Q20 12 20 12" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- belly lighter area -->
-      <path d="M5 10 Q6 7 8 4 Q9 3 10 3.5 Q10 5 11 6.5 Q12 8 14 9.5 Q16 10.5 18 11.5" fill="${k}" fill-opacity="${o * 0.12}"/>
-      <!-- rostrum/snout -->
-      <path d="M7 1.5 Q6 0.5 5 0 Q4.5 -0.5 5.5 0 Q6.5 0.5 7 1.5" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <!-- dolphin: simple clean arc — top contour (back) -->
+      <path d="M3 11 Q5 5 8 2 Q10 0.5 12 1 Q14 2 16 5 Q18 8 20 11" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linejoin="round"/>
+      <!-- belly contour (lighter, flatter curve) -->
+      <path d="M5 11 Q7 7 10 4 Q12 3.5 14 5 Q16 7 18 11" fill="${k}" fill-opacity="${o * 0.1}"/>
+      <!-- snout/beak pointing left -->
+      <path d="M3 11 Q2 10 1 10.5" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- mouth line -->
-      <path d="M6.5 2 Q7.5 2.5 8.5 2" fill="none" stroke="${dark}" stroke-width="0.6" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <path d="M2 10.5 Q4 9.5 5 9" fill="none" stroke="${dark}" stroke-width="0.6" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
       <!-- eye -->
-      <circle cx="8.5" cy="2" r="0.7" fill="${dark}" fill-opacity="${o * 0.8}"/>
-      <circle cx="8.7" cy="1.9" r="0.25" fill="white" fill-opacity="${o * 0.5}"/>
-      <!-- dorsal fin -->
-      <path d="M10 3 Q11 0.5 12.5 2 Q12 4 11 5" fill="${k}" fill-opacity="${o * 0.45}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
-      <!-- pectoral fin -->
-      <path d="M9 5 Q7 6.5 6 8 Q6.5 7 8 6" fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
-      <!-- tail fluke -->
-      <path d="M19 11.5 Q20 10 21.5 9.5 Q22 10 21 11" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linejoin="round"/>
-      <path d="M19 11.5 Q20 12.5 21.5 13 Q22 12 21 11.5" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linejoin="round"/>
-      <!-- water splashes -->
-      <path d="M3 12 Q2.5 10.5 3.5 10" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M20 12 Q21 11 22 11.5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <!-- water droplets -->
-      <circle cx="5" cy="10" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
-      <circle cx="16" cy="8" r="0.4" fill="${k}" fill-opacity="${o * 0.25}"/>
-      <circle cx="2" cy="11" r="0.4" fill="${k}" fill-opacity="${o * 0.2}"/>
-      <circle cx="22" cy="10" r="0.35" fill="${k}" fill-opacity="${o * 0.2}"/>
+      <circle cx="5.5" cy="7" r="0.8" fill="${dark}" fill-opacity="${o * 0.8}"/>
+      <circle cx="5.7" cy="6.8" r="0.25" fill="white" fill-opacity="${o * 0.5}"/>
+      <!-- dorsal fin — triangular, on top of arc -->
+      <path d="M11 2 L10 0 L13 2.5 Z" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}"/>
+      <!-- pectoral fin (small flipper underneath) -->
+      <path d="M9 7 L7 9 L9 8.5" fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
+      <!-- tail flukes — V at the right end -->
+      <path d="M20 11 L22 9 L21 11 L22 13 L20 11" fill="${k}" fill-opacity="${o * 0.45}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}"/>
+      <!-- splash at entry/exit points -->
+      <path d="M2 12 Q1 11 2 10" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M21 12 Q22 11 23 11.5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <!-- water drops -->
+      <circle cx="6" cy="10.5" r="0.4" fill="${k}" fill-opacity="${o * 0.25}"/>
+      <circle cx="17" cy="9" r="0.35" fill="${k}" fill-opacity="${o * 0.2}"/>
+      <circle cx="1" cy="11.5" r="0.3" fill="${k}" fill-opacity="${o * 0.2}"/>
     </svg>`;
-    // INACTIVE: dorsal fin + splash breaking water surface
+    // INACTIVE: dorsal fin breaking water
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-1 -1 26 18">
       <path d="M-1 10 Q6 9 12 10 Q18 11 25 10" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M11 10 Q10.5 7 12 4.5 Q13 3.5 13.5 5 Q13 7 13 10" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M10 10 Q9 9 10 8.5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <circle cx="14.5" cy="9" r="0.4" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <!-- triangular dorsal fin -->
+      <path d="M12 10 L10.5 5 L14 9 Z" fill="${k}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1" stroke-opacity="${o}" stroke-linejoin="round"/>
+      <circle cx="15" cy="9" r="0.4" fill="${k}" fill-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -508,48 +505,44 @@ export const SVG_GENERATORS = {
     // bird → #38BDF8
     const k = '#38BDF8';
     const o = activated ? 1 : 0.4;
-    const brown = '#92400E';
     const yellow = '#FBBF24';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="-1 -1 20 24">
-      <!-- wings spread wide -->
-      <path d="M9 6 Q5 3 1 1 Q0 0.5 0 1.5 Q1 3 3 4 Q5 5 7 6" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
-      <path d="M9 6 Q13 3 17 1 Q18 0.5 18 1.5 Q17 3 15 4 Q13 5 11 6" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
-      <!-- wing feather details -->
-      <line x1="3" y1="2" x2="5" y2="4" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
-      <line x1="1.5" y1="1.5" x2="3.5" y2="3.5" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
-      <line x1="15" y1="2" x2="13" y2="4" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
-      <line x1="16.5" y1="1.5" x2="14.5" y2="3.5" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
-      <!-- body -->
-      <ellipse cx="9" cy="9" rx="3.5" ry="4.5" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
-      <!-- breast feather texture -->
-      <path d="M7 8 Q9 7.5 11 8" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
-      <path d="M7 10 Q9 9.5 11 10" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
-      <!-- head -->
-      <circle cx="9" cy="3.5" r="2.2" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
+      <!-- pier post -->
+      <rect x="7" y="17" width="4" height="5" rx="0.5" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.3}"/>
+      <!-- big round body (side profile) -->
+      <ellipse cx="9" cy="12" rx="5" ry="5" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
+      <!-- wing folded on body -->
+      <path d="M6 9 Q9 8 12 10 Q13 12 12 14 Q9 15 6 13 Z" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
+      <!-- wing feather lines -->
+      <path d="M7 10.5 Q9 10 11 11" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <path d="M7 12 Q9 11.5 11 12.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <!-- long S-curved neck -->
+      <path d="M9 7 Q8 4 7 2 Q6.5 0.5 7.5 0 Q9 0 9 1.5" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- head (small, at top of neck) -->
+      <circle cx="8" cy="0.8" r="1.5" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}"/>
       <!-- eye -->
-      <circle cx="8" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.9}"/>
-      <circle cx="8.1" cy="2.9" r="0.2" fill="white" fill-opacity="${o * 0.5}"/>
-      <!-- long beak + pouch -->
-      <path d="M9 4.5 L14 6 Q15 7 14 8 Q12 8.5 10 7.5 L9 6.5" fill="${yellow}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
-      <!-- upper beak -->
-      <path d="M9 4 L14 5.5 Q14.5 5 14 4.5 L9 3.5" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.7}" stroke-linejoin="round"/>
-      <!-- beak hook tip -->
-      <circle cx="14.2" cy="5" r="0.4" fill="${yellow}" fill-opacity="${o * 0.6}"/>
-      <!-- legs -->
-      <line x1="7.5" y1="13" x2="6" y2="18" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <line x1="10.5" y1="13" x2="12" y2="18" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <circle cx="7.5" cy="0.5" r="0.5" fill="${k}" fill-opacity="${o * 0.9}"/>
+      <!-- LONG beak — the defining pelican feature -->
+      <path d="M9 1 L16 3" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- pouch hanging below beak -->
+      <path d="M9 1.5 Q12 4 16 3 Q14 5 11 4 Q9 3.5 9 2.5" fill="${yellow}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <!-- beak hook at tip -->
+      <path d="M16 3 Q16.5 3.5 16 4" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- short legs on post -->
+      <line x1="8" y1="17" x2="8" y2="15" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <line x1="10" y1="17" x2="10" y2="15.5" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
       <!-- webbed feet -->
-      <path d="M6 18 L4.5 19.5 L6 19 L7.5 19.5 L6 18" fill="${yellow}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
-      <path d="M12 18 L10.5 19.5 L12 19 L13.5 19.5 L12 18" fill="${yellow}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
-      <!-- water drops from pouch -->
-      <circle cx="11" cy="9" r="0.4" fill="${k}" fill-opacity="${o * 0.3}"/>
-      <circle cx="13" cy="10" r="0.35" fill="${k}" fill-opacity="${o * 0.25}"/>
+      <path d="M7 17 L6 17.5 L8 17.5 L9 17" fill="${yellow}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <path d="M9.5 17 L9 17.5 L11 17.5 L11.5 17" fill="${yellow}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
     </svg>`;
-    // INACTIVE: bird silhouette soaring — V shape with body dot
+    // INACTIVE: pelican on a post — distinct silhouette with long beak
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="-1 -1 20 24">
-      <path d="M2 6 Q5 4 9 5 Q13 4 16 6" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="9" cy="6" r="1" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <path d="M9 7 L11 8" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- post -->
+      <rect x="8" y="14" width="2.5" height="6" rx="0.3" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
+      <!-- round body blob -->
+      <ellipse cx="9" cy="12" rx="3" ry="3" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.6}"/>
+      <!-- long beak sticking out -->
+      <path d="M10.5 10 L15 11" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
     </svg>`;
   },
 
