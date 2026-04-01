@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.0.3-tighter-bounds';
+const APP_VERSION = 'v1.0.4-label-shift';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
