@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.1.5-locked-view';
+const APP_VERSION = 'v1.1.6-wider-bounds';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';

@@ -87,10 +87,10 @@ const DEFAULT_CENTER = [27.50, -82.44];
 const DEFAULT_ZOOM = 8.5;
 const MIN_ZOOM = 8.5;
 const MAX_ZOOM = 18;
-// Bounding box for the Tampa Bay region — tight to prevent ugly panning
+// Bounding box — loose enough to not constrain zoom, tight enough to prevent panning to Africa
 const MAX_BOUNDS = [
-  [26.6, -82.95], // SW corner
-  [28.6, -81.9], // NE corner
+  [26.0, -83.5], // SW corner
+  [29.0, -81.3], // NE corner
 ];
 
 const TILE_BASE = {
