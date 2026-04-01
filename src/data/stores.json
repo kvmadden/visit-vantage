@@ -268,7 +268,7 @@
     "address": "7351 W Hillsborough Ave",
     "city": "Tampa",
     "zip": "33634",
-    "nickname": "Hillsborough y M\u00e1s",
+    "nickname": "Hillsborough y Más",
     "intersection": null,
     "fs24": "No",
     "rx24": "No",
@@ -3011,8 +3011,8 @@
     "fsHours": null,
     "rxHours": null,
     "notes": null,
-    "lat": 27.8564348,
-    "lng": -82.3273695,
+    "lat": 27.8505,
+    "lng": -82.328,
     "target": false
   },
   {
