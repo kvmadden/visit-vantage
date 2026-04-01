@@ -1,4 +1,4 @@
-const APP_VERSION = 'v2.1.0-batch2';
+const APP_VERSION = 'v2.2.0-batch3';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
@@ -15,6 +15,7 @@ import WeatherWidget from './components/WeatherWidget';
 import Brand from './components/Brand';
 import LandingPage from './components/LandingPage';
 import SetupScreen from './components/SetupScreen';
+import FocusBanner from './components/FocusBanner';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import { markStoreViewed, getViewedStores } from './utils/storeStatus';
@@ -262,6 +263,8 @@ export default function App() {
           />
         </div>
 
+        <FocusBanner config={sessionConfig} onEdit={function () { setAppScreen('setup'); }} />
+
         {districtView && activeDistrict && (
           <DistrictSummary
             district={activeDistrict}
@@ -333,6 +336,7 @@ export default function App() {
                 gpsPosition={gpsPosition}
                 onRequestGps={handleRequestGps}
                 routeStats={routeStats}
+                sessionConfig={sessionConfig}
                 inline
               />
             </div>

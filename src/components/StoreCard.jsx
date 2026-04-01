@@ -180,6 +180,38 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
       {/* Enriched view */}
       {isExpanded && (
         <div className="store-section fade-in">
+          {/* Info grid */}
+          <div className="info-grid">
+            <div className="info-grid-row">
+              <span className="info-grid-label">Store #</span>
+              <span className="info-grid-value font-mono">{store.store}</span>
+            </div>
+            {store.rxDistrict && (
+              <div className="info-grid-row">
+                <span className="info-grid-label">Rx District</span>
+                <span className="info-grid-value font-mono">D{store.rxDistrict}</span>
+              </div>
+            )}
+            {store.fsDistrict && (
+              <div className="info-grid-row">
+                <span className="info-grid-label">FS District</span>
+                <span className="info-grid-value font-mono">D{store.fsDistrict}</span>
+              </div>
+            )}
+            {store.zip && (
+              <div className="info-grid-row">
+                <span className="info-grid-label">ZIP</span>
+                <span className="info-grid-value font-mono">{store.zip}</span>
+              </div>
+            )}
+            <div className="info-grid-row">
+              <span className="info-grid-label">Coords</span>
+              <span className="info-grid-value font-mono" style={{ fontSize: 11 }}>
+                {store.lat.toFixed(5)}, {store.lng.toFixed(5)}
+              </span>
+            </div>
+          </div>
+
           {/* Full hours */}
           {store.fsHours && (
             <div style={{ marginBottom: 6 }}>
@@ -213,6 +245,23 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
               <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{store.notes}</div>
             </div>
           )}
+
+          {/* Copy store info */}
+          <button
+            className="btn btn-secondary"
+            style={{ fontSize: 12, minHeight: 32, marginTop: 4 }}
+            onClick={function () {
+              var text = 'CVS #' + store.store;
+              if (store.nickname) text += ' — ' + store.nickname;
+              text += '\n' + (store.address || '') + ', ' + (store.city || '') + ', FL ' + (store.zip || '');
+              if (store.rxPhone) text += '\nRx: ' + store.rxPhone;
+              if (store.fsPhone) text += '\nFS: ' + store.fsPhone;
+              text += '\n' + store.lat.toFixed(5) + ', ' + store.lng.toFixed(5);
+              navigator.clipboard.writeText(text);
+            }}
+          >
+            Copy Store Info
+          </button>
         </div>
       )}
 
