@@ -1101,22 +1101,23 @@ const SVG_GENERATORS = {
   redTide(theme, activated = false) {
     const c = svgColors(theme);
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
-      <path d="M0 5 Q5 4 10 5 Q15 6 20 5" fill="none" stroke="${c.red}" stroke-width="0.6" stroke-opacity="${c.op * 0.5}"/>
-      <path d="M0 8 Q5 7 10 8 Q15 9 20 8" fill="${c.red}" fill-opacity="${c.op * 0.15}" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op * 0.6}"/>
-      <path d="M0 11 Q5 10 10 11 Q15 12 20 11" fill="${c.red}" fill-opacity="${c.op * 0.1}" stroke="${c.red}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}"/>
-      <circle cx="5" cy="6" r="0.8" fill="${c.red}" fill-opacity="${c.op * 0.4}"/>
-      <circle cx="10" cy="7" r="0.6" fill="${c.red}" fill-opacity="${c.op * 0.35}"/>
-      <circle cx="14" cy="6" r="0.5" fill="${c.red}" fill-opacity="${c.op * 0.3}"/>
-      <circle cx="8" cy="9" r="0.4" fill="${c.red}" fill-opacity="${c.op * 0.3}"/>
-      <circle cx="16" cy="9" r="0.5" fill="${c.red}" fill-opacity="${c.op * 0.25}"/>
-      <circle cx="3" cy="4" r="0.4" fill="${c.red}" fill-opacity="${c.op * 0.25}"/>
+      <path d="M0 4 Q5 3 10 4 Q15 5 20 4" fill="none" stroke="${c.red}" stroke-width="0.7" stroke-opacity="${c.op * 0.6}"/>
+      <path d="M0 7 Q5 6 10 7 Q15 8 20 7" fill="${c.red}" fill-opacity="${c.op * 0.2}" stroke="${c.red}" stroke-width="0.6" stroke-opacity="${c.op * 0.6}"/>
+      <path d="M0 10 Q5 9 10 10 Q15 11 20 10" fill="${c.red}" fill-opacity="${c.op * 0.15}" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op * 0.5}"/>
+      <circle cx="3" cy="5" r="0.7" fill="${c.red}" fill-opacity="${c.op * 0.45}"/>
+      <circle cx="7" cy="5.5" r="0.6" fill="${c.red}" fill-opacity="${c.op * 0.4}"/>
+      <circle cx="11" cy="5" r="0.5" fill="${c.red}" fill-opacity="${c.op * 0.35}"/>
+      <circle cx="15" cy="5.5" r="0.6" fill="${c.red}" fill-opacity="${c.op * 0.4}"/>
+      <circle cx="5" cy="8" r="0.5" fill="${c.red}" fill-opacity="${c.op * 0.35}"/>
+      <circle cx="9" cy="8.5" r="0.45" fill="${c.red}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="13" cy="8" r="0.5" fill="${c.red}" fill-opacity="${c.op * 0.35}"/>
+      <circle cx="17" cy="8.5" r="0.4" fill="${c.red}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="2" cy="11" r="0.4" fill="${c.red}" fill-opacity="${c.op * 0.25}"/>
+      <circle cx="8" cy="11" r="0.35" fill="${c.red}" fill-opacity="${c.op * 0.25}"/>
+      <circle cx="18" cy="11" r="0.35" fill="${c.red}" fill-opacity="${c.op * 0.2}"/>
     </svg>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
-      <path d="M0 6 Q5 5 10 6 Q15 7 20 6" fill="none" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op * 0.4}"/>
-      <path d="M0 9 Q5 8 10 9 Q15 10 20 9" fill="${c.red}" fill-opacity="${c.op * 0.1}" stroke="${c.red}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}"/>
-      <circle cx="6" cy="7" r="0.6" fill="${c.red}" fill-opacity="${c.op * 0.3}"/>
-      <circle cx="12" cy="7" r="0.5" fill="${c.red}" fill-opacity="${c.op * 0.25}"/>
-      <circle cx="15" cy="8" r="0.4" fill="${c.red}" fill-opacity="${c.op * 0.2}"/>
+      <path d="M0 7 Q5 6 10 7 Q15 8 20 7" fill="none" stroke="${c.red}" stroke-width="0.4" stroke-opacity="${c.op * 0.2}"/>
     </svg>`;
   },
 
