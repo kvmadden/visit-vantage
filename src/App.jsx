@@ -30,6 +30,7 @@ export default function App() {
   const [searchText, setSearchText] = useState('');
   const [selectedStore, setSelectedStore] = useState(null);
   const [routeStores, setRouteStores] = useState([]);
+  const [stopStatuses, setStopStatuses] = useState({}); // { storeId: 'planned'|'active'|'visited'|'skipped' }
   const [gpsPosition, setGpsPosition] = useState(null);
   const [districtView, setDistrictView] = useState(false);
   const [viewedStores, setViewedStores] = useState(() => getViewedStores());
@@ -162,6 +163,19 @@ export default function App() {
 
   const handleRemoveFromRoute = useCallback((store) => {
     setRouteStores((prev) => prev.filter((s) => s.store !== store.store));
+    setStopStatuses((prev) => {
+      const next = { ...prev };
+      delete next[store.store];
+      return next;
+    });
+  }, []);
+
+  const handleReorderRoute = useCallback((newOrder) => {
+    setRouteStores(newOrder);
+  }, []);
+
+  const handleStopStatusChange = useCallback((storeId, status) => {
+    setStopStatuses((prev) => ({ ...prev, [storeId]: status }));
   }, []);
 
   const handleOptimizeRoute = useCallback(async () => {
@@ -373,6 +387,9 @@ export default function App() {
                 routeStats={routeStats}
                 sessionConfig={sessionConfig}
                 districtMode={districtMode}
+                onReorderRoute={handleReorderRoute}
+                stopStatuses={stopStatuses}
+                onStopStatusChange={handleStopStatusChange}
                 inline
               />
             </div>
