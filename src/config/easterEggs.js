@@ -9,6 +9,7 @@ export const EASTER_EGGS = [
     title: 'Gasparilla!',
     fact: "Tampa's Gasparilla Pirate Festival has celebrated José Gaspar since 1904. The invasion flotilla is the third-largest parade in the US.",
     svgKey: 'pirateShip',
+    animCategory: 'culture',
   },
   {
     id: 'kraken',
@@ -20,6 +21,7 @@ export const EASTER_EGGS = [
     title: 'Release the Kraken!',
     fact: 'The Gulf of Mexico reaches depths of over 14,383 feet at the Sigsbee Deep. Who knows what lurks below...',
     svgKey: 'kraken',
+    animCategory: 'water',
   },
   {
     id: 'manatee',
@@ -31,6 +33,7 @@ export const EASTER_EGGS = [
     title: 'Sea Cow Spotted!',
     fact: 'The TECO Manatee Viewing Center in Apollo Beach attracts hundreds of manatees each winter, drawn by warm power plant discharge water.',
     svgKey: 'manatee',
+    animCategory: 'water',
   },
   {
     id: 'skunkApe',
@@ -42,6 +45,7 @@ export const EASTER_EGGS = [
     title: 'Skunk Ape Sighting!',
     fact: "Florida's Skunk Ape — a smelly, swamp-dwelling cousin of Bigfoot — has been \"spotted\" in the Myakka region since the 1960s.",
     svgKey: 'skunkApe',
+    animCategory: 'land',
   },
   {
     id: 'strawberry',
@@ -53,6 +57,7 @@ export const EASTER_EGGS = [
     title: 'Berry Nice!',
     fact: 'Plant City is the Winter Strawberry Capital of the World, producing 75% of the US winter strawberry crop.',
     svgKey: 'strawberry',
+    animCategory: 'food',
   },
   {
     id: 'meltingClock',
@@ -64,6 +69,7 @@ export const EASTER_EGGS = [
     title: 'The Persistence of Memory',
     fact: "The Dalí Museum in St. Petersburg houses the largest collection of Salvador Dalí's work outside Europe, including over 2,400 objects.",
     svgKey: 'meltingClock',
+    animCategory: 'culture',
   },
   {
     id: 'lightning',
@@ -75,6 +81,7 @@ export const EASTER_EGGS = [
     title: 'Lightning Capital!',
     fact: 'Tampa Bay is the lightning capital of the US, averaging 90+ lightning days per year. Amalie Arena is home to the Tampa Bay Lightning.',
     svgKey: 'lightning',
+    animCategory: 'culture',
   },
   {
     id: 'mermaid',
@@ -86,6 +93,7 @@ export const EASTER_EGGS = [
     title: 'Weeki Wachee Mermaids!',
     fact: "Weeki Wachee Springs has featured live \"mermaid\" shows since 1947, making it one of Florida's oldest roadside attractions.",
     svgKey: 'mermaid',
+    animCategory: 'culture',
   },
   {
     id: 'cigar',
@@ -97,6 +105,7 @@ export const EASTER_EGGS = [
     title: 'Cigar City!',
     fact: 'By the early 1900s, Ybor City was producing over 700 million hand-rolled cigars per year, earning Tampa the title "Cigar Capital of the World."',
     svgKey: 'cigar',
+    animCategory: 'food',
   },
   // --- Batch 1: Wildlife & Nature ---
   {
@@ -109,6 +118,7 @@ export const EASTER_EGGS = [
     title: 'Bottlenose!',
     fact: 'Tampa Bay is home to over 500 resident bottlenose dolphins. They are frequently spotted near the Sunshine Skyway, bow-riding alongside boats.',
     svgKey: 'dolphin',
+    animCategory: 'water',
   },
   {
     id: 'pelican',
@@ -120,6 +130,7 @@ export const EASTER_EGGS = [
     title: 'Brown Pelican!',
     fact: 'Once nearly wiped out by DDT, the brown pelican made a remarkable comeback and is now a ubiquitous sight on Gulf Coast piers and jetties.',
     svgKey: 'pelican',
+    animCategory: 'bird',
   },
   {
     id: 'osprey',
@@ -131,6 +142,7 @@ export const EASTER_EGGS = [
     title: 'Osprey!',
     fact: "There's literally a town called Osprey south of Sarasota. These fish hawks build massive nests on channel markers and power poles across the region.",
     svgKey: 'osprey',
+    animCategory: 'bird',
   },
   {
     id: 'sandhillCrane',
@@ -142,6 +154,7 @@ export const EASTER_EGGS = [
     title: 'Sandhill Crane!',
     fact: 'Florida sandhill cranes are a non-migratory subspecies. In Riverview and Lithia, they casually stroll through subdivisions and hold up traffic.',
     svgKey: 'sandhillCrane',
+    animCategory: 'bird',
   },
   {
     id: 'gopherTortoise',
@@ -153,6 +166,7 @@ export const EASTER_EGGS = [
     title: 'Gopher Tortoise!',
     fact: "Florida's state tortoise is a keystone species — its burrows shelter over 350 other species. They're protected and common in the sandy scrub near Brooksville.",
     svgKey: 'gopherTortoise',
+    animCategory: 'land',
   },
   {
     id: 'alligator',
@@ -164,6 +178,7 @@ export const EASTER_EGGS = [
     title: 'Gator!',
     fact: 'Myakka River State Park is one of the best places in Florida to see wild alligators. The park is home to an estimated 100+ gators.',
     svgKey: 'alligator',
+    animCategory: 'land',
   },
   {
     id: 'roseateSpoonbill',
@@ -175,6 +190,7 @@ export const EASTER_EGGS = [
     title: 'Roseate Spoonbill!',
     fact: 'Often mistaken for flamingos, roseate spoonbills are native to Florida and feed by sweeping their spoon-shaped bills through shallow mangrove waters.',
     svgKey: 'roseateSpoonbill',
+    animCategory: 'bird',
   },
   {
     id: 'seaTurtle',
@@ -186,6 +202,7 @@ export const EASTER_EGGS = [
     title: 'Sea Turtle Nesting!',
     fact: 'Anna Maria Island beaches are major loggerhead sea turtle nesting grounds. From May to October, thousands of hatchlings make their dash to the Gulf.',
     svgKey: 'seaTurtle',
+    animCategory: 'water',
   },
   // --- Batch 2: Landmarks & Sports ---
   {
@@ -198,6 +215,7 @@ export const EASTER_EGGS = [
     title: 'Sunshine Skyway!',
     fact: 'The Sunshine Skyway Bridge spans 4.1 miles across Tampa Bay. The iconic cable-stayed design was completed in 1987, replacing the original bridge after a tragic ship collision in 1980.',
     svgKey: 'skywayBridge',
+    animCategory: 'landmark',
   },
   {
     id: 'donCesar',
@@ -209,6 +227,7 @@ export const EASTER_EGGS = [
     title: 'The Pink Palace!',
     fact: 'The Don CeSar opened in 1928 and has hosted F. Scott Fitzgerald, Al Capone, and countless celebrities. It served as a VA hospital during WWII before being restored to its pink glory.',
     svgKey: 'donCesar',
+    animCategory: 'landmark',
   },
   {
     id: 'ringlingCircus',
@@ -220,6 +239,7 @@ export const EASTER_EGGS = [
     title: 'Greatest Show on Earth!',
     fact: "Sarasota was the winter home of Ringling Brothers circus from 1927 to 1960. John Ringling's legacy includes the stunning Ringling Museum and Ca' d'Zan mansion.",
     svgKey: 'ringlingCircus',
+    animCategory: 'landmark',
   },
   {
     id: 'spongeDiver',
@@ -231,6 +251,7 @@ export const EASTER_EGGS = [
     title: 'Sponge Diver!',
     fact: 'Greek immigrants made Tarpon Springs the sponge capital of the US in the early 1900s. Divers still harvest natural sponges from the Gulf using traditional methods.',
     svgKey: 'spongeDiver',
+    animCategory: 'water',
   },
   {
     id: 'hockeyPuck',
@@ -242,6 +263,7 @@ export const EASTER_EGGS = [
     title: 'Back-to-Back!',
     fact: 'The Tampa Bay Lightning won back-to-back Stanley Cups in 2020 and 2021. Tampa became a true hockey town despite the tropical climate.',
     svgKey: 'hockeyPuck',
+    animCategory: 'sport',
   },
   {
     id: 'pirateFlag',
@@ -253,6 +275,7 @@ export const EASTER_EGGS = [
     title: 'Fire the Cannons!',
     fact: 'Raymond James Stadium features a 103-foot pirate ship that fires cannons after every Buccaneers touchdown. The Bucs won Super Bowl LV at home in 2021.',
     svgKey: 'pirateFlag',
+    animCategory: 'sport',
   },
   {
     id: 'stingray',
@@ -264,6 +287,7 @@ export const EASTER_EGGS = [
     title: 'Rays Up!',
     fact: "The Tampa Bay Rays played in Tropicana Field — the last indoor MLB stadium — since 1998. Known for doing more with less, they've been perennial contenders.",
     svgKey: 'stingray',
+    animCategory: 'water',
   },
   {
     id: 'flamencoDancer',
@@ -275,6 +299,7 @@ export const EASTER_EGGS = [
     title: 'Olé!',
     fact: "The Columbia Restaurant in Ybor City, opened in 1905, is Florida's oldest restaurant. Its flamenco shows and Spanish-Cuban cuisine celebrate the neighborhood's heritage.",
     svgKey: 'flamencoDancer',
+    animCategory: 'culture',
   },
   {
     id: 'greekCross',
@@ -286,6 +311,7 @@ export const EASTER_EGGS = [
     title: 'Epiphany Cross Dive!',
     fact: "Tarpon Springs hosts the world-famous Epiphany cross dive every January 6th. Young men dive into Spring Bayou to retrieve a cross — a tradition since 1906. It's the largest Greek community in the US.",
     svgKey: 'greekCross',
+    animCategory: 'culture',
   },
   // --- Batch 3: Food & History ---
   {
@@ -298,6 +324,7 @@ export const EASTER_EGGS = [
     title: 'Tampa Cuban!',
     fact: 'Tampa — not Miami — claims the original Cuban sandwich. The addition of Genoa salami reflects the Italian immigrants of Ybor City who worked alongside Cuban cigar makers.',
     svgKey: 'cubanSandwich',
+    animCategory: 'food',
   },
   {
     id: 'grouper',
@@ -309,6 +336,7 @@ export const EASTER_EGGS = [
     title: 'Grouper Sandwich!',
     fact: "The grouper sandwich is THE Gulf Coast dish. John's Pass Village in Madeira Beach is ground zero for the best ones — fresh, never frozen, blackened or fried.",
     svgKey: 'grouper',
+    animCategory: 'food',
   },
   {
     id: 'orange',
@@ -320,6 +348,7 @@ export const EASTER_EGGS = [
     title: 'Florida Orange!',
     fact: 'Polk County was the heart of the Florida citrus belt. Before freezes and development, the region produced a huge share of the world\'s orange juice.',
     svgKey: 'orange',
+    animCategory: 'food',
   },
   {
     id: 'craftBeer',
@@ -331,6 +360,7 @@ export const EASTER_EGGS = [
     title: 'Cheers!',
     fact: "Tampa Bay's craft beer scene is nationally ranked. Cigar City Brewing's Jai Alai IPA put the region on the map, and dozens of breweries have followed.",
     svgKey: 'craftBeer',
+    animCategory: 'food',
   },
   {
     id: 'flamingo',
@@ -342,6 +372,7 @@ export const EASTER_EGGS = [
     title: 'Lawn Flamingo!',
     fact: 'The plastic pink flamingo was invented in 1957 by Don Featherstone. It became the ultimate symbol of Florida kitsch and was named the official city bird of Madison, WI.',
     svgKey: 'flamingo',
+    animCategory: 'bird',
   },
   {
     id: 'galleonAnchor',
@@ -353,6 +384,7 @@ export const EASTER_EGGS = [
     title: 'De Soto Landed Here!',
     fact: 'Hernando de Soto landed near here in 1539 with 600+ men, beginning the first major European exploration of the American Southeast. The De Soto National Memorial marks the spot.',
     svgKey: 'galleonAnchor',
+    animCategory: 'landmark',
   },
   {
     id: 'shuffleboard',
@@ -364,6 +396,7 @@ export const EASTER_EGGS = [
     title: 'Shuffle On!',
     fact: "The St. Petersburg Shuffleboard Club, founded in 1924, is the world's oldest and largest. It has 65 courts and helped define St. Pete's reputation as a retirement paradise.",
     svgKey: 'shuffleboard',
+    animCategory: 'culture',
   },
   {
     id: 'tikiHut',
@@ -375,6 +408,7 @@ export const EASTER_EGGS = [
     title: 'Tiki Time!',
     fact: "Florida's tiki bar culture thrives along the Gulf Coast. From waterfront dives to upscale resorts, the thatched-roof tiki hut is an essential part of the coastal experience.",
     svgKey: 'tikiHut',
+    animCategory: 'culture',
   },
   // --- Batch 4: Quirky & Deep Cuts ---
   {
@@ -387,6 +421,7 @@ export const EASTER_EGGS = [
     title: 'UFO Sighting!',
     fact: 'Florida consistently ranks among the top states for UFO sightings. The rural areas east of Tampa Bay have had numerous reported encounters over the decades.',
     svgKey: 'ufo',
+    animCategory: 'spooky',
   },
   {
     id: 'conchShell',
@@ -398,6 +433,7 @@ export const EASTER_EGGS = [
     title: 'Conch Shell!',
     fact: 'The Gulf Coast beaches near Englewood and Boca Grande are prime shelling territory. Queen conchs, once abundant, are now protected — but their shells still wash ashore.',
     svgKey: 'conchShell',
+    animCategory: 'culture',
   },
   {
     id: 'treasureChest',
@@ -409,6 +445,7 @@ export const EASTER_EGGS = [
     title: 'Pirate Treasure!',
     fact: "Gasparilla Island (Boca Grande) is named after the legendary pirate José Gaspar. Whether he was real or myth, locals still dream of finding his buried treasure.",
     svgKey: 'treasureChest',
+    animCategory: 'culture',
   },
   {
     id: 'gibsonton',
@@ -420,6 +457,7 @@ export const EASTER_EGGS = [
     title: 'Gibtown Showtown!',
     fact: '"Gibtown" was THE winter home for carnival and sideshow performers from the 1940s-80s. The post office had a special low counter for little people. Lobster Boy lived here.',
     svgKey: 'gibsonton',
+    animCategory: 'spooky',
   },
   {
     id: 'spookHill',
@@ -431,6 +469,7 @@ export const EASTER_EGGS = [
     title: 'Spook Hill!',
     fact: "Lake Wales' Spook Hill is a famous gravity hill where cars appear to roll uphill. Legend attributes it to a Native American chief battling a giant alligator.",
     svgKey: 'spookHill',
+    animCategory: 'spooky',
   },
   {
     id: 'joyland',
@@ -442,6 +481,7 @@ export const EASTER_EGGS = [
     title: 'Joyland!',
     fact: 'The abandoned Joyland amusement park in Bradenton has achieved urban legend status. Its rusting rides and overgrown grounds have become a haunting local landmark.',
     svgKey: 'joyland',
+    animCategory: 'spooky',
   },
   {
     id: 'babeRuth',
@@ -453,6 +493,7 @@ export const EASTER_EGGS = [
     title: 'The Bambino!',
     fact: 'Plant City hosted Babe Ruth-era spring training. The Bambino himself practiced on these fields, part of Florida\'s deep baseball spring training tradition.',
     svgKey: 'babeRuth',
+    animCategory: 'sport',
   },
   {
     id: 'phosphateMining',
@@ -464,6 +505,7 @@ export const EASTER_EGGS = [
     title: 'Bone Valley!',
     fact: 'Polk County\'s "Bone Valley" produces 75% of US phosphate and 25% of the world\'s supply. The mining has also unearthed incredible fossils, including prehistoric sharks and mastodons.',
     svgKey: 'phosphateMining',
+    animCategory: 'culture',
   },
   // --- Batch 5: Deep Cuts & Gap Fillers ---
   {
@@ -476,6 +518,7 @@ export const EASTER_EGGS = [
     title: "Solomon's Castle!",
     fact: "Howard Solomon built an entire castle out of discarded newspaper printing plates in Ona, FL. The folk art masterpiece gleams in the sun and houses his sculptures and inventions.",
     svgKey: 'solomonsCastle',
+    animCategory: 'landmark',
   },
   {
     id: 'weedonIsland',
@@ -487,6 +530,7 @@ export const EASTER_EGGS = [
     title: 'Ancient Mound!',
     fact: 'Weedon Island Preserve in St. Pete contains Native American mound sites dating back 10,000+ years. The Weedon Island archaeological culture influenced pottery styles across the Southeast.',
     svgKey: 'weedonIsland',
+    animCategory: 'landmark',
   },
   {
     id: 'bernsSteak',
@@ -498,6 +542,7 @@ export const EASTER_EGGS = [
     title: "Bern's!",
     fact: "Bern's Steak House on South Howard has one of the world's largest wine collections (over 500,000 bottles) and a legendary upstairs dessert room with private booths.",
     svgKey: 'bernsSteak',
+    animCategory: 'food',
   },
   {
     id: 'sharkTooth',
@@ -509,6 +554,7 @@ export const EASTER_EGGS = [
     title: 'Shark Tooth Capital!',
     fact: 'Venice Beach is the "Shark Tooth Capital of the World." Fossilized teeth from prehistoric megalodon and other sharks wash up constantly, some millions of years old.',
     svgKey: 'sharkTooth',
+    animCategory: 'water',
   },
   {
     id: 'tarponFish',
@@ -520,6 +566,7 @@ export const EASTER_EGGS = [
     title: 'Silver King!',
     fact: 'Boca Grande Pass is the tarpon fishing capital of the world. Every spring, massive "Silver Kings" up to 200 lbs pour through the pass, drawing anglers from across the globe.',
     svgKey: 'tarponFish',
+    animCategory: 'water',
   },
   {
     id: 'shipwreck',
@@ -531,6 +578,7 @@ export const EASTER_EGGS = [
     title: 'Shipwreck!',
     fact: 'Hundreds of shipwrecks lie on the Gulf floor off the Tampa Bay coast. From Spanish galleons to WWII-era vessels, these wrecks create artificial reefs teeming with marine life.',
     svgKey: 'shipwreck',
+    animCategory: 'spooky',
   },
   {
     id: 'mantaRay',
@@ -542,6 +590,7 @@ export const EASTER_EGGS = [
     title: 'Manta Ray!',
     fact: 'Spotted eagle rays and mantas frequent the warm Gulf waters near Longboat Key. Their graceful underwater "flight" makes them a favorite sight for divers and snorkelers.',
     svgKey: 'mantaRay',
+    animCategory: 'water',
   },
   {
     id: 'spanishMoss',
@@ -553,5 +602,6 @@ export const EASTER_EGGS = [
     title: 'Spanish Moss!',
     fact: "Spanish moss isn't moss at all — it's an epiphyte related to pineapples. Draped on every live oak in old Seminole Heights, it defines the Gothic beauty of Florida's tree canopy.",
     svgKey: 'spanishMoss',
+    animCategory: 'culture',
   },
 ];

@@ -683,6 +683,17 @@ const SVG_GENERATORS = {
 };
 
 // ---------------------------------------------------------------------------
+// Zoom-responsive sizing — matches store marker scaling pattern
+// ---------------------------------------------------------------------------
+function scaledSize(baseSize, currentZoom) {
+  const zoomScale = Math.max(0.75, 1 + (currentZoom - 13) * 0.25);
+  return [
+    Math.max(Math.round(baseSize[0] * 0.6), Math.round(baseSize[0] * zoomScale)),
+    Math.max(Math.round(baseSize[1] * 0.6), Math.round(baseSize[1] * zoomScale)),
+  ];
+}
+
+// ---------------------------------------------------------------------------
 // Popup HTML builder
 // ---------------------------------------------------------------------------
 function buildPopupHtml(egg, foundSet) {
@@ -703,18 +714,43 @@ export default function EasterEggs({ zoom, theme }) {
   const groupRef = useRef(null);
   const markersRef = useRef([]);
   const foundRef = useRef(getFound());
+  const svgCacheRef = useRef({});
+  const animatingRef = useRef(new Set());
 
   const handleEggClick = useCallback((egg, marker) => {
     foundRef.current = markFound(egg.id);
-    // Update popup content with latest count
     marker.setPopupContent(buildPopupHtml(egg, foundRef.current));
-    // Pulse animation
-    const el = marker._icon;
-    if (el) {
-      el.classList.add('easter-egg-found');
-      setTimeout(() => el.classList.remove('easter-egg-found'), 600);
+
+    // Swap to activated SVG
+    const gen = SVG_GENERATORS[egg.svgKey];
+    if (gen) {
+      animatingRef.current.add(egg.id);
+      const activatedSvg = gen(theme, true);
+      const z = map.getZoom();
+      const [w, h] = scaledSize(egg.size, z);
+      marker.setIcon(L.divIcon({
+        html: activatedSvg,
+        className: 'easter-egg-icon egg-activated',
+        iconSize: [w, h],
+        iconAnchor: [w / 2, h / 2],
+      }));
+      // Revert after 2s
+      setTimeout(() => {
+        animatingRef.current.delete(egg.id);
+        const restingSvg = svgCacheRef.current[egg.id];
+        if (restingSvg) {
+          const zNow = map.getZoom();
+          const [w2, h2] = scaledSize(egg.size, zNow);
+          marker.setIcon(L.divIcon({
+            html: restingSvg,
+            className: 'easter-egg-icon',
+            iconSize: [w2, h2],
+            iconAnchor: [w2 / 2, h2 / 2],
+          }));
+        }
+      }, 2000);
     }
-  }, []);
+  }, [theme, map]);
 
   // Create all markers once per theme change
   useEffect(() => {
@@ -729,17 +765,21 @@ export default function EasterEggs({ zoom, theme }) {
 
     const group = L.layerGroup();
     const markers = [];
+    const currentZoom = map.getZoom();
+    svgCacheRef.current = {};
 
     EASTER_EGGS.forEach((egg) => {
       const gen = SVG_GENERATORS[egg.svgKey];
       if (!gen) return;
 
-      const svg = gen(theme);
+      const svg = gen(theme, false);
+      svgCacheRef.current[egg.id] = svg;
+      const [w, h] = scaledSize(egg.size, currentZoom);
       const icon = L.divIcon({
         html: svg,
         className: 'easter-egg-icon',
-        iconSize: egg.size,
-        iconAnchor: [egg.size[0] / 2, egg.size[1] / 2],
+        iconSize: [w, h],
+        iconAnchor: [w / 2, h / 2],
       });
 
       const marker = L.marker([egg.lat, egg.lng], {
@@ -787,12 +827,33 @@ export default function EasterEggs({ zoom, theme }) {
       });
     }
 
+    // Rescale icons on zoom end (skip during animation or open popup)
+    function updateSizes() {
+      const z = map.getZoom();
+      markersRef.current.forEach(({ marker, egg }) => {
+        if (animatingRef.current.has(egg.id)) return;
+        if (marker.isPopupOpen()) return;
+        const visible = z >= egg.minZoom && z <= egg.maxZoom;
+        if (!visible) return;
+        const cachedSvg = svgCacheRef.current[egg.id];
+        if (!cachedSvg) return;
+        const [w, h] = scaledSize(egg.size, z);
+        marker.setIcon(L.divIcon({
+          html: cachedSvg,
+          className: 'easter-egg-icon',
+          iconSize: [w, h],
+          iconAnchor: [w / 2, h / 2],
+        }));
+      });
+    }
+
     updateVisibility();
-    map.on('zoomend', updateVisibility);
+    updateSizes();
     map.on('zoom', updateVisibility);
+    map.on('zoomend', updateSizes);
     return () => {
-      map.off('zoomend', updateVisibility);
       map.off('zoom', updateVisibility);
+      map.off('zoomend', updateSizes);
     };
   }, [map, zoom]);
 
