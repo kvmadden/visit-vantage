@@ -1259,10 +1259,10 @@ const SVG_GENERATORS = {
 // Zoom-responsive sizing — more aggressive scaling so eggs grow with zoom
 // ---------------------------------------------------------------------------
 function scaledSize(baseSize, currentZoom) {
-  const zoomScale = Math.max(0.85, 1 + (currentZoom - 11) * 0.35);
+  const zoomScale = Math.max(0.9, 1 + (currentZoom - 11) * 0.45);
   return [
-    Math.max(Math.round(baseSize[0] * 0.75), Math.round(baseSize[0] * zoomScale)),
-    Math.max(Math.round(baseSize[1] * 0.75), Math.round(baseSize[1] * zoomScale)),
+    Math.max(Math.round(baseSize[0] * 0.8), Math.round(baseSize[0] * zoomScale)),
+    Math.max(Math.round(baseSize[1] * 0.8), Math.round(baseSize[1] * zoomScale)),
   ];
 }
 
