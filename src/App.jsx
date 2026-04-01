@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.1.7-no-fitbounds';
+const APP_VERSION = 'v2.0.0-design-system';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
@@ -12,6 +12,9 @@ import Legend from './components/Legend';
 import LayerPanel from './components/LayerPanel';
 import BottomSheet from './components/BottomSheet';
 import WeatherWidget from './components/WeatherWidget';
+import Brand from './components/Brand';
+import LandingPage from './components/LandingPage';
+import SetupScreen from './components/SetupScreen';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import './App.css';
@@ -26,6 +29,8 @@ export default function App() {
   const [gpsPosition, setGpsPosition] = useState(null);
   const [districtView, setDistrictView] = useState(false);
   const [activeLayers, setActiveLayers] = useState({});
+  const [appScreen, setAppScreen] = useState('landing'); // 'landing' | 'setup' | 'map'
+  const [sessionConfig, setSessionConfig] = useState(null);
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('visitvantage-theme') || 'light';
   });
@@ -160,17 +165,47 @@ export default function App() {
     setSelectedStore(null);
   }, []);
 
+  const handleStartPlanning = useCallback(function () {
+    setAppScreen('setup');
+  }, []);
+
+  const handleSetupBack = useCallback(function () {
+    setAppScreen('landing');
+  }, []);
+
+  const handleSetupGo = useCallback(function (config) {
+    setSessionConfig(config);
+    if (config.focusDistrict) {
+      setActiveDistrict(config.focusDistrict);
+    }
+    if (config.startLocation) {
+      setGpsPosition(config.startLocation);
+    }
+    setAppScreen('map');
+  }, []);
+
+  if (appScreen === 'landing') {
+    return <LandingPage onStart={handleStartPlanning} />;
+  }
+
+  if (appScreen === 'setup') {
+    return (
+      <SetupScreen
+        onBack={handleSetupBack}
+        onGo={handleSetupGo}
+        theme={theme}
+        onThemeToggle={handleThemeToggle}
+      />
+    );
+  }
+
   return (
     <div className="app">
       <header className="header">
         <div className="header-left">
-          <span className="header-title">
-            <span className="wordmark-visit">Visit</span>
-            <span className="wordmark-vantage">Vantage</span>
-          </span>
+          <Brand compact />
         </div>
         <div className="header-right">
-          <WeatherWidget />
           <span className="header-badge">REGION 41</span>
           <span className="header-version">{APP_VERSION}</span>
           <button
@@ -294,7 +329,9 @@ export default function App() {
         </BottomSheet>
       </div>
 
-      <footer className="footer">Madden Frameworks &middot; Smart systems. Better judgment.</footer>
+      <footer className="footer">
+        <span className="footer-pill">&copy; 2026 Madden Frameworks</span>
+      </footer>
     </div>
   );
 }

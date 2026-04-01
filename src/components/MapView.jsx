@@ -100,7 +100,7 @@ const TILE_BASE = {
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>';
 
-const ROUTE_COLOR = '#4A9EFF';
+const ROUTE_COLOR = '#D4A04A';
 
 // Tampa Bay area cities/places with min zoom at which they appear
 // tier 1 = major cities (always visible), tier 2 = medium (z>=10), tier 3 = neighborhoods (z>=11)
@@ -811,8 +811,8 @@ export default function MapView({
             center={[selectedStore.lat, selectedStore.lng]}
             radius={4023} // ~2.5 miles ≈ 5 min at 30mph
             pathOptions={{
-              color: '#4A9EFF',
-              fillColor: '#4A9EFF',
+              color: '#D4A04A',
+              fillColor: '#D4A04A',
               fillOpacity: 0.04,
               weight: 1,
               dashArray: '4, 4',
@@ -823,8 +823,8 @@ export default function MapView({
             center={[selectedStore.lat, selectedStore.lng]}
             radius={8047} // ~5 miles ≈ 10 min at 30mph
             pathOptions={{
-              color: '#4A9EFF',
-              fillColor: '#4A9EFF',
+              color: '#D4A04A',
+              fillColor: '#D4A04A',
               fillOpacity: 0.02,
               weight: 1,
               dashArray: '6, 6',
