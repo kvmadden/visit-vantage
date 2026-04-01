@@ -461,6 +461,7 @@ function ClusteredMarkers({
           spiderfyOnMaxZoom: true,
           showCoverageOnHover: false,
           zoomToBoundsOnClick: true,
+          removeOutsideVisibleBounds: false,
           iconCreateFunction: (cluster) => {
             const count = cluster.getChildCount();
             const pill = clusterPillSvg(districtColor, count);
