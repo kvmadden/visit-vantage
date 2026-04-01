@@ -82,14 +82,14 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
   });
 }
 
-const DEFAULT_CENTER = [27.85, -82.48];
+const DEFAULT_CENTER = [27.85, -82.35];
 const DEFAULT_ZOOM = 9;
 const MIN_ZOOM = 9;
 const MAX_ZOOM = 18;
-// Bounding box for the Tampa Bay region — prevents panning outside this area
+// Bounding box for the Tampa Bay region — tight to prevent ugly panning
 const MAX_BOUNDS = [
-  [26.8, -83.1], // SW corner
-  [28.7, -81.5], // NE corner
+  [26.8, -83.0], // SW corner
+  [28.7, -81.8], // NE corner
 ];
 
 const TILE_BASE = {
