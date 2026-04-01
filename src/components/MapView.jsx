@@ -85,7 +85,7 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
 
 const DEFAULT_CENTER = [27.85, -82.35];
 const DEFAULT_ZOOM = 9;
-const MIN_ZOOM = 8;
+const MIN_ZOOM = 8.5;
 const MAX_ZOOM = 18;
 // Bounding box for the Tampa Bay region — tight to prevent ugly panning
 const MAX_BOUNDS = [
