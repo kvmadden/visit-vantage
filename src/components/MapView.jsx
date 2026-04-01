@@ -89,7 +89,7 @@ const MIN_ZOOM = 8.5;
 const MAX_ZOOM = 18;
 // Bounding box for the Tampa Bay region — tight to prevent ugly panning
 const MAX_BOUNDS = [
-  [27.0, -82.95], // SW corner
+  [26.6, -82.95], // SW corner
   [28.6, -81.9], // NE corner
 ];
 
