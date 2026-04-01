@@ -202,6 +202,11 @@ export default function IconWorkshop({ onBack, theme }) {
                   )}
                 </div>
 
+                {/* Description */}
+                {spec.description && (
+                  <div style={styles.descriptionText(isDark)}>{spec.description}</div>
+                )}
+
                 {/* Icon previews */}
                 <div style={styles.previewRow}>
                   {/* Actual size */}
@@ -314,6 +319,9 @@ export default function IconWorkshop({ onBack, theme }) {
                     )}
                   </div>
                   <div style={styles.bayDestination(isDark)}>{spec.destination}</div>
+                  {spec.description && (
+                    <div style={styles.descriptionText(isDark)}>{spec.description}</div>
+                  )}
                   <div style={styles.bayPreviewRow}>
                     {/* 24x24 actual */}
                     <div style={styles.bayPreviewCell(isDark)}>
@@ -516,6 +524,14 @@ const styles = {
     marginBottom: 8,
     flexWrap: 'wrap',
   },
+  descriptionText: (dark) => ({
+    fontSize: 12,
+    color: dark ? '#a1a1aa' : '#78716c',
+    marginBottom: 8,
+    lineHeight: 1.4,
+    fontStyle: 'italic',
+    paddingLeft: 24,
+  }),
   statusBtn: {
     background: 'none',
     border: 'none',
