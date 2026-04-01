@@ -574,17 +574,20 @@ function ClusteredMarkers({
         });
       };
 
-      // Identify outlier stores: nearest same-district neighbor > threshold
-      // Tighter at low zoom (cluster more), relaxed at higher zoom (show barrier island stores)
-      const outlierMinDist = currentZoom <= 10 ? 0.12 : currentZoom <= 11 ? 0.08 : 0.04;
+      // Stores that must always render individually (barrier islands, map-edge, etc.)
+      // Add store numbers here when clustering hides them at mid-zoom levels.
+      const FORCED_OUTLIERS = new Set([3267, 3953]); // Longboat Key, Holmes Beach
+
+      const outlierMinDist = 0.08; // ~5.5 miles to nearest same-district neighbor
       function isOutlier(store, districtStores) {
+        if (FORCED_OUTLIERS.has(store.store)) return true;
         let minDist = Infinity;
         for (let i = 0; i < districtStores.length; i++) {
           const other = districtStores[i];
           if (other.store === store.store) continue;
           const d = Math.sqrt((store.lat - other.lat) ** 2 + (store.lng - other.lng) ** 2);
           if (d < minDist) minDist = d;
-          if (minDist <= outlierMinDist) return false; // early exit
+          if (minDist <= outlierMinDist) return false;
         }
         return minDist > outlierMinDist;
       }
