@@ -728,25 +728,15 @@ function HomeControl({ stores }) {
 function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme }) {
   const map = useMap();
   const layerRef = useRef(null);
+  const labelsRef = useRef([]);
 
+  // Create the GeoJSON layer once per districtMode/theme change
   useEffect(() => {
     if (!map || !showClouds) {
       if (layerRef.current && map) {
         map.removeLayer(layerRef.current);
         layerRef.current = null;
-      }
-      return;
-    }
-
-    // Polygon opacity: full at z<=9, gone at z>=13
-    const baseOpacity = zoom <= 9 ? 0.18 : zoom >= 13 ? 0 : 0.18 * (13 - zoom) / 4;
-    // District label opacity: fades earlier and faster than polygons
-    const labelOpacity = zoom <= 9 ? 0.9 : zoom >= 12 ? 0 : 0.9 * (12 - zoom) / 3;
-
-    if (baseOpacity <= 0 && labelOpacity <= 0) {
-      if (layerRef.current) {
-        map.removeLayer(layerRef.current);
-        layerRef.current = null;
+        labelsRef.current = [];
       }
       return;
     }
@@ -756,55 +746,79 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
     }
 
     const geoData = districtMode === 'fs' ? fsDistrictGeoJSON : rxDistrictGeoJSON;
+    const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.85)';
+    const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
 
     const layer = L.geoJSON(geoData, {
-      style: (feature) => {
-        const d = feature.properties.district;
-        const isActive = activeDistrict == null || activeDistrict === d;
-        return {
-          fillColor: feature.properties.color,
-          fillOpacity: isActive ? baseOpacity : baseOpacity * 0.2,
-          color: feature.properties.color,
-          weight: isActive ? 1.5 : 0.5,
-          opacity: isActive ? 0.4 : 0.1,
-        };
-      },
+      style: () => ({
+        fillOpacity: 0,
+        opacity: 0,
+        weight: 1,
+      }),
     });
 
     layer.addTo(map);
     layerRef.current = layer;
 
-    // Place district labels at hardcoded positions — no delays, no collision detection
-    if (labelOpacity > 0) {
-      const haloColor = theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.85)';
-      const haloBlur = theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.6)';
-      const labelSize = 16;
+    // Create district labels
+    const labels = [];
+    (geoData.features || []).forEach((feature) => {
+      const d = feature.properties.district;
+      const pos = LABEL_POSITIONS.districts[d];
+      if (!pos) return;
 
-      (geoData.features || []).forEach((feature) => {
-        const d = feature.properties.district;
-        const isActive = activeDistrict == null || activeDistrict === d;
-        if (!isActive) return;
-
-        const pos = LABEL_POSITIONS.districts[d];
-        if (!pos) return;
-
-        const icon = L.divIcon({
-          html: `<div style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:${labelSize}px;color:${feature.properties.color};opacity:${labelOpacity};text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${feature.properties.label}</div>`,
-          className: 'district-label-icon',
-          iconSize: [60, 24],
-          iconAnchor: [30, 12],
-        });
-        L.marker([pos.lat, pos.lng], { icon, interactive: false }).addTo(layer);
+      const icon = L.divIcon({
+        html: `<div class="district-label-text" style="font-family:IBM Plex Sans,sans-serif;font-weight:800;font-size:16px;color:${feature.properties.color};opacity:0;transition:opacity 0.3s ease;text-shadow:-1px -1px 2px ${haloColor},1px -1px 2px ${haloColor},-1px 1px 2px ${haloColor},1px 1px 2px ${haloColor},0 0 8px ${haloBlur};white-space:nowrap;pointer-events:none;letter-spacing:0.5px">${feature.properties.label}</div>`,
+        className: 'district-label-icon',
+        iconSize: [60, 24],
+        iconAnchor: [30, 12],
       });
-    }
+      const marker = L.marker([pos.lat, pos.lng], { icon, interactive: false });
+      marker.addTo(layer);
+      labels.push({ marker, district: d });
+    });
+    labelsRef.current = labels;
 
     return () => {
       if (layerRef.current) {
         map.removeLayer(layerRef.current);
         layerRef.current = null;
+        labelsRef.current = [];
       }
     };
-  }, [map, zoom, activeDistrict, showClouds, districtMode, theme]);
+  }, [map, showClouds, districtMode, theme]);
+
+  // Update styles on zoom/activeDistrict changes (no layer recreation)
+  useEffect(() => {
+    if (!layerRef.current) return;
+
+    const baseOpacity = zoom <= 9 ? 0.18 : zoom >= 13 ? 0 : 0.18 * (13 - zoom) / 4;
+    const labelOpacity = zoom <= 9 ? 0.9 : zoom >= 12 ? 0 : 0.9 * (12 - zoom) / 3;
+
+    // Update polygon styles in place
+    layerRef.current.eachLayer((l) => {
+      if (l.feature) {
+        const d = l.feature.properties.district;
+        const isActive = activeDistrict == null || activeDistrict === d;
+        l.setStyle({
+          fillColor: l.feature.properties.color,
+          fillOpacity: isActive ? baseOpacity : baseOpacity * 0.2,
+          color: l.feature.properties.color,
+          weight: isActive ? 1.5 : 0.5,
+          opacity: isActive ? 0.4 : 0.1,
+        });
+      }
+    });
+
+    // Update label opacity
+    labelsRef.current.forEach(({ marker, district }) => {
+      const isActive = activeDistrict == null || activeDistrict === district;
+      const el = marker._icon?.querySelector('.district-label-text');
+      if (el) {
+        el.style.opacity = isActive ? String(labelOpacity) : '0';
+      }
+    });
+  }, [zoom, activeDistrict]);
 
   return null;
 }

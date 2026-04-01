@@ -1144,6 +1144,30 @@ h1, h2, h3, h4, h5, h6,
   font-family: 'IBM Plex Sans', sans-serif;
 }
 
+/* Smooth fade for overlay tiles (CARTO labels) appearing/disappearing */
+.leaflet-overlay-pane .leaflet-tile-container {
+  transition: opacity 0.3s ease;
+}
+
+/* Smooth transitions for district cloud polygons */
+.leaflet-overlay-pane path {
+  transition: fill-opacity 0.3s ease, stroke-opacity 0.3s ease;
+}
+
+/* Smooth transitions for district/city label icons */
+.district-label-icon,
+.city-label-icon {
+  transition: opacity 0.3s ease;
+}
+
+/* Smooth marker appearance */
+.cvs-heart-icon,
+.target-bullseye-icon,
+.ymas-pill-icon,
+.cluster-pill-icon {
+  transition: opacity 0.25s ease;
+}
+
 .leaflet-control-zoom {
   border: 1px solid var(--border) !important;
 }
