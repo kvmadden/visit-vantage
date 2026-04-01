@@ -83,6 +83,30 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
   });
 }
 
+// y más rounded pill — heart + "y más" text badge
+function createYmasPillIcon(color, size = 18, opacity = 0.9) {
+  const stroke = darkenHexStr(color);
+  const pillW = size + 28;
+  const pillH = size;
+  const r = pillH / 2;
+  const heartScale = size / 32;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${pillW}" height="${pillH}" viewBox="0 0 ${pillW} ${pillH}">
+    <rect x="0.5" y="0.5" width="${pillW - 1}" height="${pillH - 1}" rx="${r}" ry="${r}"
+      fill="${color}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="0.5"/>
+    <g transform="translate(${pillH * 0.15}, ${pillH * 0.1}) scale(${heartScale * 0.8})">
+      <path d="M16 29 C16 29 2 20 2 11 C2 6 5.5 2 10 2 C12.5 2 14.8 3.5 16 5.5 C17.2 3.5 19.5 2 22 2 C26.5 2 30 6 30 11 C30 20 16 29 16 29Z"
+        fill="#fff" fill-opacity="0.95"/>
+    </g>
+    <text x="${pillH * 0.5 + 16}" y="${pillH / 2 + 0.5}" text-anchor="start" fill="#fff" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="${Math.max(8, pillH * 0.45)}" dominant-baseline="central">y más</text>
+  </svg>`;
+  return L.divIcon({
+    html: svg,
+    className: 'ymas-pill-icon',
+    iconSize: [pillW, pillH],
+    iconAnchor: [pillW / 2, pillH / 2],
+  });
+}
+
 const DEFAULT_CENTER = [27.50, -82.44];
 const DEFAULT_ZOOM = 8.5;
 const MIN_ZOOM = 8.5;
@@ -455,6 +479,7 @@ function ClusteredMarkers({
       // Helper to build a marker icon for a single store
       const buildStoreIcon = (store, districtColor) => {
         const isTarget = store.target === true;
+        const isYmas = store.ymas === 'Yes';
         const activeColor = isTarget
           ? (RX_COLORS[store.rxDistrict] || '#ef4444')
           : districtColor;
@@ -468,21 +493,28 @@ function ClusteredMarkers({
         const zoomScale = Math.max(0.75, 1 + (currentZoom - 13) * 0.25);
         const heartSize = Math.max(20, Math.round((isSelected ? 22 : 16) * zoomScale));
         const bullseyeSize = Math.max(16, Math.round((isSelected ? 15 : 11) * zoomScale));
+        const ymasSize = Math.max(18, Math.round((isSelected ? 20 : 16) * zoomScale));
 
         const bullseyeInner = theme === 'dark' ? '#18181b' : '#ffffff';
         const isViewed = viewedStores && viewedStores.has(store.store);
-        const baseSvg = isTarget
-          ? createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner)
-          : createHeartIcon(displayColor, heartSize, opacity);
+        let baseSvg;
+        if (isTarget) {
+          baseSvg = createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner);
+        } else if (isYmas) {
+          baseSvg = createYmasPillIcon(displayColor, ymasSize, opacity);
+        } else {
+          baseSvg = createHeartIcon(displayColor, heartSize, opacity);
+        }
 
         if (isViewed && !isFaded) {
-          const size = isTarget ? bullseyeSize : heartSize;
-          const dotHtml = `<div style="position:relative;width:${size}px;height:${size}px">${baseSvg.options.html}<svg style="position:absolute;top:-2px;right:-2px" width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e"/><path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div>`;
+          const size = isTarget ? bullseyeSize : isYmas ? ymasSize : heartSize;
+          const w = isYmas ? size + 28 : size;
+          const dotHtml = `<div style="position:relative;width:${w}px;height:${size}px">${baseSvg.options.html}<svg style="position:absolute;top:-2px;right:-2px" width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e"/><path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div>`;
           return L.divIcon({
             html: dotHtml,
             className: baseSvg.options.className,
-            iconSize: [size, size],
-            iconAnchor: [size / 2, size / 2],
+            iconSize: [w, size],
+            iconAnchor: [w / 2, size / 2],
           });
         }
         return baseSvg;

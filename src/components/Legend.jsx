@@ -49,19 +49,33 @@ export default function Legend({ districtMode = 'rx', theme = 'light' }) {
         </div>
       ))}
 
+      <hr className="legend-separator" />
       {isRx && (
-        <>
-          <hr className="legend-separator" />
-          <div className="legend-item">
-            <svg width="10" height="10" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
-              <circle cx="12" cy="12" r="10.5" fill="#71717a" />
-              <circle cx="12" cy="12" r="7.5" fill={bullseyeInner} />
-              <circle cx="12" cy="12" r="4.5" fill="#71717a" />
-            </svg>
-            <span>Target</span>
-          </div>
-        </>
+        <div className="legend-item">
+          <svg width="10" height="10" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+            <circle cx="12" cy="12" r="10.5" fill="#71717a" />
+            <circle cx="12" cy="12" r="7.5" fill={bullseyeInner} />
+            <circle cx="12" cy="12" r="4.5" fill="#71717a" />
+          </svg>
+          <span>Target</span>
+        </div>
       )}
+      <div className="legend-item">
+        <svg width="28" height="12" viewBox="0 0 46 18" style={{ flexShrink: 0 }}>
+          <rect x="0.5" y="0.5" width="45" height="17" rx="9" fill="#71717a" fillOpacity="0.8" />
+          <path d="M9 14 C9 14 3.5 10.5 3.5 7 C3.5 5 5 3.5 6.5 3.5 C7.5 3.5 8.3 4 9 4.8 C9.7 4 10.5 3.5 11.5 3.5 C13 3.5 14.5 5 14.5 7 C14.5 10.5 9 14 9 14Z"
+            fill="#fff" fillOpacity="0.95" />
+          <text x="33" y="10" textAnchor="middle" fill="#fff" fontFamily="IBM Plex Sans,sans-serif" fontWeight="700" fontSize="7">y más</text>
+        </svg>
+        <span>y más</span>
+      </div>
+      <div className="legend-item">
+        <svg width="7" height="7" viewBox="0 0 7 7" style={{ flexShrink: 0 }}>
+          <circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e" />
+          <path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" strokeWidth="0.8" fill="none" />
+        </svg>
+        <span>Viewed</span>
+      </div>
     </div>
   );
 }
