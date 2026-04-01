@@ -474,6 +474,112 @@ const SVG_GENERATORS = {
       <line x1="4" y1="13" x2="14" y2="13" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
     </svg>`;
   },
+
+  // --- Batch 4: Quirky & Deep Cuts ---
+
+  ufo(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
+      <ellipse cx="11" cy="8" rx="10" ry="3" fill="${c.fill}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <ellipse cx="11" cy="6" rx="5" ry="3.5" fill="${c.fill}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <circle cx="5" cy="8" r="0.6" fill="${c.accent}" fill-opacity="${c.op * 0.5}"/>
+      <circle cx="8.5" cy="9" r="0.6" fill="${c.accent}" fill-opacity="${c.op * 0.5}"/>
+      <circle cx="13.5" cy="9" r="0.6" fill="${c.accent}" fill-opacity="${c.op * 0.5}"/>
+      <circle cx="17" cy="8" r="0.6" fill="${c.accent}" fill-opacity="${c.op * 0.5}"/>
+      <path d="M8 12 L6 14" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}" stroke-linecap="round"/>
+      <path d="M11 11 L11 14" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}" stroke-linecap="round"/>
+      <path d="M14 12 L16 14" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}" stroke-linecap="round"/>
+    </svg>`;
+  },
+
+  conchShell(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+      <path d="M9 2 Q15 4 16 10 Q16 14 12 16 Q8 17 5 15 Q2 12 3 8 Q4 5 9 2Z" fill="${c.red}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M9 2 Q10 6 9 10 Q8 13 7 15" fill="none" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
+      <path d="M12 5 Q10 8 8 11" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
+      <path d="M14 8 Q12 10 10 13" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <path d="M5 15 Q3 14 3 12" fill="none" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op * 0.4}" stroke-linecap="round"/>
+    </svg>`;
+  },
+
+  treasureChest(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 16">
+      <rect x="2" y="7" width="14" height="8" rx="1" fill="${c.accent}" fill-opacity="${c.op * 0.3}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M2 7 Q9 3 16 7" fill="${c.accent}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <line x1="2" y1="11" x2="16" y2="11" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}"/>
+      <rect x="7.5" y="9.5" width="3" height="3" rx="0.5" fill="${c.accent}" fill-opacity="${c.op * 0.5}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <circle cx="9" cy="11" r="0.6" fill="${c.stroke}" fill-opacity="${c.op * 0.5}"/>
+    </svg>`;
+  },
+
+  gibsonton(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+      <circle cx="10" cy="9" r="7" fill="none" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <circle cx="10" cy="9" r="5" fill="${c.red}" fill-opacity="${c.op * 0.1}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
+      <line x1="10" y1="2" x2="10" y2="0" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <polygon points="9,0 10,-1.5 11,0" fill="${c.accent}" fill-opacity="${c.op * 0.5}"/>
+      <path d="M5 7 Q6 6 7 7 Q8 8 7 9" fill="none" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
+      <circle cx="6" cy="8" r="0.4" fill="${c.stroke}" fill-opacity="${c.op * 0.4}"/>
+      <path d="M12 6 L14 5 L13 7" fill="${c.accent}" fill-opacity="${c.op * 0.3}" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <path d="M7 12 Q10 14 13 12" fill="none" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}" stroke-linecap="round"/>
+    </svg>`;
+  },
+
+  spookHill(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14">
+      <path d="M1 12 Q5 8 9 6 Q13 8 17 12" fill="${c.green}" fill-opacity="${c.op * 0.1}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <rect x="11" y="7" width="4" height="3" rx="0.5" fill="${c.stroke}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <circle cx="11" cy="9" r="0.8" fill="${c.stroke}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="15" cy="9" r="0.8" fill="${c.stroke}" fill-opacity="${c.op * 0.3}"/>
+      <rect x="12" y="8" width="2" height="1.5" rx="0.3" fill="${c.water}" fill-opacity="${c.op * 0.3}"/>
+      <path d="M13 7 L13.5 5" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}" stroke-linecap="round"/>
+      <text x="13.5" y="4.5" font-size="2.5" fill="${c.stroke}" fill-opacity="${c.op * 0.5}">?</text>
+    </svg>`;
+  },
+
+  joyland(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="8" fill="none" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op * 0.5}"/>
+      <circle cx="10" cy="10" r="8" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}" stroke-dasharray="1.5 2"/>
+      <line x1="10" y1="2" x2="10" y2="18" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <line x1="2" y1="10" x2="18" y2="10" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <line x1="4.3" y1="4.3" x2="15.7" y2="15.7" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <line x1="15.7" y1="4.3" x2="4.3" y2="15.7" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
+      <circle cx="10" cy="2" r="0.8" fill="${c.red}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="15.7" cy="4.3" r="0.8" fill="${c.accent}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="18" cy="10" r="0.8" fill="${c.blue}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="15.7" cy="15.7" r="0.8" fill="${c.green}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="10" cy="10" r="1.5" fill="${c.stroke}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+    </svg>`;
+  },
+
+  babeRuth(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="6" fill="${c.fill}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.7" stroke-opacity="${c.op}"/>
+      <path d="M3 5 Q8 3 13 5" fill="none" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op * 0.5}"/>
+      <path d="M3 11 Q8 13 13 11" fill="none" stroke="${c.red}" stroke-width="0.5" stroke-opacity="${c.op * 0.5}"/>
+      <path d="M4 5.5 L4.5 6.5 M6 4.5 L6.2 5.5 M8 4 L8 5 M10 4.5 L9.8 5.5 M12 5.5 L11.5 6.5" fill="none" stroke="${c.red}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
+    </svg>`;
+  },
+
+  phosphateMining(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
+      <path d="M3 8 L7 4 L13 4 L17 8" fill="${c.stroke}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <rect x="3" y="8" width="14" height="5" rx="0.5" fill="${c.accent}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <circle cx="5.5" cy="13" r="1.5" fill="${c.stroke}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <circle cx="14.5" cy="13" r="1.5" fill="${c.stroke}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <circle cx="8" cy="6" r="0.8" fill="${c.accent}" fill-opacity="${c.op * 0.4}"/>
+      <circle cx="10.5" cy="5.5" r="0.6" fill="${c.accent}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="12" cy="7" r="0.7" fill="${c.accent}" fill-opacity="${c.op * 0.35}"/>
+    </svg>`;
+  },
 };
 
 // ---------------------------------------------------------------------------
