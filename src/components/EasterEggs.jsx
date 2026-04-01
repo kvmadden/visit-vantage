@@ -37,7 +37,7 @@ function svgColors(theme) {
   };
 }
 
-const SVG_GENERATORS = {
+export const SVG_GENERATORS = {
   pirateShip(theme, activated = false) {
     const c = svgColors(theme);
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" viewBox="0 0 28 20">

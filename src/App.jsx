@@ -1,4 +1,4 @@
-export const APP_VERSION = 'v2.16.0';
+export const APP_VERSION = 'v2.17.0';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
@@ -23,6 +23,7 @@ import MapBookmarks from './components/MapBookmarks';
 import RouteExport from './components/RouteExport';
 import StoreComparison from './components/StoreComparison';
 import MapAnnotations from './components/MapAnnotations';
+import IconWorkshop from './components/IconWorkshop';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import { markStoreViewed, getViewedStores } from './utils/storeStatus';
@@ -291,6 +292,14 @@ export default function App() {
     setAppScreen('setup');
   }, []);
 
+  const handleOpenWorkshop = useCallback(function () {
+    setAppScreen('workshop');
+  }, []);
+
+  const handleWorkshopBack = useCallback(function () {
+    setAppScreen('landing');
+  }, []);
+
   const handleSetupBack = useCallback(function () {
     setAppScreen('landing');
   }, []);
@@ -306,8 +315,12 @@ export default function App() {
     setAppScreen('map');
   }, []);
 
+  if (appScreen === 'workshop') {
+    return <IconWorkshop onBack={handleWorkshopBack} theme={theme} />;
+  }
+
   if (appScreen === 'landing') {
-    return <LandingPage onStart={handleStartPlanning} onLocate={handleLandingLocate} />;
+    return <LandingPage onStart={handleStartPlanning} onLocate={handleLandingLocate} onOpenWorkshop={handleOpenWorkshop} />;
   }
 
   if (appScreen === 'setup') {
