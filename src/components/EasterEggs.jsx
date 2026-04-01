@@ -1381,8 +1381,10 @@ export default function EasterEggs({ zoom, theme }) {
 
       marker.bindPopup(buildPopupHtml(egg, foundRef.current), {
         className: 'easter-egg-popup',
-        maxWidth: 220,
+        maxWidth: 200,
         closeButton: true,
+        autoPanPaddingTopLeft: [10, 10],
+        autoPanPaddingBottomRight: [10, 10],
       });
 
       marker.on('click', () => handleEggClick(egg, marker));
