@@ -372,6 +372,7 @@ export default function App() {
                 onRequestGps={handleRequestGps}
                 routeStats={routeStats}
                 sessionConfig={sessionConfig}
+                districtMode={districtMode}
                 inline
               />
             </div>

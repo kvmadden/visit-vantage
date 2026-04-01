@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { RX_COLORS, FS_COLORS } from '../utils/colors';
 
 function formatTime(minutes) {
   if (minutes >= 60) {
@@ -39,6 +40,7 @@ export default function RoutePlanner({
   routeStats,
   inline,
   sessionConfig,
+  districtMode = 'rx',
 }) {
   var stateArr = useState(null);
   var copiedIdx = stateArr[0];
@@ -135,11 +137,32 @@ export default function RoutePlanner({
           {routeStores.map(function (store, index) {
             var legIdx = gpsPosition ? index : index - 1;
             var leg = routeStats && routeStats.legs && routeStats.legs[legIdx];
+            var isLongestLeg = leg && routeStats.legs && routeStats.legs.length > 1 &&
+              leg.distance === Math.max.apply(null, routeStats.legs.map(function (l) { return l.distance; }));
+
+            // District transition separator
+            var prevStore = index > 0 ? routeStores[index - 1] : null;
+            var districtField = districtMode === 'fs' ? 'fsDistrict' : 'rxDistrict';
+            var showTransition = prevStore && prevStore[districtField] !== store[districtField];
+            var transitionColor = showTransition
+              ? (districtMode === 'fs' ? FS_COLORS : RX_COLORS)[store[districtField]] || 'var(--text-muted)'
+              : null;
+
             return (
               <li key={store.store}>
                 {leg && (
-                  <div className="route-leg-info" style={{ fontFamily: 'var(--font-mono)' }}>
-                    {leg.distance.toFixed(1)} mi &middot; {formatTime(leg.duration)}
+                  <div className="route-leg-connector">
+                    <div className="route-leg-line" />
+                    <div className="route-leg-detail" style={{ fontFamily: 'var(--font-mono)' }}>
+                      {leg.distance.toFixed(1)} mi · {formatTime(leg.duration)}
+                      {isLongestLeg && <span className="route-longest-tag">Longest leg</span>}
+                    </div>
+                  </div>
+                )}
+                {showTransition && (
+                  <div className="route-district-transition" style={{ color: transitionColor }}>
+                    <span className="route-transition-dot" style={{ backgroundColor: transitionColor }} />
+                    Entering {districtMode === 'fs' ? 'FS' : 'Rx'} D{store[districtField]}
                   </div>
                 )}
                 <div className="route-stop">
@@ -150,6 +173,9 @@ export default function RoutePlanner({
                     </span>
                     <span className="route-stop-addr">{store.address}</span>
                   </div>
+                  <span className="route-stop-district" style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: (districtMode === 'fs' ? FS_COLORS : RX_COLORS)[store[districtField]] || 'var(--text-muted)' }}>
+                    D{store[districtField]}
+                  </span>
                   <button
                     className="route-stop-remove"
                     onClick={function () { onRemoveFromRoute(store); }}
