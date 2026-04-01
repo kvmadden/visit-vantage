@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { RX_COLORS, FS_COLORS } from '../utils/colors';
 
 const RX_DISTRICTS = [20, 21, 22, 23, 24, 25, 26, 27];
@@ -117,6 +117,8 @@ function FilterBar({
   storeCount,
   districtView,
   onDistrictViewToggle,
+  stores = [],
+  quickFilters = [],
 }) {
   const isRx = districtMode === 'rx';
   const districts = isRx ? RX_DISTRICTS : FS_DISTRICTS;
@@ -124,6 +126,18 @@ function FilterBar({
 
   // In FS mode, hide the Target flag toggle
   const visibleFlags = isRx ? FLAG_KEYS : FLAG_KEYS.filter((k) => k !== 'target');
+
+  // Compute per-district store counts
+  const districtCounts = useMemo(() => {
+    const counts = {};
+    const districtField = isRx ? 'rxDistrict' : 'fsDistrict';
+    const filtered = isRx ? stores : stores.filter((s) => s.target !== true);
+    filtered.forEach((s) => {
+      const d = s[districtField];
+      if (d != null) counts[d] = (counts[d] || 0) + 1;
+    });
+    return counts;
+  }, [stores, isRx]);
 
   const districtPillStyle = (district) => {
     const isActive = activeDistrict === district;
@@ -178,7 +192,7 @@ function FilterBar({
         }
         onClick={() => onDistrictChange(null)}
       >
-        All
+        All <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-muted)', marginLeft: 3 }}>{storeCount}</span>
       </button>
 
       {/* District pills */}
@@ -189,7 +203,7 @@ function FilterBar({
           style={districtPillStyle(d)}
           onClick={() => onDistrictChange(d)}
         >
-          D{d}
+          D{d} <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, opacity: 0.7, marginLeft: 2 }}>{districtCounts[d] || 0}</span>
         </button>
       ))}
 

@@ -16,9 +16,11 @@ import Brand from './components/Brand';
 import LandingPage from './components/LandingPage';
 import SetupScreen from './components/SetupScreen';
 import FocusBanner from './components/FocusBanner';
+import QuickFilterChips, { CHIPS } from './components/QuickFilterChips';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import { markStoreViewed, getViewedStores } from './utils/storeStatus';
+import { getPharmacyStatus } from './utils/storeHours';
 import './App.css';
 
 export default function App() {
@@ -34,6 +36,7 @@ export default function App() {
   const [activeLayers, setActiveLayers] = useState({});
   const [appScreen, setAppScreen] = useState('landing'); // 'landing' | 'setup' | 'map'
   const [sessionConfig, setSessionConfig] = useState(null);
+  const [quickFilters, setQuickFilters] = useState([]);
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('visitvantage-theme') || 'light';
   });
@@ -47,15 +50,30 @@ export default function App() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   }, []);
 
-  const filteredStores = useMemo(() => {
+  // Stores filtered by district only (for quick-filter chip counts)
+  const districtFilteredStores = useMemo(() => {
     return stores.filter((store) => {
       if (districtMode === 'fs' && store.target === true) return false;
       const districtField = districtMode === 'rx' ? 'rxDistrict' : 'fsDistrict';
       if (activeDistrict != null && store[districtField] !== activeDistrict) return false;
+      return true;
+    });
+  }, [activeDistrict, districtMode, stores]);
+
+  const filteredStores = useMemo(() => {
+    const now = new Date();
+    return districtFilteredStores.filter((store) => {
       if (flags.fs24 && store.fs24 !== 'Yes') return false;
       if (flags.rx24 && store.rx24 !== 'Yes') return false;
       if (flags.ymas && store.ymas !== 'Yes') return false;
       if (flags.target && store.target !== true) return false;
+
+      // Quick-filter chips (AND logic)
+      for (const chipKey of quickFilters) {
+        const chip = CHIPS.find((c) => c.key === chipKey);
+        if (chip && !chip.filter(store, now)) return false;
+      }
+
       if (searchText) {
         const q = searchText.toLowerCase();
         const haystack = [
@@ -72,7 +90,7 @@ export default function App() {
       }
       return true;
     });
-  }, [activeDistrict, districtMode, flags, searchText, stores]);
+  }, [districtFilteredStores, flags, quickFilters, searchText]);
 
   const [routeStats, setRouteStats] = useState(null);
   const [routeGeometry, setRouteGeometry] = useState(null);
@@ -110,6 +128,12 @@ export default function App() {
 
   const handleFlagToggle = useCallback((flag) => {
     setFlags((prev) => ({ ...prev, [flag]: !prev[flag] }));
+  }, []);
+
+  const handleQuickFilterToggle = useCallback((chipKey) => {
+    setQuickFilters((prev) =>
+      prev.includes(chipKey) ? prev.filter((k) => k !== chipKey) : [...prev, chipKey]
+    );
   }, []);
 
   const handleSearchChange = useCallback((text) => {
@@ -297,6 +321,17 @@ export default function App() {
               storeCount={filteredStores.length}
               districtView={districtView}
               onDistrictViewToggle={handleDistrictViewToggle}
+              stores={stores}
+              quickFilters={quickFilters}
+            />
+          </div>
+
+          {/* Quick-filter chips */}
+          <div className="bs-section">
+            <QuickFilterChips
+              stores={districtFilteredStores}
+              activeChips={quickFilters}
+              onToggleChip={handleQuickFilterToggle}
             />
           </div>
 
