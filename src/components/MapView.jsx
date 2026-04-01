@@ -800,8 +800,8 @@ export default function MapView({
       zoomDelta={0.5}
       minZoom={MIN_ZOOM}
       maxZoom={MAX_ZOOM}
-      maxBounds={MAX_BOUNDS}
-      maxBoundsViscosity={1.0}
+      // maxBounds={MAX_BOUNDS}
+      // maxBoundsViscosity={1.0}
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />

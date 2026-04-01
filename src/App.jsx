@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.1.3-tracker-topleft';
+const APP_VERSION = 'v1.1.4-no-pullback';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
