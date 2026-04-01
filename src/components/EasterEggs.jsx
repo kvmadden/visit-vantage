@@ -1259,10 +1259,12 @@ const SVG_GENERATORS = {
 // Zoom-responsive sizing — more aggressive scaling so eggs grow with zoom
 // ---------------------------------------------------------------------------
 function scaledSize(baseSize, currentZoom) {
-  const zoomScale = Math.max(0.9, 1 + (currentZoom - 11) * 0.45);
+  // Gentle growth: ~0.8x at zoom 9, 1x at zoom 11, ~1.5x at zoom 14, ~2x at zoom 18
+  // Icons never shrink below 0.8x base and keep growing as you zoom in
+  const zoomScale = Math.max(0.8, 0.8 + (currentZoom - 9) * 0.13);
   return [
-    Math.max(Math.round(baseSize[0] * 0.8), Math.round(baseSize[0] * zoomScale)),
-    Math.max(Math.round(baseSize[1] * 0.8), Math.round(baseSize[1] * zoomScale)),
+    Math.round(baseSize[0] * zoomScale),
+    Math.round(baseSize[1] * zoomScale),
   ];
 }
 
@@ -1381,10 +1383,10 @@ export default function EasterEggs({ zoom, theme }) {
 
       marker.bindPopup(buildPopupHtml(egg, foundRef.current), {
         className: 'easter-egg-popup',
-        maxWidth: 200,
+        maxWidth: 280,
         closeButton: true,
         autoPan: true,
-        autoPanPadding: [40, 40],
+        autoPanPadding: [50, 50],
       });
 
       marker.on('click', () => handleEggClick(egg, marker));
@@ -1443,8 +1445,8 @@ export default function EasterEggs({ zoom, theme }) {
       });
     }
 
-    // Close popup when user pans it off-screen
-    function closeOffscreen() {
+    // Fade popup as user scrolls away, close when fully off-screen
+    function fadeOnScroll() {
       markersRef.current.forEach(({ marker }) => {
         if (!marker.isPopupOpen()) return;
         const popup = marker.getPopup();
@@ -1452,9 +1454,20 @@ export default function EasterEggs({ zoom, theme }) {
         if (!el) return;
         const r = el.getBoundingClientRect();
         const m = map.getContainer().getBoundingClientRect();
+        // Fully off-screen → close
         if (r.right < m.left || r.left > m.right || r.bottom < m.top || r.top > m.bottom) {
           marker.closePopup();
+          return;
         }
+        // Calculate how close the popup edge is to the viewport edge
+        const overLeft = m.left - r.left;
+        const overRight = r.right - m.right;
+        const overTop = m.top - r.top;
+        const overBottom = r.bottom - m.bottom;
+        const maxOver = Math.max(0, overLeft, overRight, overTop, overBottom);
+        // Fade from 1→0 over 60px of overshoot
+        const opacity = Math.max(0, 1 - maxOver / 60);
+        el.style.opacity = opacity;
       });
     }
 
@@ -1462,11 +1475,11 @@ export default function EasterEggs({ zoom, theme }) {
     updateSizes();
     map.on('zoom', updateVisibility);
     map.on('zoomend', updateSizes);
-    map.on('move', closeOffscreen);
+    map.on('move', fadeOnScroll);
     return () => {
       map.off('zoom', updateVisibility);
       map.off('zoomend', updateSizes);
-      map.off('move', closeOffscreen);
+      map.off('move', fadeOnScroll);
     };
   }, [map, zoom]);
 
