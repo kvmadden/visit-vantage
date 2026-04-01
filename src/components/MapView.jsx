@@ -902,7 +902,7 @@ export default function MapView({
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
-      <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" />
+      <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" minZoom={11} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <ViewTracker />
       <HomeControl stores={stores} />
