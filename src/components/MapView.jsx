@@ -288,9 +288,17 @@ function CityLabels({ zoom, theme }) {
 
     function updateVisibility() {
       const currentZoom = map.getZoom();
-      // At zoom 11+, CARTO label tiles handle city/street names — hide custom labels
-      const minTier = currentZoom >= 11 ? 0 : currentZoom >= 10 ? 2 : 1;
-      const cityOpacity = currentZoom < 11 ? 0.9 : 0;
+      // Fade out custom labels between z10-11 to hand off to CARTO tile labels at z11
+      const minTier = currentZoom >= 10.5 ? 0 : currentZoom >= 10 ? 2 : 1;
+      let cityOpacity;
+      if (currentZoom < 10) {
+        cityOpacity = 0.9;
+      } else if (currentZoom < 11) {
+        // Smooth fade from 0.9 to 0 between z10 and z11
+        cityOpacity = 0.9 * (11 - currentZoom);
+      } else {
+        cityOpacity = 0;
+      }
 
       markersRef.current.forEach(({ marker, city }) => {
         const el = marker._icon?.querySelector('.city-label-custom');
@@ -298,14 +306,15 @@ function CityLabels({ zoom, theme }) {
         if (city.tier > minTier || cityOpacity <= 0) {
           el.style.opacity = '0';
         } else {
-          el.style.opacity = String(cityOpacity);
+          el.style.opacity = String(cityOpacity.toFixed(2));
         }
       });
     }
 
     updateVisibility();
     map.on('zoomend', updateVisibility);
-    return () => map.off('zoomend', updateVisibility);
+    map.on('zoom', updateVisibility);
+    return () => { map.off('zoomend', updateVisibility); map.off('zoom', updateVisibility); };
   }, [map, zoom]);
 
   return null;
@@ -921,7 +930,7 @@ export default function MapView({
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
-      <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" minZoom={11} />
+      <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" minZoom={10} opacity={0.85} />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <ViewTracker />
       <HomeControl stores={stores} />
