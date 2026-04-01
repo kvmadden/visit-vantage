@@ -1,4 +1,4 @@
-const APP_VERSION = 'v2.4.3';
+const APP_VERSION = 'v2.5.0';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
@@ -16,9 +16,17 @@ import Brand from './components/Brand';
 import LandingPage from './components/LandingPage';
 import SetupScreen from './components/SetupScreen';
 import FocusBanner from './components/FocusBanner';
+import QuickFilterChips, { CHIPS } from './components/QuickFilterChips';
+import CommuteCard from './components/CommuteCard';
+import ProximityAlert from './components/ProximityAlert';
+import MapBookmarks from './components/MapBookmarks';
+import RouteExport from './components/RouteExport';
+import StoreComparison from './components/StoreComparison';
+import MapAnnotations from './components/MapAnnotations';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import { markStoreViewed, getViewedStores } from './utils/storeStatus';
+import { getPharmacyStatus } from './utils/storeHours';
 import './App.css';
 
 export default function App() {
@@ -28,12 +36,17 @@ export default function App() {
   const [searchText, setSearchText] = useState('');
   const [selectedStore, setSelectedStore] = useState(null);
   const [routeStores, setRouteStores] = useState([]);
+  const [stopStatuses, setStopStatuses] = useState({}); // { storeId: 'planned'|'active'|'visited'|'skipped' }
   const [gpsPosition, setGpsPosition] = useState(null);
   const [districtView, setDistrictView] = useState(false);
   const [viewedStores, setViewedStores] = useState(() => getViewedStores());
   const [activeLayers, setActiveLayers] = useState({});
   const [appScreen, setAppScreen] = useState('landing'); // 'landing' | 'setup' | 'map'
   const [sessionConfig, setSessionConfig] = useState(null);
+  const [quickFilters, setQuickFilters] = useState([]);
+  const [mapRef, setMapRef] = useState(null);
+  const [compareStores, setCompareStores] = useState([]);
+  const [annotations, setAnnotations] = useState([]);
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('visitvantage-theme') || 'light';
   });
@@ -47,15 +60,30 @@ export default function App() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   }, []);
 
-  const filteredStores = useMemo(() => {
+  // Stores filtered by district only (for quick-filter chip counts)
+  const districtFilteredStores = useMemo(() => {
     return stores.filter((store) => {
       if (districtMode === 'fs' && store.target === true) return false;
       const districtField = districtMode === 'rx' ? 'rxDistrict' : 'fsDistrict';
       if (activeDistrict != null && store[districtField] !== activeDistrict) return false;
+      return true;
+    });
+  }, [activeDistrict, districtMode, stores]);
+
+  const filteredStores = useMemo(() => {
+    const now = new Date();
+    return districtFilteredStores.filter((store) => {
       if (flags.fs24 && store.fs24 !== 'Yes') return false;
       if (flags.rx24 && store.rx24 !== 'Yes') return false;
       if (flags.ymas && store.ymas !== 'Yes') return false;
       if (flags.target && store.target !== true) return false;
+
+      // Quick-filter chips (AND logic)
+      for (const chipKey of quickFilters) {
+        const chip = CHIPS.find((c) => c.key === chipKey);
+        if (chip && !chip.filter(store, now)) return false;
+      }
+
       if (searchText) {
         const q = searchText.toLowerCase();
         const haystack = [
@@ -72,7 +100,7 @@ export default function App() {
       }
       return true;
     });
-  }, [activeDistrict, districtMode, flags, searchText, stores]);
+  }, [districtFilteredStores, flags, quickFilters, searchText]);
 
   const [routeStats, setRouteStats] = useState(null);
   const [routeGeometry, setRouteGeometry] = useState(null);
@@ -112,6 +140,12 @@ export default function App() {
     setFlags((prev) => ({ ...prev, [flag]: !prev[flag] }));
   }, []);
 
+  const handleQuickFilterToggle = useCallback((chipKey) => {
+    setQuickFilters((prev) =>
+      prev.includes(chipKey) ? prev.filter((k) => k !== chipKey) : [...prev, chipKey]
+    );
+  }, []);
+
   const handleSearchChange = useCallback((text) => {
     setSearchText(text);
   }, []);
@@ -138,6 +172,19 @@ export default function App() {
 
   const handleRemoveFromRoute = useCallback((store) => {
     setRouteStores((prev) => prev.filter((s) => s.store !== store.store));
+    setStopStatuses((prev) => {
+      const next = { ...prev };
+      delete next[store.store];
+      return next;
+    });
+  }, []);
+
+  const handleReorderRoute = useCallback((newOrder) => {
+    setRouteStores(newOrder);
+  }, []);
+
+  const handleStopStatusChange = useCallback((storeId, status) => {
+    setStopStatuses((prev) => ({ ...prev, [storeId]: status }));
   }, []);
 
   const handleOptimizeRoute = useCallback(async () => {
@@ -153,6 +200,34 @@ export default function App() {
   const handleOpenInMaps = useCallback(() => {
     window.open(buildMapsUrl(routeStores, gpsPosition), '_blank');
   }, [routeStores, gpsPosition]);
+
+  // GPS watch for proximity features
+  const [gpsWatchActive, setGpsWatchActive] = useState(false);
+  useEffect(() => {
+    if (!gpsPosition || gpsWatchActive) return;
+    if (!navigator.geolocation) return;
+    let lastLat = gpsPosition.lat;
+    let lastLng = gpsPosition.lng;
+    const id = navigator.geolocation.watchPosition(
+      (pos) => {
+        const newLat = pos.coords.latitude;
+        const newLng = pos.coords.longitude;
+        // Only update if moved > 50m
+        const dLat = newLat - lastLat;
+        const dLng = newLng - lastLng;
+        const dist = Math.sqrt(dLat * dLat + dLng * dLng) * 111000;
+        if (dist > 50) {
+          lastLat = newLat;
+          lastLng = newLng;
+          setGpsPosition({ lat: newLat, lng: newLng });
+        }
+      },
+      () => {},
+      { enableHighAccuracy: false, maximumAge: 30000 }
+    );
+    setGpsWatchActive(true);
+    return () => navigator.geolocation.clearWatch(id);
+  }, [gpsPosition, gpsWatchActive]);
 
   const handleRequestGps = useCallback(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -172,11 +247,47 @@ export default function App() {
     setActiveLayers(layers);
   }, []);
 
+  const handleMapReady = useCallback((map) => {
+    setMapRef(map);
+  }, []);
+
+  const handleBookmarkRestore = useCallback((bm) => {
+    if (mapRef) mapRef.flyTo([bm.lat, bm.lng], bm.zoom, { duration: 0.6 });
+  }, [mapRef]);
+
+  const handleAddToCompare = useCallback((store) => {
+    setCompareStores((prev) => {
+      if (prev.some((s) => s.store === store.store)) return prev;
+      return [...prev, store].slice(0, 3);
+    });
+  }, []);
+
+  const handleCloseCompare = useCallback(() => {
+    setCompareStores([]);
+  }, []);
+
+  const handleAddAnnotation = useCallback((text) => {
+    setAnnotations((prev) => [...prev, { text, timestamp: Date.now() }]);
+  }, []);
+
+  const handleRemoveAnnotation = useCallback((index) => {
+    setAnnotations((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const handleClearAnnotations = useCallback(() => {
+    setAnnotations([]);
+  }, []);
+
   const handleBottomSheetCollapse = useCallback(() => {
     setSelectedStore(null);
   }, []);
 
   const handleStartPlanning = useCallback(function () {
+    setAppScreen('setup');
+  }, []);
+
+  const handleLandingLocate = useCallback(function (pos) {
+    setGpsPosition(pos);
     setAppScreen('setup');
   }, []);
 
@@ -196,7 +307,7 @@ export default function App() {
   }, []);
 
   if (appScreen === 'landing') {
-    return <LandingPage onStart={handleStartPlanning} />;
+    return <LandingPage onStart={handleStartPlanning} onLocate={handleLandingLocate} />;
   }
 
   if (appScreen === 'setup') {
@@ -260,10 +371,26 @@ export default function App() {
             showClouds={activeLayers.districts !== false}
             showCompetitors={activeLayers.competitors === true}
             viewedStores={viewedStores}
+            onMapReady={handleMapReady}
           />
         </div>
 
         <FocusBanner config={sessionConfig} onEdit={function () { setAppScreen('setup'); }} />
+
+        {/* Commute-aware start */}
+        {gpsPosition && (
+          <CommuteCard gpsPosition={gpsPosition} stores={stores} onStoreSelect={handleStoreSelect} />
+        )}
+
+        {/* GPS proximity auto-arrive */}
+        {gpsPosition && routeStores.length > 0 && (
+          <ProximityAlert
+            gpsPosition={gpsPosition}
+            routeStores={routeStores}
+            stopStatuses={stopStatuses}
+            onStopStatusChange={handleStopStatusChange}
+          />
+        )}
 
         {districtView && activeDistrict && (
           <DistrictSummary
@@ -297,6 +424,17 @@ export default function App() {
               storeCount={filteredStores.length}
               districtView={districtView}
               onDistrictViewToggle={handleDistrictViewToggle}
+              stores={stores}
+              quickFilters={quickFilters}
+            />
+          </div>
+
+          {/* Quick-filter chips */}
+          <div className="bs-section">
+            <QuickFilterChips
+              stores={districtFilteredStores}
+              activeChips={quickFilters}
+              onToggleChip={handleQuickFilterToggle}
             />
           </div>
 
@@ -310,6 +448,11 @@ export default function App() {
             />
           </div>
 
+          {/* Map bookmarks */}
+          <div className="bs-section">
+            <MapBookmarks mapRef={mapRef} onRestore={handleBookmarkRestore} />
+          </div>
+
           {/* Store card */}
           {selectedStore && (
             <div className="bs-section bs-store-card">
@@ -319,10 +462,27 @@ export default function App() {
                 onAddToRoute={handleAddToRoute}
                 onRemoveFromRoute={handleRemoveFromRoute}
                 isInRoute={routeStores.some((s) => s.store === selectedStore.store)}
+                allStores={stores}
+                activeDistrict={activeDistrict}
+                districtMode={districtMode}
+                routeStores={routeStores}
+                onStoreSelect={handleStoreSelect}
+                showWeekendFilter={quickFilters.includes('weekendHours')}
+                onAddToCompare={handleAddToCompare}
                 inline
               />
             </div>
           )}
+
+          {/* Map annotations */}
+          <div className="bs-section">
+            <MapAnnotations
+              annotations={annotations}
+              onAdd={handleAddAnnotation}
+              onRemove={handleRemoveAnnotation}
+              onClear={handleClearAnnotations}
+            />
+          </div>
 
           {/* Route planner */}
           {routeStores.length > 0 && (
@@ -337,8 +497,20 @@ export default function App() {
                 onRequestGps={handleRequestGps}
                 routeStats={routeStats}
                 sessionConfig={sessionConfig}
+                districtMode={districtMode}
+                onReorderRoute={handleReorderRoute}
+                stopStatuses={stopStatuses}
+                onStopStatusChange={handleStopStatusChange}
                 inline
               />
+              <RouteExport routeStores={routeStores} routeStats={routeStats} sessionConfig={sessionConfig} />
+            </div>
+          )}
+
+          {/* Store comparison */}
+          {compareStores.length >= 2 && (
+            <div className="bs-section">
+              <StoreComparison stores={compareStores} onClose={handleCloseCompare} onStoreSelect={handleStoreSelect} />
             </div>
           )}
         </BottomSheet>

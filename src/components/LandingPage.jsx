@@ -1,4 +1,5 @@
 import Brand from './Brand';
+import FindMyStore from './FindMyStore';
 
 const FEATURES = [
   { icon: '\u{1F4CD}', text: 'Every store in your region, mapped' },
@@ -6,7 +7,7 @@ const FEATURES = [
   { icon: '\u{1F4CB}', text: 'Store details at a tap' },
 ];
 
-export default function LandingPage({ onStart }) {
+export default function LandingPage({ onStart, onLocate }) {
   return (
     <div className="landing">
       <div className="landing-glow landing-glow-1" />
@@ -56,6 +57,10 @@ export default function LandingPage({ onStart }) {
         >
           Start planning
         </button>
+
+        <div className="landing-locate" style={{ animationDelay: '0.6s' }}>
+          <FindMyStore onLocate={onLocate} />
+        </div>
 
         <p className="landing-trust" style={{ animationDelay: '0.65s' }}>
           Session only &middot; No visit history &middot; No personal data &middot; Resets when you close

@@ -326,6 +326,67 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ============================================
+   Quick-Filter Chips
+   ============================================ */
+
+.quick-filter-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 6px 0;
+}
+
+.quick-filter-row::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-base);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  min-height: 32px;
+}
+
+.quick-chip:active {
+  transform: scale(0.95);
+}
+
+.quick-chip-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.quick-chip-disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.quick-chip-disabled:active {
+  transform: none;
+}
+
+.quick-chip-count {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+/* ============================================
    Search Bar
    ============================================ */
 
@@ -686,6 +747,136 @@ h1, h2, h3, h4, h5, h6,
   color: var(--text-primary);
 }
 
+/* Nearby stores */
+.store-nearby {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.nearby-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.nearby-row:last-child {
+  border-bottom: none;
+}
+
+.nearby-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.nearby-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nearby-name {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nearby-distance {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.nearby-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.nearby-btn {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-base);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 28px;
+}
+
+.nearby-btn:active {
+  transform: scale(0.95);
+}
+
+.nearby-btn-add {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.nearby-in-route {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* Weekend hours */
+.store-weekend-hours {
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: rgba(210, 153, 34, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(210, 153, 34, 0.2);
+}
+
+.weekend-hours-row {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.weekend-hours-diff {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+/* Directions button */
+.btn-directions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  background: var(--bg-base);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+  flex: 1;
+  min-height: 44px;
+  border-radius: 10px;
+  padding: 4px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.directions-sublabel {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
 .store-actions {
   display: flex;
   gap: 8px;
@@ -757,9 +948,32 @@ h1, h2, h3, h4, h5, h6,
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 19px;
   box-shadow: 0 4px 16px var(--shadow-color);
   min-width: 280px;
+  max-width: calc(100vw - 24px);
+}
+
+.district-summary-dismiss {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 50%;
+}
+
+.district-summary-dismiss:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 .district-summary-title {
@@ -780,22 +994,30 @@ h1, h2, h3, h4, h5, h6,
   flex-shrink: 0;
 }
 
-.district-summary-dl {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 2px;
-}
-
-.district-summary-stats {
+.district-summary-pills {
   display: flex;
-  gap: 16px;
-  margin-top: 6px;
-  font-size: 13px;
-  color: var(--text-secondary);
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
 }
 
-.district-summary-stat {
+.district-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
   white-space: nowrap;
+}
+
+.district-summary-format {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
 /* ============================================
@@ -955,6 +1177,148 @@ h1, h2, h3, h4, h5, h6,
   font-size: 11px;
   color: var(--text-muted);
   padding: 4px 0 2px 40px;
+}
+
+.route-leg-connector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0 2px 13px;
+  min-height: 24px;
+}
+
+.route-leg-line {
+  width: 2px;
+  height: 16px;
+  border-left: 2px dashed var(--border);
+  flex-shrink: 0;
+}
+
+.route-leg-detail {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.route-longest-tag {
+  font-size: 9px;
+  color: var(--warning);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.route-district-transition {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 0 4px 8px;
+  margin: 2px 0;
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border);
+  min-height: 24px;
+}
+
+.route-transition-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.route-stop-district {
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.route-drag-handle {
+  cursor: grab;
+  color: var(--text-muted);
+  font-size: 14px;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  user-select: none;
+  touch-action: none;
+}
+
+.route-drag-handle:active {
+  cursor: grabbing;
+}
+
+.route-stop-visited {
+  opacity: 0.5;
+}
+
+.route-stop-skipped {
+  opacity: 0.35;
+  text-decoration: line-through;
+}
+
+.route-stop-active .route-stop-number {
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.route-stop-number-pulse {
+  animation: stopPulse 2s ease-in-out infinite;
+}
+
+@keyframes stopPulse {
+  0%, 100% { box-shadow: 0 0 0 2px var(--accent-dim); }
+  50% { box-shadow: 0 0 0 5px var(--accent-dim); }
+}
+
+.route-stop-status-btns {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.route-status-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-base);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 0;
+}
+
+.route-status-btn:active {
+  transform: scale(0.9);
+}
+
+.route-status-skip {
+  font-size: 10px;
+}
+
+.route-total-stats {
+  display: flex;
+  gap: 16px;
+  fontSize: 13px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.route-total-summary {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
 }
 
 .route-gps-status {
@@ -1523,6 +1887,40 @@ h1, h2, h3, h4, h5, h6,
    ============================================ */
 
 @media (min-width: 768px) {
+  .app-main {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .map-container {
+    position: relative;
+    flex: 1;
+  }
+
+  /* Sidebar mode for bottom sheet */
+  .bottom-sheet-sidebar {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: 360px;
+    min-width: 360px;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: -2px 0 20px var(--shadow-color);
+    z-index: 800;
+    flex-shrink: 0;
+    order: 2;
+    border-left: 1px solid var(--border);
+  }
+
+  .bottom-sheet-sidebar .bottom-sheet-content {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .store-card {
     left: auto;
     right: 16px;
@@ -1560,6 +1958,38 @@ h1, h2, h3, h4, h5, h6,
   .legend-toggle {
     bottom: 24px;
     right: 24px;
+  }
+
+  /* Overlay cards position away from sidebar */
+  .commute-card {
+    right: 372px;
+  }
+
+  .proximity-alert {
+    right: 372px;
+  }
+
+  .focus-banner {
+    right: 372px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bottom-sheet-sidebar {
+    width: 400px;
+    min-width: 400px;
+  }
+
+  .commute-card {
+    right: 412px;
+  }
+
+  .proximity-alert {
+    right: 412px;
+  }
+
+  .focus-banner {
+    right: 412px;
   }
 }
 
@@ -1877,4 +2307,641 @@ h1, h2, h3, h4, h5, h6,
   cursor: pointer;
   animation: gradientShift 4s ease-in-out infinite;
   margin-top: 8px;
+}
+
+/* ============================================
+   Commute Card
+   ============================================ */
+
+.commute-card {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+}
+
+.commute-card-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.commute-card-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.commute-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.commute-card-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.commute-card-store {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.commute-card-distance {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.commute-card-dismiss {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   Proximity Alert
+   ============================================ */
+
+.proximity-alert {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 810;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-mid), var(--shadow-lg);
+}
+
+.proximity-alert-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.proximity-alert-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.proximity-alert-text {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.proximity-alert-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.proximity-alert-actions .btn {
+  flex: 1;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* ============================================
+   Find My Store (Landing)
+   ============================================ */
+
+.landing-locate {
+  animation: fadeSlideUp 0.5s ease both;
+}
+
+.find-my-store-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.find-my-store-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.find-my-store-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.find-my-store-btn svg {
+  opacity: 0.7;
+}
+
+.find-my-store-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.4;
+}
+
+/* ============================================
+   Search History (Recent)
+   ============================================ */
+
+.search-recent {
+  margin-top: 8px;
+}
+
+.search-recent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.search-recent-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.search-recent-clear {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.search-recent-clear:hover {
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+}
+
+.search-recent-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.search-recent-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-recent-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* ============================================
+   Map Bookmarks
+   ============================================ */
+
+.map-bookmarks {
+  padding: 0;
+}
+
+.bookmarks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.bookmarks-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bookmarks-clear {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.bookmarks-clear:hover {
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+}
+
+.bookmarks-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.bookmark-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bookmark-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.bookmark-pill-icon {
+  font-size: 12px;
+}
+
+.bookmark-pill-label {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bookmark-pill-delete {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.bookmark-pill-delete:hover {
+  color: var(--destructive);
+}
+
+.bookmark-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.bookmark-add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.bookmark-add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.bookmark-name-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bookmark-name-input input {
+  width: 100px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  outline: none;
+}
+
+.bookmark-name-save {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* ============================================
+   Route Export
+   ============================================ */
+
+.route-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.route-export-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.route-export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   Store Comparison
+   ============================================ */
+
+.store-comparison {
+  padding: 4px 0;
+}
+
+.compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.compare-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.compare-close {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compare-grid {
+  display: grid;
+  gap: 0;
+}
+
+.compare-row {
+  display: contents;
+}
+
+.compare-row > * {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.compare-label {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 11px;
+  text-align: right;
+  padding-right: 12px;
+}
+
+.compare-value {
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.compare-store-header {
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.compare-store-header small {
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.compare-row-header > * {
+  border-bottom: 2px solid var(--accent-mid);
+  padding-bottom: 8px;
+}
+
+/* ============================================
+   Map Annotations (Notes)
+   ============================================ */
+
+.map-annotations {
+  padding: 0;
+}
+
+.annotations-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.annotations-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.annotations-clear {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.annotations-clear:hover {
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+}
+
+.annotations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.annotation-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  font-size: 12px;
+}
+
+.annotation-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.annotation-text {
+  flex: 1;
+  color: var(--text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.annotation-delete {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.annotation-delete:hover {
+  color: var(--destructive);
+  background: var(--bg-surface);
+}
+
+.annotation-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.annotation-add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.annotation-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.annotation-input {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  outline: none;
+}
+
+.annotation-save-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.annotation-cancel-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
 }

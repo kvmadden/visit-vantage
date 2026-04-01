@@ -107,6 +107,20 @@ function createYmasPillIcon(color, size = 18, opacity = 0.9) {
   });
 }
 
+// Icon cache — avoids recreating identical L.divIcon instances
+const _iconCache = new Map();
+function cachedDivIcon(key, createFn) {
+  if (_iconCache.has(key)) return _iconCache.get(key);
+  const icon = createFn();
+  _iconCache.set(key, icon);
+  // Limit cache size
+  if (_iconCache.size > 2000) {
+    const first = _iconCache.keys().next().value;
+    _iconCache.delete(first);
+  }
+  return icon;
+}
+
 const DEFAULT_CENTER = [27.50, -82.44];
 const DEFAULT_ZOOM = 8.5;
 const MIN_ZOOM = 8.5;
@@ -508,7 +522,7 @@ function ClusteredMarkers({
         });
       });
     } else {
-      // Helper to build a marker icon for a single store
+      // Helper to build a marker icon for a single store (with caching)
       const buildStoreIcon = (store, districtColor) => {
         const isTarget = store.target === true;
         const isYmas = store.ymas === 'Yes';
@@ -529,31 +543,39 @@ function ClusteredMarkers({
 
         const bullseyeInner = theme === 'dark' ? '#18181b' : '#ffffff';
         const isViewed = viewedStores && viewedStores.has(store.store);
-        let baseSvg;
-        if (isTarget) {
-          baseSvg = createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner);
-        } else if (isYmas) {
-          baseSvg = createYmasPillIcon(displayColor, ymasSize, opacity);
-        } else {
-          baseSvg = createHeartIcon(displayColor, heartSize, opacity);
-        }
 
-        if (isViewed && !isFaded) {
-          const size = isTarget ? bullseyeSize : isYmas ? ymasSize : heartSize;
-          const w = isYmas ? size + 28 : size;
-          const dotHtml = `<div style="position:relative;width:${w}px;height:${size}px">${baseSvg.options.html}<svg style="position:absolute;top:-2px;right:-2px" width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e"/><path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div>`;
-          return L.divIcon({
-            html: dotHtml,
-            className: baseSvg.options.className,
-            iconSize: [w, size],
-            iconAnchor: [w / 2, size / 2],
-          });
-        }
-        return baseSvg;
+        // Build a cache key from all visual parameters
+        const type = isTarget ? 'T' : isYmas ? 'Y' : 'H';
+        const size = isTarget ? bullseyeSize : isYmas ? ymasSize : heartSize;
+        const cacheKey = `${type}:${displayColor}:${size}:${opacity}:${isViewed && !isFaded ? 'v' : ''}:${bullseyeInner}`;
+
+        return cachedDivIcon(cacheKey, () => {
+          let baseSvg;
+          if (isTarget) {
+            baseSvg = createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner);
+          } else if (isYmas) {
+            baseSvg = createYmasPillIcon(displayColor, ymasSize, opacity);
+          } else {
+            baseSvg = createHeartIcon(displayColor, heartSize, opacity);
+          }
+
+          if (isViewed && !isFaded) {
+            const sz = isTarget ? bullseyeSize : isYmas ? ymasSize : heartSize;
+            const w = isYmas ? sz + 28 : sz;
+            const dotHtml = `<div style="position:relative;width:${w}px;height:${sz}px">${baseSvg.options.html}<svg style="position:absolute;top:-2px;right:-2px" width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e"/><path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div>`;
+            return L.divIcon({
+              html: dotHtml,
+              className: baseSvg.options.className,
+              iconSize: [w, sz],
+              iconAnchor: [w / 2, sz / 2],
+            });
+          }
+          return baseSvg;
+        });
       };
 
       // Identify outlier stores: nearest same-district neighbor > threshold
-      const outlierMinDist = 0.08; // ~5.5 miles to nearest neighbor
+      const outlierMinDist = 0.04; // ~2.8 miles — catches barrier island / edge stores
       function isOutlier(store, districtStores) {
         let minDist = Infinity;
         for (let i = 0; i < districtStores.length; i++) {
@@ -616,7 +638,7 @@ function ClusteredMarkers({
 
           // Add clustered stores to markerClusterGroup
           const clusterGroup = L.markerClusterGroup({
-            maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
+            maxClusterRadius: (z) => (z <= 10 ? 35 : z <= 12 ? 25 : 15),
             spiderfyOnMaxZoom: true,
             showCoverageOnHover: false,
             zoomToBoundsOnClick: true,
@@ -912,6 +934,14 @@ function CompetitorMarkers({ showCompetitors }) {
 // ---------------------------------------------------------------------------
 // MapView
 // ---------------------------------------------------------------------------
+function MapRefExporter({ onMapReady }) {
+  const map = useMap();
+  useEffect(() => {
+    if (onMapReady) onMapReady(map);
+  }, [map, onMapReady]);
+  return null;
+}
+
 export default function MapView({
   stores = [],
   selectedStore = null,
@@ -925,6 +955,7 @@ export default function MapView({
   showClouds = true,
   showCompetitors = false,
   viewedStores = new Set(),
+  onMapReady = null,
 }) {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const handleZoomChange = useCallback((z) => setZoom(z), []);
@@ -946,6 +977,7 @@ export default function MapView({
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
       {zoom >= 11 && <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" opacity={0.85} />}
+      {onMapReady && <MapRefExporter onMapReady={onMapReady} />}
       <ZoomTracker onZoomChange={handleZoomChange} />
       <ViewTracker />
       <HomeControl stores={stores} />
