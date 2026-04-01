@@ -1887,6 +1887,40 @@ h1, h2, h3, h4, h5, h6,
    ============================================ */
 
 @media (min-width: 768px) {
+  .app-main {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .map-container {
+    position: relative;
+    flex: 1;
+  }
+
+  /* Sidebar mode for bottom sheet */
+  .bottom-sheet-sidebar {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: 360px;
+    min-width: 360px;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: -2px 0 20px var(--shadow-color);
+    z-index: 800;
+    flex-shrink: 0;
+    order: 2;
+    border-left: 1px solid var(--border);
+  }
+
+  .bottom-sheet-sidebar .bottom-sheet-content {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .store-card {
     left: auto;
     right: 16px;
@@ -1924,6 +1958,38 @@ h1, h2, h3, h4, h5, h6,
   .legend-toggle {
     bottom: 24px;
     right: 24px;
+  }
+
+  /* Overlay cards position away from sidebar */
+  .commute-card {
+    right: 372px;
+  }
+
+  .proximity-alert {
+    right: 372px;
+  }
+
+  .focus-banner {
+    right: 372px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bottom-sheet-sidebar {
+    width: 400px;
+    min-width: 400px;
+  }
+
+  .commute-card {
+    right: 412px;
+  }
+
+  .proximity-alert {
+    right: 412px;
+  }
+
+  .focus-banner {
+    right: 412px;
   }
 }
 

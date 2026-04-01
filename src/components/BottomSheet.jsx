@@ -7,13 +7,24 @@ const DETENTS = {
 };
 
 const FULL_RATIO = 0.72; // 72% of viewport height
+const SIDEBAR_BREAKPOINT = 768;
 
 export default function BottomSheet({ children, forceOpen, onCollapse }) {
   const [detent, setDetent] = useState('peek');
   const [dragOffset, setDragOffset] = useState(0);
+  const [isSidebar, setIsSidebar] = useState(() => window.innerWidth >= SIDEBAR_BREAKPOINT);
   const sheetRef = useRef(null);
   const dragStartRef = useRef(null);
   const startHeightRef = useRef(0);
+
+  // Detect sidebar mode on resize
+  useEffect(() => {
+    function handleResize() {
+      setIsSidebar(window.innerWidth >= SIDEBAR_BREAKPOINT);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // When forceOpen changes (e.g. store selected), expand to full
   // When deselected, return to peek (not collapsed) so filters stay visible
@@ -36,17 +47,20 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
   const currentHeight = getHeight(detent) + dragOffset;
 
   const handleTouchStart = useCallback((e) => {
+    if (isSidebar) return;
     dragStartRef.current = e.touches[0].clientY;
     startHeightRef.current = getHeight(detent);
-  }, [detent, getHeight]);
+  }, [detent, getHeight, isSidebar]);
 
   const handleTouchMove = useCallback((e) => {
+    if (isSidebar) return;
     if (dragStartRef.current === null) return;
     const delta = dragStartRef.current - e.touches[0].clientY;
     setDragOffset(delta);
-  }, []);
+  }, [isSidebar]);
 
   const handleTouchEnd = useCallback(() => {
+    if (isSidebar) return;
     if (dragStartRef.current === null) return;
     const finalHeight = startHeightRef.current + dragOffset;
     const fullH = window.innerHeight * FULL_RATIO;
@@ -70,10 +84,11 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
 
     setDragOffset(0);
     dragStartRef.current = null;
-  }, [dragOffset, onCollapse]);
+  }, [dragOffset, onCollapse, isSidebar]);
 
-  // Mouse drag support for desktop
+  // Mouse drag support for desktop (bottom sheet mode only)
   const handleMouseDown = useCallback((e) => {
+    if (isSidebar) return;
     dragStartRef.current = e.clientY;
     startHeightRef.current = getHeight(detent);
     const onMouseMove = (ev) => {
@@ -88,10 +103,11 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
     };
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  }, [detent, getHeight, handleTouchEnd]);
+  }, [detent, getHeight, handleTouchEnd, isSidebar]);
 
-  // Keyboard: Escape collapses
+  // Keyboard: Escape collapses (bottom sheet mode only)
   useEffect(() => {
+    if (isSidebar) return;
     const onKeyDown = (e) => {
       if (e.key === 'Escape' && detent !== 'collapsed') {
         setDetent('collapsed');
@@ -100,9 +116,10 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [detent, onCollapse]);
+  }, [detent, onCollapse, isSidebar]);
 
   const handleHandleClick = useCallback(() => {
+    if (isSidebar) return;
     if (detent === 'collapsed') {
       setDetent('peek');
     } else if (detent === 'peek') {
@@ -111,7 +128,18 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
       setDetent('collapsed');
       onCollapse?.();
     }
-  }, [detent, onCollapse]);
+  }, [detent, onCollapse, isSidebar]);
+
+  // Sidebar mode: full height, no drag
+  if (isSidebar) {
+    return (
+      <div ref={sheetRef} className="bottom-sheet bottom-sheet-sidebar">
+        <div className="bottom-sheet-content">
+          {children}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
