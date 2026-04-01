@@ -1317,7 +1317,7 @@ export default function EasterEggs({ zoom, theme }) {
         html: `<div style="opacity:1;transition:opacity 0.3s">${activatedSvg}</div>`,
         className: 'easter-egg-icon egg-activated',
         iconSize: [w, h],
-        iconAnchor: [w / 2, h / 2],
+        iconAnchor: [w / 2, h],
       }));
       // Revert after 2s
       setTimeout(() => {
@@ -1331,7 +1331,7 @@ export default function EasterEggs({ zoom, theme }) {
             html: `<div style="opacity:${op};transition:opacity 0.3s">${restingSvg}</div>`,
             className: 'easter-egg-icon',
             iconSize: [w2, h2],
-            iconAnchor: [w2 / 2, h2 / 2],
+            iconAnchor: [w2 / 2, h2],
           }));
         }
       }, 2000);
@@ -1367,7 +1367,7 @@ export default function EasterEggs({ zoom, theme }) {
         html: `<div style="opacity:${visible ? op : 0};transition:opacity 0.3s">${svg}</div>`,
         className: 'easter-egg-icon',
         iconSize: [w, h],
-        iconAnchor: [w / 2, h / 2],
+        iconAnchor: [w / 2, h],
       });
 
       const marker = L.marker([egg.lat, egg.lng], {
@@ -1380,6 +1380,7 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-popup',
         maxWidth: 220,
         closeButton: true,
+        offset: [0, -4],
       });
 
       marker.on('click', () => handleEggClick(egg, marker));
@@ -1432,7 +1433,7 @@ export default function EasterEggs({ zoom, theme }) {
           html: `<div style="opacity:${op};transition:opacity 0.3s">${cachedSvg}</div>`,
           className: 'easter-egg-icon',
           iconSize: [w, h],
-          iconAnchor: [w / 2, h / 2],
+          iconAnchor: [w / 2, h],
         }));
       });
     }
