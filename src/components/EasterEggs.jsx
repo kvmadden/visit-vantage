@@ -1274,10 +1274,10 @@ function scaledSize(baseSize, currentZoom) {
 function zoomOpacity(currentZoom, minZoom, maxZoom) {
   const range = Math.max(1, maxZoom - minZoom);
   const progress = Math.min(1, Math.max(0, (currentZoom - minZoom) / range));
-  // 0.4 at minZoom → 1.0 at maxZoom
-  // Internal SVG opacity (c.op ~0.35-0.4) already provides subtlety,
-  // so container opacity just controls zoom-based fade-in
-  return 0.4 + progress * 0.6;
+  // 0.3 at minZoom → 0.75 at maxZoom (subtle resting state)
+  // Combined with SVG internal opacity (c.op ~0.35-0.4) gives
+  // ~10% effective at minZoom, ~30% at maxZoom — discoverable but ghostly
+  return 0.3 + progress * 0.45;
 }
 
 // ---------------------------------------------------------------------------
@@ -1320,7 +1320,7 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-icon egg-activated',
         iconSize: [w, h],
         iconAnchor: [w / 2, 0],
-        popupAnchor: [0, 0],
+        popupAnchor: [0, -4],
       }));
       // Revert after 2s
       setTimeout(() => {
@@ -1335,10 +1335,10 @@ export default function EasterEggs({ zoom, theme }) {
             className: 'easter-egg-icon',
             iconSize: [w2, h2],
             iconAnchor: [w2 / 2, 0],
-            popupAnchor: [0, 0],
+            popupAnchor: [0, -4],
           }));
         }
-      }, 2000);
+      }, 3000);
     }
   }, [theme, map]);
 
@@ -1372,7 +1372,7 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-icon',
         iconSize: [w, h],
         iconAnchor: [w / 2, 0],
-        popupAnchor: [0, 0],
+        popupAnchor: [0, -4],
       });
 
       const marker = L.marker([egg.lat, egg.lng], {
@@ -1440,7 +1440,7 @@ export default function EasterEggs({ zoom, theme }) {
           className: 'easter-egg-icon',
           iconSize: [w, h],
           iconAnchor: [w / 2, 0],
-          popupAnchor: [0, 0],
+          popupAnchor: [0, -4],
         }));
       });
     }
