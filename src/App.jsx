@@ -1,4 +1,4 @@
-const APP_VERSION = 'v2.6.0';
+const APP_VERSION = 'v2.7.0';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
