@@ -580,6 +580,106 @@ const SVG_GENERATORS = {
       <circle cx="12" cy="7" r="0.7" fill="${c.accent}" fill-opacity="${c.op * 0.35}"/>
     </svg>`;
   },
+
+  // --- Batch 5: Deep Cuts & Gap Fillers ---
+
+  solomonsCastle(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20">
+      <rect x="3" y="8" width="12" height="11" rx="0.3" fill="${c.fill}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <rect x="1" y="6" width="4" height="13" rx="0.3" fill="${c.fill}" fill-opacity="${c.op * 0.12}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <rect x="13" y="6" width="4" height="13" rx="0.3" fill="${c.fill}" fill-opacity="${c.op * 0.12}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <path d="M1 6 L3 4 L3 6" fill="${c.stroke}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <path d="M15 6 L15 4 L17 6" fill="${c.stroke}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <path d="M6 8 L9 4 L12 8" fill="${c.accent}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <line x1="9" y1="2" x2="9" y2="4" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <polygon points="8.5,2 9,0.5 9.5,2" fill="${c.accent}" fill-opacity="${c.op * 0.4}"/>
+      <rect x="7" y="14" width="4" height="5" rx="0.5" fill="none" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
+    </svg>`;
+  },
+
+  weedonIsland(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18">
+      <path d="M4 16 Q6 8 8 6 Q10 8 12 16" fill="${c.brown}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M8 6 L8 3" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <path d="M6 3 L8 1 L10 3" fill="${c.accent}" fill-opacity="${c.op * 0.3}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <path d="M6 10 L5 9 L7 9" fill="${c.stroke}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <path d="M9 12 L10 10 L11 12" fill="${c.stroke}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op}"/>
+      <circle cx="7" cy="13" r="0.4" fill="${c.stroke}" fill-opacity="${c.op * 0.3}"/>
+      <circle cx="10" cy="14" r="0.3" fill="${c.stroke}" fill-opacity="${c.op * 0.3}"/>
+    </svg>`;
+  },
+
+  bernsSteak(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14">
+      <path d="M3 4 Q4 2 8 2 Q12 2 13 4 Q14 6 13 8 Q12 10 10 11 L9 13 L7 13 L6 11 Q4 10 3 8 Q2 6 3 4Z" fill="${c.red}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M5 5 Q6 4 7 5" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
+      <path d="M9 4 Q10 3 11 5" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
+      <circle cx="2" cy="3" r="1" fill="${c.fill}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.5}"/>
+    </svg>`;
+  },
+
+  sharkTooth(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+      <path d="M7 1 Q3 6 2 10 Q1 14 4 17 Q6 18 7 17 Q8 18 10 17 Q13 14 12 10 Q11 6 7 1Z" fill="${c.stroke}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M4 8 L5 6 L6 8 L7 5 L8 8 L9 6 L10 8" fill="none" stroke="${c.fill}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}"/>
+      <line x1="7" y1="1" x2="7" y2="17" stroke="${c.fill}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
+    </svg>`;
+  },
+
+  tarponFish(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16">
+      <path d="M4 8 Q6 3 12 3 Q18 3 21 6 Q23 7 23 8 Q23 9 21 10 Q18 13 12 13 Q6 13 4 8Z" fill="${c.fill}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.7" stroke-opacity="${c.op}"/>
+      <path d="M4 8 Q2 5 1 3 Q1 8 1 13 Q2 11 4 8Z" fill="${c.fill}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op}"/>
+      <circle cx="20" cy="7" r="0.7" fill="${c.stroke}" fill-opacity="${c.op * 0.6}"/>
+      <path d="M7 5 L7 11" stroke="${c.fill}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
+      <path d="M10 4 L10 12" stroke="${c.fill}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
+      <path d="M13 4 L13 12" stroke="${c.fill}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
+      <path d="M16 4.5 L16 11.5" stroke="${c.fill}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
+    </svg>`;
+  },
+
+  shipwreck(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16">
+      <path d="M0 4 Q6 3 12 4 Q18 5 24 4" fill="none" stroke="${c.water}" stroke-width="0.5" stroke-opacity="${c.op * 0.3}"/>
+      <path d="M5 8 Q7 7 10 8 L18 8 Q19 8 19 10 L18 12 Q15 14 10 13 L6 12 Q4 11 5 8Z" fill="${c.brown}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op}" transform="rotate(-15 12 10)"/>
+      <line x1="10" y1="5" x2="10" y2="10" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op * 0.6}"/>
+      <line x1="14" y1="4" x2="14" y2="9" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op * 0.5}"/>
+      <path d="M0 14 Q6 12 12 13 Q18 14 24 13" fill="none" stroke="${c.water}" stroke-width="0.4" stroke-opacity="${c.op * 0.25}"/>
+    </svg>`;
+  },
+
+  mantaRay(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
+      <path d="M12 4 Q6 2 1 6 Q4 8 8 7 Q10 6 12 7 Q14 6 16 7 Q20 8 23 6 Q18 2 12 4Z" fill="${c.water}" fill-opacity="${c.op * 0.2}" stroke="${c.water}" stroke-width="0.6" stroke-opacity="${c.op}"/>
+      <path d="M12 7 Q12 10 11 15" fill="none" stroke="${c.water}" stroke-width="0.6" stroke-opacity="${c.op}" stroke-linecap="round"/>
+      <circle cx="10" cy="5.5" r="0.5" fill="${c.stroke}" fill-opacity="${c.op * 0.5}"/>
+      <circle cx="14" cy="5.5" r="0.5" fill="${c.stroke}" fill-opacity="${c.op * 0.5}"/>
+      <path d="M10 6.5 L12 7.5 L14 6.5" fill="none" stroke="${c.water}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
+    </svg>`;
+  },
+
+  spanishMoss(theme) {
+    const c = svgColors(theme);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" viewBox="0 0 16 22">
+      <path d="M8 1 Q4 2 3 5 Q2 8 4 10" fill="${c.green}" fill-opacity="${c.op * 0.2}" stroke="${c.green}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <path d="M8 1 Q12 2 13 5 Q14 8 12 10" fill="${c.green}" fill-opacity="${c.op * 0.2}" stroke="${c.green}" stroke-width="0.5" stroke-opacity="${c.op}"/>
+      <line x1="8" y1="1" x2="8" y2="5" stroke="${c.brown}" stroke-width="0.8" stroke-opacity="${c.op}" stroke-linecap="round"/>
+      <path d="M4 10 Q3 14 4 18" fill="none" stroke="${c.fill}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}" stroke-linecap="round"/>
+      <path d="M6 9 Q5 13 5.5 17" fill="none" stroke="${c.fill}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}" stroke-linecap="round"/>
+      <path d="M8 8 Q7 12 7 16" fill="none" stroke="${c.fill}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}" stroke-linecap="round"/>
+      <path d="M10 9 Q9 13 9.5 17" fill="none" stroke="${c.fill}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}" stroke-linecap="round"/>
+      <path d="M12 10 Q11 14 11.5 19" fill="none" stroke="${c.fill}" stroke-width="0.4" stroke-opacity="${c.op * 0.4}" stroke-linecap="round"/>
+      <path d="M5 12 Q4.5 15 5 19" fill="none" stroke="${c.fill}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}" stroke-linecap="round"/>
+      <path d="M9 11 Q8.5 15 8.5 20" fill="none" stroke="${c.fill}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}" stroke-linecap="round"/>
+    </svg>`;
+  },
 };
 
 // ---------------------------------------------------------------------------
