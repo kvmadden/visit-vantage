@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.0.0-hardcoded';
+const APP_VERSION = 'v1.0.1-minzoom8';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
