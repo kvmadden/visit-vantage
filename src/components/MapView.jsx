@@ -912,6 +912,14 @@ function CompetitorMarkers({ showCompetitors }) {
 // ---------------------------------------------------------------------------
 // MapView
 // ---------------------------------------------------------------------------
+function MapRefExporter({ onMapReady }) {
+  const map = useMap();
+  useEffect(() => {
+    if (onMapReady) onMapReady(map);
+  }, [map, onMapReady]);
+  return null;
+}
+
 export default function MapView({
   stores = [],
   selectedStore = null,
@@ -925,6 +933,7 @@ export default function MapView({
   showClouds = true,
   showCompetitors = false,
   viewedStores = new Set(),
+  onMapReady = null,
 }) {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const handleZoomChange = useCallback((z) => setZoom(z), []);
@@ -946,6 +955,7 @@ export default function MapView({
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
       {zoom >= 11 && <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" opacity={0.85} />}
+      {onMapReady && <MapRefExporter onMapReady={onMapReady} />}
       <ZoomTracker onZoomChange={handleZoomChange} />
       <ViewTracker />
       <HomeControl stores={stores} />

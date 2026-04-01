@@ -19,6 +19,7 @@ import FocusBanner from './components/FocusBanner';
 import QuickFilterChips, { CHIPS } from './components/QuickFilterChips';
 import CommuteCard from './components/CommuteCard';
 import ProximityAlert from './components/ProximityAlert';
+import MapBookmarks from './components/MapBookmarks';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import { markStoreViewed, getViewedStores } from './utils/storeStatus';
@@ -40,6 +41,7 @@ export default function App() {
   const [appScreen, setAppScreen] = useState('landing'); // 'landing' | 'setup' | 'map'
   const [sessionConfig, setSessionConfig] = useState(null);
   const [quickFilters, setQuickFilters] = useState([]);
+  const [mapRef, setMapRef] = useState(null);
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('visitvantage-theme') || 'light';
   });
@@ -240,6 +242,14 @@ export default function App() {
     setActiveLayers(layers);
   }, []);
 
+  const handleMapReady = useCallback((map) => {
+    setMapRef(map);
+  }, []);
+
+  const handleBookmarkRestore = useCallback((bm) => {
+    if (mapRef) mapRef.flyTo([bm.lat, bm.lng], bm.zoom, { duration: 0.6 });
+  }, [mapRef]);
+
   const handleBottomSheetCollapse = useCallback(() => {
     setSelectedStore(null);
   }, []);
@@ -333,6 +343,7 @@ export default function App() {
             showClouds={activeLayers.districts !== false}
             showCompetitors={activeLayers.competitors === true}
             viewedStores={viewedStores}
+            onMapReady={handleMapReady}
           />
         </div>
 
@@ -407,6 +418,11 @@ export default function App() {
               searchText={searchText}
               onSearchChange={handleSearchChange}
             />
+          </div>
+
+          {/* Map bookmarks */}
+          <div className="bs-section">
+            <MapBookmarks mapRef={mapRef} onRestore={handleBookmarkRestore} />
           </div>
 
           {/* Store card */}

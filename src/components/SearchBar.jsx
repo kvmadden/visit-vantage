@@ -14,8 +14,12 @@ function highlightMatch(text, query) {
   );
 }
 
+const MAX_HISTORY = 6;
+
 export default function SearchBar({ stores, onStoreSelect, searchText, onSearchChange }) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [recentSearches, setRecentSearches] = useState([]);
+  const [showRecent, setShowRecent] = useState(false);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -83,19 +87,34 @@ export default function SearchBar({ stores, onStoreSelect, searchText, onSearchC
     [onSearchChange]
   );
 
+  const addToHistory = useCallback((store) => {
+    setRecentSearches((prev) => {
+      const filtered = prev.filter((s) => s.store !== store.store);
+      return [store, ...filtered].slice(0, MAX_HISTORY);
+    });
+  }, []);
+
   const handleSelect = useCallback(
     (store) => {
+      addToHistory(store);
       onStoreSelect(store);
       setShowDropdown(false);
+      setShowRecent(false);
     },
-    [onStoreSelect]
+    [onStoreSelect, addToHistory]
   );
 
   const handleClear = useCallback(() => {
     onSearchChange("");
     setShowDropdown(false);
+    setShowRecent(false);
     inputRef.current?.focus();
   }, [onSearchChange]);
+
+  const handleClearHistory = useCallback(() => {
+    setRecentSearches([]);
+    setShowRecent(false);
+  }, []);
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -131,12 +150,34 @@ export default function SearchBar({ stores, onStoreSelect, searchText, onSearchC
         value={searchText}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
+        onFocus={() => { if (!searchText && recentSearches.length > 0) setShowRecent(true); }}
+        onBlur={() => { setTimeout(() => setShowRecent(false), 200); }}
       />
 
       {searchText && (
         <button className="search-clear" onClick={handleClear} aria-label="Clear search">
           ✕
         </button>
+      )}
+
+      {showRecent && !searchText && recentSearches.length > 0 && (
+        <div className="search-recent">
+          <div className="search-recent-header">
+            <span className="search-recent-label">Recent</span>
+            <button className="search-recent-clear" onMouseDown={handleClearHistory}>Clear</button>
+          </div>
+          <div className="search-recent-pills">
+            {recentSearches.map((s) => (
+              <button
+                key={s.store}
+                className="search-recent-pill"
+                onMouseDown={() => handleSelect(s)}
+              >
+                #{s.store} {s.nickname}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
 
       {showDropdown && containerRef.current && createPortal(
