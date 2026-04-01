@@ -288,14 +288,14 @@ function CityLabels({ zoom, theme }) {
 
     function updateVisibility() {
       const currentZoom = map.getZoom();
-      // Custom labels visible through z11, fade out z11-12 as CARTO tiles take over
+      // Custom labels hidden at z11+ where CARTO label tiles take over
       const minTier = currentZoom >= 12 ? 3 : currentZoom >= 10 ? 2 : 1;
       let cityOpacity;
-      if (currentZoom < 11) {
+      if (currentZoom < 10.5) {
         cityOpacity = 0.9;
-      } else if (currentZoom < 12) {
-        // Smooth fade from 0.9 to 0 between z11 and z12
-        cityOpacity = 0.9 * (12 - currentZoom);
+      } else if (currentZoom < 11) {
+        // Quick fade out between z10.5 and z11, before CARTO tiles appear
+        cityOpacity = 0.9 * ((11 - currentZoom) / 0.5);
       } else {
         cityOpacity = 0;
       }
