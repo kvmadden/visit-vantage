@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.0.5-cluster-breakup';
+const APP_VERSION = 'v1.0.6-default-view';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';

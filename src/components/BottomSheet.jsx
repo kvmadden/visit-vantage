@@ -16,12 +16,16 @@ export default function BottomSheet({ children, forceOpen, onCollapse }) {
   const startHeightRef = useRef(0);
 
   // When forceOpen changes (e.g. store selected), expand to full
+  // When deselected, return to peek (not collapsed) so filters stay visible
+  const prevForceOpen = useRef(forceOpen);
   useEffect(() => {
     if (forceOpen) {
       setDetent('full');
-    } else {
-      setDetent('collapsed');
+    } else if (prevForceOpen.current) {
+      // Only go to peek when deselecting, not on initial load
+      setDetent('peek');
     }
+    prevForceOpen.current = forceOpen;
   }, [forceOpen]);
 
   const getHeight = useCallback((d) => {
