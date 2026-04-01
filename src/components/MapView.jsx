@@ -868,7 +868,7 @@ function DistrictClouds({ zoom, activeDistrict, showClouds, districtMode, theme 
         el.style.opacity = isActive ? String(labelOpacity) : '0';
       }
     });
-  }, [zoom, activeDistrict]);
+  }, [zoom, activeDistrict, districtMode]);
 
   return null;
 }
