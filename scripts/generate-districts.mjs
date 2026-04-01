@@ -242,6 +242,57 @@ function smoothFeature(feature, storePoints, iterations = 1) {
 }
 
 // ---------------------------------------------------------------------------
+// Water exclusion zones — subtract these from all district boundaries
+// to prevent polygons from crossing bays via causeways/bridges
+// ---------------------------------------------------------------------------
+
+// Old Tampa Bay (between Pinellas peninsula and Tampa mainland)
+// Eastern edge pulled west to avoid D20 stores on Tampa's shore (~-82.50 to -82.52)
+const OLD_TAMPA_BAY = [
+  [-82.63, 27.79],   // SW - near Howard Frankland Bridge
+  [-82.58, 27.79],   // SE
+  [-82.55, 27.81],   // East shore south (pulled west of D20 stores)
+  [-82.54, 27.84],
+  [-82.53, 27.88],
+  [-82.53, 27.92],
+  [-82.54, 27.95],   // East shore north
+  [-82.56, 27.96],   // North end (just south of Courtney Campbell)
+  [-82.60, 27.965],
+  [-82.63, 27.96],
+  [-82.65, 27.95],
+  [-82.65, 27.93],   // West shore north
+  [-82.64, 27.90],
+  [-82.63, 27.88],
+  [-82.60, 27.85],
+  [-82.58, 27.83],
+  [-82.61, 27.80],   // West shore south
+  [-82.63, 27.79],   // Close ring
+];
+
+function subtractWaterZones(features, districts) {
+  const waterPoly = polygon([OLD_TAMPA_BAY]);
+  for (const feature of features) {
+    try {
+      const distPoly = polygon(feature.geometry.coordinates);
+      const diff = turfDifference(featureCollection([distPoly, waterPoly]));
+      if (diff) {
+        const d = feature.properties.district;
+        const pts = districts[d];
+        const newGeom = ensurePolygon(diff.geometry, pts);
+        const lost = pts.filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
+        if (lost.length === 0) {
+          feature.geometry = newGeom;
+        } else {
+          console.warn(`D${d}: water subtraction would lose ${lost.length} stores — skipping`);
+        }
+      }
+    } catch (e) {
+      console.warn(`Water subtraction failed for D${feature.properties.district}: ${e.message}`);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Core pipeline: Voronoi → merge → clip → trim → smooth → cleanup
 // ---------------------------------------------------------------------------
 
@@ -515,6 +566,7 @@ verifyContainment(rxFeatures, rxDistricts, '[pre-exception] Rx ');
   }
 }
 
+subtractWaterZones(rxFeatures, rxDistricts);
 const rxContained = verifyContainment(rxFeatures, rxDistricts, 'Rx ');
 const rxOverlaps = verifyNoOverlap(rxFeatures, 'Rx ');
 const rxGeoJSON = { type: 'FeatureCollection', features: rxFeatures };
@@ -581,6 +633,7 @@ const fsDistricts = fs.districts;
   }
 }
 
+subtractWaterZones(fsFeatures, fsDistricts);
 const fsContained = verifyContainment(fsFeatures, fsDistricts, 'FS ');
 const fsOverlaps = verifyNoOverlap(fsFeatures, 'FS ');
 const fsGeoJSON = { type: 'FeatureCollection', features: fsFeatures };
