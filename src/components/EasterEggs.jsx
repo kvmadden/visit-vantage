@@ -1256,14 +1256,24 @@ const SVG_GENERATORS = {
 };
 
 // ---------------------------------------------------------------------------
-// Zoom-responsive sizing — matches store marker scaling pattern
+// Zoom-responsive sizing — more aggressive scaling so eggs grow with zoom
 // ---------------------------------------------------------------------------
 function scaledSize(baseSize, currentZoom) {
-  const zoomScale = Math.max(0.75, 1 + (currentZoom - 13) * 0.25);
+  const zoomScale = Math.max(0.8, 1 + (currentZoom - 11) * 0.3);
   return [
-    Math.max(Math.round(baseSize[0] * 0.6), Math.round(baseSize[0] * zoomScale)),
-    Math.max(Math.round(baseSize[1] * 0.6), Math.round(baseSize[1] * zoomScale)),
+    Math.max(Math.round(baseSize[0] * 0.7), Math.round(baseSize[0] * zoomScale)),
+    Math.max(Math.round(baseSize[1] * 0.7), Math.round(baseSize[1] * zoomScale)),
   ];
+}
+
+// ---------------------------------------------------------------------------
+// Zoom-dependent opacity — faint at low zoom, more visible as you zoom in
+// ---------------------------------------------------------------------------
+function zoomOpacity(currentZoom, minZoom, maxZoom) {
+  const range = Math.max(1, maxZoom - minZoom);
+  const progress = Math.min(1, Math.max(0, (currentZoom - minZoom) / range));
+  // 0.12 at minZoom → 0.85 at maxZoom
+  return 0.12 + progress * 0.73;
 }
 
 // ---------------------------------------------------------------------------
@@ -1302,7 +1312,7 @@ export default function EasterEggs({ zoom, theme }) {
       const z = map.getZoom();
       const [w, h] = scaledSize(egg.size, z);
       marker.setIcon(L.divIcon({
-        html: activatedSvg,
+        html: `<div style="opacity:1;transition:opacity 0.3s">${activatedSvg}</div>`,
         className: 'easter-egg-icon egg-activated',
         iconSize: [w, h],
         iconAnchor: [w / 2, h / 2],
@@ -1314,8 +1324,9 @@ export default function EasterEggs({ zoom, theme }) {
         if (restingSvg) {
           const zNow = map.getZoom();
           const [w2, h2] = scaledSize(egg.size, zNow);
+          const op = zoomOpacity(zNow, egg.minZoom, egg.maxZoom);
           marker.setIcon(L.divIcon({
-            html: restingSvg,
+            html: `<div style="opacity:${op};transition:opacity 0.3s">${restingSvg}</div>`,
             className: 'easter-egg-icon',
             iconSize: [w2, h2],
             iconAnchor: [w2 / 2, h2 / 2],
@@ -1348,8 +1359,10 @@ export default function EasterEggs({ zoom, theme }) {
       const svg = gen(theme, false);
       svgCacheRef.current[egg.id] = svg;
       const [w, h] = scaledSize(egg.size, currentZoom);
+      const op = zoomOpacity(currentZoom, egg.minZoom, egg.maxZoom);
+      const visible = currentZoom >= egg.minZoom && currentZoom <= egg.maxZoom;
       const icon = L.divIcon({
-        html: svg,
+        html: `<div style="opacity:${visible ? op : 0};transition:opacity 0.3s">${svg}</div>`,
         className: 'easter-egg-icon',
         iconSize: [w, h],
         iconAnchor: [w / 2, h / 2],
@@ -1392,11 +1405,12 @@ export default function EasterEggs({ zoom, theme }) {
     function updateVisibility() {
       const z = map.getZoom();
       markersRef.current.forEach(({ marker, egg }) => {
-        const el = marker._icon?.querySelector('svg');
-        if (!el) return;
+        const wrapper = marker._icon?.querySelector('div');
+        if (!wrapper) return;
         const visible = z >= egg.minZoom && z <= egg.maxZoom;
-        el.style.opacity = visible ? '1' : '0';
-        el.style.pointerEvents = visible ? 'auto' : 'none';
+        const op = visible ? zoomOpacity(z, egg.minZoom, egg.maxZoom) : 0;
+        wrapper.style.opacity = op;
+        wrapper.style.pointerEvents = visible ? 'auto' : 'none';
       });
     }
 
@@ -1411,8 +1425,9 @@ export default function EasterEggs({ zoom, theme }) {
         const cachedSvg = svgCacheRef.current[egg.id];
         if (!cachedSvg) return;
         const [w, h] = scaledSize(egg.size, z);
+        const op = zoomOpacity(z, egg.minZoom, egg.maxZoom);
         marker.setIcon(L.divIcon({
-          html: cachedSvg,
+          html: `<div style="opacity:${op};transition:opacity 0.3s">${cachedSvg}</div>`,
           className: 'easter-egg-icon',
           iconSize: [w, h],
           iconAnchor: [w / 2, h / 2],
