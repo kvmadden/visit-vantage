@@ -575,7 +575,8 @@ function ClusteredMarkers({
       };
 
       // Identify outlier stores: nearest same-district neighbor > threshold
-      const outlierMinDist = 0.04; // ~2.8 miles — catches barrier island / edge stores
+      // Tighter at low zoom (cluster more), relaxed at higher zoom (show barrier island stores)
+      const outlierMinDist = currentZoom <= 10 ? 0.12 : currentZoom <= 11 ? 0.08 : 0.04;
       function isOutlier(store, districtStores) {
         let minDist = Infinity;
         for (let i = 0; i < districtStores.length; i++) {
@@ -638,7 +639,7 @@ function ClusteredMarkers({
 
           // Add clustered stores to markerClusterGroup
           const clusterGroup = L.markerClusterGroup({
-            maxClusterRadius: (z) => (z <= 10 ? 35 : z <= 12 ? 25 : 15),
+            maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
             spiderfyOnMaxZoom: true,
             showCoverageOnHover: false,
             zoomToBoundsOnClick: true,
