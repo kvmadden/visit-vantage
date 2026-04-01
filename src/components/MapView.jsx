@@ -288,14 +288,14 @@ function CityLabels({ zoom, theme }) {
 
     function updateVisibility() {
       const currentZoom = map.getZoom();
-      // Fade out custom labels between z10-11 to hand off to CARTO tile labels at z11
-      const minTier = currentZoom >= 10.5 ? 0 : currentZoom >= 10 ? 2 : 1;
+      // Custom labels visible through z11, fade out z11-12 as CARTO tiles take over
+      const minTier = currentZoom >= 12 ? 3 : currentZoom >= 10 ? 2 : 1;
       let cityOpacity;
-      if (currentZoom < 10) {
+      if (currentZoom < 11) {
         cityOpacity = 0.9;
-      } else if (currentZoom < 11) {
-        // Smooth fade from 0.9 to 0 between z10 and z11
-        cityOpacity = 0.9 * (11 - currentZoom);
+      } else if (currentZoom < 12) {
+        // Smooth fade from 0.9 to 0 between z11 and z12
+        cityOpacity = 0.9 * (12 - currentZoom);
       } else {
         cityOpacity = 0;
       }
@@ -930,7 +930,7 @@ export default function MapView({
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
-      <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" minZoom={10} opacity={0.85} />
+      {zoom >= 11 && <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" opacity={0.85} />}
       <ZoomTracker onZoomChange={handleZoomChange} />
       <ViewTracker />
       <HomeControl stores={stores} />
