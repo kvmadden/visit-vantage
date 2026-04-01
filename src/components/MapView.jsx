@@ -368,8 +368,8 @@ function ClusteredMarkers({
 
     const currentZoom = map.getZoom();
 
-    if (currentZoom <= 10) {
-      // ---- HARDCODED PILLS at low zoom ----
+    if (currentZoom < 9) {
+      // ---- HARDCODED PILLS at max zoom-out (8.5) ----
       // One pill per district at config position, showing total store count
       Object.entries(buckets).forEach(([dk, districtStores]) => {
         const pos = LABEL_POSITIONS.pills[dk];
@@ -416,7 +416,7 @@ function ClusteredMarkers({
         const districtColor = colorMap[districtKey] || '#888';
 
         const clusterGroup = L.markerClusterGroup({
-          maxClusterRadius: (z) => (z <= 12 ? 65 : 40),
+          maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
           spiderfyOnMaxZoom: true,
           showCoverageOnHover: false,
           zoomToBoundsOnClick: true,

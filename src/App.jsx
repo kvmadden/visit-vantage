@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.0.4-label-shift';
+const APP_VERSION = 'v1.0.5-cluster-breakup';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
