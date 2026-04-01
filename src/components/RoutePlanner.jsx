@@ -45,7 +45,7 @@ export default function RoutePlanner({
         )}
 
         {routeStats && (
-          <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>
+          <div style={{ display: 'flex', gap: 16, fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', marginBottom: 8 }}>
             <span>{routeStats.totalDistance.toFixed(1)} mi</span>
             <span>{formatTime(routeStats.estimatedTime)}</span>
             <span>{routeStores.length} stops</span>
@@ -59,7 +59,7 @@ export default function RoutePlanner({
             return (
               <li key={store.store}>
                 {leg && (
-                  <div className="route-leg-info">
+                  <div className="route-leg-info" style={{ fontFamily: 'var(--font-mono)' }}>
                     {leg.distance.toFixed(1)} mi &middot; {formatTime(leg.duration)}
                   </div>
                 )}
@@ -67,7 +67,7 @@ export default function RoutePlanner({
                   <span className="route-stop-number">{index + 1}</span>
                   <div className="route-stop-info">
                     <span className="route-stop-name">
-                      {store.nickname} #{store.store}
+                      {store.nickname} <span style={{ fontFamily: 'var(--font-mono)' }}>#{store.store}</span>
                     </span>
                     <span className="route-stop-addr">{store.address}</span>
                   </div>

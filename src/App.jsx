@@ -1,4 +1,4 @@
-const APP_VERSION = 'v2.0.0-design-system';
+const APP_VERSION = 'v2.1.0-batch2';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
@@ -17,6 +17,7 @@ import LandingPage from './components/LandingPage';
 import SetupScreen from './components/SetupScreen';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
+import { markStoreViewed, getViewedStores } from './utils/storeStatus';
 import './App.css';
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
   const [routeStores, setRouteStores] = useState([]);
   const [gpsPosition, setGpsPosition] = useState(null);
   const [districtView, setDistrictView] = useState(false);
+  const [viewedStores, setViewedStores] = useState(() => getViewedStores());
   const [activeLayers, setActiveLayers] = useState({});
   const [appScreen, setAppScreen] = useState('landing'); // 'landing' | 'setup' | 'map'
   const [sessionConfig, setSessionConfig] = useState(null);
@@ -116,6 +118,14 @@ export default function App() {
   const handleStoreSelect = useCallback((store) => {
     setSelectedStore(store);
     setSearchText('');
+    if (store) {
+      markStoreViewed(store.store);
+      setViewedStores((prev) => {
+        const next = new Set(prev);
+        next.add(store.store);
+        return next;
+      });
+    }
   }, []);
 
   const handleAddToRoute = useCallback((store) => {
@@ -248,6 +258,7 @@ export default function App() {
             theme={theme}
             showClouds={activeLayers.districts !== false}
             showCompetitors={activeLayers.competitors === true}
+            viewedStores={viewedStores}
           />
         </div>
 

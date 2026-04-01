@@ -387,6 +387,7 @@ function ClusteredMarkers({
   zoom,
   onStoreSelect,
   theme,
+  viewedStores,
 }) {
   const map = useMap();
   const layerRef = useRef([]);   // cluster groups or manual pill markers
@@ -490,9 +491,25 @@ function ClusteredMarkers({
           const bullseyeSize = Math.max(16, Math.round((isSelected ? 15 : 11) * zoomScale));
 
           const bullseyeInner = theme === 'dark' ? '#18181b' : '#ffffff';
-          const icon = isTarget
+          const isViewed = viewedStores && viewedStores.has(store.store);
+          const baseSvg = isTarget
             ? createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner)
             : createHeartIcon(displayColor, heartSize, opacity);
+
+          // If viewed, wrap with a small check dot in the corner
+          let icon;
+          if (isViewed && !isFaded) {
+            const size = isTarget ? bullseyeSize : heartSize;
+            const dotHtml = `<div style="position:relative;width:${size}px;height:${size}px">${baseSvg.options.html}<svg style="position:absolute;top:-2px;right:-2px" width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e"/><path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div>`;
+            icon = L.divIcon({
+              html: dotHtml,
+              className: baseSvg.options.className,
+              iconSize: [size, size],
+              iconAnchor: [size / 2, size / 2],
+            });
+          } else {
+            icon = baseSvg;
+          }
 
           const marker = L.marker([store.lat, store.lng], { icon });
           marker.bindTooltip(`${store.nickname} #${store.store}`, {
@@ -512,7 +529,7 @@ function ClusteredMarkers({
       layerRef.current.forEach((g) => map.removeLayer(g));
       layerRef.current = [];
     };
-  }, [map, stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect, theme]);
+  }, [map, stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect, theme, viewedStores]);
 
   return null;
 }
@@ -763,6 +780,7 @@ export default function MapView({
   theme = 'light',
   showClouds = true,
   showCompetitors = false,
+  viewedStores = new Set(),
 }) {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const handleZoomChange = useCallback((z) => setZoom(z), []);
@@ -799,6 +817,7 @@ export default function MapView({
         zoom={zoom}
         onStoreSelect={onStoreSelect}
         theme={theme}
+        viewedStores={viewedStores}
       />
 
       <CompetitorMarkers showCompetitors={showCompetitors} />

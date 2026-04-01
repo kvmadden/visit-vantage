@@ -25,7 +25,7 @@ export default function DistrictSummary({ district, stores, districtMode = 'rx',
     { label: 'stores', value: stats.total },
     { label: '24hr Rx', value: stats.rx24hr },
     ...(isRx ? [{ label: 'Target', value: stats.target }] : []),
-    { label: 'Y Mas', value: stats.ymas },
+    { label: 'y m\u00e1s', value: stats.ymas },
     { label: 'FS 24hr', value: stats.fs24hr },
   ].filter((item) => item.value > 0);
 

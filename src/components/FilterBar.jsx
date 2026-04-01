@@ -7,7 +7,7 @@ const FS_DISTRICTS = [1, 2, 3, 4, 5];
 const FLAG_LABELS = {
   fs24: 'FS 24hr',
   rx24: 'Rx 24hr',
-  ymas: 'Y M\u00e1s',
+  ymas: 'y m\u00e1s',
   target: 'Target',
 };
 
@@ -144,7 +144,7 @@ function FilterBar({
   return (
     <div className="filter-bar" style={styles.container}>
       {/* Store count badge */}
-      <span style={styles.badge}>{storeCount}</span>
+      <span style={{ ...styles.badge, fontFamily: 'var(--font-mono)' }}>{storeCount}</span>
 
       {/* Rx / FS mode toggle */}
       <div style={styles.modeToggle}>

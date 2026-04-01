@@ -1,29 +1,62 @@
 import { useState } from "react";
-import { RX_COLORS } from "../utils/colors";
+import { RX_COLORS, FS_COLORS } from "../utils/colors";
 import { getDemoTags } from "../utils/demographics";
 
+function hexToRgba(hex, alpha) {
+  if (!hex || hex.length < 7) return "rgba(128,128,128," + alpha + ")";
+  var r = parseInt(hex.slice(1, 3), 16);
+  var g = parseInt(hex.slice(3, 5), 16);
+  var b = parseInt(hex.slice(5, 7), 16);
+  return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+}
+
+function getTodayHoursLabel() {
+  var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return days[new Date().getDay()];
+}
+
+function buildTipCards(store) {
+  var tips = [];
+  if (store.target === true) {
+    tips.push("Pharmacy entrance is inside the Target store");
+  }
+  if (store.fs24 === "Yes" && store.rx24 !== "Yes") {
+    tips.push("Front store is 24hr but pharmacy has limited hours");
+  }
+  if (store.ymas === "Yes") {
+    tips.push("This location carries the CVS y m\u00e1s product selection");
+  }
+  return tips;
+}
+
 export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRoute, isInRoute, inline }) {
-  const [expanded, setExpanded] = useState(false);
+  var expanded = useState(false);
+  var isExpanded = expanded[0];
+  var setExpanded = expanded[1];
 
   if (!store) return null;
 
-  const borderClass = store.rxDistrict ? `border-d${store.rxDistrict}` : "";
+  var borderClass = store.rxDistrict ? "border-d" + store.rxDistrict : "";
+  var demoTags = getDemoTags(store);
 
-  const demoTags = getDemoTags(store);
-
-  const badges = [];
+  var badges = [];
   if (store.target === true) badges.push({ label: "TARGET", className: "badge-target" });
   if (store.fs24 === "Yes") badges.push({ label: "FS 24hr", className: "badge-fs24" });
   if (store.rx24 === "Yes") badges.push({ label: "Rx 24hr", className: "badge-rx24" });
-  if (store.ymas === "Yes") badges.push({ label: "Y M\u00e1s", className: "badge-ymas" });
-  if (store.driveThru === "Yes") badges.push({ label: "Drive-Thru", className: "badge-drivethru" });
-  if (store.minuteClinic === "Yes") badges.push({ label: "MinuteClinic", className: "badge-minuteclinic" });
+  if (store.ymas === "Yes") badges.push({ label: "y m\u00e1s", className: "badge-ymas" });
+  if (store.driveThru === "Yes") badges.push({ label: "DT", className: "badge-drivethru" });
+  if (store.minuteClinic === "Yes") badges.push({ label: "MC", className: "badge-minuteclinic" });
 
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}`;
+  var directionsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + store.lat + "," + store.lng;
+  var tips = buildTipCards(store);
+  var todayLabel = getTodayHoursLabel();
+
+  var rxColor = RX_COLORS[store.rxDistrict] || "#888";
+  var fsColor = FS_COLORS[store.fsDistrict] || "#888";
 
   return (
     <div
-      className={`${inline ? 'store-card-inline' : 'store-card slide-up'} ${borderClass}`}
+      className={(inline ? 'store-card-inline' : 'store-card slide-up') + ' ' + borderClass}
       style={
         store.rxDistrict && RX_COLORS[store.rxDistrict]
           ? { borderTopColor: RX_COLORS[store.rxDistrict] }
@@ -32,12 +65,12 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
     >
       {/* Header */}
       <div className="store-card-header">
-        <span className="store-number">
+        <span className="store-number" style={{ fontFamily: 'var(--font-mono)' }}>
           CVS #{store.store}
-          {store.rxDistrict ? ` \u00b7 Rx D${store.rxDistrict}` : ""}
+          {store.rxDistrict ? " \u00b7 Rx D" + store.rxDistrict : ""}
         </span>
         <button className="store-close" onClick={onClose} aria-label="Close">
-          ✕
+          \u2715
         </button>
       </div>
 
@@ -58,74 +91,106 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
         </div>
       )}
 
+      {/* Today's hours (if available) */}
+      {(store.rxHours || store.fsHours) && (
+        <div className="store-today-hours" style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', marginTop: 4 }}>
+          Today ({todayLabel}):{' '}
+          {store.rxHours && <span>Rx {store.rxHours}</span>}
+          {store.rxHours && store.fsHours && ' \u00b7 '}
+          {store.fsHours && <span>FS {store.fsHours}</span>}
+        </div>
+      )}
+
       {/* Demographic context tags */}
       {demoTags.length > 0 && (
         <div className="store-demo-tags">
-          {demoTags.map((tag) => (
-            <span key={tag} className="demo-tag">{tag}</span>
-          ))}
+          {demoTags.map(function (tag) {
+            return <span key={tag} className="demo-tag">{tag}</span>;
+          })}
         </div>
       )}
 
       {/* Badges */}
       {badges.length > 0 && (
         <div style={{ marginTop: 6 }}>
-          {badges.map((b) => (
-            <span key={b.label} className={`badge ${b.className}`}>
-              {b.label}
-            </span>
-          ))}
+          {badges.map(function (b) {
+            return (
+              <span key={b.label} className={"badge " + b.className}>
+                {b.label}
+              </span>
+            );
+          })}
         </div>
       )}
 
-      {/* District info */}
+      {/* District info with DL color pills */}
       {(store.rxDistrict || store.fsDistrict) && (
-        <div className="store-dl-info">
+        <div className="store-dl-info" style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
           {store.rxDistrict && store.rxDL && (
-            <div>Rx D{store.rxDistrict}: {store.rxDL}</div>
+            <span className="dl-pill" style={{
+              background: hexToRgba(rxColor, 0.15),
+              color: rxColor,
+              border: '1px solid ' + hexToRgba(rxColor, 0.3),
+            }}>
+              Rx D{store.rxDistrict}: {store.rxDL}
+            </span>
           )}
           {store.fsDistrict && store.fsDistrict !== 98 && store.fsDL && (
-            <div>FS D{store.fsDistrict}: {store.fsDL}</div>
+            <span className="dl-pill" style={{
+              background: hexToRgba(fsColor, 0.15),
+              color: fsColor,
+              border: '1px solid ' + hexToRgba(fsColor, 0.3),
+            }}>
+              FS D{store.fsDistrict}: {store.fsDL}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Hollow tip cards */}
+      {tips.length > 0 && (
+        <div className="store-tips" style={{ marginTop: 8 }}>
+          {tips.map(function (tip, i) {
+            return (
+              <div key={i} className="hollow-tip">
+                <span className="hollow-tip-icon">\u2139\uFE0F</span>
+                <span>{tip}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Phone numbers (always visible if available) */}
+      {(store.rxPhone || store.fsPhone) && (
+        <div style={{ marginTop: 8, display: 'flex', gap: 12, fontSize: 13 }}>
+          {store.rxPhone && (
+            <a href={"tel:" + store.rxPhone} style={{ color: "var(--accent)", textDecoration: "none", fontFamily: 'var(--font-mono)' }}>
+              \u260E Rx: {store.rxPhone}
+            </a>
+          )}
+          {store.fsPhone && (
+            <a href={"tel:" + store.fsPhone} style={{ color: "var(--accent)", textDecoration: "none", fontFamily: 'var(--font-mono)' }}>
+              \u260E FS: {store.fsPhone}
+            </a>
           )}
         </div>
       )}
 
       {/* Enriched view */}
-      {expanded && (
+      {isExpanded && (
         <div className="store-section fade-in">
-          {/* Phone numbers */}
-          {store.fsPhone && (
-            <div style={{ marginBottom: 6 }}>
-              <span className="store-section-label">Front Store Phone</span>
-              <div>
-                <a href={`tel:${store.fsPhone}`} style={{ color: "var(--accent)", textDecoration: "none" }}>
-                  {store.fsPhone}
-                </a>
-              </div>
-            </div>
-          )}
-          {store.rxPhone && (
-            <div style={{ marginBottom: 6 }}>
-              <span className="store-section-label">Pharmacy Phone</span>
-              <div>
-                <a href={`tel:${store.rxPhone}`} style={{ color: "var(--accent)", textDecoration: "none" }}>
-                  {store.rxPhone}
-                </a>
-              </div>
-            </div>
-          )}
-
-          {/* Hours */}
+          {/* Full hours */}
           {store.fsHours && (
             <div style={{ marginBottom: 6 }}>
               <span className="store-section-label">Front Store Hours</span>
-              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{store.fsHours}</div>
+              <div style={{ fontSize: 13, fontFamily: 'var(--font-mono)', color: "var(--text-secondary)" }}>{store.fsHours}</div>
             </div>
           )}
           {store.rxHours && (
             <div style={{ marginBottom: 6 }}>
               <span className="store-section-label">Pharmacy Hours</span>
-              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{store.rxHours}</div>
+              <div style={{ fontSize: 13, fontFamily: 'var(--font-mono)', color: "var(--text-secondary)" }}>{store.rxHours}</div>
             </div>
           )}
 
@@ -154,11 +219,11 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
       {/* Action buttons */}
       <div className="store-actions">
         {isInRoute ? (
-          <button className="btn btn-danger" style={{ flex: 1 }} onClick={() => onRemoveFromRoute(store)}>
+          <button className="btn btn-danger" style={{ flex: 1 }} onClick={function () { onRemoveFromRoute(store); }}>
             Remove from Route
           </button>
         ) : (
-          <button className="btn btn-primary" onClick={() => onAddToRoute(store)}>
+          <button className="btn btn-primary" onClick={function () { onAddToRoute(store); }}>
             Add to Route
           </button>
         )}
@@ -169,13 +234,13 @@ export default function StoreCard({ store, onClose, onAddToRoute, onRemoveFromRo
           className="btn btn-secondary"
           style={{ textDecoration: "none" }}
         >
-          Get Directions
+          Directions
         </a>
       </div>
 
       <div className="store-actions" style={{ marginTop: 8 }}>
-        <button className="btn btn-secondary" onClick={() => setExpanded(!expanded)}>
-          {expanded ? "Less Detail" : "More Detail"}
+        <button className="btn btn-secondary" onClick={function () { setExpanded(!isExpanded); }}>
+          {isExpanded ? "Less Detail" : "More Detail"}
         </button>
       </div>
     </div>
