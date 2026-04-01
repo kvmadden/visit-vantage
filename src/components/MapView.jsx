@@ -452,78 +452,98 @@ function ClusteredMarkers({
         layerRef.current.push(marker);
       });
     } else {
-      // ---- MARKER CLUSTER at higher zoom ----
-      Object.entries(buckets).forEach(([districtKey, districtStores]) => {
-        const districtColor = colorMap[districtKey] || '#888';
+      // Helper to build a marker icon for a single store
+      const buildStoreIcon = (store, districtColor) => {
+        const isTarget = store.target === true;
+        const activeColor = isTarget
+          ? (RX_COLORS[store.rxDistrict] || '#ef4444')
+          : districtColor;
 
-        const clusterGroup = L.markerClusterGroup({
-          maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
-          spiderfyOnMaxZoom: true,
-          showCoverageOnHover: false,
-          zoomToBoundsOnClick: true,
-          removeOutsideVisibleBounds: false,
-          iconCreateFunction: (cluster) => {
-            const count = cluster.getChildCount();
-            const pill = clusterPillSvg(districtColor, count);
-            return L.divIcon({
-              html: pill.html,
-              className: 'cluster-pill-icon',
-              iconSize: [pill.width, pill.height],
-              iconAnchor: [pill.width / 2, pill.height / 2],
-            });
-          },
-          animate: true,
-        });
+        const dk = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
+        const isFaded = activeDistrict != null && dk !== activeDistrict;
+        const opacity = isFaded ? 0.2 : 0.9;
+        const displayColor = isFaded ? (theme === 'dark' ? '#a1a1aa' : '#71717a') : activeColor;
+        const isSelected = selectedStore != null && selectedStore.store === store.store;
 
-        districtStores.forEach((store) => {
-          const isTarget = store.target === true;
-          const activeColor = isTarget
-            ? (RX_COLORS[store.rxDistrict] || '#ef4444')
-            : districtColor;
+        const zoomScale = Math.max(0.75, 1 + (currentZoom - 13) * 0.25);
+        const heartSize = Math.max(20, Math.round((isSelected ? 22 : 16) * zoomScale));
+        const bullseyeSize = Math.max(16, Math.round((isSelected ? 15 : 11) * zoomScale));
 
-          const dk = districtMode === 'fs' ? store.fsDistrict : store.rxDistrict;
-          const isFaded = activeDistrict != null && dk !== activeDistrict;
-          const opacity = isFaded ? 0.2 : 0.9;
-          const displayColor = isFaded ? (theme === 'dark' ? '#a1a1aa' : '#71717a') : activeColor;
-          const isSelected = selectedStore != null && selectedStore.store === store.store;
+        const bullseyeInner = theme === 'dark' ? '#18181b' : '#ffffff';
+        const isViewed = viewedStores && viewedStores.has(store.store);
+        const baseSvg = isTarget
+          ? createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner)
+          : createHeartIcon(displayColor, heartSize, opacity);
 
-          const zoomScale = Math.max(0.75, 1 + (currentZoom - 13) * 0.25);
-          const heartSize = Math.max(20, Math.round((isSelected ? 22 : 16) * zoomScale));
-          const bullseyeSize = Math.max(16, Math.round((isSelected ? 15 : 11) * zoomScale));
-
-          const bullseyeInner = theme === 'dark' ? '#18181b' : '#ffffff';
-          const isViewed = viewedStores && viewedStores.has(store.store);
-          const baseSvg = isTarget
-            ? createBullseyeIcon(displayColor, bullseyeSize, opacity, bullseyeInner)
-            : createHeartIcon(displayColor, heartSize, opacity);
-
-          // If viewed, wrap with a small check dot in the corner
-          let icon;
-          if (isViewed && !isFaded) {
-            const size = isTarget ? bullseyeSize : heartSize;
-            const dotHtml = `<div style="position:relative;width:${size}px;height:${size}px">${baseSvg.options.html}<svg style="position:absolute;top:-2px;right:-2px" width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e"/><path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div>`;
-            icon = L.divIcon({
-              html: dotHtml,
-              className: baseSvg.options.className,
-              iconSize: [size, size],
-              iconAnchor: [size / 2, size / 2],
-            });
-          } else {
-            icon = baseSvg;
-          }
-
-          const marker = L.marker([store.lat, store.lng], { icon });
-          marker.bindTooltip(`${store.nickname} #${store.store}`, {
-            direction: 'top',
-            offset: [0, -10],
+        if (isViewed && !isFaded) {
+          const size = isTarget ? bullseyeSize : heartSize;
+          const dotHtml = `<div style="position:relative;width:${size}px;height:${size}px">${baseSvg.options.html}<svg style="position:absolute;top:-2px;right:-2px" width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="#22c55e"/><path d="M2 3.5L3 4.5L5 2.5" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div>`;
+          return L.divIcon({
+            html: dotHtml,
+            className: baseSvg.options.className,
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size / 2],
           });
-          marker.on('click', () => onStoreSelect(store));
-          clusterGroup.addLayer(marker);
-        });
+        }
+        return baseSvg;
+      };
 
-        map.addLayer(clusterGroup);
-        layerRef.current.push(clusterGroup);
-      });
+      if (currentZoom >= 12) {
+        // ---- INDIVIDUAL MARKERS at high zoom (no clustering) ----
+        const group = L.layerGroup();
+        Object.entries(buckets).forEach(([districtKey, districtStores]) => {
+          const districtColor = colorMap[districtKey] || '#888';
+          districtStores.forEach((store) => {
+            const icon = buildStoreIcon(store, districtColor);
+            const marker = L.marker([store.lat, store.lng], { icon });
+            marker.bindTooltip(`${store.nickname} #${store.store}`, {
+              direction: 'top',
+              offset: [0, -10],
+            });
+            marker.on('click', () => onStoreSelect(store));
+            group.addLayer(marker);
+          });
+        });
+        group.addTo(map);
+        layerRef.current.push(group);
+      } else {
+        // ---- MARKER CLUSTER at mid zoom (9-11) ----
+        Object.entries(buckets).forEach(([districtKey, districtStores]) => {
+          const districtColor = colorMap[districtKey] || '#888';
+
+          const clusterGroup = L.markerClusterGroup({
+            maxClusterRadius: (z) => (z <= 10 ? 45 : 30),
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true,
+            iconCreateFunction: (cluster) => {
+              const count = cluster.getChildCount();
+              const pill = clusterPillSvg(districtColor, count);
+              return L.divIcon({
+                html: pill.html,
+                className: 'cluster-pill-icon',
+                iconSize: [pill.width, pill.height],
+                iconAnchor: [pill.width / 2, pill.height / 2],
+              });
+            },
+            animate: true,
+          });
+
+          districtStores.forEach((store) => {
+            const icon = buildStoreIcon(store, districtColor);
+            const marker = L.marker([store.lat, store.lng], { icon });
+            marker.bindTooltip(`${store.nickname} #${store.store}`, {
+              direction: 'top',
+              offset: [0, -10],
+            });
+            marker.on('click', () => onStoreSelect(store));
+            clusterGroup.addLayer(marker);
+          });
+
+          map.addLayer(clusterGroup);
+          layerRef.current.push(clusterGroup);
+        });
+      }
     }
 
     return () => {
