@@ -1,5 +1,6 @@
 import Brand from './Brand';
 import FindMyStore from './FindMyStore';
+import { APP_VERSION } from '../App';
 
 const FEATURES = [
   { icon: '\u{1F4CD}', text: 'Every store in your region, mapped' },
@@ -71,6 +72,7 @@ export default function LandingPage({ onStart, onLocate }) {
             &copy; 2026 Madden Frameworks
           </span>
           <p className="landing-footer-tagline">Smart systems. Better judgment.</p>
+          <p className="landing-version" style={{ color: 'rgba(255,255,255,0.25)', fontSize: '10px', marginTop: '6px' }}>{APP_VERSION}</p>
         </div>
       </div>
     </div>
