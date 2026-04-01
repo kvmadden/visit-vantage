@@ -336,6 +336,46 @@ function ZoomTracker({ onZoomChange }) {
 }
 
 // ---------------------------------------------------------------------------
+// ViewTracker — shows zoom + center in bottom-left corner
+// ---------------------------------------------------------------------------
+function ViewTracker() {
+  const map = useMap();
+  const [info, setInfo] = useState({ zoom: 0, lat: 0, lng: 0 });
+
+  useEffect(() => {
+    const update = () => {
+      const c = map.getCenter();
+      setInfo({ zoom: map.getZoom(), lat: c.lat, lng: c.lng });
+    };
+    map.on('zoomend', update);
+    map.on('moveend', update);
+    update();
+    return () => {
+      map.off('zoomend', update);
+      map.off('moveend', update);
+    };
+  }, [map]);
+
+  return (
+    <div style={{
+      position: 'absolute',
+      bottom: 8,
+      left: 8,
+      background: 'rgba(0,0,0,0.6)',
+      color: '#fff',
+      fontSize: 10,
+      fontFamily: 'monospace',
+      padding: '3px 6px',
+      borderRadius: 4,
+      zIndex: 1000,
+      pointerEvents: 'none',
+    }}>
+      z{info.zoom.toFixed(2)} | {info.lat.toFixed(4)}, {info.lng.toFixed(4)}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // ClusteredMarkers — hardcoded pills at zoom <= 10, markerCluster at zoom > 10
 // No nudge logic, no collision detection, no timing chains
 // ---------------------------------------------------------------------------
@@ -766,6 +806,7 @@ export default function MapView({
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
       <ZoomTracker onZoomChange={handleZoomChange} />
+      <ViewTracker />
       <FitAllStores stores={stores} />
       <HomeControl stores={stores} />
 

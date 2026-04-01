@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.1.1-zoom-85';
+const APP_VERSION = 'v1.1.2-view-tracker';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
