@@ -1582,6 +1582,12 @@ h1, h2, h3, h4, h5, h6,
   100% { transform: scale(1.1); opacity: 0.95; }
 }
 
+/* Shift popup above icon via CSS translate (independent of Leaflet's transform).
+   popupAnchor is [0,0] so Leaflet centers the tip on the icon; this lifts it clear. */
+.easter-egg-popup {
+  translate: 0 -30px;
+}
+
 .easter-egg-popup .leaflet-popup-content-wrapper {
   background: var(--bg-surface);
   color: var(--text-primary);
