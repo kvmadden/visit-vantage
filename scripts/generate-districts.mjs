@@ -247,26 +247,34 @@ function smoothFeature(feature, storePoints, iterations = 1) {
 // ---------------------------------------------------------------------------
 
 // Old Tampa Bay (between Pinellas peninsula and Tampa mainland)
-// Eastern edge pulled west to avoid D20 stores on Tampa's shore (~-82.50 to -82.52)
+// East edge ~-82.52 (just west of D20 store #998 at -82.519)
+// West edge ~-82.64 (just east of D22 store #16495 at -82.644)
 const OLD_TAMPA_BAY = [
-  [-82.63, 27.79],   // SW - near Howard Frankland Bridge
-  [-82.58, 27.79],   // SE
-  [-82.55, 27.81],   // East shore south (pulled west of D20 stores)
-  [-82.54, 27.84],
-  [-82.53, 27.88],
-  [-82.53, 27.92],
-  [-82.54, 27.95],   // East shore north
-  [-82.56, 27.96],   // North end (just south of Courtney Campbell)
-  [-82.60, 27.965],
-  [-82.63, 27.96],
-  [-82.65, 27.95],
-  [-82.65, 27.93],   // West shore north
-  [-82.64, 27.90],
+  // Southern narrows (Howard Frankland / Gandy Bridge area)
+  [-82.635, 27.79],
+  [-82.57, 27.78],
+  [-82.54, 27.79],
+  // Eastern shore (Tampa side) — north
+  [-82.52, 27.82],
+  [-82.52, 27.85],
+  [-82.52, 27.88],
+  [-82.52, 27.91],
+  [-82.52, 27.94],
+  // Northern narrows (Courtney Campbell Causeway)
+  [-82.54, 27.96],
+  [-82.57, 27.97],
+  [-82.60, 27.97],
+  [-82.62, 27.96],
+  // Western shore (Pinellas side) — south
+  [-82.635, 27.94],
+  [-82.635, 27.92],
+  [-82.635, 27.90],
   [-82.63, 27.88],
-  [-82.60, 27.85],
-  [-82.58, 27.83],
-  [-82.61, 27.80],   // West shore south
-  [-82.63, 27.79],   // Close ring
+  [-82.62, 27.86],
+  [-82.61, 27.84],
+  [-82.61, 27.82],
+  [-82.62, 27.80],
+  [-82.635, 27.79],   // close ring
 ];
 
 function subtractWaterZones(features, districts) {
