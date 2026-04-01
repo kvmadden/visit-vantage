@@ -1317,7 +1317,7 @@ export default function EasterEggs({ zoom, theme }) {
         html: `<div style="opacity:1;transition:opacity 0.3s">${activatedSvg}</div>`,
         className: 'easter-egg-icon egg-activated',
         iconSize: [w, h],
-        iconAnchor: [w / 2, h / 2],
+        iconAnchor: [w / 2, 0],
         popupAnchor: [0, 0],
       }));
       // Revert after 2s
@@ -1332,7 +1332,7 @@ export default function EasterEggs({ zoom, theme }) {
             html: `<div style="opacity:${op};transition:opacity 0.3s">${restingSvg}</div>`,
             className: 'easter-egg-icon',
             iconSize: [w2, h2],
-            iconAnchor: [w2 / 2, h2 / 2],
+            iconAnchor: [w2 / 2, 0],
             popupAnchor: [0, 0],
           }));
         }
@@ -1369,7 +1369,7 @@ export default function EasterEggs({ zoom, theme }) {
         html: `<div style="opacity:${visible ? op : 0};transition:opacity 0.3s">${svg}</div>`,
         className: 'easter-egg-icon',
         iconSize: [w, h],
-        iconAnchor: [w / 2, h / 2],
+        iconAnchor: [w / 2, 0],
         popupAnchor: [0, 0],
       });
 
@@ -1383,19 +1383,8 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-popup',
         maxWidth: 200,
         closeButton: true,
-      });
-
-      // Reposition popup above icon on open.
-      // popupAnchor [0,0] centers the tip horizontally (proven correct).
-      // We shift the popup's latlng north so the tip clears the icon top.
-      marker.on('popupopen', () => {
-        const popup = marker.getPopup();
-        if (!popup) return;
-        const iconOpts = marker.getIcon().options;
-        const h = iconOpts.iconSize ? iconOpts.iconSize[1] : 40;
-        const pt = map.latLngToContainerPoint(marker.getLatLng());
-        pt.y -= (h / 2 + 6);
-        popup.setLatLng(map.containerPointToLatLng(pt));
+        autoPan: true,
+        autoPanPadding: [40, 40],
       });
 
       marker.on('click', () => handleEggClick(egg, marker));
@@ -1448,9 +1437,24 @@ export default function EasterEggs({ zoom, theme }) {
           html: `<div style="opacity:${op};transition:opacity 0.3s">${cachedSvg}</div>`,
           className: 'easter-egg-icon',
           iconSize: [w, h],
-          iconAnchor: [w / 2, h / 2],
+          iconAnchor: [w / 2, 0],
           popupAnchor: [0, 0],
         }));
+      });
+    }
+
+    // Close popup when user pans it off-screen
+    function closeOffscreen() {
+      markersRef.current.forEach(({ marker }) => {
+        if (!marker.isPopupOpen()) return;
+        const popup = marker.getPopup();
+        const el = popup?._container;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const m = map.getContainer().getBoundingClientRect();
+        if (r.right < m.left || r.left > m.right || r.bottom < m.top || r.top > m.bottom) {
+          marker.closePopup();
+        }
       });
     }
 
@@ -1458,9 +1462,11 @@ export default function EasterEggs({ zoom, theme }) {
     updateSizes();
     map.on('zoom', updateVisibility);
     map.on('zoomend', updateSizes);
+    map.on('move', closeOffscreen);
     return () => {
       map.off('zoom', updateVisibility);
       map.off('zoomend', updateSizes);
+      map.off('move', closeOffscreen);
     };
   }, [map, zoom]);
 
