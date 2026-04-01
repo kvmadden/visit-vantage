@@ -17,6 +17,8 @@ import LandingPage from './components/LandingPage';
 import SetupScreen from './components/SetupScreen';
 import FocusBanner from './components/FocusBanner';
 import QuickFilterChips, { CHIPS } from './components/QuickFilterChips';
+import CommuteCard from './components/CommuteCard';
+import ProximityAlert from './components/ProximityAlert';
 import { optimizeRoute, getRouteStats, getRouteStatsOSRM, buildMapsUrl } from './utils/routing';
 import { RX_COLORS, FS_COLORS } from './utils/colors';
 import { markStoreViewed, getViewedStores } from './utils/storeStatus';
@@ -192,6 +194,34 @@ export default function App() {
     window.open(buildMapsUrl(routeStores, gpsPosition), '_blank');
   }, [routeStores, gpsPosition]);
 
+  // GPS watch for proximity features
+  const [gpsWatchActive, setGpsWatchActive] = useState(false);
+  useEffect(() => {
+    if (!gpsPosition || gpsWatchActive) return;
+    if (!navigator.geolocation) return;
+    let lastLat = gpsPosition.lat;
+    let lastLng = gpsPosition.lng;
+    const id = navigator.geolocation.watchPosition(
+      (pos) => {
+        const newLat = pos.coords.latitude;
+        const newLng = pos.coords.longitude;
+        // Only update if moved > 50m
+        const dLat = newLat - lastLat;
+        const dLng = newLng - lastLng;
+        const dist = Math.sqrt(dLat * dLat + dLng * dLng) * 111000;
+        if (dist > 50) {
+          lastLat = newLat;
+          lastLng = newLng;
+          setGpsPosition({ lat: newLat, lng: newLng });
+        }
+      },
+      () => {},
+      { enableHighAccuracy: false, maximumAge: 30000 }
+    );
+    setGpsWatchActive(true);
+    return () => navigator.geolocation.clearWatch(id);
+  }, [gpsPosition, gpsWatchActive]);
+
   const handleRequestGps = useCallback(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
       setGpsPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
@@ -218,6 +248,11 @@ export default function App() {
     setAppScreen('setup');
   }, []);
 
+  const handleLandingLocate = useCallback(function (pos) {
+    setGpsPosition(pos);
+    setAppScreen('setup');
+  }, []);
+
   const handleSetupBack = useCallback(function () {
     setAppScreen('landing');
   }, []);
@@ -234,7 +269,7 @@ export default function App() {
   }, []);
 
   if (appScreen === 'landing') {
-    return <LandingPage onStart={handleStartPlanning} />;
+    return <LandingPage onStart={handleStartPlanning} onLocate={handleLandingLocate} />;
   }
 
   if (appScreen === 'setup') {
@@ -302,6 +337,21 @@ export default function App() {
         </div>
 
         <FocusBanner config={sessionConfig} onEdit={function () { setAppScreen('setup'); }} />
+
+        {/* Commute-aware start */}
+        {gpsPosition && (
+          <CommuteCard gpsPosition={gpsPosition} stores={stores} onStoreSelect={handleStoreSelect} />
+        )}
+
+        {/* GPS proximity auto-arrive */}
+        {gpsPosition && routeStores.length > 0 && (
+          <ProximityAlert
+            gpsPosition={gpsPosition}
+            routeStores={routeStores}
+            stopStatuses={stopStatuses}
+            onStopStatusChange={handleStopStatusChange}
+          />
+        )}
 
         {districtView && activeDistrict && (
           <DistrictSummary
