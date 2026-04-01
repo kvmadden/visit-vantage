@@ -83,9 +83,9 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
   });
 }
 
-const DEFAULT_CENTER = [27.70, -82.40];
+const DEFAULT_CENTER = [27.50, -82.44];
 const DEFAULT_ZOOM = 8.5;
-const MIN_ZOOM = 8;
+const MIN_ZOOM = 8.5;
 const MAX_ZOOM = 18;
 // Bounding box for the Tampa Bay region — tight to prevent ugly panning
 const MAX_BOUNDS = [
@@ -800,8 +800,8 @@ export default function MapView({
       zoomDelta={0.5}
       minZoom={MIN_ZOOM}
       maxZoom={MAX_ZOOM}
-      // maxBounds={MAX_BOUNDS}
-      // maxBoundsViscosity={1.0}
+      maxBounds={MAX_BOUNDS}
+      maxBoundsViscosity={1.0}
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
