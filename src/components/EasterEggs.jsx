@@ -1318,7 +1318,7 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-icon egg-activated',
         iconSize: [w, h],
         iconAnchor: [w / 2, h / 2],
-        popupAnchor: [0, -(h / 2)],
+        popupAnchor: [0, -2],
       }));
       // Revert after 2s
       setTimeout(() => {
@@ -1333,7 +1333,7 @@ export default function EasterEggs({ zoom, theme }) {
             className: 'easter-egg-icon',
             iconSize: [w2, h2],
             iconAnchor: [w2 / 2, h2 / 2],
-            popupAnchor: [0, -(h2 / 2)],
+            popupAnchor: [0, -2],
           }));
         }
       }, 2000);
@@ -1370,7 +1370,7 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-icon',
         iconSize: [w, h],
         iconAnchor: [w / 2, h / 2],
-        popupAnchor: [0, -(h / 2)],
+        popupAnchor: [0, -2],
       });
 
       const marker = L.marker([egg.lat, egg.lng], {
@@ -1436,7 +1436,7 @@ export default function EasterEggs({ zoom, theme }) {
           className: 'easter-egg-icon',
           iconSize: [w, h],
           iconAnchor: [w / 2, h / 2],
-          popupAnchor: [0, -(h / 2)],
+          popupAnchor: [0, -2],
         }));
       });
     }
