@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.0.9-center-split';
+const APP_VERSION = 'v1.1.0-fit-all';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
