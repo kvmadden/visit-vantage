@@ -277,25 +277,45 @@ const OLD_TAMPA_BAY = [
   [-82.635, 27.79],   // close ring
 ];
 
+// North arm of Old Tampa Bay (north of Courtney Campbell Causeway, Safety Harbor area)
+// Triangular shape narrowing northward; indented around #17360 at (-82.613, 28.016)
+const NORTH_BAY = [
+  [-82.70, 27.97],
+  [-82.58, 27.97],
+  [-82.59, 28.00],
+  [-82.60, 28.005],
+  [-82.61, 28.01],
+  [-82.615, 28.015],
+  [-82.62, 28.02],
+  [-82.64, 28.03],
+  [-82.67, 28.035],
+  [-82.70, 28.03],
+  [-82.70, 27.97],   // close ring
+];
+
+const WATER_ZONES = [OLD_TAMPA_BAY, NORTH_BAY];
+
 function subtractWaterZones(features, districts) {
-  const waterPoly = polygon([OLD_TAMPA_BAY]);
+  const waterPolys = WATER_ZONES.map(z => polygon([z]));
   for (const feature of features) {
-    try {
-      const distPoly = polygon(feature.geometry.coordinates);
-      const diff = turfDifference(featureCollection([distPoly, waterPoly]));
-      if (diff) {
-        const d = feature.properties.district;
-        const pts = districts[d];
-        const newGeom = ensurePolygon(diff.geometry, pts);
-        const lost = pts.filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
-        if (lost.length === 0) {
-          feature.geometry = newGeom;
-        } else {
-          console.warn(`D${d}: water subtraction would lose ${lost.length} stores — skipping`);
+    for (const waterPoly of waterPolys) {
+      try {
+        const distPoly = polygon(feature.geometry.coordinates);
+        const diff = turfDifference(featureCollection([distPoly, waterPoly]));
+        if (diff) {
+          const d = feature.properties.district;
+          const pts = districts[d];
+          const newGeom = ensurePolygon(diff.geometry, pts);
+          const lost = pts.filter(p => !pointInPolygon(p, newGeom.coordinates[0]));
+          if (lost.length === 0) {
+            feature.geometry = newGeom;
+          } else {
+            console.warn(`D${d}: water subtraction would lose ${lost.length} stores — skipping`);
+          }
         }
+      } catch (e) {
+        console.warn(`Water subtraction failed for D${feature.properties.district}: ${e.message}`);
       }
-    } catch (e) {
-      console.warn(`Water subtraction failed for D${feature.properties.district}: ${e.message}`);
     }
   }
 }
