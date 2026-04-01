@@ -1259,9 +1259,9 @@ const SVG_GENERATORS = {
 // Zoom-responsive sizing — more aggressive scaling so eggs grow with zoom
 // ---------------------------------------------------------------------------
 function scaledSize(baseSize, currentZoom) {
-  // Gentle growth: ~0.8x at zoom 9, 1x at zoom 11, ~1.5x at zoom 14, ~2x at zoom 18
-  // Icons never shrink below 0.8x base and keep growing as you zoom in
-  const zoomScale = Math.max(0.8, 0.8 + (currentZoom - 9) * 0.13);
+  // Narrow band: 0.9x–1.4x so icons stay consistent across zoom levels.
+  // At zoom 9: 0.9x, zoom 13: ~1.14x, zoom 18: 1.4x (capped)
+  const zoomScale = Math.min(1.4, Math.max(0.9, 0.9 + (currentZoom - 9) * 0.06));
   return [
     Math.round(baseSize[0] * zoomScale),
     Math.round(baseSize[1] * zoomScale),

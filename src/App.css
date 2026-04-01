@@ -1574,15 +1574,15 @@ h1, h2, h3, h4, h5, h6,
   transition: opacity 0.4s ease;
 }
 
-/* Activated state — subtle scale-up when SVG swaps */
+/* Activated state — pop up from subtle resting size to full reveal */
 .egg-activated > svg {
-  animation: egg-activate 0.4s ease-out;
+  animation: egg-activate 0.5s ease-out;
 }
 
 @keyframes egg-activate {
   0%   { transform: scale(1); opacity: 0.5; }
-  50%  { transform: scale(1.25); opacity: 1; }
-  100% { transform: scale(1.1); opacity: 0.95; }
+  50%  { transform: scale(1.5); opacity: 1; }
+  100% { transform: scale(1.35); opacity: 0.95; }
 }
 
 .easter-egg-popup .leaflet-popup-content-wrapper {
