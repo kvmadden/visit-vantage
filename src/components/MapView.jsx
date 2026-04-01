@@ -121,6 +121,10 @@ const TILE_BASE = {
   light: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
   dark: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
 };
+const TILE_LABELS = {
+  light: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
+  dark: 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
+};
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>';
 
@@ -898,6 +902,7 @@ export default function MapView({
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer key={`base-${theme}`} url={baseUrl} attribution={TILE_ATTRIBUTION} />
+      <TileLayer key={`labels-${theme}`} url={TILE_LABELS[theme] || TILE_LABELS.light} zIndex={650} pane="overlayPane" />
       <ZoomTracker onZoomChange={handleZoomChange} />
       <ViewTracker />
       <HomeControl stores={stores} />
