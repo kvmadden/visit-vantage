@@ -1383,7 +1383,19 @@ export default function EasterEggs({ zoom, theme }) {
         className: 'easter-egg-popup',
         maxWidth: 200,
         closeButton: true,
-        autoPan: false,
+      });
+
+      // Reposition popup above icon on open.
+      // popupAnchor [0,0] centers the tip horizontally (proven correct).
+      // We shift the popup's latlng north so the tip clears the icon top.
+      marker.on('popupopen', () => {
+        const popup = marker.getPopup();
+        if (!popup) return;
+        const iconOpts = marker.getIcon().options;
+        const h = iconOpts.iconSize ? iconOpts.iconSize[1] : 40;
+        const pt = map.latLngToContainerPoint(marker.getLatLng());
+        pt.y -= (h / 2 + 6);
+        popup.setLatLng(map.containerPointToLatLng(pt));
       });
 
       marker.on('click', () => handleEggClick(egg, marker));
