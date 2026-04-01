@@ -13,11 +13,11 @@ export const CATEGORY_COLORS = {
 
 // Easter egg icon specs (50 icons)
 export const EASTER_EGG_SPECS = [
-  { svgKey: 'pirateShip', viewBox: '0 0 28 20', size: [42, 30], category: 'culture', batch: 1, description: 'José Gaspar\'s pirate ship — the legendary pirate said to have roamed Tampa Bay, celebrated every year at Gasparilla' },
-  { svgKey: 'kraken', viewBox: '0 0 32 22', size: [54, 38], category: 'water', batch: 1, description: 'A giant kraken rising from Tampa Bay — sea monster folklore tied to the deep Gulf waters' },
+  { svgKey: 'pirateShip', viewBox: '0 0 32 22', size: [48, 33], category: 'culture', batch: 1, description: 'José Gaspar\'s pirate ship — the legendary pirate said to have roamed Tampa Bay, celebrated every year at Gasparilla' },
+  { svgKey: 'kraken', viewBox: '0 0 34 24', size: [56, 40], category: 'water', batch: 1, description: 'A giant kraken rising from Tampa Bay — sea monster folklore tied to the deep Gulf waters' },
   { svgKey: 'skunkApe', viewBox: '0 0 18 24', size: [28, 38], category: 'land', batch: 1, description: 'Florida\'s Skunk Ape — the swamp-dwelling Bigfoot cousin rumored to lurk in the Everglades and Green Swamp' },
   { svgKey: 'strawberry', viewBox: '0 0 16 20', size: [26, 32], category: 'food', batch: 1, description: 'Plant City strawberry — the Winter Strawberry Capital of the World, home of the annual Strawberry Festival' },
-  { svgKey: 'lightning', viewBox: '0 0 14 24', size: [22, 38], category: 'culture', batch: 1, description: 'Lightning bolt over Lightning Alley — Tampa Bay is the lightning capital of North America' },
+  { svgKey: 'lightning', viewBox: '0 0 20 28', size: [30, 42], category: 'culture', batch: 1, description: 'Lightning bolt over Lightning Alley — Tampa Bay is the lightning capital of North America' },
   { svgKey: 'mermaid', viewBox: '0 0 18 24', size: [28, 38], category: 'culture', batch: 2, description: 'Weeki Wachee mermaid — the iconic live mermaid shows at Weeki Wachee Springs, running since 1947' },
   { svgKey: 'cigar', viewBox: '0 0 28 10', size: [42, 16], category: 'food', batch: 2, description: 'Hand-rolled Ybor City cigar — Tampa was once the Cigar Capital of the World with 200+ factories' },
   { svgKey: 'dolphin', viewBox: '0 0 24 16', size: [38, 26], category: 'water', batch: 2, description: 'Bottlenose dolphin leaping — commonly spotted playing in Tampa Bay and along the Gulf Coast' },
