@@ -46,10 +46,10 @@ export const SVG_GENERATORS = {
     // culture → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" viewBox="0 0 28 20">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="22" viewBox="-2 -1 32 22">
       <!-- ocean waves background -->
-      <path d="M0 17 Q3.5 16 7 17 Q10.5 18 14 17 Q17.5 16 21 17 Q24.5 18 28 17" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
-      <path d="M0 19 Q3.5 18 7 19 Q10.5 20 14 19 Q17.5 18 21 19 Q24.5 20 28 19" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <path d="M-2 17 Q3.5 16 7 17 Q10.5 18 14 17 Q17.5 16 21 17 Q24.5 18 30 17" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M-2 19 Q3.5 18 7 19 Q10.5 20 14 19 Q17.5 18 21 19 Q24.5 20 30 19" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
       <!-- hull: wide U-shape with flat deck -->
       <path d="M2 10 L2 14 Q3 16.5 14 16.5 Q25 16.5 26 14 L26 10" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linejoin="round"/>
       <!-- flat deck line -->
@@ -98,9 +98,9 @@ export const SVG_GENERATORS = {
       <path d="M26 15 Q27 14.5 28 15.5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: mast + sail popping up from behind horizon line
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" viewBox="0 0 28 20">
-      <path d="M0 14 Q7 13 14 14 Q21 15 28 14" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M0 16 Q7 15 14 16 Q21 17 28 16" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="22" viewBox="-2 -1 32 22">
+      <path d="M-2 14 Q7 13 14 14 Q21 15 30 14" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <path d="M-2 16 Q7 15 14 16 Q21 17 30 16" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
       <!-- mast rising above horizon -->
       <line x1="14" y1="4" x2="14" y2="14" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- sail billowing -->
@@ -116,7 +116,7 @@ export const SVG_GENERATORS = {
     // water → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="22" viewBox="0 0 32 22">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="24" viewBox="-1 -1 34 24">
       <!-- waterline low — kraken is mostly OUT of the water -->
       <path d="M0 18 Q8 17 16 18 Q24 19 32 18" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
       <path d="M0 20 Q8 19 16 20 Q24 21 32 20" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
@@ -163,7 +163,7 @@ export const SVG_GENERATORS = {
       <circle cx="20" cy="15" r="0.4" fill="${k}" fill-opacity="${o * 0.3}"/>
     </svg>`;
     // INACTIVE: waterline + 3 tentacles poking up with suckers
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="22" viewBox="0 0 32 22">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="24" viewBox="-1 -1 34 24">
       <path d="M0 12 Q8 11 16 12 Q24 13 32 12" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
       <path d="M7 12 Q8 7 10 5 Q11 4 10.5 7 Q10 9 9 12" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
       <circle cx="9.5" cy="6.5" r="0.7" fill="${k}" fill-opacity="${o * 0.8}"/>
@@ -303,7 +303,7 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const blue = '#60A5FA';
     const yellow = '#FDE68A';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="24" viewBox="0 0 14 24">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28" viewBox="-3 -2 20 28">
       <!-- BIG storm cloud — fills top third -->
       <ellipse cx="7" cy="5" rx="7" ry="5" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.5}"/>
       <!-- cloud billows — tall and wide -->
@@ -347,7 +347,7 @@ export const SVG_GENERATORS = {
       <circle cx="12.5" cy="17" r="0.3" fill="${blue}" fill-opacity="${o * 0.2}"/>
     </svg>`;
     // INACTIVE: cloud with a few raindrops falling
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="24" viewBox="0 0 14 24">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28" viewBox="-3 -2 20 28">
       <!-- cloud -->
       <ellipse cx="7" cy="8" rx="6" ry="3.5" fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
       <circle cx="4" cy="7" r="2.5" fill="${k}" fill-opacity="${o * 0.25}"/>
