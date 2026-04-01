@@ -83,7 +83,7 @@ function createBullseyeIcon(color, size = 13, opacity = 0.9, bullseyeInner = '#f
   });
 }
 
-const DEFAULT_CENTER = [27.60, -82.40];
+const DEFAULT_CENTER = [27.68, -82.40];
 const DEFAULT_ZOOM = 9;
 const MIN_ZOOM = 8.5;
 const MAX_ZOOM = 18;
