@@ -520,8 +520,22 @@ function ClusteredMarkers({
         return baseSvg;
       };
 
-      if (currentZoom >= 10) {
-        // ---- INDIVIDUAL MARKERS at zoom 10+ (no clustering) ----
+      // Identify outlier stores: nearest same-district neighbor > threshold
+      const outlierMinDist = 0.08; // ~5.5 miles to nearest neighbor
+      function isOutlier(store, districtStores) {
+        let minDist = Infinity;
+        for (let i = 0; i < districtStores.length; i++) {
+          const other = districtStores[i];
+          if (other.store === store.store) continue;
+          const d = Math.sqrt((store.lat - other.lat) ** 2 + (store.lng - other.lng) ** 2);
+          if (d < minDist) minDist = d;
+          if (minDist <= outlierMinDist) return false; // early exit
+        }
+        return minDist > outlierMinDist;
+      }
+
+      if (currentZoom >= 13) {
+        // ---- INDIVIDUAL MARKERS at high zoom (no clustering needed) ----
         const group = L.layerGroup();
         Object.entries(buckets).forEach(([districtKey, districtStores]) => {
           const districtColor = colorMap[districtKey] || '#888';
@@ -539,12 +553,38 @@ function ClusteredMarkers({
         group.addTo(map);
         layerRef.current.push(group);
       } else {
-        // ---- MARKER CLUSTER at zoom 9 only ----
+        // ---- MARKER CLUSTER + outlier individual markers ----
+        const outlierGroup = L.layerGroup();
+
         Object.entries(buckets).forEach(([districtKey, districtStores]) => {
           const districtColor = colorMap[districtKey] || '#888';
 
+          // Split into clustered vs outlier stores
+          const clustered = [];
+          const outliers = [];
+          districtStores.forEach((store) => {
+            if (isOutlier(store, districtStores)) {
+              outliers.push(store);
+            } else {
+              clustered.push(store);
+            }
+          });
+
+          // Add outliers as individual markers (bypass cluster)
+          outliers.forEach((store) => {
+            const icon = buildStoreIcon(store, districtColor);
+            const marker = L.marker([store.lat, store.lng], { icon });
+            marker.bindTooltip(`${store.nickname} #${store.store}`, {
+              direction: 'top',
+              offset: [0, -10],
+            });
+            marker.on('click', () => onStoreSelect(store));
+            outlierGroup.addLayer(marker);
+          });
+
+          // Add clustered stores to markerClusterGroup
           const clusterGroup = L.markerClusterGroup({
-            maxClusterRadius: 45,
+            maxClusterRadius: (z) => (z <= 10 ? 45 : z <= 12 ? 30 : 20),
             spiderfyOnMaxZoom: true,
             showCoverageOnHover: false,
             zoomToBoundsOnClick: true,
@@ -561,10 +601,11 @@ function ClusteredMarkers({
             animate: true,
           });
 
-          districtStores.forEach((store) => {
+          clustered.forEach((store) => {
             const icon = buildStoreIcon(store, districtColor);
             const marker = L.marker([store.lat, store.lng], { icon });
             marker.bindTooltip(`${store.nickname} #${store.store}`, {
+
               direction: 'top',
               offset: [0, -10],
             });
@@ -575,6 +616,9 @@ function ClusteredMarkers({
           map.addLayer(clusterGroup);
           layerRef.current.push(clusterGroup);
         });
+
+        outlierGroup.addTo(map);
+        layerRef.current.push(outlierGroup);
       }
     }
 
