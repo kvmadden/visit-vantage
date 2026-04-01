@@ -421,6 +421,9 @@ function ClusteredMarkers({
   const map = useMap();
   const layerRef = useRef([]);   // cluster groups or manual pill markers
 
+  // Derive render mode from zoom — only recreate layers when mode changes
+  const renderMode = zoom < 9 ? 'pills' : zoom >= 13 ? 'individual' : 'cluster';
+
   useEffect(() => {
     if (!map) return;
 
@@ -593,6 +596,7 @@ function ClusteredMarkers({
             spiderfyOnMaxZoom: true,
             showCoverageOnHover: false,
             zoomToBoundsOnClick: true,
+            removeOutsideVisibleBounds: false,
             iconCreateFunction: (cluster) => {
               const count = cluster.getChildCount();
               const pill = clusterPillSvg(districtColor, count);
@@ -631,7 +635,7 @@ function ClusteredMarkers({
       layerRef.current.forEach((g) => map.removeLayer(g));
       layerRef.current = [];
     };
-  }, [map, stores, selectedStore, activeDistrict, districtMode, zoom, onStoreSelect, theme, viewedStores]);
+  }, [map, stores, selectedStore, activeDistrict, districtMode, renderMode, onStoreSelect, theme, viewedStores]);
 
   return null;
 }
