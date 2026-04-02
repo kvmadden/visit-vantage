@@ -2343,30 +2343,24 @@ export const SVG_GENERATORS = {
     const red = '#DC2626';
     const dark = '#1E293B';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-      <!-- newspaper headline style -->
+      <!-- newspaper -->
       <rect x="2" y="1" width="14" height="16" rx="0.5" fill="${k}" fill-opacity="${o * 0.06}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}"/>
       <!-- headline bar -->
       <rect x="3" y="2" width="12" height="2.5" rx="0.3" fill="${red}" fill-opacity="${o * 0.15}" stroke="${red}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <!-- FLORIDA MAN text lines in headline -->
-      <line x1="4" y1="3" x2="8" y2="3" stroke="${red}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
-      <line x1="9" y1="3" x2="14" y2="3" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <!-- mugshot area -->
-      <circle cx="9" cy="7.5" r="2" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <!-- face — wild eyes, goofy grin -->
-      <circle cx="8.2" cy="7" r="0.4" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <circle cx="9.8" cy="7" r="0.4" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <path d="M7.8 8.5 Q9 9.5 10.2 8.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <line x1="4" y1="3.2" x2="14" y2="3.2" stroke="${red}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
+      <!-- mugshot -->
+      <circle cx="9" cy="8.5" r="2.5" fill="${k}" fill-opacity="${o * 0.06}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.35}"/>
+      <circle cx="8.2" cy="8" r="0.4" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <circle cx="9.8" cy="8" r="0.4" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <path d="M8 9.5 Q9 10.3 10 9.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- messy hair -->
-      <path d="M7 5.5 Q7.5 4.5 8 5 Q8.5 4 9 5 Q9.5 4.5 10 5 Q10.5 4.5 11 5.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M7 6 Q8 5 9 5.5 Q10 5 11 6" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
       <!-- article text lines -->
-      <line x1="3.5" y1="10.5" x2="14.5" y2="10.5" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.3}"/>
-      <line x1="3.5" y1="11.7" x2="14.5" y2="11.7" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.28}"/>
-      <line x1="3.5" y1="12.9" x2="12" y2="12.9" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.25}"/>
-      <line x1="3.5" y1="14.1" x2="14.5" y2="14.1" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.22}"/>
-      <line x1="3.5" y1="15.3" x2="10" y2="15.3" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.2}"/>
-      <!-- exclamation marks -->
-      <text x="13" y="8" font-size="3.5" font-weight="bold" font-family="sans-serif" fill="${gold}" fill-opacity="${o * 0.5}">!</text>
-      <text x="2.5" y="9" font-size="2.5" font-family="sans-serif" fill="${gold}" fill-opacity="${o * 0.35}">!</text>
+      <line x1="3.5" y1="12" x2="14.5" y2="12" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.25}"/>
+      <line x1="3.5" y1="13.2" x2="14.5" y2="13.2" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.22}"/>
+      <line x1="3.5" y1="14.4" x2="11" y2="14.4" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.2}"/>
+      <!-- ! -->
+      <text x="13.5" y="9" font-size="3.5" font-weight="bold" font-family="sans-serif" fill="${gold}" fill-opacity="${o * 0.5}">!</text>
     </svg>`;
     // INACTIVE: faint newspaper outline
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
@@ -2387,32 +2381,31 @@ export const SVG_GENERATORS = {
     const gray = '#94A3B8';
     const dark = '#1E293B';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18">
-      <!-- outer spiral band -->
-      <path d="M11 1 Q3 0 1 5 Q-1 10 3 14 Q7 17 12 15 Q18 13 20 16 Q22 14 21 10 Q19 5 15 3 Q12 2 11 1Z" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
-      <!-- middle spiral band -->
-      <path d="M11 3 Q6 2 3 6 Q1 10 5 13 Q8 15 12 13 Q16 11 18 13" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- inner spiral band -->
-      <path d="M11 5 Q7 4 5 7 Q4 10 7 12 Q9 13 11 11 Q13 9 14 11" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <!-- eye of the hurricane — clear center -->
-      <circle cx="11" cy="9" r="2" fill="${dark}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.7}"/>
-      <!-- eye dot -->
-      <circle cx="11" cy="9" r="0.6" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <!-- rain bands extending outward -->
-      <path d="M2 3 Q1 4 2 5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <path d="M20 4 Q21 5 20 6" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <path d="M4 15 Q3 16 4 17" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.18}" stroke-linecap="round"/>
-      <!-- wind lines -->
-      <path d="M1 7 Q0 8 1 9" fill="none" stroke="${gray}" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
-      <path d="M21 8 Q22 9 21 10" fill="none" stroke="${gray}" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <!-- thick spiral arm 1 — sweeping counterclockwise from top -->
+      <path d="M11 1 Q5 1 2 4 Q0 7 1 10 Q2 13 5 14 Q8 15 10 13" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.6}" stroke-linecap="round" fill-rule="evenodd"/>
+      <!-- thick spiral arm 2 — opposite side -->
+      <path d="M11 17 Q17 17 20 14 Q22 11 21 8 Q20 5 17 4 Q14 3 12 5" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.6}" stroke-linecap="round" fill-rule="evenodd"/>
+      <!-- inner cloud band wrapping around eye -->
+      <path d="M10 7 Q8 7 7 8 Q6 10 8 11 Q9 12 11 11" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <path d="M12 11 Q14 11 15 10 Q16 8 14 7 Q13 6 11 7" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- eye wall — thick ring -->
+      <circle cx="11" cy="9" r="2.2" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}"/>
+      <!-- clear eye center -->
+      <circle cx="11" cy="9" r="1.3" fill="${dark}" fill-opacity="${o * 0.06}"/>
+      <!-- outer feeder bands -->
+      <path d="M3 2 Q1 3 1 5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <path d="M19 16 Q21 15 21 13" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <path d="M18 2 Q20 3 21 5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <path d="M4 16 Q2 15 1 13" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
     </svg>`;
-    // INACTIVE: faint spiral hint
+    // INACTIVE: recognizable spiral with eye
     return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18">
-      <!-- spiral hint -->
-      <path d="M11 4 Q6 3 4 7 Q3 10 6 12 Q9 14 11 11 Q13 8 15 10" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <!-- eye hint -->
-      <circle cx="11" cy="9" r="1.2" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
-      <!-- outer arc hint -->
-      <path d="M11 2 Q5 1 2 5 Q1 8 3 11" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <!-- spiral arm hint — thick enough to read as hurricane -->
+      <path d="M11 2 Q5 2 3 5 Q1 8 3 11 Q5 14 8 14 Q10 14 10.5 12" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- second arm hint -->
+      <path d="M11 16 Q17 16 19 13 Q21 10 19 7 Q17 4 14 4 Q12 4 11.5 6" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- eye -->
+      <circle cx="11" cy="9" r="1.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
     </svg>`;
   },
 
@@ -2473,15 +2466,16 @@ export const SVG_GENERATORS = {
       <!-- trunk texture rings -->
       <path d="M10.7 4 L11.3 4" fill="none" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
       <path d="M10.8 6 L11.2 6" fill="none" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.18}"/>
-      <!-- palm fronds — radiating out -->
-      <path d="M12 0 Q15 1 17 0.5" fill="none" stroke="${green}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <path d="M12 0 Q14 2 16 2.5" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.45}" stroke-linecap="round"/>
-      <path d="M12 0 Q9 1 7 0.5" fill="none" stroke="${green}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <path d="M12 0 Q10 2 8 3" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.45}" stroke-linecap="round"/>
-      <path d="M12 0 Q13 -0.5 14 -0.5" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <!-- frond leaf detail — small lines off fronds -->
-      <path d="M14 1 L14.5 0.5 M15 1 L15.5 0.5" fill="none" stroke="${green}" stroke-width="0.25" stroke-opacity="${o * 0.25}"/>
-      <path d="M10 1 L9.5 0.5 M9 1.5 L8.5 1" fill="none" stroke="${green}" stroke-width="0.25" stroke-opacity="${o * 0.25}"/>
+      <!-- palm fronds — arching out then drooping down like real palms -->
+      <path d="M12 0.5 Q16 -0.5 18 2 Q19 3 18.5 4" fill="none" stroke="${green}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M12 0.5 Q15 1 17 3 Q18 5 17 6" fill="none" stroke="${green}" stroke-width="0.6" stroke-opacity="${o * 0.45}" stroke-linecap="round"/>
+      <path d="M12 0.5 Q8 -0.5 6 1.5 Q5 3 5.5 4" fill="none" stroke="${green}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M12 0.5 Q9 1 7 3 Q6 5 6.5 6" fill="none" stroke="${green}" stroke-width="0.6" stroke-opacity="${o * 0.45}" stroke-linecap="round"/>
+      <path d="M12 0.5 Q13 -1 15 -0.5 Q16 0 16.5 1" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <path d="M12 0.5 Q10 -0.5 9 0 Q8 0.5 8 1.5" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- leaflet lines along fronds -->
+      <path d="M15 0 L15.5 -0.5 M16.5 1 L17 0.5 M17.5 2.5 L18 2" fill="none" stroke="${green}" stroke-width="0.25" stroke-opacity="${o * 0.25}"/>
+      <path d="M9 0 L8.5 -0.5 M7.5 1.5 L7 1 M6.5 3 L6 2.5" fill="none" stroke="${green}" stroke-width="0.25" stroke-opacity="${o * 0.25}"/>
       <!-- coconuts -->
       <circle cx="11.5" cy="1" r="0.5" fill="${brown}" fill-opacity="${o * 0.35}"/>
       <circle cx="12.3" cy="1.3" r="0.45" fill="${brown}" fill-opacity="${o * 0.3}"/>
@@ -2519,31 +2513,39 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const gold = '#FBBF24';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
-      <!-- host tree trunk/branch -->
-      <path d="M7 0 Q8 2 8 4 Q8 6 7.5 7" fill="none" stroke="${brown}" stroke-width="1.2" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- host tree trunk — textured bark -->
+      <path d="M6.5 0 Q7.5 2 8 4 Q8 6 7.5 7" fill="none" stroke="${brown}" stroke-width="1.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- bark texture lines -->
+      <path d="M7 1 L7.5 1.5 M7.3 3 L7.8 3.3 M7.5 5 L8 5.3" fill="none" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
       <!-- aerial roots clinging to trunk -->
-      <path d="M7 3 Q6 4 6.5 5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M9 4 Q9.5 5 9 6" fill="none" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
-      <!-- flower — ethereal white ghost orchid shape -->
-      <!-- upper petals — three spreading upward -->
-      <path d="M8 7 Q5 5.5 3 6 Q4 7 6 7" fill="${white}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
-      <path d="M8 7 Q11 5.5 13 6 Q12 7 10 7" fill="${white}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
-      <path d="M8 7 Q8 4.5 8 3.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <!-- lip/labellum — the distinctive long trailing tendrils -->
-      <path d="M8 7 Q7 9 5 12 Q4 14 3 17" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <path d="M8 7 Q9 9 11 12 Q12 14 13 17" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- tendril tips curling -->
-      <path d="M3 17 Q2 18 1.5 19.5" fill="none" stroke="${k}" stroke-width="0.45" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <path d="M3 17 Q4 18 5 19" fill="none" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
-      <path d="M13 17 Q14 18 14.5 19.5" fill="none" stroke="${k}" stroke-width="0.45" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <path d="M13 17 Q12 18 11 19" fill="none" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
-      <!-- center column — tiny gold center -->
-      <circle cx="8" cy="7.5" r="0.6" fill="${gold}" fill-opacity="${o * 0.4}"/>
-      <!-- faint glow around flower (ghostly) -->
-      <circle cx="8" cy="9" r="4" fill="${white}" fill-opacity="${o * 0.03}"/>
-      <!-- swamp atmosphere — tiny dots -->
-      <circle cx="2" cy="4" r="0.3" fill="${k}" fill-opacity="${o * 0.12}"/>
-      <circle cx="14" cy="3" r="0.25" fill="${k}" fill-opacity="${o * 0.1}"/>
+      <path d="M6.5 3 Q5.5 4.5 6 6" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M8.5 2 Q9.5 3.5 9 5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M9 5.5 Q10 6 9.5 7" fill="none" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <!-- flower — upper sepals spreading wide -->
+      <path d="M8 7 Q4 4.5 2 5.5 Q3 6.5 5.5 6.5" fill="${white}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
+      <path d="M8 7 Q12 4.5 14 5.5 Q13 6.5 10.5 6.5" fill="${white}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
+      <!-- dorsal sepal (top) -->
+      <path d="M8 7 Q8 5 7.5 3.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- lip/labellum — wide ruffled center -->
+      <path d="M6.5 7 Q7 8 8 8.5 Q9 8 9.5 7" fill="${white}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- the distinctive long trailing tendrils — thicker and more dramatic -->
+      <path d="M7 8 Q5.5 11 4 14 Q3 16 2 18" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <path d="M9 8 Q10.5 11 12 14 Q13 16 14 18" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- tendril tips splitting and curling -->
+      <path d="M2 18 Q1 19 0.5 20" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M2 18 Q3 19 4 19.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M14 18 Q15 19 15.5 20" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M14 18 Q13 19 12 19.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <!-- center column with gold pollinium -->
+      <circle cx="8" cy="7.5" r="0.7" fill="${gold}" fill-opacity="${o * 0.45}"/>
+      <circle cx="8" cy="7.5" r="0.3" fill="${gold}" fill-opacity="${o * 0.6}"/>
+      <!-- ghostly glow effect -->
+      <circle cx="8" cy="8" r="3.5" fill="${white}" fill-opacity="${o * 0.04}"/>
+      <circle cx="8" cy="12" r="5" fill="${white}" fill-opacity="${o * 0.02}"/>
+      <!-- swamp atmosphere -->
+      <circle cx="1.5" cy="4" r="0.3" fill="${k}" fill-opacity="${o * 0.12}"/>
+      <circle cx="14.5" cy="2" r="0.25" fill="${k}" fill-opacity="${o * 0.1}"/>
+      <circle cx="3" cy="10" r="0.2" fill="${k}" fill-opacity="${o * 0.08}"/>
     </svg>`;
     // INACTIVE: faint stem with tiny flower shape
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
