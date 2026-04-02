@@ -1,4 +1,4 @@
-export const APP_VERSION = 'v2.28.2';
+export const APP_VERSION = 'v2.29.0';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import stores from './data/stores.json';
