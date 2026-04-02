@@ -1093,7 +1093,7 @@ export const SVG_GENERATORS = {
     const gold = '#FBBF24';
     const blue = '#2563EB';
     const water = '#2DD4BF';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-1 -1 18 18">
       <!-- water at base (Epiphany cross dive into water) -->
       <path d="M0 13 Q4 12 8 13 Q12 14 16 13" fill="${water}" fill-opacity="${o * 0.08}"/>
       <path d="M0 14 Q4 13 8 14 Q12 15 16 14" fill="none" stroke="${water}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
@@ -1124,7 +1124,7 @@ export const SVG_GENERATORS = {
       <circle cx="8" cy="12.8" r="0.4" fill="${water}" fill-opacity="${o * 0.15}"/>
     </svg>`;
     // INACTIVE: simple cross silhouette
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-1 -1 18 18">
       <rect x="6.5" y="2" width="3" height="11" rx="0.3" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <rect x="2" y="5" width="12" height="3" rx="0.3" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.8}"/>
       <circle cx="8" cy="6.5" r="1" fill="${k}" fill-opacity="${o * 0.2}"/>
@@ -1143,35 +1143,43 @@ export const SVG_GENERATORS = {
     const swiss = '#FDE68A';
     const pickle = '#4ADE80';
     const mustard = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 12">
-      <!-- pressed Cuban bread — top half (toasted, slightly domed) -->
-      <path d="M2 3 Q12 1 22 3 L22 4.5 L2 4.5Z" fill="${bread}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="-1 -1 26 14">
+      <!-- pressed Cuban bread — top half (toasted golden, slightly domed) -->
+      <path d="M2 3 Q12 1 22 3 L22 4.5 L2 4.5Z" fill="${bread}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.9}"/>
       <!-- bread score lines (diagonal slashes from pressing) -->
-      <line x1="6" y1="2.5" x2="7.5" y2="4" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <line x1="10" y1="2" x2="11.5" y2="3.8" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <line x1="14" y1="2" x2="15.5" y2="3.8" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <line x1="18" y1="2.5" x2="19.5" y2="4" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <!-- mustard layer -->
-      <rect x="3" y="4.5" width="18" height="0.6" fill="${mustard}" fill-opacity="${o * 0.4}"/>
-      <!-- Swiss cheese layer with holes -->
-      <rect x="3" y="5.1" width="18" height="1.2" fill="${swiss}" fill-opacity="${o * 0.35}" stroke="${swiss}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <circle cx="7" cy="5.7" r="0.4" fill="${bread}" fill-opacity="${o * 0.2}"/>
-      <circle cx="14" cy="5.5" r="0.35" fill="${bread}" fill-opacity="${o * 0.2}"/>
-      <circle cx="18" cy="5.8" r="0.3" fill="${bread}" fill-opacity="${o * 0.15}"/>
-      <!-- ham layer (pink) -->
-      <rect x="3" y="6.3" width="18" height="0.8" fill="${ham}" fill-opacity="${o * 0.3}"/>
-      <!-- roast pork layer -->
-      <rect x="3" y="7.1" width="18" height="0.8" fill="${pork}" fill-opacity="${o * 0.25}"/>
-      <!-- pickle slices poking out -->
-      <circle cx="4" cy="7" r="0.8" fill="${pickle}" fill-opacity="${o * 0.35}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.5}"/>
-      <circle cx="10" cy="7.2" r="0.7" fill="${pickle}" fill-opacity="${o * 0.3}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <circle cx="16" cy="6.8" r="0.7" fill="${pickle}" fill-opacity="${o * 0.3}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <circle cx="20" cy="7.1" r="0.6" fill="${pickle}" fill-opacity="${o * 0.25}"/>
-      <!-- bottom bread -->
-      <path d="M2 7.9 L22 7.9 L22 9.5 Q12 11 2 9.5Z" fill="${bread}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
+      <line x1="6" y1="2.5" x2="7.5" y2="4" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <line x1="10" y1="2" x2="11.5" y2="3.8" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <line x1="14" y1="2" x2="15.5" y2="3.8" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <line x1="18" y1="2.5" x2="19.5" y2="4" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
       <!-- grill press marks on top bread -->
-      <line x1="4" y1="3.2" x2="20" y2="3.2" stroke="${k}" stroke-width="0.25" stroke-opacity="${o * 0.15}"/>
-      <line x1="4" y1="3.8" x2="20" y2="3.8" stroke="${k}" stroke-width="0.25" stroke-opacity="${o * 0.15}"/>
+      <line x1="4" y1="3.2" x2="20" y2="3.2" stroke="#92400E" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <line x1="4" y1="3.8" x2="20" y2="3.8" stroke="#92400E" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <!-- mustard drizzle -->
+      <path d="M3 4.5 Q7 4.8 12 4.5 Q17 4.2 21 4.5" fill="none" stroke="${mustard}" stroke-width="0.7" stroke-opacity="${o * 0.5}"/>
+      <!-- Swiss cheese layer with holes — thicker, brighter -->
+      <rect x="2.5" y="4.8" width="19" height="1.5" fill="${swiss}" fill-opacity="${o * 0.5}" stroke="${swiss}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <circle cx="7" cy="5.5" r="0.5" fill="${bread}" fill-opacity="${o * 0.3}"/>
+      <circle cx="14" cy="5.3" r="0.45" fill="${bread}" fill-opacity="${o * 0.25}"/>
+      <circle cx="18" cy="5.7" r="0.4" fill="${bread}" fill-opacity="${o * 0.2}"/>
+      <!-- ham layer (bright pink, ruffled edges) -->
+      <path d="M2.5 6.3 Q5 6 7 6.5 Q9 6.1 12 6.3 Q15 6.6 17 6.2 Q19 6.5 21.5 6.3 L21.5 7.2 L2.5 7.2Z" fill="${ham}" fill-opacity="${o * 0.45}" stroke="${ham}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <!-- roast pork layer -->
+      <rect x="2.5" y="7.2" width="19" height="0.9" fill="${pork}" fill-opacity="${o * 0.35}"/>
+      <!-- pickle slices — bright green, poking out edges -->
+      <circle cx="3" cy="6.8" r="1" fill="${pickle}" fill-opacity="${o * 0.5}" stroke="${pickle}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
+      <circle cx="9" cy="7" r="0.9" fill="${pickle}" fill-opacity="${o * 0.45}" stroke="${pickle}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <circle cx="15" cy="6.8" r="0.9" fill="${pickle}" fill-opacity="${o * 0.45}" stroke="${pickle}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <circle cx="21" cy="7" r="0.8" fill="${pickle}" fill-opacity="${o * 0.4}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <!-- bottom bread -->
+      <path d="M2 8.1 L22 8.1 L22 9.5 Q12 11 2 9.5Z" fill="${bread}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.9}"/>
+      <!-- toothpick through center -->
+      <line x1="12" y1="0" x2="12" y2="10" stroke="#92400E" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- toothpick olive on top -->
+      <circle cx="12" cy="0.3" r="0.8" fill="${pickle}" fill-opacity="${o * 0.4}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.5}"/>
+      <circle cx="12" cy="0.3" r="0.25" fill="#92400E" fill-opacity="${o * 0.4}"/>
+      <!-- steam wisps -->
+      <path d="M6 0.5 Q5.5 -0.5 6.5 -0.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <path d="M18 0.5 Q17.5 -0.5 18.5 -0.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: pressed sandwich outline
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 12">
