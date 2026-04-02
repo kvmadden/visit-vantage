@@ -635,6 +635,10 @@ export const SVG_GENERATORS = {
       <!-- wing detail on body -->
       <path d="M7 11 Q9 10.5 11 11.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
       <path d="M6.5 12.5 Q9 12 11.5 13" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <!-- small wing appendage — left side -->
+      <path d="M5.5 12 Q3.5 10 2 9" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- small wing appendage — right side -->
+      <path d="M12.5 12 Q14.5 10 16 9" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: silhouette of the bird — small body blob on stilt legs with long neck hint
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
@@ -646,8 +650,10 @@ export const SVG_GENERATORS = {
       <ellipse cx="9" cy="15.5" rx="3" ry="2" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
       <!-- neck going up -->
       <path d="M9 13.5 Q9 11 8.5 9" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- tiny head -->
-      <circle cx="8.5" cy="8.5" r="0.8" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- head -->
+      <circle cx="8.5" cy="8.5" r="1" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
+      <!-- beak hint -->
+      <path d="M9.2 8.8 L11 9.2" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
     </svg>`;
   },
 
@@ -698,57 +704,67 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const dark = '#166534';
     const teal = '#2DD4BF';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="14" viewBox="-2 -1 30 16">
-      <!-- water surface -->
-      <path d="M-2 8 Q5 7 14 8 Q22 9 28 8" fill="none" stroke="${teal}" stroke-width="0.6" stroke-opacity="${o * 0.25}"/>
-      <!-- === MASSIVE GATOR — thick, powerful body === -->
-      <!-- thick muscular body — wide and imposing -->
-      <path d="M-1 6 Q4 4 10 5 Q16 4.5 22 5" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round"/>
-      <!-- belly underside visible -->
-      <path d="M0 7 Q5 8 10 7.5 Q16 8 21 7" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.4}"/>
-      <!-- ridged armored spine — prominent scutes -->
-      <path d="M2 4 L3 2.5 L4 4" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.5}"/>
-      <path d="M5 3.5 L6 2 L7 3.5" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.45}"/>
-      <path d="M8 3.2 L9 1.8 L10 3.2" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
-      <path d="M11 3.5 L12 2.2 L13 3.5" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.35}"/>
-      <path d="M14 3.8 L15 2.5 L16 3.8" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
-      <!-- wide powerful head -->
-      <path d="M22 5 Q23 3.5 24 3 Q25 3 25.5 4 Q25 5 22 5.5" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}"/>
-      <!-- LONG snout — broad and flat -->
-      <path d="M25 3.5 L27.5 2" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M25 5 L27.5 6.5" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <!-- teeth — jagged along both jaws -->
-      <path d="M25.5 3 L25.8 2.3 M26 3.5 L26.3 2.8 M26.5 3 L26.8 2.3 M27 2.5 L27.3 1.8" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
-      <path d="M25.5 5.5 L25.8 6.2 M26 5 L26.3 5.8 M26.5 5.5 L26.8 6.2 M27 6 L27.3 6.7" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
-      <!-- nostril bump at snout tip -->
-      <circle cx="27.5" cy="2.5" r="0.4" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <!-- eyes — big, protruding above head -->
-      <circle cx="23" cy="3" r="0.8" fill="${dark}" fill-opacity="${o * 0.9}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
-      <circle cx="23" cy="3" r="0.3" fill="#000" fill-opacity="${o * 0.6}"/>
-      <!-- powerful thick tail — sinuous, tapering -->
-      <path d="M-1 6 Q-1.5 5 -1 4 Q-0.5 3 -1 2" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- tail ridges -->
-      <path d="M-1 4.5 L-1.5 3.5 L-0.5 4" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <!-- front legs — muscular, clawed -->
-      <path d="M19 6 Q18 8 17 9.5" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
-      <path d="M17 9.5 L16 10 M17 9.5 L17 10.5 M17 9.5 L18 10" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <!-- back legs -->
-      <path d="M6 6 Q5 8 4 9.5" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
-      <path d="M4 9.5 L3 10 M4 9.5 L4 10.5 M4 9.5 L5 10" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <!-- water ripples around body -->
-      <path d="M15 8 Q16 7.5 17 8" fill="none" stroke="${teal}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
-      <path d="M3 8 Q4 7.5 5 8" fill="none" stroke="${teal}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="22" viewBox="-1 -1 28 24">
+      <!-- water -->
+      <path d="M-1 20 Q6 19 13 20 Q20 21 27 20" fill="none" stroke="${teal}" stroke-width="0.5" stroke-opacity="${o * 0.2}"/>
+      <!-- === GATOR C-SHAPE: head top-right, body curves down and left, tail curls bottom === -->
+      <!-- SNOUT — open jaws at top-right -->
+      <path d="M23 2 L27 0.5" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <path d="M23 4 L27 5.5" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- teeth top jaw -->
+      <path d="M24 1.5 L24.3 0.8 M25 1 L25.3 0.3 M26 0.8 L26.3 0" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- teeth bottom jaw -->
+      <path d="M24 4.5 L24.3 5.2 M25 5 L25.3 5.7 M26 5.2 L26.3 5.8" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- nostril -->
+      <circle cx="27" cy="1" r="0.4" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <!-- wide head -->
+      <path d="M18 2 Q20 1 22 1.5 Q23 2 23 3 Q23 4 22 4.5 Q20 5 18 4" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.8}"/>
+      <!-- protruding eyes -->
+      <circle cx="20" cy="1.5" r="0.9" fill="${dark}" fill-opacity="${o * 0.9}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <circle cx="20" cy="1.5" r="0.3" fill="#000" fill-opacity="${o * 0.6}"/>
+      <!-- thick neck curving down -->
+      <path d="M18 3 Q15 4 13 6 Q11 8 10 10" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- spine scutes along neck/back -->
+      <path d="M16 3.5 L16.5 2.5 L17 3.5" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <path d="M14 5 L14.5 4 L15 5" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <path d="M12 7 L12.5 6 L13 7" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.35}"/>
+      <!-- body curving left and down — the belly of the C -->
+      <path d="M10 10 Q8 12 6 14 Q4 16 3 17" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- belly -->
+      <path d="M10 11 Q8 13 6 15 Q5 16 4 17" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.3}"/>
+      <!-- more spine scutes along back -->
+      <path d="M10 9 L10.5 8 L11 9" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
+      <path d="M8 11 L8.5 10 L9 11" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
+      <path d="M6 13 L6.5 12 L7 13" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <path d="M4 15 L4.5 14 L5 15" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <!-- tail curling right along the bottom — sinuous and powerful -->
+      <path d="M3 17 Q2 18 3 19 Q5 20 8 19.5 Q11 19 13 18" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- tail tip tapering -->
+      <path d="M13 18 Q15 17 16 17.5" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- tail scutes -->
+      <path d="M4 18 L3.5 17 L3 18" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <path d="M7 19 L6.5 18 L6 19" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <path d="M10 18.5 L9.5 17.5 L9 18.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <!-- front leg (near head) -->
+      <path d="M15 5 Q14 7 13 8" stroke="${k}" stroke-width="1.3" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <path d="M13 8 L12 8.5 M13 8 L13 9 M13 8 L14 8.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <!-- back leg (near tail) -->
+      <path d="M5 15 Q4 17 3.5 18" stroke="${k}" stroke-width="1.3" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <path d="M3.5 18 L2.5 18.5 M3.5 18 L3.5 19 M3.5 18 L4.5 18.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <!-- water ripples -->
+      <path d="M1 20 Q2 19.5 3 20" fill="none" stroke="${teal}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <path d="M20 7 Q21 6.5 22 7" fill="none" stroke="${teal}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
     </svg>`;
     // INACTIVE: two eyes poking above water line
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="14" viewBox="0 0 26 14">
-      <path d="M0 7 Q6 6 13 7 Q20 8 26 7" fill="none" stroke="${teal}" stroke-width="0.6" stroke-opacity="${o}"/>
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="22" viewBox="-1 -1 28 24">
+      <path d="M-1 12 Q6 11 13 12 Q20 13 27 12" fill="none" stroke="${teal}" stroke-width="0.6" stroke-opacity="${o}"/>
       <!-- two bumpy eyes just above water -->
-      <circle cx="18" cy="6" r="0.8" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
-      <circle cx="21" cy="6" r="0.8" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
-      <circle cx="18" cy="5.8" r="0.3" fill="${dark}" fill-opacity="${o * 0.5}"/>
-      <circle cx="21" cy="5.8" r="0.3" fill="${dark}" fill-opacity="${o * 0.5}"/>
+      <circle cx="16" cy="11" r="1" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}"/>
+      <circle cx="20" cy="11" r="1" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}"/>
+      <circle cx="16" cy="10.7" r="0.35" fill="${dark}" fill-opacity="${o * 0.5}"/>
+      <circle cx="20" cy="10.7" r="0.35" fill="${dark}" fill-opacity="${o * 0.5}"/>
       <!-- hint of snout ridge ahead -->
-      <path d="M22 6.5 L24 6.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
+      <path d="M21.5 11.5 L24 11.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
     </svg>`;
   },
 
