@@ -88,10 +88,10 @@ export default function SetupScreen({ onBack, onGo, theme, onThemeToggle }) {
         <div className="setup-section">
           <label className="setup-label">Starting location</label>
           <button className="setup-gps-btn" onClick={handleGps} disabled={gpsStatus === 'requesting'}>
-            {gpsStatus === 'idle' && '\u{1F4CD} Use my location'}
+            {gpsStatus === 'idle' && 'Use my location'}
             {gpsStatus === 'requesting' && 'Requesting location\u2026'}
-            {gpsStatus === 'got' && '\u2705 Location acquired'}
-            {gpsStatus === 'error' && '\u26A0\uFE0F Location unavailable \u2014 try again'}
+            {gpsStatus === 'got' && 'Location acquired'}
+            {gpsStatus === 'error' && 'Location unavailable \u2014 try again'}
           </button>
           <p className="setup-or">or</p>
           <input
