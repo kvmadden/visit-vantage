@@ -154,7 +154,7 @@ export default function IconWorkshop({ onBack, theme }) {
 
       {/* Icon grid */}
       <div style={styles.gridScroll}>
-        {activeBatch <= 10 ? (
+        {activeBatch <= 12 ? (
           /* Easter Egg grid */
           batchIcons.map((spec, idx) => {
             const gen = SVG_GENERATORS[spec.svgKey];
