@@ -189,16 +189,18 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const gold = '#FBBF24';
     const brown = '#92400E';
+    const darkGreen = '#166534';
+    const water = '#2DD4BF';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
-      <!-- swamp background foliage -->
-      <path d="M0 20 Q3 18 5 20 Q7 22 9 20 Q11 18 13 20 Q15 22 18 20 L18 24 L0 24 Z" fill="${k}" fill-opacity="${o * 0.15}"/>
-      <path d="M1 22 Q4 20 7 22 Q10 24 13 22 Q16 20 18 22" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.2}"/>
+      <!-- swamp water background -->
+      <path d="M0 20 Q3 18 5 20 Q7 22 9 20 Q11 18 13 20 Q15 22 18 20 L18 24 L0 24 Z" fill="${water}" fill-opacity="${o * 0.1}"/>
+      <path d="M1 22 Q4 20 7 22 Q10 24 13 22 Q16 20 18 22" fill="none" stroke="${water}" stroke-width="0.8" stroke-opacity="${o * 0.25}"/>
       <!-- hanging moss left -->
-      <path d="M1 0 Q0 3 1 5 Q0.5 7 1.5 4 Q2 2 1 0" fill="${k}" fill-opacity="${o * 0.2}"/>
-      <path d="M3 0 Q2 4 3 6 Q2.5 3 3 0" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <path d="M1 0 Q0 3 1 5 Q0.5 7 1.5 4 Q2 2 1 0" fill="${darkGreen}" fill-opacity="${o * 0.3}"/>
+      <path d="M3 0 Q2 4 3 6 Q2.5 3 3 0" fill="${darkGreen}" fill-opacity="${o * 0.25}"/>
       <!-- hanging moss right -->
-      <path d="M15 0 Q16 3 15 5.5 Q15.5 3 15 0" fill="${k}" fill-opacity="${o * 0.2}"/>
-      <path d="M17 0 Q18 4 17 6 Q17.5 3 17 0" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <path d="M15 0 Q16 3 15 5.5 Q15.5 3 15 0" fill="${darkGreen}" fill-opacity="${o * 0.3}"/>
+      <path d="M17 0 Q18 4 17 6 Q17.5 3 17 0" fill="${darkGreen}" fill-opacity="${o * 0.25}"/>
       <!-- body: massive hairy torso -->
       <path d="M5 9 Q4 12 4.5 16 Q5 18 9 18.5 Q13 18 13.5 16 Q14 12 13 9 Q11 8 9 8 Q7 8 5 9Z" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linejoin="round"/>
       <!-- fur texture on body -->
@@ -255,6 +257,8 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
     const red = '#EF4444';
+    const cream = '#FEF3C7';
+    const deepRed = '#991B1B';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
       <!-- stem -->
       <line x1="8" y1="0" x2="8" y2="3.5" stroke="${green}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round"/>
@@ -265,8 +269,10 @@ export const SVG_GENERATORS = {
       <path d="M8 3.5 L13.5 3 Q14.5 2.5 14.5 3.5 L10.5 4.5" fill="${green}" fill-opacity="${o * 0.4}" stroke="${green}" stroke-width="0.8" stroke-opacity="${o * 0.7}"/>
       <!-- berry body — TEARDROP: wide at top, tapering to point at bottom -->
       <path d="M8 4 Q2 6 1.5 9 Q1 12 3 14 Q4 15 5.5 16.5 Q7 19 8 19.5 Q9 19 10.5 16.5 Q12 15 13 14 Q15 12 14.5 9 Q14 6 8 4Z" fill="${red}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linejoin="round"/>
-      <!-- highlight sheen on left -->
-      <path d="M5 6 Q3.5 9 4 12" fill="none" stroke="${red}" stroke-width="0.8" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <!-- deep red shading at bottom -->
+      <path d="M5 14 Q7 18 8 19 Q9 18 11 14" fill="${deepRed}" fill-opacity="${o * 0.15}"/>
+      <!-- highlight sheen on left — creamy -->
+      <path d="M5 6 Q3.5 9 4 12" fill="none" stroke="${cream}" stroke-width="0.8" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
       <!-- seeds in teardrop pattern -->
       <circle cx="5.5" cy="7" r="0.5" fill="${k}" fill-opacity="${o * 0.8}"/>
       <circle cx="10.5" cy="7" r="0.5" fill="${k}" fill-opacity="${o * 0.8}"/>
@@ -309,19 +315,21 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const blue = '#60A5FA';
     const yellow = '#FDE68A';
+    const dark = '#1E293B';
+    const white = '#F8FAFC';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28" viewBox="-3 -2 20 28">
       <!-- BIG storm cloud — fills top third -->
       <ellipse cx="7" cy="5" rx="7" ry="5" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.5}"/>
       <!-- cloud billows — tall and wide -->
       <circle cx="2.5" cy="4" r="3.5" fill="${k}" fill-opacity="${o * 0.22}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.45}"/>
-      <circle cx="7" cy="2.5" r="4" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.45}"/>
+      <circle cx="7" cy="2.5" r="4" fill="${white}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.45}"/>
       <circle cx="11.5" cy="4" r="3.5" fill="${k}" fill-opacity="${o * 0.22}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.45}"/>
       <!-- extra billow top center -->
-      <circle cx="5" cy="1.5" r="2.5" fill="${k}" fill-opacity="${o * 0.15}"/>
-      <circle cx="9" cy="1.5" r="2.5" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <circle cx="5" cy="1.5" r="2.5" fill="${white}" fill-opacity="${o * 0.1}"/>
+      <circle cx="9" cy="1.5" r="2.5" fill="${white}" fill-opacity="${o * 0.1}"/>
       <!-- dark underbelly -->
-      <ellipse cx="4.5" cy="7" rx="4.5" ry="2.5" fill="${k}" fill-opacity="${o * 0.18}"/>
-      <ellipse cx="10" cy="7" rx="4" ry="2.5" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <ellipse cx="4.5" cy="7" rx="4.5" ry="2.5" fill="${dark}" fill-opacity="${o * 0.2}"/>
+      <ellipse cx="10" cy="7" rx="4" ry="2.5" fill="${dark}" fill-opacity="${o * 0.18}"/>
       <!-- cloud texture curls -->
       <path d="M1 4.5 Q2.5 3.5 4 4.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.2}"/>
       <path d="M5 2 Q7 0.8 9 2" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.2}"/>
@@ -492,7 +500,8 @@ export const SVG_GENERATORS = {
       <!-- mouth line -->
       <path d="M21 6 L23.5 5.5" fill="none" stroke="${dark}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- eye -->
-      <circle cx="19" cy="5.3" r="0.6" fill="${dark}" fill-opacity="${o * 0.9}"/>
+      <circle cx="19" cy="5.3" r="0.6" fill="#1E293B" fill-opacity="${o * 0.9}"/>
+      <circle cx="19.2" cy="5.1" r="0.2" fill="#FBBF24" fill-opacity="${o * 0.5}"/>
       <!-- dorsal fin — darker teal -->
       <path d="M12 3.5 Q11 1.5 10 0.5 Q11 1 12.5 2 Q13 2.5 14 3.5" fill="${dark}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
       <!-- pectoral flipper -->
@@ -641,9 +650,9 @@ export const SVG_GENERATORS = {
       <!-- long stilt legs -->
       <line x1="7.5" y1="15" x2="6" y2="21.5" stroke="${gray}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
       <line x1="10.5" y1="15" x2="12" y2="21.5" stroke="${gray}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- feet -->
-      <path d="M5 21.5 L6 21.5 L7 21.5" fill="none" stroke="${gray}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <path d="M11 21.5 L12 21.5 L13 21.5" fill="none" stroke="${gray}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- feet — tan/brown -->
+      <path d="M5 21.5 L6 21.5 L7 21.5" fill="none" stroke="#D4A04A" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M11 21.5 L12 21.5 L13 21.5" fill="none" stroke="#D4A04A" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- chunky body -->
       <ellipse cx="9" cy="13" rx="4" ry="3" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}"/>
       <!-- tail feathers drooping back -->
@@ -932,7 +941,9 @@ export const SVG_GENERATORS = {
       <path d="M0 10" fill="none" stroke="${steel}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
       <!-- tiny cars on deck -->
       <rect x="7" y="9" width="1.5" height="0.8" rx="0.3" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <circle cx="7" cy="9.4" r="0.25" fill="#F87171" fill-opacity="${o * 0.5}"/>
       <rect x="20" y="9.2" width="1.5" height="0.8" rx="0.3" fill="${k}" fill-opacity="${o * 0.25}"/>
+      <circle cx="21.5" cy="9.6" r="0.25" fill="#F87171" fill-opacity="${o * 0.45}"/>
     </svg>`;
     // INACTIVE: bridge silhouette with faint cables
     return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16">
@@ -951,6 +962,8 @@ export const SVG_GENERATORS = {
     const suit = '#1E3A5F';
     const brass = '#D4A04A';
     const sponge = '#D4A04A';
+    const coral = '#F87171';
+    const sand = '#FDE68A';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24">
       <!-- water surface -->
       <path d="M0 3 Q4 2 8 3 Q12 4 16 3" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
@@ -982,10 +995,11 @@ export const SVG_GENERATORS = {
       <circle cx="5" cy="5" r="0.6" fill="${k}" fill-opacity="${o * 0.25}"/>
       <circle cx="6.5" cy="3.5" r="0.45" fill="${k}" fill-opacity="${o * 0.2}"/>
       <circle cx="4" cy="2" r="0.35" fill="${k}" fill-opacity="${o * 0.15}"/>
-      <!-- seafloor -->
-      <path d="M0 21 Q4 20 8 21 Q12 22 16 21" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.2}"/>
-      <path d="M2 21.5 L2.5 19.5 L3 21" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
-      <path d="M12 21 L12.5 19 L13 21.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
+      <!-- seafloor — sandy -->
+      <path d="M0 21 Q4 20 8 21 Q12 22 16 21" fill="${sand}" fill-opacity="${o * 0.1}" stroke="${sand}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
+      <!-- coral branches -->
+      <path d="M2 21.5 L2.5 19 L3 21 M2.5 19.5 L1.5 18.5" fill="none" stroke="${coral}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <path d="M12 21 L12.5 19 L13 21.5 M12.5 19.5 L13.5 18.5" fill="none" stroke="${coral}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: bubbles rising with faint helmet silhouette
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24">
@@ -1148,10 +1162,14 @@ export const SVG_GENERATORS = {
     const gold = '#FBBF24';
     const blue = '#2563EB';
     const water = '#2DD4BF';
+    const red = '#DC2626';
+    const white = '#F8FAFC';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-1 -1 18 18">
       <!-- water at base (Epiphany cross dive into water) -->
       <path d="M0 13 Q4 12 8 13 Q12 14 16 13" fill="${water}" fill-opacity="${o * 0.08}"/>
       <path d="M0 14 Q4 13 8 14 Q12 15 16 14" fill="none" stroke="${water}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <!-- white background glow behind cross -->
+      <rect x="5.5" y="0" width="5" height="13.5" rx="0.5" fill="${white}" fill-opacity="${o * 0.06}"/>
       <!-- Greek Orthodox cross — ornate with trefoil ends -->
       <!-- vertical beam -->
       <rect x="6.5" y="1" width="3" height="11.5" rx="0.3" fill="${blue}" fill-opacity="${o * 0.3}" stroke="${blue}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
@@ -1173,6 +1191,11 @@ export const SVG_GENERATORS = {
       <!-- gold trim lines on beams -->
       <line x1="6.8" y1="2.5" x2="9.2" y2="2.5" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
       <line x1="6.8" y1="10" x2="9.2" y2="10" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <!-- red accent dots at trefoil ends -->
+      <circle cx="8" cy="1" r="0.4" fill="${red}" fill-opacity="${o * 0.4}"/>
+      <circle cx="8" cy="12.5" r="0.4" fill="${red}" fill-opacity="${o * 0.4}"/>
+      <circle cx="1.5" cy="6" r="0.4" fill="${red}" fill-opacity="${o * 0.4}"/>
+      <circle cx="14.5" cy="6" r="0.4" fill="${red}" fill-opacity="${o * 0.4}"/>
       <!-- water splash (Epiphany dive) -->
       <circle cx="6" cy="13.5" r="0.5" fill="${water}" fill-opacity="${o * 0.2}"/>
       <circle cx="10" cy="13.5" r="0.5" fill="${water}" fill-opacity="${o * 0.2}"/>
@@ -1331,6 +1354,8 @@ export const SVG_GENERATORS = {
       <path d="M5.5 6 Q6.5 5 7.5 5.5" fill="none" stroke="${highlight}" stroke-width="0.5" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
       <!-- navel dimple at bottom -->
       <circle cx="8" cy="14.5" r="0.5" fill="${dark}" fill-opacity="${o * 0.15}"/>
+      <!-- golden center glow -->
+      <circle cx="8" cy="9.5" r="1.5" fill="#FBBF24" fill-opacity="${o * 0.1}"/>
     </svg>`;
     // INACTIVE: round orange shape with stem hint
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -1347,7 +1372,11 @@ export const SVG_GENERATORS = {
     const amber = '#D97706';
     const foam = '#FEF3C7';
     const glass = '#FDE68A';
+    const wood = '#92400E';
+    const gold = '#FBBF24';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+      <!-- wooden bar surface -->
+      <path d="M0 17.5 L14 17.5" stroke="${wood}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
       <!-- pint glass — tapered shape wider at top -->
       <path d="M2.5 5 L1.5 16 Q1.5 17 2.5 17 L9.5 17 Q10.5 17 10.5 16 L9.5 5Z" fill="${amber}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
       <!-- beer fill line gradient effect -->
@@ -1371,7 +1400,9 @@ export const SVG_GENERATORS = {
       <circle cx="6.5" cy="13" r="0.35" fill="${k}" fill-opacity="${o * 0.15}"/>
       <circle cx="8" cy="10.5" r="0.25" fill="${k}" fill-opacity="${o * 0.12}"/>
       <!-- label on glass -->
-      <rect x="3.5" y="10" width="5" height="3.5" rx="0.5" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <rect x="3.5" y="10" width="5" height="3.5" rx="0.5" fill="${gold}" fill-opacity="${o * 0.15}" stroke="${gold}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <!-- label star -->
+      <circle cx="6" cy="11.8" r="0.5" fill="${gold}" fill-opacity="${o * 0.25}"/>
       <!-- condensation drops on glass -->
       <circle cx="3" cy="8.5" r="0.2" fill="${k}" fill-opacity="${o * 0.15}"/>
       <circle cx="3.5" cy="14" r="0.2" fill="${k}" fill-opacity="${o * 0.12}"/>
@@ -1395,10 +1426,11 @@ export const SVG_GENERATORS = {
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="22" viewBox="0 0 14 22">
       <!-- head -->
       <circle cx="7" cy="2.5" r="1.8" fill="${pink}" fill-opacity="${o * 0.35}" stroke="${pink}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
-      <!-- eye -->
-      <circle cx="6.5" cy="2.2" r="0.4" fill="${dark}" fill-opacity="${o * 0.7}"/>
-      <!-- beak — angled down with black tip -->
-      <path d="M8 3 L10.5 4 L10 4.8 L7.5 4" fill="${pink}" fill-opacity="${o * 0.4}" stroke="${hotpink}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <!-- eye — yellow iris -->
+      <circle cx="6.5" cy="2.2" r="0.5" fill="#FBBF24" fill-opacity="${o * 0.5}"/>
+      <circle cx="6.5" cy="2.2" r="0.25" fill="${dark}" fill-opacity="${o * 0.7}"/>
+      <!-- beak — angled down with yellow base and black tip -->
+      <path d="M8 3 L10.5 4 L10 4.8 L7.5 4" fill="#FBBF24" fill-opacity="${o * 0.35}" stroke="${hotpink}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
       <path d="M10 4 L10.5 4 L10 4.8" fill="${dark}" fill-opacity="${o * 0.5}"/>
       <!-- long S-curved neck -->
       <path d="M7 4.3 Q6.5 6 5.5 8 Q4.5 10 5 12" fill="none" stroke="${pink}" stroke-width="1.2" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
@@ -1499,10 +1531,13 @@ export const SVG_GENERATORS = {
     const green = '#4ADE80';
     const silver = '#CBD5E1';
     const dark = '#1E293B';
+    const yellow = '#FBBF24';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
+      <!-- dark night sky background hint -->
+      <rect x="0" y="0" width="22" height="5" fill="${dark}" fill-opacity="${o * 0.06}"/>
       <!-- abduction beam — wide green cone from saucer bottom -->
-      <polygon points="7,7.5 11,13.5 15,7.5" fill="${green}" fill-opacity="${o * 0.12}"/>
-      <polygon points="8,7.5 11,12.5 14,7.5" fill="${green}" fill-opacity="${o * 0.07}"/>
+      <polygon points="7,7.5 11,13.5 15,7.5" fill="${yellow}" fill-opacity="${o * 0.1}"/>
+      <polygon points="8,7.5 11,12.5 14,7.5" fill="${green}" fill-opacity="${o * 0.1}"/>
       <!-- beam stripes -->
       <line x1="8.5" y1="8" x2="9.5" y2="12" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.12}"/>
       <line x1="13.5" y1="8" x2="12.5" y2="12" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.12}"/>
@@ -1849,9 +1884,10 @@ export const SVG_GENERATORS = {
       <line x1="14.2" y1="12.5" x2="13.5" y2="11.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
       <!-- bat knob -->
       <circle cx="15.2" cy="14.3" r="0.6" fill="${brown}" fill-opacity="${o * 0.45}"/>
-      <!-- impact spark at contact point -->
-      <line x1="7.5" y1="4.5" x2="8.5" y2="3.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <line x1="7" y1="3.5" x2="8" y2="2.5" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <!-- impact spark at contact point — golden -->
+      <line x1="7.5" y1="4.5" x2="8.5" y2="3.5" stroke="#FBBF24" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <line x1="7" y1="3.5" x2="8" y2="2.5" stroke="#FBBF24" stroke-width="0.4" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <circle cx="8" cy="4" r="0.6" fill="#FBBF24" fill-opacity="${o * 0.15}"/>
       <!-- motion arcs — ball just hit, flying left -->
       <path d="M1.5 3 Q1 2 0.5 2.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
       <path d="M1 2 Q0.5 1 0 1.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
@@ -1885,8 +1921,8 @@ export const SVG_GENERATORS = {
       <circle cx="14" cy="9.5" r="0.6" fill="${dirt}" fill-opacity="${o * 0.25}"/>
       <circle cx="8" cy="11" r="0.5" fill="${dirt}" fill-opacity="${o * 0.2}"/>
       <circle cx="12" cy="10.5" r="0.55" fill="${dirt}" fill-opacity="${o * 0.2}"/>
-      <!-- mine cart at base of mound -->
-      <path d="M2 13.5 L5 13.5 L5.5 11.5 L1.5 11.5Z" fill="${gray}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
+      <!-- mine cart at base of mound — rusty -->
+      <path d="M2 13.5 L5 13.5 L5.5 11.5 L1.5 11.5Z" fill="${rust}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
       <!-- cart rocks -->
       <circle cx="2.5" cy="12" r="0.5" fill="${dirt}" fill-opacity="${o * 0.4}"/>
       <circle cx="3.5" cy="11.8" r="0.55" fill="${dirt}" fill-opacity="${o * 0.35}"/>
@@ -2206,8 +2242,10 @@ export const SVG_GENERATORS = {
       <line x1="11.5" y1="3.5" x2="13" y2="1" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.18}" stroke-linecap="round"/>
       <!-- green glow halo -->
       <circle cx="10" cy="5" r="3" fill="${green}" fill-opacity="${o * 0.05}"/>
-      <!-- sky color wash -->
-      <path d="M0 9 Q5 8 10 7.5 Q15 8 20 9" fill="${orange}" fill-opacity="${o * 0.06}"/>
+      <!-- purple twilight sky wash -->
+      <path d="M0 7 Q5 6 10 5.5 Q15 6 20 7" fill="#A78BFA" fill-opacity="${o * 0.06}"/>
+      <!-- orange sky color wash -->
+      <path d="M0 9 Q5 8 10 7.5 Q15 8 20 9" fill="${orange}" fill-opacity="${o * 0.08}"/>
       <!-- water reflections -->
       <path d="M8 10 L12 10" fill="none" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.12}" stroke-linecap="round"/>
       <path d="M7 11.5 L13 11.5" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.1}" stroke-linecap="round"/>
@@ -2253,6 +2291,10 @@ export const SVG_GENERATORS = {
       <circle cx="9" cy="20.5" r="0.8" fill="${brown}" fill-opacity="${o * 0.25}" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
       <!-- decorative band pattern on shaft -->
       <path d="M8 11 L10 11 M8 11.5 L10 11.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <!-- grass at base -->
+      <path d="M3 21 Q5 20 7 21 Q9 22 11 21 Q13 20 15 21" fill="none" stroke="#4ADE80" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
+      <path d="M5 21 L5.5 19.5" fill="none" stroke="#4ADE80" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <path d="M13 21 L12.5 19.5" fill="none" stroke="#4ADE80" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: faint spear outline
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22">
