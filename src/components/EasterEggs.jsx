@@ -231,8 +231,8 @@ export const SVG_GENERATORS = {
     // INACTIVE: dark foliage blob with two golden eyes
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
       <path d="M4 8 Q9 5 14 8 Q15 11 14 13 Q9 15 4 13 Q3 11 4 8Z" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <circle cx="7" cy="10.5" r="1" fill="${gold}" fill-opacity="${o * 1.5}"/>
-      <circle cx="11" cy="10.5" r="1" fill="${gold}" fill-opacity="${o * 1.5}"/>
+      <circle cx="7" cy="10.5" r="1" fill="${k}" fill-opacity="${o * 1.5}"/>
+      <circle cx="11" cy="10.5" r="1" fill="${k}" fill-opacity="${o * 1.5}"/>
     </svg>`;
   },
 
@@ -277,14 +277,14 @@ export const SVG_GENERATORS = {
     // INACTIVE: low strawberry plant with leaves and a small red berry peeking
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
       <!-- ground line -->
-      <path d="M1 14 Q8 13.5 15 14" fill="none" stroke="${green}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M1 14 Q8 13.5 15 14" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- plant leaves spreading low -->
-      <path d="M8 13 Q5 11 3 9 Q2 8.5 3 8 Q4 8 5 9 Q7 11 8 12" fill="${green}" fill-opacity="${o * 0.5}" stroke="${green}" stroke-width="1.2" stroke-opacity="${o}" stroke-linejoin="round"/>
-      <path d="M8 13 Q11 11 13 9 Q14 8.5 13 8 Q12 8 11 9 Q9 11 8 12" fill="${green}" fill-opacity="${o * 0.5}" stroke="${green}" stroke-width="1.2" stroke-opacity="${o}" stroke-linejoin="round"/>
+      <path d="M8 13 Q5 11 3 9 Q2 8.5 3 8 Q4 8 5 9 Q7 11 8 12" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linejoin="round"/>
+      <path d="M8 13 Q11 11 13 9 Q14 8.5 13 8 Q12 8 11 9 Q9 11 8 12" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linejoin="round"/>
       <!-- center leaf (upright) -->
-      <path d="M8 13 Q7 10 8 8 Q9 10 8 13" fill="${green}" fill-opacity="${o * 0.6}" stroke="${green}" stroke-width="1" stroke-opacity="${o * 0.8}"/>
-      <!-- small red strawberry peeking from under leaves -->
-      <path d="M9.5 12.5 Q10.5 12 11 13 Q11 14.5 10 15 Q9 14.5 9 13.5 Q9 13 9.5 12.5Z" fill="${red}" fill-opacity="${o * 1.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
+      <path d="M8 13 Q7 10 8 8 Q9 10 8 13" fill="${k}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}"/>
+      <!-- small strawberry peeking from under leaves -->
+      <path d="M9.5 12.5 Q10.5 12 11 13 Q11 14.5 10 15 Q9 14.5 9 13.5 Q9 13 9.5 12.5Z" fill="${k}" fill-opacity="${o * 1.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
       <!-- tiny seed on berry -->
       <circle cx="10" cy="13.5" r="0.3" fill="${k}" fill-opacity="${o * 0.6}"/>
     </svg>`;
@@ -346,11 +346,11 @@ export const SVG_GENERATORS = {
       <circle cx="4" cy="7" r="2.5" fill="${k}" fill-opacity="${o * 0.25}"/>
       <circle cx="10" cy="7" r="2.5" fill="${k}" fill-opacity="${o * 0.2}"/>
       <!-- raindrops -->
-      <line x1="5" y1="12" x2="4.5" y2="14.5" stroke="${blue}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
-      <line x1="9" y1="12.5" x2="8.5" y2="15" stroke="${blue}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
-      <line x1="7" y1="13" x2="6.5" y2="15" stroke="${blue}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <line x1="5" y1="12" x2="4.5" y2="14.5" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
+      <line x1="9" y1="12.5" x2="8.5" y2="15" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
+      <line x1="7" y1="13" x2="6.5" y2="15" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
       <!-- faint glow -->
-      <circle cx="7" cy="17" r="1" fill="${blue}" fill-opacity="${o * 0.4}"/>
+      <circle cx="7" cy="17" r="1" fill="${k}" fill-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -399,15 +399,15 @@ export const SVG_GENERATORS = {
     </svg>`;
     // INACTIVE: mermaid tail fluke sticking up from water — thicker tail
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
-      <path d="M0 14 Q4.5 13 9 14 Q13.5 15 18 14" fill="none" stroke="${teal}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <path d="M0 14 Q4.5 13 9 14 Q13.5 15 18 14" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- thick tail rising out of water -->
       <path d="M9 14 Q9 11 10 8.5 Q10.5 7 10 6" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- fluke fins spread wide at top -->
-      <path d="M10 6 Q7 4.5 4.5 3.5 Q3.5 3.5 4.5 5 Q6 6 9 7.5" fill="${teal}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
-      <path d="M10 6 Q13 4.5 15.5 3.5 Q16.5 3.5 15.5 5 Q14 6 11 7.5" fill="${teal}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
+      <path d="M10 6 Q7 4.5 4.5 3.5 Q3.5 3.5 4.5 5 Q6 6 9 7.5" fill="${k}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
+      <path d="M10 6 Q13 4.5 15.5 3.5 Q16.5 3.5 15.5 5 Q14 6 11 7.5" fill="${k}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
       <!-- water drips -->
-      <circle cx="7" cy="10" r="0.5" fill="${teal}" fill-opacity="${o * 0.5}"/>
-      <circle cx="12.5" cy="11" r="0.4" fill="${teal}" fill-opacity="${o * 0.4}"/>
+      <circle cx="7" cy="10" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <circle cx="12.5" cy="11" r="0.4" fill="${k}" fill-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -441,7 +441,7 @@ export const SVG_GENERATORS = {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
       <rect x="4" y="3" width="20" height="7" rx="1" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
       <line x1="4" y1="5.5" x2="24" y2="5.5" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
-      <rect x="10" y="4.5" width="8" height="2" rx="0.5" fill="${wood}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <rect x="10" y="4.5" width="8" height="2" rx="0.5" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -537,7 +537,7 @@ export const SVG_GENERATORS = {
       <circle cx="8" cy="5" r="1.3" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
       <!-- long beak + hanging pouch shape -->
       <path d="M9 5 L15 6.5" fill="none" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M9 5.5 Q12 8 15 6.5" fill="${yellow}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
+      <path d="M9 5.5 Q12 8 15 6.5" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -633,7 +633,7 @@ export const SVG_GENERATORS = {
     </svg>`;
     // INACTIVE: silhouette of the bird — small body blob on stilt legs with long neck hint
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
-      <path d="M0 22 Q4 21 9 22 Q14 23 18 22" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <path d="M0 22 Q4 21 9 22 Q14 23 18 22" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
       <!-- stilt legs -->
       <line x1="8" y1="17" x2="7" y2="22" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
       <line x1="10" y1="17" x2="11" y2="22" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
@@ -682,7 +682,7 @@ export const SVG_GENERATORS = {
     </svg>`;
     // INACTIVE: dome shell shape on ground
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
-      <path d="M0 13 L20 13" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <path d="M0 13 L20 13" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
       <path d="M5 13 Q5 6 10 5 Q15 6 15 13" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}"/>
       <!-- hint of head -->
       <ellipse cx="3.5" cy="11.5" rx="1.5" ry="1" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
@@ -739,12 +739,12 @@ export const SVG_GENERATORS = {
     </svg>`;
     // INACTIVE: two eyes poking above water line
     return `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="22" viewBox="-1 -1 28 24">
-      <path d="M-1 12 Q6 11 13 12 Q20 13 27 12" fill="none" stroke="${teal}" stroke-width="0.6" stroke-opacity="${o}"/>
+      <path d="M-1 12 Q6 11 13 12 Q20 13 27 12" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <!-- two bumpy eyes just above water -->
       <circle cx="16" cy="11" r="1" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}"/>
       <circle cx="20" cy="11" r="1" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}"/>
-      <circle cx="16" cy="10.7" r="0.35" fill="${dark}" fill-opacity="${o * 0.5}"/>
-      <circle cx="20" cy="10.7" r="0.35" fill="${dark}" fill-opacity="${o * 0.5}"/>
+      <circle cx="16" cy="10.7" r="0.35" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <circle cx="20" cy="10.7" r="0.35" fill="${k}" fill-opacity="${o * 0.5}"/>
       <!-- hint of snout ridge ahead -->
       <path d="M21.5 11.5 L24 11.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
     </svg>`;
@@ -783,14 +783,14 @@ export const SVG_GENERATORS = {
     </svg>`;
     // INACTIVE: spoon-shaped bill hint + pink blob
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
-      <path d="M0 16 Q5 15 10 16 Q15 17 20 16" fill="none" stroke="${teal}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <!-- pink blob body -->
-      <ellipse cx="10" cy="12" rx="3" ry="2" fill="${pink}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <path d="M0 16 Q5 15 10 16 Q15 17 20 16" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <!-- blob body -->
+      <ellipse cx="10" cy="12" rx="3" ry="2" fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
       <!-- spoon-shaped bill sticking out — the key identifier -->
-      <path d="M12 11 L16 10.5 Q17.5 10.5 17.5 11.5 Q17.5 12.5 16 12.5 L12 12" fill="${pink}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linejoin="round"/>
+      <path d="M12 11 L16 10.5 Q17.5 10.5 17.5 11.5 Q17.5 12.5 16 12.5 L12 12" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linejoin="round"/>
       <!-- thin legs -->
-      <line x1="9" y1="14" x2="8" y2="16" stroke="${pink}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <line x1="11" y1="14" x2="12" y2="16" stroke="${pink}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <line x1="9" y1="14" x2="8" y2="16" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <line x1="11" y1="14" x2="12" y2="16" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -887,7 +887,7 @@ export const SVG_GENERATORS = {
       <rect x="14" y="4" width="2" height="6.5" rx="0.3" fill="${k}" fill-opacity="${o * 0.5}"/>
       <line x1="15" y1="5" x2="7" y2="10" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
       <line x1="15" y1="5" x2="23" y2="10" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
-      <path d="M0 14 Q8 12.5 15 13.5 Q22 14.5 30 13" fill="none" stroke="${water}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <path d="M0 14 Q8 12.5 15 13.5 Q22 14.5 30 13" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
     </svg>`;
   },
 
@@ -1266,7 +1266,7 @@ export const SVG_GENERATORS = {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
       <circle cx="8" cy="9.5" r="5" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
       <path d="M8 4.5 L8 3" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <path d="M8 3.5 Q6 2.5 5.5 3" fill="none" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+      <path d="M8 3.5 Q6 2.5 5.5 3" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
@@ -2118,7 +2118,7 @@ export const SVG_GENERATORS = {
       <!-- tiny sun peeking -->
       <path d="M8 9 A2 2 0 0 1 12 9" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
       <!-- faint green dot -->
-      <circle cx="10" cy="8" r="0.6" fill="${green}" fill-opacity="${o * 0.3}"/>
+      <circle cx="10" cy="8" r="0.6" fill="${k}" fill-opacity="${o * 0.3}"/>
     </svg>`;
   },
 
@@ -2442,11 +2442,11 @@ export const SVG_GENERATORS = {
     </svg>`;
     // INACTIVE: reddish water hint
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
-      <path d="M0 7 Q5 6 10 7 Q15 8 20 7" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
-      <path d="M0 9 Q5 8.5 10 9 Q15 9.5 20 9" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <path d="M0 7 Q5 6 10 7 Q15 8 20 7" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <path d="M0 9 Q5 8.5 10 9 Q15 9.5 20 9" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
       <!-- algae dots -->
-      <circle cx="6" cy="7.5" r="0.4" fill="${red}" fill-opacity="${o * 0.3}"/>
-      <circle cx="14" cy="7" r="0.35" fill="${red}" fill-opacity="${o * 0.25}"/>
+      <circle cx="6" cy="7.5" r="0.4" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <circle cx="14" cy="7" r="0.35" fill="${k}" fill-opacity="${o * 0.25}"/>
     </svg>`;
   },
 
