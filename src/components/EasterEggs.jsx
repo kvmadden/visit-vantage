@@ -116,64 +116,81 @@ export const SVG_GENERATORS = {
     // water → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="24" viewBox="-1 -1 34 24">
-      <!-- waterline low — kraken is mostly OUT of the water -->
-      <path d="M0 18 Q8 17 16 18 Q24 19 32 18" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <path d="M0 20 Q8 19 16 20 Q24 21 32 20" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <!-- big dome head — upper half of the SVG -->
-      <path d="M10 17 Q10 10 11 7 Q12 4 16 2.5 Q20 4 21 7 Q22 10 22 17" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- head texture bumps -->
-      <path d="M12 5 Q14 3.5 16 3" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
-      <path d="M16 3 Q18 3.5 20 5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
-      <!-- big angry eyes -->
-      <ellipse cx="13.5" cy="8" rx="1.8" ry="1.5" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
-      <circle cx="13.5" cy="8" r="0.9" fill="${k}" fill-opacity="${o}"/>
-      <ellipse cx="18.5" cy="8" rx="1.8" ry="1.5" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
-      <circle cx="18.5" cy="8" r="0.9" fill="${k}" fill-opacity="${o}"/>
-      <!-- brow ridges -->
-      <path d="M11.5 6.5 Q13.5 5.5 15 6.5" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
-      <path d="M17 6.5 Q18.5 5.5 20.5 6.5" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
-      <!-- mouth -->
-      <path d="M14 12 Q16 13.5 18 12" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- tentacle 1 — far left, curling up -->
-      <path d="M3 18 Q1 14 2 9 Q3 5 4 3 Q5 1 5.5 4 Q6 7 6.5 11 Q7 14 8 17" fill="none" stroke="${k}" stroke-width="2.2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="3" cy="5" r="0.8" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <circle cx="4" cy="8" r="0.7" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="5" cy="11" r="0.6" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="6" cy="14" r="0.6" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <!-- tentacle 2 — inner left -->
-      <path d="M9 17 Q8 13 8.5 9 Q9 6 9.5 4.5" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
-      <circle cx="9" cy="6" r="0.6" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="8.5" cy="9" r="0.5" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <!-- tentacle 3 — inner right -->
-      <path d="M23 17 Q24 13 23.5 9 Q23 6 22.5 4.5" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
-      <circle cx="23" cy="6" r="0.6" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="23.5" cy="9" r="0.5" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <!-- tentacle 4 — far right, curling up -->
-      <path d="M29 18 Q31 14 30 9 Q29 5 28 3 Q27 1 26.5 4 Q26 7 25.5 11 Q25 14 24 17" fill="none" stroke="${k}" stroke-width="2.2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="29" cy="5" r="0.8" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <circle cx="28" cy="8" r="0.7" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="27" cy="11" r="0.6" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="26" cy="14" r="0.6" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <!-- water splash around base -->
-      <path d="M1 18 Q2 17 3 18" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M29 18 Q30 17 31 18" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <!-- dripping water -->
-      <circle cx="12" cy="16" r="0.4" fill="${k}" fill-opacity="${o * 0.3}"/>
-      <circle cx="20" cy="15" r="0.4" fill="${k}" fill-opacity="${o * 0.3}"/>
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" viewBox="-2 -2 40 30">
+      <!-- waterline — kraken bursting out -->
+      <path d="M-2 22 Q6 21 18 22 Q30 23 38 22" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M-2 24 Q8 23 18 24 Q28 25 38 24" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <!-- dome head rising from water -->
+      <path d="M12 20 Q12 14 13 10 Q14 7 18 5 Q22 7 23 10 Q24 14 24 20" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- head texture -->
+      <path d="M14 8 Q16 6.5 18 6" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
+      <path d="M18 6 Q20 6.5 22 8" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
+      <!-- eyes — simple neutral dots -->
+      <circle cx="15.5" cy="11" r="1.2" fill="${k}" fill-opacity="${o * 0.9}"/>
+      <circle cx="20.5" cy="11" r="1.2" fill="${k}" fill-opacity="${o * 0.9}"/>
+      <!-- mouth — neutral straight line -->
+      <line x1="15.5" y1="15" x2="20.5" y2="15" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- TENTACLE 1 — far left, long wild S-curve reaching high -->
+      <path d="M5 22 Q1 18 -1 12 Q-2 6 0 1 Q1 -1 2 2 Q3 6 3 10 Q3.5 15 5 18 Q6.5 20 9 20" fill="none" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="0" cy="3" r="0.8" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <circle cx="1.5" cy="7" r="0.7" fill="${k}" fill-opacity="${o * 0.45}"/>
+      <circle cx="2.5" cy="11" r="0.6" fill="${k}" fill-opacity="${o * 0.4}"/>
+      <circle cx="4" cy="16" r="0.6" fill="${k}" fill-opacity="${o * 0.35}"/>
+      <!-- TENTACLE 2 — left mid, curling outward -->
+      <path d="M10 20 Q7 15 5 9 Q4 4 5 1 Q6 -1 6.5 3 Q7 7 8 12 Q9 16 10 19" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o * 0.85}" stroke-linecap="round"/>
+      <circle cx="5" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.45}"/>
+      <circle cx="5.5" cy="7" r="0.55" fill="${k}" fill-opacity="${o * 0.4}"/>
+      <circle cx="7" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.35}"/>
+      <!-- TENTACLE 3 — right mid, curling outward -->
+      <path d="M26 20 Q29 15 31 9 Q32 4 31 1 Q30 -1 29.5 3 Q29 7 28 12 Q27 16 26 19" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o * 0.85}" stroke-linecap="round"/>
+      <circle cx="31" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.45}"/>
+      <circle cx="30.5" cy="7" r="0.55" fill="${k}" fill-opacity="${o * 0.4}"/>
+      <circle cx="29" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.35}"/>
+      <!-- TENTACLE 4 — far right, long wild S-curve reaching high -->
+      <path d="M31 22 Q35 18 37 12 Q38 6 36 1 Q35 -1 34 2 Q33 6 33 10 Q32.5 15 31 18 Q29.5 20 27 20" fill="none" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="36" cy="3" r="0.8" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <circle cx="34.5" cy="7" r="0.7" fill="${k}" fill-opacity="${o * 0.45}"/>
+      <circle cx="33.5" cy="11" r="0.6" fill="${k}" fill-opacity="${o * 0.4}"/>
+      <circle cx="32" cy="16" r="0.6" fill="${k}" fill-opacity="${o * 0.35}"/>
+      <!-- TENTACLE 5 — sneaky one curling from below left -->
+      <path d="M2 24 Q0 20 1 16 Q2 13 4 15 Q5 17 4 20" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <circle cx="1.5" cy="16" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- TENTACLE 6 — sneaky one curling from below right -->
+      <path d="M34 24 Q36 20 35 16 Q34 13 32 15 Q31 17 32 20" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <circle cx="34.5" cy="16" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- water splashes -->
+      <path d="M0 22 Q1 21 2 22" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M34 22 Q35 21 36 22" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M8 21 Q9 20 10 21" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <path d="M26 21 Q27 20 28 21" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
     </svg>`;
-    // INACTIVE: waterline + 3 tentacles poking up with suckers
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="24" viewBox="-1 -1 34 24">
-      <path d="M0 12 Q8 11 16 12 Q24 13 32 12" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <path d="M7 12 Q8 7 10 5 Q11 4 10.5 7 Q10 9 9 12" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="9.5" cy="6.5" r="0.7" fill="${k}" fill-opacity="${o * 0.8}"/>
-      <circle cx="9" cy="8.5" r="0.6" fill="${k}" fill-opacity="${o * 0.7}"/>
-      <path d="M15 12 Q14 6 16 3 Q17 2 17.5 5 Q17 8 16 12" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="16" cy="4.5" r="0.7" fill="${k}" fill-opacity="${o * 0.8}"/>
-      <circle cx="16" cy="7" r="0.6" fill="${k}" fill-opacity="${o * 0.7}"/>
-      <circle cx="16.5" cy="9.5" r="0.6" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <path d="M23 12 Q24 8 22 5 Q21 4 21.5 7 Q22 10 23.5 12" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="22" cy="6" r="0.6" fill="${k}" fill-opacity="${o * 0.7}"/>
+    // INACTIVE: waterline + long tentacles snaking up out of the water
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" viewBox="-2 -2 40 30">
+      <!-- waterline -->
+      <path d="M-2 18 Q8 17 18 18 Q28 19 38 18" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- tentacle 1 — far left, tall S-curve -->
+      <path d="M5 18 Q3 13 1 8 Q0 4 1 1 Q2 -1 2.5 3 Q3 7 4 12 Q5 15 6 18" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="1" cy="3" r="0.7" fill="${k}" fill-opacity="${o * 0.7}"/>
+      <circle cx="2" cy="7" r="0.6" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <circle cx="3" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <!-- tentacle 2 — left of center, curling -->
+      <path d="M11 18 Q10 12 11 7 Q12 3 13 1 Q13.5 3 12.5 7 Q12 12 12.5 18" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="12" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.7}"/>
+      <circle cx="11" cy="8" r="0.5" fill="${k}" fill-opacity="${o * 0.55}"/>
+      <!-- tentacle 3 — center, tallest -->
+      <path d="M17 18 Q16 10 17 4 Q18 0 19 -1 Q19.5 2 19 6 Q18.5 12 19 18" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="18" cy="1" r="0.7" fill="${k}" fill-opacity="${o * 0.7}"/>
+      <circle cx="17.5" cy="5" r="0.6" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <circle cx="18" cy="10" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <!-- tentacle 4 — right of center -->
+      <path d="M25 18 Q26 13 25 7 Q24 3 23 1 Q22.5 3 23.5 7 Q24 12 23.5 18" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="24" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.7}"/>
+      <circle cx="25" cy="8" r="0.5" fill="${k}" fill-opacity="${o * 0.55}"/>
+      <!-- tentacle 5 — far right, tall S-curve -->
+      <path d="M31 18 Q33 13 35 8 Q36 4 35 1 Q34 -1 33.5 3 Q33 7 32 12 Q31 15 30 18" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="35" cy="3" r="0.7" fill="${k}" fill-opacity="${o * 0.7}"/>
+      <circle cx="34" cy="7" r="0.6" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <circle cx="33" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
     </svg>`;
   },
 

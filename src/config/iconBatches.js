@@ -14,7 +14,7 @@ export const CATEGORY_COLORS = {
 // Easter egg icon specs (50 icons)
 export const EASTER_EGG_SPECS = [
   { svgKey: 'pirateShip', viewBox: '0 0 32 22', size: [48, 33], category: 'culture', batch: 1, description: 'José Gaspar\'s pirate ship — the legendary pirate said to have roamed Tampa Bay, celebrated every year at Gasparilla' },
-  { svgKey: 'kraken', viewBox: '0 0 34 24', size: [56, 40], category: 'water', batch: 1, description: 'A giant kraken rising from Tampa Bay — sea monster folklore tied to the deep Gulf waters' },
+  { svgKey: 'kraken', viewBox: '-2 -2 40 30', size: [64, 48], category: 'water', batch: 1, description: 'A giant kraken rising from Tampa Bay — sea monster folklore tied to the deep Gulf waters' },
   { svgKey: 'skunkApe', viewBox: '0 0 18 24', size: [28, 38], category: 'land', batch: 1, description: 'Florida\'s Skunk Ape — the swamp-dwelling Bigfoot cousin rumored to lurk in the Everglades and Green Swamp' },
   { svgKey: 'strawberry', viewBox: '0 0 16 20', size: [26, 32], category: 'food', batch: 1, description: 'Plant City strawberry — the Winter Strawberry Capital of the World, home of the annual Strawberry Festival' },
   { svgKey: 'lightning', viewBox: '0 0 20 28', size: [30, 42], category: 'culture', batch: 1, description: 'Lightning bolt over Lightning Alley — Tampa Bay is the lightning capital of North America' },
