@@ -2087,39 +2087,38 @@ export const SVG_GENERATORS = {
     const gold = '#FBBF24';
     const green = '#4ADE80';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
-      <!-- warm sky gradient wash -->
-      <path d="M0 9 Q5 7 10 6.5 Q15 7 20 9 L20 14 L0 14Z" fill="${orange}" fill-opacity="${o * 0.06}"/>
       <!-- ocean horizon -->
       <path d="M0 9 Q5 8.5 10 9 Q15 9.5 20 9" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
-      <!-- setting sun — big warm half circle at horizon -->
-      <path d="M4.5 9 A5.5 5.5 0 0 1 15.5 9" fill="${orange}" fill-opacity="${o * 0.25}" stroke="${gold}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
-      <!-- sun glow layers -->
-      <path d="M5.5 9 A4.5 4.5 0 0 1 14.5 9" fill="${gold}" fill-opacity="${o * 0.12}"/>
-      <path d="M7 9 A3 3 0 0 1 13 9" fill="${orange}" fill-opacity="${o * 0.15}"/>
-      <!-- green flash — thin bright band right at top edge of sun -->
-      <path d="M7.5 6 Q10 4.5 12.5 6" fill="none" stroke="${green}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- green tinge spreading from flash -->
-      <path d="M8.5 5.5 Q10 4 11.5 5.5" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <!-- subtle green ray up center only -->
-      <line x1="10" y1="4.5" x2="10" y2="2" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <!-- orange sun rays -->
-      <line x1="10" y1="5" x2="10" y2="1.5" stroke="${gold}" stroke-width="0.35" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
-      <line x1="6.5" y1="7" x2="4" y2="4" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.1}" stroke-linecap="round"/>
-      <line x1="13.5" y1="7" x2="16" y2="4" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.1}" stroke-linecap="round"/>
       <!-- water below -->
       <path d="M0 11 Q5 10.5 10 11 Q15 11.5 20 11" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
-      <!-- water reflections — orange and green mixed -->
-      <path d="M7 10 L13 10" fill="none" stroke="${gold}" stroke-width="0.4" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
-      <path d="M8.5 10.5 L11.5 10.5" fill="none" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.12}" stroke-linecap="round"/>
-      <path d="M6 12 L14 12" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.08}" stroke-linecap="round"/>
+      <!-- setting sun — half below horizon -->
+      <path d="M5.5 9 A4.5 4.5 0 0 1 14.5 9" fill="${orange}" fill-opacity="${o * 0.2}" stroke="${orange}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
+      <!-- sun glow bands -->
+      <path d="M4 9 Q10 7.5 16 9" fill="none" stroke="${gold}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <path d="M3 9 Q10 6.5 17 9" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
+      <!-- THE GREEN FLASH — more transparent -->
+      <path d="M7 5.5 Q10 2 13 5.5" fill="${green}" fill-opacity="${o * 0.25}" stroke="${green}" stroke-width="0.6" stroke-opacity="${o * 0.45}"/>
+      <!-- green rays shooting up — more transparent -->
+      <line x1="10" y1="3" x2="10" y2="0.5" stroke="${green}" stroke-width="0.6" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <line x1="7" y1="4" x2="5" y2="1.5" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <line x1="13" y1="4" x2="15" y2="1.5" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <line x1="8.5" y1="3.5" x2="7" y2="1" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.18}" stroke-linecap="round"/>
+      <line x1="11.5" y1="3.5" x2="13" y2="1" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.18}" stroke-linecap="round"/>
+      <!-- green glow halo -->
+      <circle cx="10" cy="5" r="3" fill="${green}" fill-opacity="${o * 0.05}"/>
+      <!-- sky color wash -->
+      <path d="M0 9 Q5 8 10 7.5 Q15 8 20 9" fill="${orange}" fill-opacity="${o * 0.06}"/>
+      <!-- water reflections -->
+      <path d="M8 10 L12 10" fill="none" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.12}" stroke-linecap="round"/>
+      <path d="M7 11.5 L13 11.5" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.1}" stroke-linecap="round"/>
     </svg>`;
-    // INACTIVE: horizon with sun peeking and tiny green hint
+    // INACTIVE: horizon line with faint glow dot
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
       <path d="M0 9 Q5 8 10 9 Q15 10 20 9" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}"/>
-      <!-- sun peeking -->
-      <path d="M7.5 9 A2.5 2.5 0 0 1 12.5 9" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
-      <!-- faint green line at top of sun -->
-      <path d="M8.5 7.5 Q10 7 11.5 7.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <!-- tiny sun peeking -->
+      <path d="M8 9 A2 2 0 0 1 12 9" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+      <!-- faint green dot -->
+      <circle cx="10" cy="8" r="0.6" fill="${green}" fill-opacity="${o * 0.3}"/>
     </svg>`;
   },
 
