@@ -441,10 +441,9 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const wood = '#D97706';
     const gold = '#FBBF24';
-    const red = '#F87171';
-    const smoke = '#94A3B8';
+    const cream = '#FDE68A';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
-      <!-- cigar body — tapered shape -->
+      <!-- cigar body — tapered shape, unlit -->
       <path d="M3 4.5 Q2 4.5 2 6 Q2 7.5 3 7.5 L22 7 Q24 6.8 25 6 Q24 5.2 22 5 Z" fill="${brown}" fill-opacity="${o * 0.7}" stroke="${brown}" stroke-width="0.8" stroke-opacity="${o}"/>
       <!-- lighter inner wrapper -->
       <path d="M4 5 L21 5.3 Q23 5.5 23.5 6 Q23 6.5 21 6.7 L4 7 Q3.5 6 4 5 Z" fill="${wood}" fill-opacity="${o * 0.4}"/>
@@ -458,11 +457,10 @@ export const SVG_GENERATORS = {
       <line x1="8" y1="5.3" x2="10" y2="6.8" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
       <line x1="11" y1="5.3" x2="13" y2="6.7" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
       <line x1="14" y1="5.2" x2="15.5" y2="6.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
-      <!-- lit foot end (left) — glowing red/orange ember -->
-      <ellipse cx="3" cy="6" rx="0.6" ry="1.5" fill="${red}" fill-opacity="${o * 0.4}" stroke="${red}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
-      <ellipse cx="3" cy="6" rx="0.3" ry="0.8" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <!-- sealed foot end (left) — clean closed cap -->
+      <ellipse cx="2.5" cy="6" rx="0.5" ry="1.3" fill="${cream}" fill-opacity="${o * 0.5}" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
       <!-- cap tip (right) — rounded point -->
-      <ellipse cx="24.5" cy="6" rx="0.5" ry="0.7" fill="${brown}" fill-opacity="${o * 0.8}"/>
+      <ellipse cx="24.5" cy="6" rx="0.5" ry="0.7" fill="${cream}" fill-opacity="${o * 0.6}" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
     </svg>`;
     // INACTIVE: closed cigar box
     return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
