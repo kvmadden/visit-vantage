@@ -2720,6 +2720,147 @@ export const SVG_GENERATORS = {
       <path d="M7.5 7 Q9 10 10 13" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
     </svg>`;
   },
+
+  // --- Batch 12: Game Day ---
+
+  raysBaseball(theme, activated = false) {
+    // sports → #F87171
+    const k = '#F87171';
+    const o = activated ? 1 : 0.4;
+    const white = '#F8FAFC';
+    const blue = '#1E3A5F';
+    const gold = '#FBBF24';
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+      <!-- baseball -->
+      <circle cx="9" cy="9" r="6" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
+      <!-- stitching curves -->
+      <path d="M5.5 5 Q9 3 12.5 5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <path d="M5.5 13 Q9 15 12.5 13" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- stitch marks -->
+      <path d="M6.5 5.2 L6.7 5.7 M8 4.5 L8 5 M9.5 4.5 L9.5 5 M11 5.2 L10.8 5.7" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <path d="M6.5 12.8 L6.7 12.3 M8 13.5 L8 13 M9.5 13.5 L9.5 13 M11 12.8 L10.8 12.3" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <!-- Rays sunburst — radiating from center -->
+      <line x1="9" y1="9" x2="9" y2="5.5" stroke="${blue}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <line x1="9" y1="9" x2="12" y2="6.5" stroke="${blue}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <line x1="9" y1="9" x2="6" y2="6.5" stroke="${blue}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <line x1="9" y1="9" x2="13" y2="9" stroke="${blue}" stroke-width="0.7" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <line x1="9" y1="9" x2="5" y2="9" stroke="${blue}" stroke-width="0.7" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- center dot -->
+      <circle cx="9" cy="9" r="1" fill="${gold}" fill-opacity="${o * 0.5}"/>
+      <circle cx="9" cy="9" r="0.4" fill="${gold}" fill-opacity="${o * 0.7}"/>
+      <!-- motion lines — ball flying -->
+      <path d="M15.5 6 L17 5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M16 7 L17.5 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+    </svg>`;
+    // INACTIVE: simple baseball outline with sunburst hint
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+      <circle cx="9" cy="9" r="4" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
+      <path d="M6.5 7 Q9 5.5 11.5 7" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
+      <path d="M6.5 11 Q9 12.5 11.5 11" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
+      <line x1="9" y1="9" x2="9" y2="6.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <line x1="9" y1="9" x2="11" y2="7" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <line x1="9" y1="9" x2="7" y2="7" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+    </svg>`;
+  },
+
+  golfFlag(theme, activated = false) {
+    // sports → #F87171
+    const k = '#F87171';
+    const o = activated ? 1 : 0.4;
+    const white = '#F8FAFC';
+    const green = '#4ADE80';
+    const gold = '#FBBF24';
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+      <!-- green grass ground -->
+      <ellipse cx="8" cy="18" rx="7" ry="2" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <!-- hole -->
+      <ellipse cx="8" cy="17.5" rx="1.5" ry="0.5" fill="#1E293B" fill-opacity="${o * 0.4}"/>
+      <!-- flagstick -->
+      <line x1="8" y1="17" x2="8" y2="2" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
+      <!-- flag — triangular, waving -->
+      <path d="M8 2 L14 4 Q13 5 14 6 L8 5Z" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.7}"/>
+      <!-- flag number hint -->
+      <text x="10.5" y="4.5" font-size="2" fill="${white}" fill-opacity="${o * 0.6}" font-weight="bold" text-anchor="middle">18</text>
+      <!-- golf ball near hole -->
+      <circle cx="10.5" cy="17" r="1" fill="${white}" fill-opacity="${o * 0.3}" stroke="${white}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <!-- ball dimple pattern -->
+      <circle cx="10.2" cy="16.7" r="0.15" fill="none" stroke="${white}" stroke-width="0.2" stroke-opacity="${o * 0.2}"/>
+      <circle cx="10.8" cy="16.8" r="0.15" fill="none" stroke="${white}" stroke-width="0.2" stroke-opacity="${o * 0.2}"/>
+      <circle cx="10.5" cy="17.3" r="0.15" fill="none" stroke="${white}" stroke-width="0.2" stroke-opacity="${o * 0.2}"/>
+      <!-- grass blades -->
+      <path d="M3 17 Q3.5 15.5 3.2 17.5" fill="none" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M5 17.5 Q5.5 16 5.2 18" fill="none" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M12 17 Q12.5 15.5 12.2 17.5" fill="none" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <!-- golden sun/light hint -->
+      <circle cx="14" cy="2" r="1.5" fill="${gold}" fill-opacity="${o * 0.08}"/>
+    </svg>`;
+    // INACTIVE: simple flagstick
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+      <line x1="8" y1="17" x2="8" y2="4" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-linecap="round"/>
+      <path d="M8 4 L13 5.5 L8 7Z" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
+      <ellipse cx="8" cy="17.5" rx="2" ry="0.6" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+    </svg>`;
+  },
+
+  horseRacing(theme, activated = false) {
+    // sports → #F87171
+    const k = '#F87171';
+    const o = activated ? 1 : 0.4;
+    const brown = '#92400E';
+    const white = '#F8FAFC';
+    const green = '#4ADE80';
+    const gold = '#FBBF24';
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+      <!-- dirt track surface -->
+      <ellipse cx="10" cy="16" rx="9" ry="2" fill="${brown}" fill-opacity="${o * 0.1}" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
+      <!-- horse body — galloping pose -->
+      <path d="M6 8 Q8 6 12 7 Q14 7.5 15 8.5 Q14.5 9.5 13 10 Q11 10.5 8 10 Q6 9.5 6 8Z" fill="${brown}" fill-opacity="${o * 0.35}" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
+      <!-- horse neck and head -->
+      <path d="M6 8 Q4.5 6 4 4.5 Q3.5 3.5 4.5 3 Q5.5 2.5 6 3.5 Q6 4.5 5.5 5.5" fill="${brown}" fill-opacity="${o * 0.3}" stroke="${brown}" stroke-width="0.6" stroke-opacity="${o * 0.7}"/>
+      <!-- horse ear -->
+      <path d="M5 3 L4.5 1.5 L5.5 2.5" fill="${brown}" fill-opacity="${o * 0.3}" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
+      <!-- horse eye -->
+      <circle cx="4.8" cy="3.5" r="0.3" fill="#1E293B" fill-opacity="${o * 0.6}"/>
+      <!-- horse mane — flowing -->
+      <path d="M5.5 4 Q6.5 3 7 4.5" fill="none" stroke="${brown}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <path d="M6 5 Q7 4 7.5 5.5" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <!-- front legs — extended gallop -->
+      <path d="M7 10 L5 14 L5.5 14.5" fill="none" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <path d="M8.5 10 L7 13 L7.5 13.5" fill="none" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <!-- back legs — pushing off -->
+      <path d="M12 10 L13.5 14 L14 14.5" fill="none" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <path d="M13.5 9.5 L16 13 L16.5 13" fill="none" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <!-- horse tail — flowing back -->
+      <path d="M15 8.5 Q17 7 18 8 Q17.5 9 16 9.5" fill="none" stroke="${brown}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- jockey silhouette — crouched -->
+      <ellipse cx="10" cy="6.5" rx="1.5" ry="1" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <!-- jockey helmet -->
+      <circle cx="8.5" cy="5.5" r="0.8" fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
+      <!-- jockey whip -->
+      <line x1="12" y1="6" x2="14" y2="4.5" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- dust/speed lines -->
+      <path d="M17 12 L19 11.5" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M17.5 13 L19 12.5" fill="none" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <!-- finish line post hint -->
+      <line x1="1" y1="5" x2="1" y2="15" stroke="${gold}" stroke-width="0.5" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <!-- hoofprint dust puffs -->
+      <circle cx="6" cy="14.5" r="0.5" fill="${brown}" fill-opacity="${o * 0.1}"/>
+      <circle cx="14.5" cy="14" r="0.4" fill="${brown}" fill-opacity="${o * 0.08}"/>
+    </svg>`;
+    // INACTIVE: simple horse silhouette
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+      <!-- simplified horse body -->
+      <path d="M6 8 Q9 6 14 8 Q13 10 8 10 Q6 9.5 6 8Z" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.8}"/>
+      <!-- neck and head -->
+      <path d="M6 8 Q5 6 4.5 4 Q5 3 6 4" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- front leg -->
+      <path d="M8 10 L6.5 14" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- back leg -->
+      <path d="M12 10 L14 14" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- tail hint -->
+      <path d="M14 8 Q16 7 17 8" fill="none" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+    </svg>`;
+  },
 };
 
 // ---------------------------------------------------------------------------

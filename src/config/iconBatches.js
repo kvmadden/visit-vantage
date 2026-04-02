@@ -63,6 +63,9 @@ export const EASTER_EGG_SPECS = [
   { svgKey: 'redTide', viewBox: '0 0 20 14', size: [32, 22], category: 'nature', batch: 10, description: 'Red tide algae bloom — Karenia brevis blooms that periodically affect Gulf beaches, a natural but disruptive phenomenon' },
   { svgKey: 'honeymoonIsland', viewBox: '0 0 22 16', size: [34, 26], category: 'landmarks', batch: 10, description: 'Honeymoon Island palm — the state park was a 1940s honeymoon resort, now one of Florida\'s most-visited parks' },
   { svgKey: 'ghostOrchid', viewBox: '0 0 16 20', size: [26, 32], category: 'nature', batch: 10, description: 'Ghost orchid in bloom — the rare, ethereal flower made famous by "The Orchid Thief," found in Florida swamps' },
+  { svgKey: 'raysBaseball', viewBox: '0 0 18 18', size: [28, 28], category: 'sports', batch: 12, description: 'Tampa Bay Rays sunburst baseball — the Rays have called St. Petersburg home since 1998, known for doing more with less' },
+  { svgKey: 'golfFlag', viewBox: '0 0 16 20', size: [26, 32], category: 'sports', batch: 12, description: 'Golf flag on the green — Innisbrook\'s Copperhead Course hosts the PGA Tour\'s Valspar Championship in Palm Harbor' },
+  { svgKey: 'horseRacing', viewBox: '0 0 20 18', size: [32, 28], category: 'sports', batch: 12, description: 'Thoroughbred horse racing — Tampa Bay Downs in Oldsmar has hosted live racing since 1926, one of Florida\'s last tracks' },
 ];
 
 // Best of the Bay icon specs (12 icons)
@@ -81,8 +84,8 @@ export const BEST_OF_BAY_SPECS = [
   { svgKey: 'donCesar', destination: 'The Don CeSar', batch: 11, description: 'Pink palace towers — The Don CeSar, the iconic 1928 pink resort on St. Pete Beach known as the "Pink Palace"' },
 ];
 
-// Total icons: 50 easter eggs * 2 states + 12 best of bay = 112
-export const TOTAL_ICONS = 112;
+// Total icons: 53 easter eggs * 2 states + 12 best of bay = 118
+export const TOTAL_ICONS = 118;
 
 export const BATCH_NAMES = {
   1: 'Batch 1: Warm-up',
@@ -96,4 +99,5 @@ export const BATCH_NAMES = {
   9: 'Batch 9: Folklore',
   10: 'Batch 10: Florida Icons',
   11: 'Batch 11: Best of the Bay',
+  12: 'Batch 12: Game Day',
 };
