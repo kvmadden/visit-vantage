@@ -444,10 +444,6 @@ export const SVG_GENERATORS = {
     const red = '#F87171';
     const smoke = '#94A3B8';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
-      <!-- smoke wisps rising from foot -->
-      <path d="M2 4 Q1 2 2 0.5" fill="none" stroke="${smoke}" stroke-width="0.5" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
-      <path d="M3.5 3 Q3 1 4 -0.5" fill="none" stroke="${smoke}" stroke-width="0.4" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <path d="M1 3.5 Q0.5 1.5 1.5 0" fill="none" stroke="${smoke}" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
       <!-- cigar body — tapered shape -->
       <path d="M3 4.5 Q2 4.5 2 6 Q2 7.5 3 7.5 L22 7 Q24 6.8 25 6 Q24 5.2 22 5 Z" fill="${brown}" fill-opacity="${o * 0.7}" stroke="${brown}" stroke-width="0.8" stroke-opacity="${o}"/>
       <!-- lighter inner wrapper -->
@@ -607,16 +603,16 @@ export const SVG_GENERATORS = {
       <ellipse cx="11" cy="10" rx="2" ry="2.5" fill="${white}" fill-opacity="${o * 0.15}"/>
       <!-- head — white with dark eye stripe -->
       <circle cx="11" cy="5" r="2.2" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}"/>
-      <!-- dark eye stripe (osprey's distinctive mask) -->
-      <path d="M9.5 4.5 Q8 5 7 6" fill="none" stroke="${brown}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <path d="M12.5 4.5 Q14 5 15 6" fill="none" stroke="${brown}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- dark eye stripe (osprey's distinctive mask) — shorter, won't look like beaks -->
+      <path d="M9.5 4.8 Q8.5 5.3 8 5.8" fill="none" stroke="${brown}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <path d="M12.5 4.8 Q13.5 5.3 14 5.8" fill="none" stroke="${brown}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
       <!-- eyes -->
       <circle cx="10" cy="4.5" r="0.6" fill="${yellow}" fill-opacity="${o * 0.9}"/>
       <circle cx="10" cy="4.5" r="0.25" fill="${brown}" fill-opacity="${o}"/>
       <circle cx="12" cy="4.5" r="0.6" fill="${yellow}" fill-opacity="${o * 0.9}"/>
       <circle cx="12" cy="4.5" r="0.25" fill="${brown}" fill-opacity="${o}"/>
-      <!-- hooked beak -->
-      <path d="M11 6 L12.5 7 Q13 7.5 12.5 8 L11.5 7.5" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.7}"/>
+      <!-- single hooked beak — pointing straight down -->
+      <path d="M10.5 6.5 L11 7.5 L11.5 6.5" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.7}" stroke-linejoin="round"/>
       <!-- tail feathers -->
       <path d="M9.5 15 Q10 16 9 17.5" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <path d="M11 15 Q11 16 11 17.5" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
@@ -1532,7 +1528,7 @@ export const SVG_GENERATORS = {
     const silver = '#CBD5E1';
     const dark = '#1E293B';
     const yellow = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="-1 -1 24 16">
       <!-- dark night sky background hint -->
       <rect x="0" y="0" width="22" height="5" fill="${dark}" fill-opacity="${o * 0.06}"/>
       <!-- abduction beam — wide green cone from saucer bottom -->
@@ -1568,7 +1564,7 @@ export const SVG_GENERATORS = {
       <circle cx="17" cy="0.5" r="0.2" fill="${k}" fill-opacity="${o * 0.15}"/>
     </svg>`;
     // INACTIVE: saucer disc with beam hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="-1 -1 24 16">
       <ellipse cx="11" cy="5" rx="7" ry="2" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
       <ellipse cx="11" cy="3.5" rx="3" ry="2.5" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
       <polygon points="9,7 11,12 13,7" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
@@ -1869,28 +1865,28 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const red = '#DC2626';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <!-- baseball — on the left side -->
-      <circle cx="4.5" cy="5.5" r="3.2" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
-      <!-- stitching — classic S-curves -->
-      <path d="M2.2 3.8 Q4.5 2.5 6.8 3.8" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
-      <path d="M2.2 7.2 Q4.5 8.5 6.8 7.2" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
-      <!-- stitch marks -->
-      <path d="M2.5 4 L2.7 4.5 M3.5 3.5 L3.6 4 M4.5 3.2 L4.5 3.7 M5.5 3.5 L5.3 4 M6.5 4 L6.2 4.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <path d="M2.5 7 L2.7 6.5 M3.5 7.5 L3.6 7 M4.5 7.8 L4.5 7.3 M5.5 7.5 L5.3 7 M6.5 7 L6.2 6.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <!-- bat — angled, on the right side -->
-      <path d="M15 14 L14.5 13.5 L8 5 L7.5 4 Q7 3 7.5 2.5 Q8 2 8.5 2.5 L9 3 L15 13.5Z" fill="${brown}" fill-opacity="${o * 0.4}" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
+      <!-- bat — handle at bottom-left, barrel swinging up-right -->
+      <path d="M1 14 L1.5 13.5 L8 5 L8.5 4 Q9 3 8.5 2.5 Q8 2 7.5 2.5 L7 3 L1 13.5Z" fill="${brown}" fill-opacity="${o * 0.4}" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
       <!-- bat handle grip -->
-      <line x1="14.5" y1="13" x2="13.8" y2="12" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
-      <line x1="14.2" y1="12.5" x2="13.5" y2="11.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
+      <line x1="1.5" y1="13" x2="2.2" y2="12" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <line x1="1.8" y1="12.5" x2="2.5" y2="11.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
       <!-- bat knob -->
-      <circle cx="15.2" cy="14.3" r="0.6" fill="${brown}" fill-opacity="${o * 0.45}"/>
+      <circle cx="0.8" cy="14.3" r="0.6" fill="${brown}" fill-opacity="${o * 0.45}"/>
+      <!-- baseball — upper right, just hit and flying away -->
+      <circle cx="12" cy="4.5" r="3.2" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
+      <!-- stitching — classic S-curves -->
+      <path d="M9.7 2.8 Q12 1.5 14.3 2.8" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <path d="M9.7 6.2 Q12 7.5 14.3 6.2" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- stitch marks -->
+      <path d="M10 3 L10.2 3.5 M11 2.5 L11.1 3 M12 2.2 L12 2.7 M13 2.5 L12.8 3 M14 3 L13.7 3.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <path d="M10 6 L10.2 5.5 M11 6.5 L11.1 6 M12 6.8 L12 6.3 M13 6.5 L12.8 6 M14 6 L13.7 5.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
       <!-- impact spark at contact point — golden -->
-      <line x1="7.5" y1="4.5" x2="8.5" y2="3.5" stroke="#FBBF24" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <line x1="7" y1="3.5" x2="8" y2="2.5" stroke="#FBBF24" stroke-width="0.4" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <circle cx="8" cy="4" r="0.6" fill="#FBBF24" fill-opacity="${o * 0.15}"/>
-      <!-- motion arcs — ball just hit, flying left -->
-      <path d="M1.5 3 Q1 2 0.5 2.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M1 2 Q0.5 1 0 1.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <line x1="8.5" y1="3.5" x2="9.5" y2="2.5" stroke="#FBBF24" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <line x1="9" y1="4" x2="10" y2="3" stroke="#FBBF24" stroke-width="0.4" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <circle cx="9.2" cy="3.5" r="0.6" fill="#FBBF24" fill-opacity="${o * 0.15}"/>
+      <!-- motion arcs — ball flying upper-right -->
+      <path d="M14.5 2 Q15 1 15.5 1.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M15 1.5 Q15.5 0.5 16 1" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: baseball with stitching
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -2673,7 +2669,7 @@ export const SVG_GENERATORS = {
     const white = '#F8FAFC';
     const brown = '#92400E';
     const gold = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="-1 -1 18 23">
       <!-- host tree trunk — textured bark -->
       <path d="M6.5 0 Q7.5 2 8 4 Q8 6 7.5 7" fill="none" stroke="${brown}" stroke-width="1.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
       <!-- bark texture lines -->
@@ -2709,7 +2705,7 @@ export const SVG_GENERATORS = {
       <circle cx="3" cy="10" r="0.2" fill="${k}" fill-opacity="${o * 0.08}"/>
     </svg>`;
     // INACTIVE: faint stem with tiny flower shape
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="-1 -1 18 16">
       <!-- stem -->
       <path d="M8 2 Q8 5 7.5 7" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- flower hint -->
