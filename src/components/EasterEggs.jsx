@@ -460,38 +460,38 @@ export const SVG_GENERATORS = {
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-1 -1 26 18">
       <!-- water -->
       <path d="M-1 14 Q6 13 12 14 Q18 15 25 14" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <!-- DOLPHIN — simple side-profile facing right, horizontal swimming pose -->
-      <!-- body: streamlined oval, longer than tall -->
-      <ellipse cx="11" cy="7" rx="9" ry="3.5" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}"/>
-      <!-- snout/bottle nose — pointy extension from right side of body -->
-      <path d="M19.5 6 L23 5.5 L23 6.5 L19.5 7" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1" stroke-opacity="${o}" stroke-linejoin="round"/>
-      <!-- mouth line — the smile -->
-      <path d="M20 7 L23 6.5" fill="none" stroke="${dark}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- eye — near the front/right of head -->
-      <circle cx="18" cy="5.8" r="0.6" fill="${dark}" fill-opacity="${o * 0.9}"/>
-      <!-- melon/forehead bump -->
-      <path d="M17 4.5 Q19 3 20 4" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- dorsal fin — curved triangle on top center of back -->
-      <path d="M12 3.5 L10 0 Q12 1 14 3.5" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
-      <!-- pectoral flipper — small fin underneath -->
-      <path d="M14 9 Q13 11.5 14.5 12" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- tail stock narrows at left end -->
-      <path d="M2 7 Q1 7 0 6.5" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- tail flukes — two horizontal fins, the defining dolphin tail shape -->
-      <path d="M0 6.5 Q-1 5 -0.5 4 Q0 5 0.5 6" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
-      <path d="M0 6.5 Q-1 8 -0.5 9 Q0 8 0.5 7" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
-      <!-- lighter belly -->
-      <path d="M5 8.5 Q11 10 17 8.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <!-- DOLPHIN — sleek body with slight S-curve wiggle, facing right -->
+      <!-- top contour: forehead dips, rises to dorsal area, tapers to tail -->
+      <path d="M20 5 Q17 3.5 14 3.5 Q10 3.5 7 4.5 Q4 5.5 2 7 Q1 7.5 0 7" fill="none" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- bottom contour: chin slopes, belly curves gently, tapers to tail -->
+      <path d="M23 6 Q21 7 18 8 Q14 9 10 9 Q6 8.5 3 7.5 Q1.5 7.5 0 7" fill="none" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- fill between contours -->
+      <path d="M20 5 Q17 3.5 14 3.5 Q10 3.5 7 4.5 Q4 5.5 2 7 Q1 7.5 0 7 Q1.5 7.5 3 7.5 Q6 8.5 10 9 Q14 9 18 8 Q21 7 23 6 Q22 5.5 20 5 Z" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- bottle nose/snout -->
+      <path d="M20 5 Q22 4.5 23.5 5 Q24 5.5 23 6" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1" stroke-opacity="${o}" stroke-linejoin="round"/>
+      <!-- mouth line -->
+      <path d="M21 6 L23.5 5.5" fill="none" stroke="${dark}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- eye -->
+      <circle cx="19" cy="5.3" r="0.6" fill="${dark}" fill-opacity="${o * 0.9}"/>
+      <!-- dorsal fin — smooth curved hump, not sharp -->
+      <path d="M12 3.5 Q11 1.5 10 0.5 Q11 1 12.5 2 Q13 2.5 14 3.5" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
+      <!-- pectoral flipper -->
+      <path d="M15 8 Q14 10.5 15.5 11" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- tail flukes -->
+      <path d="M0 7 Q-1 5.5 -0.5 4.5 Q0 5.5 0.5 6.5" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <path d="M0 7 Q-1 8.5 -0.5 9.5 Q0 8.5 0.5 7.5" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <!-- belly highlight -->
+      <path d="M6 7.5 Q10 8.5 16 7.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
     </svg>`;
-    // INACTIVE: dorsal fin + back arc breaking water
+    // INACTIVE: smooth back arc + rounded dorsal fin breaking water
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-1 -1 26 18">
       <path d="M-1 10 Q6 9 12 10 Q18 11 25 10" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <!-- curved back breaking the surface -->
-      <path d="M7 10 Q9 8.5 12 7.5 Q15 8.5 17 10" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- tall curved dorsal fin -->
-      <path d="M12 7.5 L10 3 Q11 2 13 5 Z" fill="${k}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="1" stroke-opacity="${o}" stroke-linejoin="round"/>
+      <!-- sleek curved back with gentle wiggle breaking the surface -->
+      <path d="M6 10 Q8 9 10 8 Q12 7 14 7.5 Q16 8.5 18 10" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- smooth rounded dorsal fin — one curved stroke, not pointy -->
+      <path d="M11 7.5 Q10.5 5 10 3.5 Q10.5 3 11.5 4.5 Q12.5 6 13 7.5" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1" stroke-opacity="${o}" stroke-linejoin="round"/>
       <!-- small splash -->
-      <circle cx="17.5" cy="9.5" r="0.4" fill="${k}" fill-opacity="${o * 0.4}"/>
+      <circle cx="18.5" cy="9.5" r="0.4" fill="${k}" fill-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
