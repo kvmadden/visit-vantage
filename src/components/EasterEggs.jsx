@@ -1664,27 +1664,27 @@ export const SVG_GENERATORS = {
       <path d="M1 11.5 Q5 9 10 7.5 Q15 9 19 11.5" fill="${gray}" fill-opacity="${o * 0.08}" stroke="${gray}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
       <!-- road center line (dashed) -->
       <path d="M3 11 Q7 9 10 8 Q13 9 17 11" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-dasharray="1.5 1"/>
-      <!-- car — proper car shape with roof, hood, trunk -->
-      <g transform="rotate(-8 13 8)">
+      <!-- car — on LEFT side, facing uphill to the right -->
+      <g transform="rotate(8 5 9)">
         <!-- car body lower -->
-        <rect x="10.5" y="7.5" width="5" height="1.8" rx="0.4" fill="${dark}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
-        <!-- car cabin/roof — smaller centered on top -->
-        <rect x="11.5" y="6.2" width="3" height="1.5" rx="0.5" fill="${dark}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
-        <!-- windshield -->
-        <path d="M11.5 7.5 L12 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+        <rect x="2.5" y="8" width="5" height="1.8" rx="0.4" fill="${dark}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+        <!-- car cabin/roof -->
+        <rect x="3.5" y="6.7" width="3" height="1.5" rx="0.5" fill="${dark}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+        <!-- windshield (front, right side) -->
+        <path d="M6.5 8 L6 6.9" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
         <!-- rear window -->
-        <path d="M14.5 7.5 L14 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+        <path d="M3.5 8 L4 6.9" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
       </g>
       <!-- wheels -->
-      <circle cx="11.5" cy="9.5" r="0.7" fill="${dark}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
-      <circle cx="14.8" cy="9" r="0.7" fill="${dark}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
-      <!-- arrow showing car rolling uphill -->
-      <path d="M15.5 5.5 L17.5 4.5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <path d="M16.5 5 L17.5 4.5 L17 5.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- BIG question marks — prominent -->
-      <text x="3" y="4.5" font-size="4" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.7}">?</text>
-      <text x="7.5" y="3" font-size="3.5" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.6}">?</text>
-      <text x="16.5" y="3" font-size="3" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.5}">?</text>
+      <circle cx="4" cy="10" r="0.7" fill="${dark}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <circle cx="7" cy="9.5" r="0.7" fill="${dark}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <!-- arrow showing car rolling uphill (pointing right/up the hill) -->
+      <path d="M8 6.5 L10 5.5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M9 6 L10 5.5 L9.5 6.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- BIG question marks — prominent, spread across -->
+      <text x="10" y="4.5" font-size="4" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.7}">?</text>
+      <text x="14" y="3" font-size="3.5" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.6}">?</text>
+      <text x="17" y="5" font-size="3" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.5}">?</text>
       <!-- ground -->
       <line x1="0" y1="12.5" x2="20" y2="12.5" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
     </svg>`;
@@ -1737,6 +1737,11 @@ export const SVG_GENERATORS = {
       <!-- overgrown vine hints -->
       <path d="M3 8 Q2 7 2.5 6" fill="none" stroke="#4ADE80" stroke-width="0.4" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
       <path d="M16 14 Q17 13.5 17 12.5" fill="none" stroke="#4ADE80" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <!-- A-frame support legs to ground -->
+      <line x1="10" y1="10" x2="6" y2="19" stroke="${rust}" stroke-width="0.7" stroke-opacity="${o * 0.4}"/>
+      <line x1="10" y1="10" x2="14" y2="19" stroke="${rust}" stroke-width="0.7" stroke-opacity="${o * 0.4}"/>
+      <!-- ground line -->
+      <line x1="3" y1="19.5" x2="17" y2="19.5" stroke="${rust}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: ferris wheel connected to ground with A-frame support
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
