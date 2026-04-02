@@ -369,33 +369,40 @@ export const SVG_GENERATORS = {
     const skin = '#FBBF24';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
       <!-- water surface -->
-      <path d="M0 8 Q4.5 7 9 8 Q13.5 9 18 8" fill="none" stroke="${teal}" stroke-width="1" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <!-- hair flowing up and back from water -->
-      <path d="M4 7 Q2 5 1.5 3 Q1.5 2 2.5 3 Q3 4 4 6" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linejoin="round"/>
-      <path d="M5 6.5 Q3.5 4.5 3 2.5 Q3.5 2 4 3.5 Q4.5 5 5.5 6" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.4}" stroke-linejoin="round"/>
-      <!-- head just above water, looking right -->
-      <circle cx="6" cy="7" r="2" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.4" stroke-opacity="${o}"/>
-      <!-- eye -->
-      <circle cx="7" cy="6.5" r="0.4" fill="${k}" fill-opacity="${o * 0.9}"/>
-      <!-- smile -->
-      <path d="M6.5 8 Q7 8.4 7.5 8" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- torso going into water, angled down-right -->
-      <path d="M7 9 Q8 10.5 9 12" fill="none" stroke="${k}" stroke-width="2.5" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
-      <!-- arm extended forward -->
-      <path d="M7.5 9 Q10 8.5 12 9" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- tail — single thick curve going down -->
-      <path d="M9 12 Q10 14 11 16 Q12 18 13 19" fill="none" stroke="${k}" stroke-width="2.8" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
-      <!-- tail narrows -->
-      <path d="M13 19 Q14 20 14.5 20.5" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- fluke — wide horizontal V -->
-      <path d="M14.5 20.5 L17 19 Q17 20 15.5 21" fill="${teal}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
-      <path d="M14.5 20.5 L16 22.5 Q15.5 23 14 21.5" fill="${teal}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
-      <!-- scale shimmer on tail -->
-      <path d="M10 13.5 Q10.5 13 11 13.5" fill="none" stroke="${teal}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <path d="M11.5 16 Q12 15.5 12.5 16" fill="none" stroke="${teal}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <path d="M0 12 Q4.5 11 9 12 Q13.5 13 18 12" fill="none" stroke="${teal}" stroke-width="1" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <path d="M0 13.5 Q4.5 12.5 9 13.5 Q13.5 14.5 18 13.5" fill="none" stroke="${teal}" stroke-width="0.8" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
+      <!-- flowing hair -->
+      <path d="M6 3 Q4 5 3 8 Q2.5 10 3 11" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M7 2.5 Q5 5 4.5 8" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <path d="M12 3 Q14 5 15 8 Q15.5 10 15 11" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M11 2.5 Q13 5 13.5 8" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- head -->
+      <circle cx="9" cy="3.5" r="2.8" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
+      <!-- face details -->
+      <circle cx="7.8" cy="3" r="0.5" fill="${k}" fill-opacity="${o * 0.8}"/>
+      <circle cx="10.2" cy="3" r="0.5" fill="${k}" fill-opacity="${o * 0.8}"/>
+      <path d="M8.5 4.5 Q9 5 9.5 4.5" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- torso -->
+      <path d="M7.5 6 Q7 8 7.5 10 Q8 11 9 11 Q10 11 10.5 10 Q11 8 10.5 6" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.8}"/>
+      <!-- arms reaching up -->
+      <path d="M7.5 7.5 Q5 6 3.5 7 Q3 7.5 4 8" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <path d="M10.5 7.5 Q13 6 14.5 7 Q15 7.5 14 8" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- shell bikini detail -->
+      <circle cx="8.2" cy="7.5" r="0.6" fill="${skin}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <circle cx="9.8" cy="7.5" r="0.6" fill="${skin}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <!-- tail — SINGLE center tail curving down, not two legs -->
+      <path d="M9 11 Q9 14 8.5 16 Q8 18 8 20" fill="${teal}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="2.5" stroke-opacity="${o * 0.7}" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- tail scale texture -->
+      <path d="M8 13 Q9 12.5 10 13" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
+      <path d="M7.5 15.5 Q9 15 10 15.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
+      <path d="M7.5 17.5 Q8.5 17 9.5 17.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
+      <!-- tail fluke — two fins spreading out from bottom of single tail -->
+      <path d="M8 20 Q5.5 21 4 22 Q3 22.5 3.5 21 Q4.5 19.5 7 19" fill="${teal}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
+      <path d="M8 20 Q10.5 21 12 22 Q13 22.5 12.5 21 Q11.5 19.5 9 19" fill="${teal}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
       <!-- bubbles -->
-      <circle cx="10" cy="10" r="0.4" fill="${teal}" fill-opacity="${o * 0.3}"/>
-      <circle cx="13" cy="15" r="0.35" fill="${teal}" fill-opacity="${o * 0.2}"/>
+      <circle cx="3" cy="14" r="0.6" fill="${teal}" fill-opacity="${o * 0.3}"/>
+      <circle cx="15" cy="15" r="0.5" fill="${teal}" fill-opacity="${o * 0.25}"/>
+      <circle cx="5" cy="22" r="0.5" fill="${teal}" fill-opacity="${o * 0.2}"/>
     </svg>`;
     // INACTIVE: mermaid tail fluke sticking up from water — thicker tail
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
@@ -453,44 +460,28 @@ export const SVG_GENERATORS = {
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-1 -1 26 18">
       <!-- water -->
       <path d="M-1 14 Q6 13 12 14 Q18 15 25 14" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <!-- DOLPHIN — single filled silhouette shape, side profile, facing left, leaping right-to-left arc -->
-      <!-- drawn as one continuous outline: snout → forehead → back → tail stock → tail flukes → belly → snout -->
-      <path d="
-        M1 9
-        Q0 9 -0.5 8.5
-        Q0 8 1 8.5
-        Q2 7.5 3 6
-        Q4 4 6 2.5
-        Q8 1 10 1.5
-        Q11 2 12 3
-        Q14 5 16 7
-        Q18 9 20 10
-        Q21 10.5 22 10
-        Q23 9 24 8
-        Q24.5 8.5 24 9.5
-        Q23 10 22 10.5
-        Q23 11.5 24 12.5
-        Q24.5 12 24 11.5
-        Q23 11 22 10.5
-        Q20 11 18 10.5
-        Q16 9 14 7.5
-        Q12 5.5 10 4.5
-        Q8 4 6 5
-        Q4 6.5 3 8
-        Q2 9.5 1 9
-        Z
-      " fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linejoin="round"/>
-      <!-- eye -->
-      <circle cx="4" cy="5" r="0.6" fill="${dark}" fill-opacity="${o * 0.9}"/>
-      <!-- mouth line (the dolphin smile) -->
-      <path d="M1 8.8 Q2 7.5 3.5 6.5" fill="none" stroke="${dark}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- dorsal fin on the back peak -->
-      <path d="M9 2 L7.5 -0.5 L11 2.5" fill="${k}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
-      <!-- pectoral flipper -->
-      <path d="M7 6 Q5.5 7.5 6.5 8" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- water splashes -->
-      <circle cx="0" cy="10.5" r="0.4" fill="${k}" fill-opacity="${o * 0.2}"/>
-      <circle cx="21" cy="8" r="0.3" fill="${k}" fill-opacity="${o * 0.2}"/>
+      <!-- DOLPHIN — simple side-profile facing right, horizontal swimming pose -->
+      <!-- body: streamlined oval, longer than tall -->
+      <ellipse cx="11" cy="7" rx="9" ry="3.5" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}"/>
+      <!-- snout/bottle nose — pointy extension from right side of body -->
+      <path d="M19.5 6 L23 5.5 L23 6.5 L19.5 7" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1" stroke-opacity="${o}" stroke-linejoin="round"/>
+      <!-- mouth line — the smile -->
+      <path d="M20 7 L23 6.5" fill="none" stroke="${dark}" stroke-width="0.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- eye — near the front/right of head -->
+      <circle cx="18" cy="5.8" r="0.6" fill="${dark}" fill-opacity="${o * 0.9}"/>
+      <!-- melon/forehead bump -->
+      <path d="M17 4.5 Q19 3 20 4" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- dorsal fin — curved triangle on top center of back -->
+      <path d="M12 3.5 L10 0 Q12 1 14 3.5" fill="${k}" fill-opacity="${o * 0.5}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}" stroke-linejoin="round"/>
+      <!-- pectoral flipper — small fin underneath -->
+      <path d="M14 9 Q13 11.5 14.5 12" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- tail stock narrows at left end -->
+      <path d="M2 7 Q1 7 0 6.5" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- tail flukes — two horizontal fins, the defining dolphin tail shape -->
+      <path d="M0 6.5 Q-1 5 -0.5 4 Q0 5 0.5 6" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <path d="M0 6.5 Q-1 8 -0.5 9 Q0 8 0.5 7" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <!-- lighter belly -->
+      <path d="M5 8.5 Q11 10 17 8.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: dorsal fin + back arc breaking water
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-1 -1 26 18">
