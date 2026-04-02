@@ -25,7 +25,7 @@ export const EASTER_EGG_SPECS = [
   { svgKey: 'osprey', viewBox: '0 0 22 22', size: [34, 34], category: 'bird', batch: 2, description: 'Osprey in flight — fish hawks that nest on power poles and channel markers all around Tampa Bay' },
   { svgKey: 'sandhillCrane', viewBox: '0 0 18 24', size: [28, 38], category: 'bird', batch: 3, description: 'Sandhill crane pair — tall gray birds that wander suburban lawns and golf courses across Central Florida' },
   { svgKey: 'gopherTortoise', viewBox: '0 0 20 16', size: [32, 26], category: 'land', batch: 3, description: 'Gopher tortoise — a keystone species whose burrows shelter 350+ other animals in Florida scrub habitat' },
-  { svgKey: 'alligator', viewBox: '0 0 26 14', size: [40, 22], category: 'land', batch: 3, description: 'American alligator — 1.3 million gators call Florida home, often found in retention ponds and golf course lakes' },
+  { svgKey: 'alligator', viewBox: '-2 -1 30 16', size: [48, 26], category: 'land', batch: 3, description: 'American alligator — 1.3 million gators call Florida home, often found in retention ponds and golf course lakes' },
   { svgKey: 'roseateSpoonbill', viewBox: '0 0 20 22', size: [32, 34], category: 'bird', batch: 3, description: 'Roseate spoonbill wading — the stunning pink bird often mistaken for a flamingo in Tampa Bay mangroves' },
   { svgKey: 'seaTurtle', viewBox: '0 0 22 18', size: [34, 28], category: 'water', batch: 3, description: 'Loggerhead sea turtle — nests on Gulf beaches every summer, protected by lights-out ordinances' },
   { svgKey: 'skywayBridge', viewBox: '0 0 30 16', size: [48, 26], category: 'landmark', batch: 4, description: 'Sunshine Skyway Bridge — the iconic cable-stayed bridge spanning Tampa Bay, rebuilt after the 1980 disaster' },
