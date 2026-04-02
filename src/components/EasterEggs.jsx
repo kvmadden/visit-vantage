@@ -1087,109 +1087,229 @@ export const SVG_GENERATORS = {
   },
 
   greekCross(theme, activated = false) {
-    const c = svgColors(theme);
+    // culture → #A78BFA
+    const k = '#A78BFA';
+    const o = activated ? 1 : 0.4;
+    const gold = '#FBBF24';
+    const blue = '#2563EB';
+    const water = '#2DD4BF';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <path d="M0 12 Q4 11 8 12 Q12 13 16 12" fill="none" stroke="${c.water}" stroke-width="0.5" stroke-opacity="${c.op * 0.4}"/>
-      <rect x="5.5" y="2" width="5" height="12" rx="0.5" fill="${c.blue}" fill-opacity="${c.op * 0.3}" stroke="${c.blue}" stroke-width="0.6" stroke-opacity="${c.op * 0.6}"/>
-      <rect x="1" y="5.5" width="14" height="5" rx="0.5" fill="${c.blue}" fill-opacity="${c.op * 0.3}" stroke="${c.blue}" stroke-width="0.6" stroke-opacity="${c.op * 0.6}"/>
-      <circle cx="8" cy="13" r="1.2" fill="${c.water}" fill-opacity="${c.op * 0.2}" stroke="${c.water}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
-      <circle cx="5" cy="13.5" r="0.8" fill="${c.water}" fill-opacity="${c.op * 0.15}"/>
-      <circle cx="11" cy="13.5" r="0.8" fill="${c.water}" fill-opacity="${c.op * 0.15}"/>
-      <path d="M0 15 Q4 14 8 15 Q12 16 16 15" fill="none" stroke="${c.water}" stroke-width="0.4" stroke-opacity="${c.op * 0.3}"/>
+      <!-- water at base (Epiphany cross dive into water) -->
+      <path d="M0 13 Q4 12 8 13 Q12 14 16 13" fill="${water}" fill-opacity="${o * 0.08}"/>
+      <path d="M0 14 Q4 13 8 14 Q12 15 16 14" fill="none" stroke="${water}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <!-- Greek Orthodox cross — ornate with trefoil ends -->
+      <!-- vertical beam -->
+      <rect x="6.5" y="1" width="3" height="11.5" rx="0.3" fill="${blue}" fill-opacity="${o * 0.3}" stroke="${blue}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
+      <!-- horizontal beam (slightly above center) -->
+      <rect x="1.5" y="4.5" width="13" height="3" rx="0.3" fill="${blue}" fill-opacity="${o * 0.3}" stroke="${blue}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
+      <!-- trefoil end caps — top -->
+      <circle cx="8" cy="1" r="1.2" fill="${blue}" fill-opacity="${o * 0.25}" stroke="${blue}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <!-- trefoil end caps — bottom -->
+      <circle cx="8" cy="12.5" r="1.2" fill="${blue}" fill-opacity="${o * 0.25}" stroke="${blue}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <!-- trefoil end caps — left -->
+      <circle cx="1.5" cy="6" r="1.2" fill="${blue}" fill-opacity="${o * 0.25}" stroke="${blue}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <!-- trefoil end caps — right -->
+      <circle cx="14.5" cy="6" r="1.2" fill="${blue}" fill-opacity="${o * 0.25}" stroke="${blue}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <!-- gold center medallion -->
+      <circle cx="8" cy="6" r="1.5" fill="${gold}" fill-opacity="${o * 0.4}" stroke="${gold}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <!-- IC XC inscription hint -->
+      <line x1="7.2" y1="5.5" x2="7.2" y2="6.5" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.5}"/>
+      <line x1="8.8" y1="5.5" x2="8.8" y2="6.5" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.5}"/>
+      <!-- gold trim lines on beams -->
+      <line x1="6.8" y1="2.5" x2="9.2" y2="2.5" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <line x1="6.8" y1="10" x2="9.2" y2="10" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <!-- water splash (Epiphany dive) -->
+      <circle cx="6" cy="13.5" r="0.5" fill="${water}" fill-opacity="${o * 0.2}"/>
+      <circle cx="10" cy="13.5" r="0.5" fill="${water}" fill-opacity="${o * 0.2}"/>
+      <circle cx="8" cy="12.8" r="0.4" fill="${water}" fill-opacity="${o * 0.15}"/>
     </svg>`;
+    // INACTIVE: simple cross silhouette
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <circle cx="8" cy="8" r="3" fill="none" stroke="${c.water}" stroke-width="0.4" stroke-opacity="${c.op * 0.25}"/>
-      <circle cx="8" cy="8" r="5.5" fill="none" stroke="${c.water}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
-      <circle cx="8" cy="8" r="7.5" fill="none" stroke="${c.water}" stroke-width="0.25" stroke-opacity="${c.op * 0.15}"/>
+      <rect x="6.5" y="2" width="3" height="11" rx="0.3" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
+      <rect x="2" y="5" width="12" height="3" rx="0.3" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.8}"/>
+      <circle cx="8" cy="6.5" r="1" fill="${k}" fill-opacity="${o * 0.2}"/>
     </svg>`;
   },
 
   // --- Batch 3: Food & History ---
 
   cubanSandwich(theme, activated = false) {
-    const c = svgColors(theme);
+    // food → #FB923C
+    const k = '#FB923C';
+    const o = activated ? 1 : 0.4;
+    const bread = '#D4A04A';
+    const ham = '#F87171';
+    const pork = '#FBBF24';
+    const swiss = '#FDE68A';
+    const pickle = '#4ADE80';
+    const mustard = '#FBBF24';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 12">
-      <path d="M3 2 Q12 0 21 2" fill="${c.accent}" fill-opacity="${c.op * 0.3}" stroke="${c.accent}" stroke-width="0.5" stroke-opacity="${c.op * 0.7}"/>
-      <rect x="3" y="2" width="18" height="2.5" rx="1.5" fill="${c.accent}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op * 0.6}"/>
-      <rect x="4" y="4.5" width="16" height="1.2" rx="0.2" fill="${c.green}" fill-opacity="${c.op * 0.35}" stroke="${c.green}" stroke-width="0.3" stroke-opacity="${c.op * 0.5}"/>
-      <rect x="4" y="5.3" width="16" height="1" rx="0.2" fill="${c.red}" fill-opacity="${c.op * 0.35}"/>
-      <rect x="4" y="6" width="16" height="0.8" rx="0.2" fill="${c.accent}" fill-opacity="${c.op * 0.4}"/>
-      <rect x="4" y="6.5" width="16" height="0.7" rx="0.2" fill="${c.stroke}" fill-opacity="${c.op * 0.15}"/>
-      <rect x="3" y="7.2" width="18" height="2.5" rx="1.5" fill="${c.accent}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op * 0.6}"/>
-      <line x1="7" y1="1" x2="8" y2="11" stroke="${c.stroke}" stroke-width="0.2" stroke-opacity="${c.op * 0.25}"/>
-      <line x1="12" y1="0.5" x2="13" y2="11" stroke="${c.stroke}" stroke-width="0.2" stroke-opacity="${c.op * 0.25}"/>
-      <line x1="17" y1="1" x2="18" y2="11" stroke="${c.stroke}" stroke-width="0.2" stroke-opacity="${c.op * 0.25}"/>
-      <circle cx="5" cy="5.8" r="0.4" fill="${c.green}" fill-opacity="${c.op * 0.3}"/>
-      <circle cx="19" cy="5.8" r="0.4" fill="${c.green}" fill-opacity="${c.op * 0.3}"/>
+      <!-- pressed Cuban bread — top half (toasted, slightly domed) -->
+      <path d="M2 3 Q12 1 22 3 L22 4.5 L2 4.5Z" fill="${bread}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
+      <!-- bread score lines (diagonal slashes from pressing) -->
+      <line x1="6" y1="2.5" x2="7.5" y2="4" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <line x1="10" y1="2" x2="11.5" y2="3.8" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <line x1="14" y1="2" x2="15.5" y2="3.8" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <line x1="18" y1="2.5" x2="19.5" y2="4" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <!-- mustard layer -->
+      <rect x="3" y="4.5" width="18" height="0.6" fill="${mustard}" fill-opacity="${o * 0.4}"/>
+      <!-- Swiss cheese layer with holes -->
+      <rect x="3" y="5.1" width="18" height="1.2" fill="${swiss}" fill-opacity="${o * 0.35}" stroke="${swiss}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <circle cx="7" cy="5.7" r="0.4" fill="${bread}" fill-opacity="${o * 0.2}"/>
+      <circle cx="14" cy="5.5" r="0.35" fill="${bread}" fill-opacity="${o * 0.2}"/>
+      <circle cx="18" cy="5.8" r="0.3" fill="${bread}" fill-opacity="${o * 0.15}"/>
+      <!-- ham layer (pink) -->
+      <rect x="3" y="6.3" width="18" height="0.8" fill="${ham}" fill-opacity="${o * 0.3}"/>
+      <!-- roast pork layer -->
+      <rect x="3" y="7.1" width="18" height="0.8" fill="${pork}" fill-opacity="${o * 0.25}"/>
+      <!-- pickle slices poking out -->
+      <circle cx="4" cy="7" r="0.8" fill="${pickle}" fill-opacity="${o * 0.35}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.5}"/>
+      <circle cx="10" cy="7.2" r="0.7" fill="${pickle}" fill-opacity="${o * 0.3}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <circle cx="16" cy="6.8" r="0.7" fill="${pickle}" fill-opacity="${o * 0.3}" stroke="${pickle}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <circle cx="20" cy="7.1" r="0.6" fill="${pickle}" fill-opacity="${o * 0.25}"/>
+      <!-- bottom bread -->
+      <path d="M2 7.9 L22 7.9 L22 9.5 Q12 11 2 9.5Z" fill="${bread}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
+      <!-- grill press marks on top bread -->
+      <line x1="4" y1="3.2" x2="20" y2="3.2" stroke="${k}" stroke-width="0.25" stroke-opacity="${o * 0.15}"/>
+      <line x1="4" y1="3.8" x2="20" y2="3.8" stroke="${k}" stroke-width="0.25" stroke-opacity="${o * 0.15}"/>
     </svg>`;
+    // INACTIVE: pressed sandwich outline
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 12">
-      <path d="M6 3 Q12 2 18 3 Q19 4 18 5 L6 5 Q5 4 6 3Z" fill="${c.accent}" fill-opacity="${c.op * 0.12}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.2}"/>
-      <path d="M6 7 Q12 8 18 7 Q19 8 18 9 L6 9 Q5 8 6 7Z" fill="${c.accent}" fill-opacity="${c.op * 0.1}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.15}"/>
+      <path d="M4 4 Q12 2.5 20 4 L20 5 L4 5Z" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
+      <rect x="5" y="5" width="14" height="1.5" fill="${k}" fill-opacity="${o * 0.08}"/>
+      <path d="M4 6.5 L20 6.5 L20 8 Q12 9.5 4 8Z" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.8}"/>
+      <line x1="8" y1="3.5" x2="9" y2="4.8" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <line x1="14" y1="3.2" x2="15" y2="4.8" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
   grouper(theme, activated = false) {
-    const c = svgColors(theme);
+    // food → #FB923C
+    const k = '#FB923C';
+    const o = activated ? 1 : 0.4;
+    const brown = '#92400E';
+    const dark = '#1E293B';
+    const water = '#2DD4BF';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
-      <path d="M3 10 Q4 8 6 8 L7 8" fill="none" stroke="${c.brown}" stroke-width="0.5" stroke-opacity="${c.op * 0.4}"/>
-      <path d="M19 10 Q18 8 16 8 L15 8" fill="none" stroke="${c.brown}" stroke-width="0.5" stroke-opacity="${c.op * 0.4}"/>
-      <path d="M6 8 Q8 3 12 2 Q16 3 18 5 Q20 6 19 4 Q18 3 17 5 Q15 7 12 8 Q9 9 6 8Z" fill="${c.brown}" fill-opacity="${c.op * 0.3}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op * 0.7}"/>
-      <path d="M6 8 Q4 9 3 11 Q4 9 5.5 8" fill="${c.brown}" fill-opacity="${c.op * 0.2}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
-      <circle cx="16" cy="4" r="0.7" fill="${c.stroke}" fill-opacity="${c.op * 0.6}"/>
-      <path d="M19 4 L21 3" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op * 0.5}"/>
-      <line x1="2" y1="6" x2="5" y2="7" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.35}"/>
-      <line x1="2" y1="4.5" x2="5" y2="5.5" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.35}"/>
-      <circle cx="10" cy="5" r="0.4" fill="${c.stroke}" fill-opacity="${c.op * 0.25}"/>
-      <circle cx="13" cy="4.5" r="0.35" fill="${c.stroke}" fill-opacity="${c.op * 0.25}"/>
-      <path d="M1 10 Q11 9 21 10" fill="none" stroke="${c.brown}" stroke-width="0.5" stroke-opacity="${c.op * 0.3}"/>
+      <!-- main body — big stocky grouper shape facing right -->
+      <path d="M4 7 Q5 3 9 2 Q13 1.5 17 3 Q19 4 20 6 Q20 8 19 9 Q17 11 13 11.5 Q9 12 6 11 Q4 10 4 7Z" fill="${k}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.8}"/>
+      <!-- dorsal fin — spiny top -->
+      <path d="M8 3 L7 1 L9 2.5 L10 0.5 L11.5 2 L13 0.8 L14 2 L15.5 1 L16 3" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
+      <!-- tail fin — forked -->
+      <path d="M4 7 L1 4 Q0.5 3.5 1 4.5 L2 6 L1 8 Q0.5 9 1 9.5 L4 7" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
+      <!-- pectoral fin -->
+      <path d="M13 8 Q14 10 12 11" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- anal fin -->
+      <path d="M7 11 L6 12.5 L8 11.5 L9 13 L10 11" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
+      <!-- grouper spots/mottling -->
+      <circle cx="8" cy="6" r="0.6" fill="${brown}" fill-opacity="${o * 0.2}"/>
+      <circle cx="11" cy="5" r="0.5" fill="${brown}" fill-opacity="${o * 0.2}"/>
+      <circle cx="14" cy="6.5" r="0.55" fill="${brown}" fill-opacity="${o * 0.18}"/>
+      <circle cx="10" cy="8" r="0.5" fill="${brown}" fill-opacity="${o * 0.15}"/>
+      <circle cx="15" cy="4.5" r="0.4" fill="${brown}" fill-opacity="${o * 0.15}"/>
+      <circle cx="7" cy="9" r="0.45" fill="${brown}" fill-opacity="${o * 0.15}"/>
+      <!-- big eye -->
+      <circle cx="17.5" cy="5.5" r="1" fill="#FDE68A" fill-opacity="${o * 0.6}"/>
+      <circle cx="17.5" cy="5.5" r="0.4" fill="${dark}" fill-opacity="${o * 0.8}"/>
+      <!-- wide mouth -->
+      <path d="M19.5 6.5 Q20.5 7 20.5 8 Q20 8.5 19 8" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
+      <!-- gill line -->
+      <path d="M16 4 Q15.5 6 16 8.5" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
+      <!-- lateral line -->
+      <path d="M5 7 Q10 6.5 16 7" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
     </svg>`;
+    // INACTIVE: fish body outline
     return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
-      <path d="M3 10 Q6 8 11 8 Q16 8 19 10" fill="${c.brown}" fill-opacity="${c.op * 0.08}" stroke="${c.brown}" stroke-width="0.5" stroke-opacity="${c.op * 0.2}"/>
-      <path d="M1 10 Q11 9 21 10" fill="none" stroke="${c.brown}" stroke-width="0.4" stroke-opacity="${c.op * 0.25}"/>
-      <ellipse cx="11" cy="9.5" rx="4" ry="1.5" fill="${c.stroke}" fill-opacity="${c.op * 0.06}"/>
+      <path d="M5 7 Q6 4 11 3.5 Q16 4 18 7 Q16 10 11 10.5 Q6 10 5 7Z" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
+      <path d="M5 7 L2 5 L2 9 L5 7" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <circle cx="16" cy="6" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
     </svg>`;
   },
 
   orange(theme, activated = false) {
-    const c = svgColors(theme);
+    // food → #FB923C
+    const k = '#FB923C';
+    const o = activated ? 1 : 0.4;
+    const green = '#4ADE80';
+    const highlight = '#FDBA74';
+    const dark = '#C2410C';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <path d="M8 3 L8 1 Q9 0 10 1" fill="none" stroke="${c.green}" stroke-width="0.6" stroke-opacity="${c.op * 0.6}" stroke-linecap="round"/>
-      <path d="M8 3 Q6 1 5 1 Q6 2 7 3" fill="${c.green}" fill-opacity="${c.op * 0.4}" stroke="${c.green}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
-      <path d="M8 3 Q10 1 11 1 Q10 2 9 3" fill="${c.green}" fill-opacity="${c.op * 0.35}" stroke="${c.green}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
-      <circle cx="8" cy="9" r="6" fill="${c.accent}" fill-opacity="${c.op * 0.4}" stroke="${c.accent}" stroke-width="0.6" stroke-opacity="${c.op * 0.7}"/>
-      <line x1="8" y1="4" x2="8" y2="14" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op * 0.3}"/>
-      <line x1="5" y1="5.5" x2="5" y2="12.5" stroke="${c.accent}" stroke-width="0.2" stroke-opacity="${c.op * 0.2}"/>
-      <line x1="11" y1="5.5" x2="11" y2="12.5" stroke="${c.accent}" stroke-width="0.2" stroke-opacity="${c.op * 0.2}"/>
-      <circle cx="6" cy="8" r="0.4" fill="${c.accent}" fill-opacity="${c.op * 0.3}"/>
-      <circle cx="10" cy="10" r="0.35" fill="${c.accent}" fill-opacity="${c.op * 0.25}"/>
-      <circle cx="8" cy="13" r="0.3" fill="${c.accent}" fill-opacity="${c.op * 0.2}"/>
+      <!-- stem -->
+      <path d="M8 3.5 L8 1.5" fill="none" stroke="${dark}" stroke-width="0.8" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- leaves — two small ones flanking stem -->
+      <path d="M8 2.5 Q5.5 1 4.5 1.5 Q5.5 2.5 7.5 3" fill="${green}" fill-opacity="${o * 0.4}" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <path d="M8 2.5 Q10.5 1 11.5 1.5 Q10.5 2.5 8.5 3" fill="${green}" fill-opacity="${o * 0.35}" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.45}"/>
+      <!-- leaf veins -->
+      <line x1="6" y1="1.8" x2="7" y2="2.8" stroke="${green}" stroke-width="0.25" stroke-opacity="${o * 0.3}"/>
+      <line x1="10" y1="1.8" x2="9" y2="2.8" stroke="${green}" stroke-width="0.25" stroke-opacity="${o * 0.3}"/>
+      <!-- main orange fruit -->
+      <circle cx="8" cy="9.5" r="5.8" fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
+      <!-- citrus segment lines radiating from center -->
+      <line x1="8" y1="4.5" x2="8" y2="14.5" stroke="${dark}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
+      <line x1="3" y1="6.5" x2="13" y2="12.5" stroke="${dark}" stroke-width="0.3" stroke-opacity="${o * 0.12}"/>
+      <line x1="13" y1="6.5" x2="3" y2="12.5" stroke="${dark}" stroke-width="0.3" stroke-opacity="${o * 0.12}"/>
+      <line x1="2.5" y1="9.5" x2="13.5" y2="9.5" stroke="${dark}" stroke-width="0.3" stroke-opacity="${o * 0.1}"/>
+      <!-- orange peel texture — tiny dimples -->
+      <circle cx="6" cy="7.5" r="0.3" fill="${k}" fill-opacity="${o * 0.2}"/>
+      <circle cx="10" cy="8" r="0.3" fill="${k}" fill-opacity="${o * 0.2}"/>
+      <circle cx="5.5" cy="10.5" r="0.25" fill="${k}" fill-opacity="${o * 0.18}"/>
+      <circle cx="10.5" cy="11" r="0.25" fill="${k}" fill-opacity="${o * 0.18}"/>
+      <circle cx="8" cy="13" r="0.25" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <circle cx="7" cy="6" r="0.2" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <!-- highlight/shine -->
+      <path d="M5.5 6 Q6.5 5 7.5 5.5" fill="none" stroke="${highlight}" stroke-width="0.5" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <!-- navel dimple at bottom -->
+      <circle cx="8" cy="14.5" r="0.5" fill="${dark}" fill-opacity="${o * 0.15}"/>
     </svg>`;
+    // INACTIVE: round orange shape with stem hint
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <path d="M8 6 L8 4 Q9 3 10 4" fill="none" stroke="${c.green}" stroke-width="0.5" stroke-opacity="${c.op * 0.35}" stroke-linecap="round"/>
-      <path d="M8 6 Q6 4.5 5.5 4.5 Q6.5 5 7 6" fill="${c.green}" fill-opacity="${c.op * 0.25}" stroke="${c.green}" stroke-width="0.3" stroke-opacity="${c.op * 0.25}"/>
-      <path d="M8 6 Q10 4.5 10.5 4.5 Q9.5 5 9 6" fill="${c.green}" fill-opacity="${c.op * 0.2}" stroke="${c.green}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
+      <circle cx="8" cy="9.5" r="5" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
+      <path d="M8 4.5 L8 3" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M8 3.5 Q6 2.5 5.5 3" fill="none" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
   craftBeer(theme, activated = false) {
-    const c = svgColors(theme);
+    // food → #FB923C
+    const k = '#FB923C';
+    const o = activated ? 1 : 0.4;
+    const amber = '#D97706';
+    const foam = '#FEF3C7';
+    const glass = '#FDE68A';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
-      <rect x="2" y="5" width="8" height="11" rx="1" fill="${c.accent}" fill-opacity="${c.op * 0.25}" stroke="${c.stroke}" stroke-width="0.6" stroke-opacity="${c.op * 0.7}"/>
-      <path d="M2 5 Q6 3 10 5" fill="${c.accent}" fill-opacity="${c.op * 0.35}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.6}"/>
-      <path d="M1 4 Q6 1 11 4" fill="${c.accent}" fill-opacity="${c.op * 0.4}" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.5}"/>
-      <ellipse cx="4" cy="3" rx="1.5" ry="1" fill="${c.accent}" fill-opacity="${c.op * 0.35}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
-      <ellipse cx="8" cy="2.5" rx="1.5" ry="1.2" fill="${c.accent}" fill-opacity="${c.op * 0.35}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.4}"/>
-      <ellipse cx="6" cy="1.5" rx="1.2" ry="0.8" fill="${c.accent}" fill-opacity="${c.op * 0.3}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.35}"/>
-      <path d="M10 8 L12 8 Q13 8 13 9 L13 12 Q13 13 12 13 L10 13" fill="none" stroke="${c.stroke}" stroke-width="0.5" stroke-opacity="${c.op * 0.6}"/>
-      <line x1="3" y1="9" x2="9" y2="9" stroke="${c.accent}" stroke-width="0.3" stroke-opacity="${c.op * 0.25}"/>
-      <rect x="4" y="10" width="4" height="3" rx="0.3" fill="${c.accent}" fill-opacity="${c.op * 0.15}" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.25}"/>
-      <circle cx="5" cy="7" r="0.4" fill="${c.accent}" fill-opacity="${c.op * 0.3}"/>
-      <circle cx="7" cy="7.5" r="0.35" fill="${c.accent}" fill-opacity="${c.op * 0.25}"/>
-      <circle cx="4" cy="14" r="0.3" fill="${c.accent}" fill-opacity="${c.op * 0.2}"/>
+      <!-- pint glass — tapered shape wider at top -->
+      <path d="M2.5 5 L1.5 16 Q1.5 17 2.5 17 L9.5 17 Q10.5 17 10.5 16 L9.5 5Z" fill="${amber}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
+      <!-- beer fill line gradient effect -->
+      <rect x="2.3" y="7" width="7.4" height="9.5" rx="0.5" fill="${k}" fill-opacity="${o * 0.2}"/>
+      <!-- beer liquid darker at bottom -->
+      <rect x="2" y="12" width="8" height="4.5" rx="0.5" fill="${amber}" fill-opacity="${o * 0.15}"/>
+      <!-- foam head — bubbly top -->
+      <path d="M2.5 5 Q6 3.5 9.5 5" fill="${foam}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- foam bubbles overflowing -->
+      <ellipse cx="4" cy="3.5" rx="1.8" ry="1.2" fill="${foam}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+      <ellipse cx="8" cy="3" rx="1.8" ry="1.3" fill="${foam}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+      <ellipse cx="6" cy="2" rx="1.5" ry="1" fill="${foam}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.35}"/>
+      <ellipse cx="3.5" cy="1.5" rx="1" ry="0.7" fill="${foam}" fill-opacity="${o * 0.25}"/>
+      <ellipse cx="8.5" cy="1.5" rx="1" ry="0.7" fill="${foam}" fill-opacity="${o * 0.25}"/>
+      <!-- handle -->
+      <path d="M9.5 7.5 L11.5 7.5 Q12.5 7.5 12.5 8.5 L12.5 12 Q12.5 13 11.5 13 L9.5 13" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
+      <!-- rising bubbles inside beer -->
+      <circle cx="5" cy="8" r="0.4" fill="${k}" fill-opacity="${o * 0.2}"/>
+      <circle cx="7" cy="9" r="0.35" fill="${k}" fill-opacity="${o * 0.18}"/>
+      <circle cx="4.5" cy="11" r="0.3" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <circle cx="6.5" cy="13" r="0.35" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <circle cx="8" cy="10.5" r="0.25" fill="${k}" fill-opacity="${o * 0.12}"/>
+      <!-- label on glass -->
+      <rect x="3.5" y="10" width="5" height="3.5" rx="0.5" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <!-- condensation drops on glass -->
+      <circle cx="3" cy="8.5" r="0.2" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <circle cx="3.5" cy="14" r="0.2" fill="${k}" fill-opacity="${o * 0.12}"/>
     </svg>`;
+    // INACTIVE: pint glass outline with foam cap
     return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
-      <circle cx="6" cy="8" r="3" fill="none" stroke="${c.stroke}" stroke-width="0.4" stroke-opacity="${c.op * 0.2}"/>
-      <path d="M4.5 8 L5.5 7 L5 8 L6 7.5 L5.5 8.5 L6.5 8 L7 9" fill="none" stroke="${c.stroke}" stroke-width="0.3" stroke-opacity="${c.op * 0.2}"/>
+      <path d="M3 6 L2 16 Q2 17 3 17 L9 17 Q10 17 10 16 L9 6Z" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
+      <path d="M3 6 Q6 4.5 9 6" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+      <ellipse cx="6" cy="4" rx="2" ry="1" fill="${k}" fill-opacity="${o * 0.15}"/>
     </svg>`;
   },
 
