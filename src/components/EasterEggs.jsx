@@ -43,7 +43,7 @@ export const SVG_GENERATORS = {
   // =========================================================================
 
   pirateShip(theme, activated = false) {
-    // culture → #A78BFA
+    // heritage → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
@@ -119,8 +119,8 @@ export const SVG_GENERATORS = {
   },
 
   kraken(theme, activated = false) {
-    // water → #2DD4BF
-    const k = '#2DD4BF';
+    // folklore → #C084FC
+    const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const purple = '#7C3AED';
     const yellow = '#FBBF24';
@@ -184,8 +184,8 @@ export const SVG_GENERATORS = {
   },
 
   skunkApe(theme, activated = false) {
-    // land → #4ADE80
-    const k = '#4ADE80';
+    // folklore → #C084FC
+    const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const gold = '#FBBF24';
     const brown = '#92400E';
@@ -252,7 +252,7 @@ export const SVG_GENERATORS = {
   },
 
   strawberry(theme, activated = false) {
-    // food → #FB923C
+    // culture → #FB923C
     const k = '#FB923C';
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
@@ -310,8 +310,8 @@ export const SVG_GENERATORS = {
   },
 
   lightning(theme, activated = false) {
-    // culture → #A78BFA
-    const k = '#A78BFA';
+    // nature → #4ADE80
+    const k = '#4ADE80';
     const o = activated ? 1 : 0.4;
     const blue = '#60A5FA';
     const yellow = '#FDE68A';
@@ -376,8 +376,8 @@ export const SVG_GENERATORS = {
   },
 
   mermaid(theme, activated = false) {
-    // culture → #A78BFA
-    const k = '#A78BFA';
+    // folklore → #C084FC
+    const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const teal = '#2DD4BF';
     const skin = '#FBBF24';
@@ -435,7 +435,7 @@ export const SVG_GENERATORS = {
   },
 
   cigar(theme, activated = false) {
-    // food → #FB923C
+    // culture → #FB923C
     const k = '#FB923C';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
@@ -477,7 +477,7 @@ export const SVG_GENERATORS = {
   },
 
   dolphin(theme, activated = false) {
-    // water → #2DD4BF
+    // marine → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const dark = '#0D9488';
@@ -526,7 +526,7 @@ export const SVG_GENERATORS = {
   },
 
   pelican(theme, activated = false) {
-    // bird → #38BDF8
+    // birds → #38BDF8
     const k = '#38BDF8';
     const o = activated ? 1 : 0.4;
     const yellow = '#FBBF24';
@@ -584,7 +584,7 @@ export const SVG_GENERATORS = {
   },
 
   osprey(theme, activated = false) {
-    // bird → #38BDF8
+    // birds → #38BDF8
     const k = '#38BDF8';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
@@ -638,7 +638,7 @@ export const SVG_GENERATORS = {
   },
 
   sandhillCrane(theme, activated = false) {
-    // bird → #38BDF8
+    // birds → #38BDF8
     const k = '#38BDF8';
     const o = activated ? 1 : 0.4;
     const gray = '#6B7280';
@@ -691,8 +691,8 @@ export const SVG_GENERATORS = {
   },
 
   gopherTortoise(theme, activated = false) {
-    // land → #4ADE80
-    const k = '#4ADE80';
+    // landmarks → #FBBF24
+    const k = '#FBBF24';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
     const dark = '#166534';
@@ -735,8 +735,8 @@ export const SVG_GENERATORS = {
   },
 
   alligator(theme, activated = false) {
-    // land → #4ADE80
-    const k = '#4ADE80';
+    // marine → #2DD4BF
+    const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const dark = '#166534';
     const teal = '#2DD4BF';
@@ -797,7 +797,7 @@ export const SVG_GENERATORS = {
   },
 
   roseateSpoonbill(theme, activated = false) {
-    // bird → #38BDF8
+    // birds → #38BDF8
     const k = '#38BDF8';
     const o = activated ? 1 : 0.4;
     const pink = '#F472B6';
@@ -847,7 +847,7 @@ export const SVG_GENERATORS = {
   },
 
   seaTurtle(theme, activated = false) {
-    // water → #2DD4BF
+    // marine → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const dark = '#0D9488';
@@ -907,7 +907,7 @@ export const SVG_GENERATORS = {
   // --- Batch 2: Landmarks & Sports ---
 
   skywayBridge(theme, activated = false) {
-    // landmark → #FBBF24
+    // landmarks → #FBBF24
     const k = '#FBBF24';
     const o = activated ? 1 : 0.4;
     const water = '#2DD4BF';
@@ -956,8 +956,8 @@ export const SVG_GENERATORS = {
   },
 
   spongeDiver(theme, activated = false) {
-    // water → #2DD4BF
-    const k = '#2DD4BF';
+    // heritage → #A78BFA
+    const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const suit = '#1E3A5F';
     const brass = '#D4A04A';
@@ -1014,7 +1014,7 @@ export const SVG_GENERATORS = {
   },
 
   hockeyPuck(theme, activated = false) {
-    // sport → #F87171
+    // sports → #F87171
     const k = '#F87171';
     const o = activated ? 1 : 0.4;
     const ice = '#E0F2FE';
@@ -1059,7 +1059,7 @@ export const SVG_GENERATORS = {
   },
 
   pirateFlag(theme, activated = false) {
-    // sport → #F87171
+    // sports → #F87171
     const k = '#F87171';
     const o = activated ? 1 : 0.4;
     const black = '#1E293B';
@@ -1104,7 +1104,7 @@ export const SVG_GENERATORS = {
   },
 
   stingray(theme, activated = false) {
-    // water → #2DD4BF
+    // marine → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const dark = '#1E293B';
@@ -1156,7 +1156,7 @@ export const SVG_GENERATORS = {
   },
 
   greekCross(theme, activated = false) {
-    // culture → #A78BFA
+    // heritage → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const gold = '#FBBF24';
@@ -1212,7 +1212,7 @@ export const SVG_GENERATORS = {
   // --- Batch 3: Food & History ---
 
   cubanSandwich(theme, activated = false) {
-    // food → #FB923C
+    // culture → #FB923C
     const k = '#FB923C';
     const o = activated ? 1 : 0.4;
     const bread = '#D4A04A';
@@ -1270,8 +1270,8 @@ export const SVG_GENERATORS = {
   },
 
   grouper(theme, activated = false) {
-    // food → #FB923C
-    const k = '#FB923C';
+    // marine → #2DD4BF
+    const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
     const dark = '#1E293B';
@@ -1321,7 +1321,7 @@ export const SVG_GENERATORS = {
   },
 
   orange(theme, activated = false) {
-    // food → #FB923C
+    // culture → #FB923C
     const k = '#FB923C';
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
@@ -1366,7 +1366,7 @@ export const SVG_GENERATORS = {
   },
 
   craftBeer(theme, activated = false) {
-    // food → #FB923C
+    // culture → #FB923C
     const k = '#FB923C';
     const o = activated ? 1 : 0.4;
     const amber = '#D97706';
@@ -1416,7 +1416,7 @@ export const SVG_GENERATORS = {
   },
 
   flamingo(theme, activated = false) {
-    // bird → #38BDF8
+    // birds → #38BDF8
     const k = '#38BDF8';
     const o = activated ? 1 : 0.4;
     const pink = '#F472B6';
@@ -1463,8 +1463,8 @@ export const SVG_GENERATORS = {
 
 
   tikiHut(theme, activated = false) {
-    // culture → #A78BFA
-    const k = '#A78BFA';
+    // landmarks → #FBBF24
+    const k = '#FBBF24';
     const o = activated ? 1 : 0.4;
     const thatch = '#D4A04A';
     const wood = '#92400E';
@@ -1525,7 +1525,7 @@ export const SVG_GENERATORS = {
   // --- Batch 4: Quirky & Deep Cuts ---
 
   ufo(theme, activated = false) {
-    // spooky → #C084FC
+    // folklore → #C084FC
     const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
@@ -1579,8 +1579,8 @@ export const SVG_GENERATORS = {
   },
 
   conchShell(theme, activated = false) {
-    // culture → #A78BFA
-    const k = '#A78BFA';
+    // landmarks → #FBBF24
+    const k = '#FBBF24';
     const o = activated ? 1 : 0.4;
     const pink = '#F472B6';
     const coral = '#FB7185';
@@ -1622,7 +1622,7 @@ export const SVG_GENERATORS = {
   },
 
   treasureChest(theme, activated = false) {
-    // culture → #A78BFA
+    // heritage → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const gold = '#FBBF24';
@@ -1692,7 +1692,7 @@ export const SVG_GENERATORS = {
   },
 
   gibsonton(theme, activated = false) {
-    // spooky → #C084FC
+    // folklore → #C084FC
     const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const red = '#F87171';
@@ -1749,7 +1749,7 @@ export const SVG_GENERATORS = {
   },
 
   spookHill(theme, activated = false) {
-    // spooky → #C084FC
+    // folklore → #C084FC
     const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
@@ -1806,7 +1806,7 @@ export const SVG_GENERATORS = {
   },
 
   joyland(theme, activated = false) {
-    // spooky → #C084FC
+    // folklore → #C084FC
     const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const rust = '#92400E';
@@ -1862,7 +1862,7 @@ export const SVG_GENERATORS = {
   },
 
   babeRuth(theme, activated = false) {
-    // sport → #F87171
+    // sports → #F87171
     const k = '#F87171';
     const o = activated ? 1 : 0.4;
     const white = '#F8FAFC';
@@ -1902,7 +1902,7 @@ export const SVG_GENERATORS = {
   },
 
   phosphateMining(theme, activated = false) {
-    // culture → #A78BFA
+    // heritage → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const rust = '#92400E';
@@ -1958,7 +1958,7 @@ export const SVG_GENERATORS = {
 
 
   sharkTooth(theme, activated = false) {
-    // water → #2DD4BF
+    // marine → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const bone = '#E2E8F0';
@@ -2002,7 +2002,7 @@ export const SVG_GENERATORS = {
   },
 
   tarponFish(theme, activated = false) {
-    // water → #2DD4BF
+    // marine → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const silver = '#CBD5E1';
@@ -2056,7 +2056,7 @@ export const SVG_GENERATORS = {
   },
 
   shipwreck(theme, activated = false) {
-    // spooky → #C084FC
+    // folklore → #C084FC
     const k = '#C084FC';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
@@ -2111,7 +2111,7 @@ export const SVG_GENERATORS = {
   },
 
   mantaRay(theme, activated = false) {
-    // water → #2DD4BF
+    // marine → #2DD4BF
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     const dark = '#1E293B';
@@ -2165,7 +2165,7 @@ export const SVG_GENERATORS = {
   },
 
   spanishMoss(theme, activated = false) {
-    // culture → #A78BFA
+    // heritage → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const brown = '#92400E';
@@ -2216,8 +2216,8 @@ export const SVG_GENERATORS = {
   // --- Replacement Batch: Fun Facts & Folklore ---
 
   greenFlash(theme, activated = false) {
-    // water → #2DD4BF
-    const k = '#2DD4BF';
+    // nature → #4ADE80
+    const k = '#4ADE80';
     const o = activated ? 1 : 0.4;
     const orange = '#FB923C';
     const gold = '#FBBF24';
@@ -2261,7 +2261,7 @@ export const SVG_GENERATORS = {
   },
 
   unconquered(theme, activated = false) {
-    // culture → #A78BFA
+    // heritage → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const red = '#DC2626';
@@ -2308,8 +2308,8 @@ export const SVG_GENERATORS = {
   },
 
   mangroveTunnels(theme, activated = false) {
-    // water → #2DD4BF
-    const k = '#2DD4BF';
+    // nature → #4ADE80
+    const k = '#4ADE80';
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
     const brown = '#92400E';
@@ -2371,7 +2371,7 @@ export const SVG_GENERATORS = {
   },
 
   kerouac(theme, activated = false) {
-    // culture → #A78BFA
+    // heritage → #A78BFA
     const k = '#A78BFA';
     const o = activated ? 1 : 0.4;
     const dark = '#1E293B';
@@ -2434,8 +2434,8 @@ export const SVG_GENERATORS = {
   },
 
   bioluminescence(theme, activated = false) {
-    // water → #2DD4BF
-    const k = '#2DD4BF';
+    // nature → #4ADE80
+    const k = '#4ADE80';
     const o = activated ? 1 : 0.4;
     const blue = '#38BDF8';
     const dark = '#1E293B';
@@ -2484,8 +2484,8 @@ export const SVG_GENERATORS = {
   },
 
   floridaMan(theme, activated = false) {
-    // culture → #A78BFA
-    const k = '#A78BFA';
+    // landmarks → #FBBF24
+    const k = '#FBBF24';
     const o = activated ? 1 : 0.4;
     const gold = '#FBBF24';
     const red = '#DC2626';
@@ -2527,8 +2527,8 @@ export const SVG_GENERATORS = {
   },
 
   hurricaneAlley(theme, activated = false) {
-    // water → #2DD4BF
-    const k = '#2DD4BF';
+    // nature → #4ADE80
+    const k = '#4ADE80';
     const o = activated ? 1 : 0.4;
     const gray = '#94A3B8';
     const dark = '#1E293B';
@@ -2569,8 +2569,8 @@ export const SVG_GENERATORS = {
   },
 
   redTide(theme, activated = false) {
-    // water → #2DD4BF
-    const k = '#2DD4BF';
+    // nature → #4ADE80
+    const k = '#4ADE80';
     const o = activated ? 1 : 0.4;
     const red = '#DC2626';
     const darkRed = '#991B1B';
@@ -2612,8 +2612,8 @@ export const SVG_GENERATORS = {
   },
 
   honeymoonIsland(theme, activated = false) {
-    // culture → #A78BFA
-    const k = '#A78BFA';
+    // landmarks → #FBBF24
+    const k = '#FBBF24';
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
     const brown = '#92400E';
@@ -2667,7 +2667,7 @@ export const SVG_GENERATORS = {
   },
 
   ghostOrchid(theme, activated = false) {
-    // land → #4ADE80
+    // nature → #4ADE80
     const k = '#4ADE80';
     const o = activated ? 1 : 0.4;
     const white = '#F8FAFC';
