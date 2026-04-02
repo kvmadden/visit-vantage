@@ -1630,11 +1630,23 @@ export const SVG_GENERATORS = {
       <circle cx="3" cy="5" r="0.4" fill="${gold}" fill-opacity="${o * 0.3}"/>
       <circle cx="17" cy="6" r="0.35" fill="${gold}" fill-opacity="${o * 0.25}"/>
     </svg>`;
-    // INACTIVE: tent peak silhouette
+    // INACTIVE: carnival tent with stripes and entrance
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
       <path d="M4 14 L10 4 L16 14" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
+      <!-- stripe hints -->
+      <path d="M10 4 L7 14" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <path d="M10 4 L13 14" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <!-- entrance opening -->
+      <path d="M9 14 L10 11 L11 14" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <!-- flag on top -->
       <line x1="10" y1="4" x2="10" y2="2.5" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
       <path d="M10 2.5 L11.5 3 L10 3.3" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- ground line -->
+      <line x1="2" y1="14.5" x2="18" y2="14.5" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
+      <!-- string light dots -->
+      <circle cx="7" cy="11" r="0.3" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <circle cx="10" cy="10.5" r="0.3" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <circle cx="13" cy="11" r="0.3" fill="${k}" fill-opacity="${o * 0.3}"/>
     </svg>`;
   },
 
@@ -1652,29 +1664,40 @@ export const SVG_GENERATORS = {
       <path d="M1 11.5 Q5 9 10 7.5 Q15 9 19 11.5" fill="${gray}" fill-opacity="${o * 0.08}" stroke="${gray}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
       <!-- road center line (dashed) -->
       <path d="M3 11 Q7 9 10 8 Q13 9 17 11" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-dasharray="1.5 1"/>
-      <!-- car on the hill — rolling "uphill" -->
-      <rect x="11" y="7" width="4" height="2" rx="0.5" fill="${dark}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}" transform="rotate(-8 13 8)"/>
-      <!-- car windshield -->
-      <rect x="12.5" y="6.5" width="1.5" height="1" rx="0.3" fill="${k}" fill-opacity="${o * 0.15}" transform="rotate(-8 13 8)"/>
-      <!-- car wheels -->
-      <circle cx="12" cy="9.2" r="0.5" fill="${dark}" fill-opacity="${o * 0.5}"/>
-      <circle cx="14.5" cy="8.8" r="0.5" fill="${dark}" fill-opacity="${o * 0.5}"/>
-      <!-- arrow showing "wrong" direction — car rolling up -->
-      <path d="M15.5 6 L17 5 L16.5 6.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- question marks floating (gravity illusion) -->
-      <text x="5" y="4" font-size="3" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.5}">?</text>
-      <text x="8" y="2.5" font-size="2.5" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.4}">?</text>
-      <text x="16" y="3" font-size="2" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.3}">?</text>
-      <!-- spooky mist wisps -->
-      <path d="M2 10 Q3 9.5 4 10" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <path d="M15 10.5 Q16 10 17 10.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <!-- car — proper car shape with roof, hood, trunk -->
+      <g transform="rotate(-8 13 8)">
+        <!-- car body lower -->
+        <rect x="10.5" y="7.5" width="5" height="1.8" rx="0.4" fill="${dark}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
+        <!-- car cabin/roof — smaller centered on top -->
+        <rect x="11.5" y="6.2" width="3" height="1.5" rx="0.5" fill="${dark}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+        <!-- windshield -->
+        <path d="M11.5 7.5 L12 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+        <!-- rear window -->
+        <path d="M14.5 7.5 L14 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      </g>
+      <!-- wheels -->
+      <circle cx="11.5" cy="9.5" r="0.7" fill="${dark}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <circle cx="14.8" cy="9" r="0.7" fill="${dark}" fill-opacity="${o * 0.6}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <!-- arrow showing car rolling uphill -->
+      <path d="M15.5 5.5 L17.5 4.5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M16.5 5 L17.5 4.5 L17 5.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <!-- BIG question marks — prominent -->
+      <text x="3" y="4.5" font-size="4" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.7}">?</text>
+      <text x="7.5" y="3" font-size="3.5" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.6}">?</text>
+      <text x="16.5" y="3" font-size="3" font-weight="bold" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.5}">?</text>
       <!-- ground -->
       <line x1="0" y1="12.5" x2="20" y2="12.5" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
     </svg>`;
-    // INACTIVE: hill slope with question mark
+    // INACTIVE: hill slope with question marks and road hint
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
-      <path d="M2 12 Q10 7 18 5" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
-      <text x="8" y="5" font-size="3" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.6}">?</text>
+      <path d="M1 12 Q10 7 19 5" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
+      <!-- road dashes on hill -->
+      <path d="M5 10.5 Q10 8 15 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}" stroke-dasharray="1 1"/>
+      <!-- question marks -->
+      <text x="6" y="5" font-size="3.5" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.7}">?</text>
+      <text x="11" y="3.5" font-size="2.5" font-family="sans-serif" fill="${k}" fill-opacity="${o * 0.5}">?</text>
+      <!-- ground fill hint -->
+      <path d="M1 12 Q10 7 19 5 L19 13 L1 13Z" fill="${k}" fill-opacity="${o * 0.05}"/>
     </svg>`;
   },
 
@@ -1715,12 +1738,17 @@ export const SVG_GENERATORS = {
       <path d="M3 8 Q2 7 2.5 6" fill="none" stroke="#4ADE80" stroke-width="0.4" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
       <path d="M16 14 Q17 13.5 17 12.5" fill="none" stroke="#4ADE80" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
     </svg>`;
-    // INACTIVE: ferris wheel outline with broken spoke
+    // INACTIVE: ferris wheel connected to ground with A-frame support
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-      <circle cx="10" cy="10" r="7" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-dasharray="2 1"/>
-      <line x1="10" y1="3" x2="10" y2="17" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
-      <line x1="3" y1="10" x2="17" y2="10" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
-      <circle cx="10" cy="10" r="1" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <circle cx="10" cy="9" r="6.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-dasharray="2 1"/>
+      <line x1="10" y1="2.5" x2="10" y2="15.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+      <line x1="3.5" y1="9" x2="16.5" y2="9" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+      <circle cx="10" cy="9" r="1" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- A-frame support legs going to ground -->
+      <line x1="10" y1="9" x2="6" y2="19" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
+      <line x1="10" y1="9" x2="14" y2="19" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
+      <!-- ground line -->
+      <line x1="3" y1="19" x2="17" y2="19" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
     </svg>`;
   },
 
@@ -1732,24 +1760,27 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const red = '#DC2626';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <!-- bat — diagonal, tapered -->
-      <path d="M1 15 L2 14.5 L12 3.5 L12.5 2.5 Q13 1.5 12.5 1 Q12 0.5 11.5 1 L11 1.5 L1.5 14.5Z" fill="${brown}" fill-opacity="${o * 0.35}" stroke="${brown}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
-      <!-- bat handle grip lines -->
-      <line x1="1.5" y1="14" x2="2.5" y2="13" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
-      <line x1="2" y1="13.5" x2="3" y2="12.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
+      <!-- bat — angled, on the left side -->
+      <path d="M1 14 L1.5 13.5 L8 5 L8.5 4 Q9 3 8.5 2.5 Q8 2 7.5 2.5 L7 3 L1 13.5Z" fill="${brown}" fill-opacity="${o * 0.4}" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
+      <!-- bat handle grip -->
+      <line x1="1.5" y1="13" x2="2.2" y2="12" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <line x1="1.8" y1="12.5" x2="2.5" y2="11.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
       <!-- bat knob -->
-      <circle cx="1.2" cy="15" r="0.6" fill="${brown}" fill-opacity="${o * 0.4}"/>
-      <!-- baseball — white with red stitching -->
-      <circle cx="8" cy="8" r="3.5" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
+      <circle cx="0.8" cy="14.3" r="0.6" fill="${brown}" fill-opacity="${o * 0.45}"/>
+      <!-- baseball — on the right side, just barely touching the bat tip -->
+      <circle cx="11.5" cy="5.5" r="3.2" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
       <!-- stitching — classic S-curves -->
-      <path d="M5.5 6 Q8 4.5 10.5 6" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
-      <path d="M5.5 10 Q8 11.5 10.5 10" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
-      <!-- stitch marks (V-shapes along seam) -->
-      <path d="M6 6.2 L6.3 6.8 M7 5.6 L7.2 6.2 M8 5.3 L8 5.9 M9 5.6 L8.8 6.2 M10 6.2 L9.7 6.8" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <path d="M6 9.8 L6.3 9.2 M7 10.4 L7.2 9.8 M8 10.7 L8 10.1 M9 10.4 L8.8 9.8 M10 9.8 L9.7 9.2" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <!-- motion arc lines (ball flying) -->
-      <path d="M4 5 Q3 4 2 5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M3 4 Q2 3 1 4" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M9.2 3.8 Q11.5 2.5 13.8 3.8" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <path d="M9.2 7.2 Q11.5 8.5 13.8 7.2" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- stitch marks -->
+      <path d="M9.5 4 L9.7 4.5 M10.5 3.5 L10.6 4 M11.5 3.2 L11.5 3.7 M12.5 3.5 L12.3 4 M13.5 4 L13.2 4.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <path d="M9.5 7 L9.7 6.5 M10.5 7.5 L10.6 7 M11.5 7.8 L11.5 7.3 M12.5 7.5 L12.3 7 M13.5 7 L13.2 6.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <!-- motion arcs — ball just hit -->
+      <path d="M14.5 3 Q15 2 15.5 2.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M15 2 Q15.5 1 16 1.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <!-- impact spark at contact point -->
+      <line x1="8.5" y1="4.5" x2="7.5" y2="3.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <line x1="9" y1="3.5" x2="8" y2="2.5" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: baseball with stitching
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -1769,40 +1800,41 @@ export const SVG_GENERATORS = {
     const bone = '#FDE68A';
     const dirt = '#D4A04A';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
-      <!-- mine pit — open cut terraces -->
-      <path d="M0 12 L3 9 L7 9 L7 7 L13 7 L13 9 L17 9 L20 12" fill="${dirt}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
-      <!-- terrace layers -->
-      <line x1="3" y1="9" x2="17" y2="9" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
-      <line x1="7" y1="7" x2="13" y2="7" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
-      <!-- mine cart on rails -->
-      <path d="M5 11.5 L8 11.5 L8.5 9.5 L4.5 9.5Z" fill="${gray}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
-      <!-- cart filled with rocks -->
-      <circle cx="5.5" cy="10" r="0.5" fill="${dirt}" fill-opacity="${o * 0.35}"/>
-      <circle cx="6.5" cy="9.8" r="0.55" fill="${dirt}" fill-opacity="${o * 0.3}"/>
-      <circle cx="7.2" cy="10.2" r="0.45" fill="${dirt}" fill-opacity="${o * 0.3}"/>
+      <!-- big phosphate mound — irregularly shaped pile -->
+      <path d="M0 14 Q2 10 5 8 Q7 7 9 7.5 Q11 6.5 13 7 Q16 8 18 10 Q20 12 20 14Z" fill="${dirt}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}"/>
+      <!-- mound texture — layers showing strata -->
+      <path d="M2 12 Q6 10 10 10 Q14 10 18 12" fill="none" stroke="${dirt}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
+      <path d="M4 10 Q7 9 10 9 Q13 9 16 10" fill="none" stroke="${dirt}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <!-- rocks/chunks on the mound -->
+      <circle cx="6" cy="10" r="0.7" fill="${dirt}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <circle cx="10" cy="9" r="0.8" fill="${dirt}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <circle cx="14" cy="9.5" r="0.6" fill="${dirt}" fill-opacity="${o * 0.25}"/>
+      <circle cx="8" cy="11" r="0.5" fill="${dirt}" fill-opacity="${o * 0.2}"/>
+      <circle cx="12" cy="10.5" r="0.55" fill="${dirt}" fill-opacity="${o * 0.2}"/>
+      <!-- mine cart at base of mound -->
+      <path d="M2 13.5 L5 13.5 L5.5 11.5 L1.5 11.5Z" fill="${gray}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}"/>
+      <!-- cart rocks -->
+      <circle cx="2.5" cy="12" r="0.5" fill="${dirt}" fill-opacity="${o * 0.4}"/>
+      <circle cx="3.5" cy="11.8" r="0.55" fill="${dirt}" fill-opacity="${o * 0.35}"/>
+      <circle cx="4.2" cy="12.2" r="0.45" fill="${dirt}" fill-opacity="${o * 0.3}"/>
       <!-- cart wheels -->
-      <circle cx="5.5" cy="12" r="0.7" fill="${gray}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
-      <circle cx="7.5" cy="12" r="0.7" fill="${gray}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
-      <!-- rail tracks -->
-      <line x1="2" y1="12.5" x2="12" y2="12.5" stroke="${gray}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
-      <line x1="2" y1="11.5" x2="12" y2="11.5" stroke="${gray}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
-      <!-- rail ties -->
-      <line x1="3" y1="11.3" x2="3" y2="12.7" stroke="${gray}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
-      <line x1="5" y1="11.3" x2="5" y2="12.7" stroke="${gray}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
-      <line x1="9" y1="11.3" x2="9" y2="12.7" stroke="${gray}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
-      <line x1="11" y1="11.3" x2="11" y2="12.7" stroke="${gray}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
-      <!-- fossil bones embedded in wall -->
-      <path d="M14 8 L15.5 7.5 L15 8.5" fill="none" stroke="${bone}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <circle cx="14" cy="8" r="0.3" fill="${bone}" fill-opacity="${o * 0.35}"/>
-      <circle cx="15" cy="8.5" r="0.3" fill="${bone}" fill-opacity="${o * 0.3}"/>
-      <!-- more fossils -->
-      <path d="M9 7.5 L10 7.2" fill="none" stroke="${bone}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <circle cx="9" cy="7.5" r="0.25" fill="${bone}" fill-opacity="${o * 0.25}"/>
-      <!-- dust cloud from mining -->
-      <circle cx="16" cy="8" r="0.8" fill="${k}" fill-opacity="${o * 0.1}"/>
-      <circle cx="17" cy="7.5" r="0.6" fill="${k}" fill-opacity="${o * 0.08}"/>
-      <!-- ground -->
-      <line x1="0" y1="13.5" x2="20" y2="13.5" stroke="${dirt}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
+      <circle cx="2.5" cy="14" r="0.6" fill="${gray}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <circle cx="4.5" cy="14" r="0.6" fill="${gray}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
+      <!-- rail tracks under cart -->
+      <line x1="0" y1="14.5" x2="8" y2="14.5" stroke="${gray}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
+      <!-- fossil bones embedded in mound face -->
+      <path d="M15 8.5 L16.5 8 L16 9" fill="none" stroke="${bone}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <circle cx="15" cy="8.5" r="0.35" fill="${bone}" fill-opacity="${o * 0.4}"/>
+      <circle cx="16" cy="9" r="0.3" fill="${bone}" fill-opacity="${o * 0.35}"/>
+      <!-- more fossil hints -->
+      <path d="M7 8.5 L8 8" fill="none" stroke="${bone}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <circle cx="7" cy="8.5" r="0.25" fill="${bone}" fill-opacity="${o * 0.3}"/>
+      <!-- dust particles -->
+      <circle cx="17" cy="7" r="0.4" fill="${k}" fill-opacity="${o * 0.1}"/>
+      <circle cx="18" cy="6.5" r="0.3" fill="${k}" fill-opacity="${o * 0.08}"/>
+      <circle cx="16" cy="6" r="0.25" fill="${k}" fill-opacity="${o * 0.06}"/>
+      <!-- ground line -->
+      <line x1="0" y1="15" x2="20" y2="15" stroke="${dirt}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
     </svg>`;
     // INACTIVE: pit with cart silhouette
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
