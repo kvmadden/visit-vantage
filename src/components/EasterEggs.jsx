@@ -117,80 +117,56 @@ export const SVG_GENERATORS = {
     const k = '#2DD4BF';
     const o = activated ? 1 : 0.4;
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" viewBox="-2 -2 40 30">
-      <!-- waterline — kraken bursting out -->
-      <path d="M-2 22 Q6 21 18 22 Q30 23 38 22" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
-      <path d="M-2 24 Q8 23 18 24 Q28 25 38 24" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
-      <!-- dome head rising from water -->
+      <!-- waterline -->
+      <path d="M-2 22 Q8 21 18 22 Q28 23 38 22" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <!-- dome head -->
       <path d="M12 20 Q12 14 13 10 Q14 7 18 5 Q22 7 23 10 Q24 14 24 20" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- head texture -->
-      <path d="M14 8 Q16 6.5 18 6" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
-      <path d="M18 6 Q20 6.5 22 8" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
-      <!-- eyes — simple neutral dots -->
-      <circle cx="15.5" cy="11" r="1.2" fill="${k}" fill-opacity="${o * 0.9}"/>
-      <circle cx="20.5" cy="11" r="1.2" fill="${k}" fill-opacity="${o * 0.9}"/>
-      <!-- mouth — neutral straight line -->
-      <line x1="15.5" y1="15" x2="20.5" y2="15" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <!-- TENTACLE 1 — far left, long wild S-curve reaching high -->
-      <path d="M5 22 Q1 18 -1 12 Q-2 6 0 1 Q1 -1 2 2 Q3 6 3 10 Q3.5 15 5 18 Q6.5 20 9 20" fill="none" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="0" cy="3" r="0.8" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="1.5" cy="7" r="0.7" fill="${k}" fill-opacity="${o * 0.45}"/>
-      <circle cx="2.5" cy="11" r="0.6" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <circle cx="4" cy="16" r="0.6" fill="${k}" fill-opacity="${o * 0.35}"/>
-      <!-- TENTACLE 2 — left mid, curling outward -->
-      <path d="M10 20 Q7 15 5 9 Q4 4 5 1 Q6 -1 6.5 3 Q7 7 8 12 Q9 16 10 19" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o * 0.85}" stroke-linecap="round"/>
-      <circle cx="5" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.45}"/>
-      <circle cx="5.5" cy="7" r="0.55" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <circle cx="7" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.35}"/>
-      <!-- TENTACLE 3 — right mid, curling outward -->
-      <path d="M26 20 Q29 15 31 9 Q32 4 31 1 Q30 -1 29.5 3 Q29 7 28 12 Q27 16 26 19" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o * 0.85}" stroke-linecap="round"/>
-      <circle cx="31" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.45}"/>
-      <circle cx="30.5" cy="7" r="0.55" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <circle cx="29" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.35}"/>
-      <!-- TENTACLE 4 — far right, long wild S-curve reaching high -->
-      <path d="M31 22 Q35 18 37 12 Q38 6 36 1 Q35 -1 34 2 Q33 6 33 10 Q32.5 15 31 18 Q29.5 20 27 20" fill="none" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="36" cy="3" r="0.8" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <circle cx="34.5" cy="7" r="0.7" fill="${k}" fill-opacity="${o * 0.45}"/>
-      <circle cx="33.5" cy="11" r="0.6" fill="${k}" fill-opacity="${o * 0.4}"/>
-      <circle cx="32" cy="16" r="0.6" fill="${k}" fill-opacity="${o * 0.35}"/>
-      <!-- TENTACLE 5 — sneaky one curling from below left -->
-      <path d="M2 24 Q0 20 1 16 Q2 13 4 15 Q5 17 4 20" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <circle cx="1.5" cy="16" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
-      <!-- TENTACLE 6 — sneaky one curling from below right -->
-      <path d="M34 24 Q36 20 35 16 Q34 13 32 15 Q31 17 32 20" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
-      <circle cx="34.5" cy="16" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- head bumps/texture -->
+      <path d="M14 8 Q16 6 18 5.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
+      <path d="M18 5.5 Q20 6 22 8" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
+      <circle cx="16" cy="7" r="0.5" fill="${k}" fill-opacity="${o * 0.15}"/>
+      <circle cx="20" cy="7" r="0.4" fill="${k}" fill-opacity="${o * 0.12}"/>
+      <!-- eyes — dots -->
+      <circle cx="15.5" cy="11" r="1.1" fill="${k}" fill-opacity="${o * 0.9}"/>
+      <circle cx="20.5" cy="11" r="1.1" fill="${k}" fill-opacity="${o * 0.9}"/>
+      <!-- open mouth — oval opening -->
+      <ellipse cx="18" cy="15.5" rx="2" ry="1.5" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.7}"/>
+      <!-- inside mouth darkness -->
+      <ellipse cx="18" cy="15.5" rx="1.2" ry="0.8" fill="${k}" fill-opacity="${o * 0.35}"/>
+      <!-- TENTACLE 1 — far left, wide spread -->
+      <path d="M2 22 Q-2 16 -1 8 Q0 2 1 -1 Q2 2 1.5 8 Q2 14 5 19" fill="none" stroke="${k}" stroke-width="2.2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="0" cy="4" r="0.7" fill="${k}" fill-opacity="${o * 0.45}"/>
+      <circle cx="1" cy="9" r="0.6" fill="${k}" fill-opacity="${o * 0.35}"/>
+      <!-- TENTACLE 2 — left, different curve -->
+      <path d="M9 20 Q5 14 4 7 Q3.5 2 5 0 Q6 3 6 8 Q7 14 10 19" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
+      <circle cx="4" cy="4" r="0.55" fill="${k}" fill-opacity="${o * 0.4}"/>
+      <circle cx="5" cy="9" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- TENTACLE 3 — right, mirror of 2 -->
+      <path d="M27 20 Q31 14 32 7 Q32.5 2 31 0 Q30 3 30 8 Q29 14 26 19" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o * 0.8}" stroke-linecap="round"/>
+      <circle cx="32" cy="4" r="0.55" fill="${k}" fill-opacity="${o * 0.4}"/>
+      <circle cx="31" cy="9" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
+      <!-- TENTACLE 4 — far right, wide spread -->
+      <path d="M34 22 Q38 16 37 8 Q36 2 35 -1 Q34 2 34.5 8 Q34 14 31 19" fill="none" stroke="${k}" stroke-width="2.2" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="36" cy="4" r="0.7" fill="${k}" fill-opacity="${o * 0.45}"/>
+      <circle cx="35" cy="9" r="0.6" fill="${k}" fill-opacity="${o * 0.35}"/>
       <!-- water splashes -->
       <path d="M0 22 Q1 21 2 22" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
       <path d="M34 22 Q35 21 36 22" fill="none" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
-      <path d="M8 21 Q9 20 10 21" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <path d="M26 21 Q27 20 28 21" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
     </svg>`;
-    // INACTIVE: waterline + long tentacles snaking up out of the water
+    // INACTIVE: waterline + 3 tentacle tips just peeking out, subtle
     return `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" viewBox="-2 -2 40 30">
       <!-- waterline -->
-      <path d="M-2 18 Q8 17 18 18 Q28 19 38 18" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <!-- tentacle 1 — far left, tall S-curve -->
-      <path d="M5 18 Q3 13 1 8 Q0 4 1 1 Q2 -1 2.5 3 Q3 7 4 12 Q5 15 6 18" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="1" cy="3" r="0.7" fill="${k}" fill-opacity="${o * 0.7}"/>
-      <circle cx="2" cy="7" r="0.6" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <circle cx="3" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <!-- tentacle 2 — left of center, curling -->
-      <path d="M11 18 Q10 12 11 7 Q12 3 13 1 Q13.5 3 12.5 7 Q12 12 12.5 18" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="12" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.7}"/>
-      <circle cx="11" cy="8" r="0.5" fill="${k}" fill-opacity="${o * 0.55}"/>
-      <!-- tentacle 3 — center, tallest -->
-      <path d="M17 18 Q16 10 17 4 Q18 0 19 -1 Q19.5 2 19 6 Q18.5 12 19 18" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="18" cy="1" r="0.7" fill="${k}" fill-opacity="${o * 0.7}"/>
-      <circle cx="17.5" cy="5" r="0.6" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <circle cx="18" cy="10" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
-      <!-- tentacle 4 — right of center -->
-      <path d="M25 18 Q26 13 25 7 Q24 3 23 1 Q22.5 3 23.5 7 Q24 12 23.5 18" fill="none" stroke="${k}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="24" cy="3" r="0.6" fill="${k}" fill-opacity="${o * 0.7}"/>
-      <circle cx="25" cy="8" r="0.5" fill="${k}" fill-opacity="${o * 0.55}"/>
-      <!-- tentacle 5 — far right, tall S-curve -->
-      <path d="M31 18 Q33 13 35 8 Q36 4 35 1 Q34 -1 33.5 3 Q33 7 32 12 Q31 15 30 18" fill="none" stroke="${k}" stroke-width="2" stroke-opacity="${o}" stroke-linecap="round"/>
-      <circle cx="35" cy="3" r="0.7" fill="${k}" fill-opacity="${o * 0.7}"/>
-      <circle cx="34" cy="7" r="0.6" fill="${k}" fill-opacity="${o * 0.6}"/>
-      <circle cx="33" cy="12" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
+      <path d="M-2 18 Q8 17 18 18 Q28 19 38 18" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- tentacle 1 — left, just the tip curling out -->
+      <path d="M8 18 Q6 14 7 10 Q8 8 8.5 11 Q9 14 9.5 18" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="7" cy="11" r="0.5" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <!-- tentacle 2 — center, tallest tip -->
+      <path d="M17 18 Q16.5 13 17.5 8 Q18 6 18.5 9 Q19 13 19.5 18" fill="none" stroke="${k}" stroke-width="1.6" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="17.5" cy="8" r="0.5" fill="${k}" fill-opacity="${o * 0.6}"/>
+      <circle cx="18" cy="12" r="0.4" fill="${k}" fill-opacity="${o * 0.45}"/>
+      <!-- tentacle 3 — right, just the tip -->
+      <path d="M28 18 Q30 14 29 10 Q28 8 27.5 11 Q27 14 26.5 18" fill="none" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}" stroke-linecap="round"/>
+      <circle cx="29" cy="11" r="0.5" fill="${k}" fill-opacity="${o * 0.6}"/>
     </svg>`;
   },
 
