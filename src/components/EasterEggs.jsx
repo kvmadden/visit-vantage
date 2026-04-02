@@ -191,7 +191,7 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const darkGreen = '#166534';
     const water = '#2DD4BF';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="-2 -2 22 28">
       <!-- swamp water background -->
       <path d="M0 20 Q3 18 5 20 Q7 22 9 20 Q11 18 13 20 Q15 22 18 20 L18 24 L0 24 Z" fill="${water}" fill-opacity="${o * 0.1}"/>
       <path d="M1 22 Q4 20 7 22 Q10 24 13 22 Q16 20 18 22" fill="none" stroke="${water}" stroke-width="0.8" stroke-opacity="${o * 0.25}"/>
@@ -244,7 +244,7 @@ export const SVG_GENERATORS = {
       <path d="M16 6 Q17 5 16.5 4" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: dark foliage blob with two golden eyes
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="-2 -2 22 28">
       <path d="M4 8 Q9 5 14 8 Q15 11 14 13 Q9 15 4 13 Q3 11 4 8Z" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <circle cx="7" cy="10.5" r="1" fill="${k}" fill-opacity="${o * 1.5}"/>
       <circle cx="11" cy="10.5" r="1" fill="${k}" fill-opacity="${o * 1.5}"/>
@@ -259,7 +259,7 @@ export const SVG_GENERATORS = {
     const red = '#EF4444';
     const cream = '#FEF3C7';
     const deepRed = '#991B1B';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="-2 -2 20 24">
       <!-- stem -->
       <line x1="8" y1="0" x2="8" y2="3.5" stroke="${green}" stroke-width="1.8" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- calyx leaves (sepals radiating out) -->
@@ -294,7 +294,7 @@ export const SVG_GENERATORS = {
       <path d="M11 7.5 Q11.5 9 11 10.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.15}"/>
     </svg>`;
     // INACTIVE: low strawberry plant with leaves and a small red berry peeking
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="-2 -2 20 24">
       <!-- ground line -->
       <path d="M1 14 Q8 13.5 15 14" fill="none" stroke="${k}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- plant leaves spreading low -->
@@ -383,7 +383,7 @@ export const SVG_GENERATORS = {
     const skin = '#FBBF24';
     const red = '#F87171';
     const coral = '#FB7185';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="-2 -2 22 28">
       <!-- water surface -->
       <path d="M0 12 Q4.5 11 9 12 Q13.5 13 18 12" fill="none" stroke="${teal}" stroke-width="1" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <path d="M0 13.5 Q4.5 12.5 9 13.5 Q13.5 14.5 18 13.5" fill="none" stroke="${teal}" stroke-width="0.8" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
@@ -421,7 +421,7 @@ export const SVG_GENERATORS = {
       <circle cx="5" cy="22" r="0.5" fill="${teal}" fill-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: mermaid tail fluke sticking up from water — thicker tail
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="-2 -2 22 28">
       <path d="M0 14 Q4.5 13 9 14 Q13.5 15 18 14" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- thick tail rising out of water -->
       <path d="M9 14 Q9 11 10 8.5 Q10.5 7 10 6" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="2.5" stroke-opacity="${o}" stroke-linecap="round"/>
@@ -442,7 +442,7 @@ export const SVG_GENERATORS = {
     const wood = '#D97706';
     const gold = '#FBBF24';
     const cream = '#FDE68A';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="-2 -2 32 16">
       <!-- cigar body — tapered shape, unlit -->
       <path d="M3 4.5 Q2 4.5 2 6 Q2 7.5 3 7.5 L22 7 Q24 6.8 25 6 Q24 5.2 22 5 Z" fill="${brown}" fill-opacity="${o * 0.7}" stroke="${brown}" stroke-width="0.8" stroke-opacity="${o}"/>
       <!-- lighter inner wrapper -->
@@ -463,7 +463,7 @@ export const SVG_GENERATORS = {
       <ellipse cx="24.5" cy="6" rx="0.5" ry="0.7" fill="${cream}" fill-opacity="${o * 0.6}" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
     </svg>`;
     // INACTIVE: closed cigar box
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 12">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="-2 -2 32 16">
       <rect x="4" y="3" width="20" height="7" rx="1" fill="${k}" fill-opacity="${o * 0.4}" stroke="${k}" stroke-width="1.5" stroke-opacity="${o}"/>
       <line x1="4" y1="5.5" x2="24" y2="5.5" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
       <rect x="10" y="4.5" width="8" height="2" rx="0.5" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
@@ -638,7 +638,7 @@ export const SVG_GENERATORS = {
     const gray = '#6B7280';
     const red = '#EF4444';
     const green = '#4ADE80';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="-2 -2 22 28">
       <!-- grass -->
       <path d="M0 22 Q4 21 9 22 Q14 23 18 22" fill="none" stroke="${green}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
       <!-- long stilt legs -->
@@ -668,7 +668,7 @@ export const SVG_GENERATORS = {
       <path d="M12.5 12 Q14.5 10 16 9" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: silhouette of the bird — small body blob on stilt legs with long neck hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="-2 -2 22 28">
       <path d="M0 22 Q4 21 9 22 Q14 23 18 22" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
       <!-- stilt legs -->
       <line x1="8" y1="17" x2="7" y2="22" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
@@ -692,7 +692,7 @@ export const SVG_GENERATORS = {
     const dark = '#166534';
     const tan = '#D4A04A';
     const yellow = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="-2 -2 24 20">
       <!-- ground line — sandy -->
       <path d="M0 14 L20 14" stroke="${tan}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
       <!-- high dome shell — brown with green tinge -->
@@ -720,7 +720,7 @@ export const SVG_GENERATORS = {
       <path d="M15 11 Q16 11 17 11.5" fill="none" stroke="${tan}" stroke-width="0.8" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: dome shell shape on ground
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="-2 -2 24 20">
       <path d="M0 13 L20 13" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
       <path d="M5 13 Q5 6 10 5 Q15 6 15 13" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}"/>
       <!-- hint of head -->
@@ -799,7 +799,7 @@ export const SVG_GENERATORS = {
     const teal = '#2DD4BF';
     const red = '#F87171';
     const dark = '#1E293B';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="-2 -2 24 26">
       <!-- shallow water — teal -->
       <path d="M0 18 Q5 17 10 18 Q15 19 20 18" fill="none" stroke="${teal}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
       <!-- long wading legs — orange-pink -->
@@ -828,7 +828,7 @@ export const SVG_GENERATORS = {
       <path d="M6 13 Q5 14 4 14.5" fill="none" stroke="${hotpink}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: spoon-shaped bill hint + pink blob
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="-2 -2 24 26">
       <path d="M0 16 Q5 15 10 16 Q15 17 20 16" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.4}"/>
       <!-- blob body -->
       <ellipse cx="10" cy="12" rx="3" ry="2" fill="${k}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.6}"/>
@@ -849,7 +849,7 @@ export const SVG_GENERATORS = {
     const olive = '#6B7280';
     const gold = '#FBBF24';
     const blue = '#38BDF8';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="-2 -2 26 22">
       <!-- oval shell — top-down view, olive/brown tones -->
       <ellipse cx="11" cy="9" rx="5.5" ry="4.5" fill="${brown}" fill-opacity="${o * 0.25}" stroke="${k}" stroke-width="1.3" stroke-opacity="${o}"/>
       <!-- shell scute pattern — darker brown lines -->
@@ -881,7 +881,7 @@ export const SVG_GENERATORS = {
       <circle cx="2" cy="1.5" r="0.25" fill="${blue}" fill-opacity="${o * 0.2}"/>
     </svg>`;
     // INACTIVE: oval shell with all four flippers + head showing
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="-2 -2 26 22">
       <ellipse cx="11" cy="9" rx="5" ry="4" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="1" stroke-opacity="${o}"/>
       <!-- head poking out -->
       <ellipse cx="5" cy="7.5" rx="1.3" ry="0.9" fill="${k}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}"/>
@@ -907,7 +907,7 @@ export const SVG_GENERATORS = {
     const water = '#2DD4BF';
     const steel = '#94A3B8';
     const concrete = '#CBD5E1';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="-2 -2 34 20">
       <!-- water background -->
       <path d="M0 13 Q8 11.5 15 12.5 Q22 13.5 30 12" fill="${water}" fill-opacity="${o * 0.08}"/>
       <path d="M0 14.5 Q8 13 15 14 Q22 15 30 13.5" fill="none" stroke="${water}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
@@ -940,7 +940,7 @@ export const SVG_GENERATORS = {
       <circle cx="21.5" cy="9.6" r="0.25" fill="#F87171" fill-opacity="${o * 0.45}"/>
     </svg>`;
     // INACTIVE: bridge silhouette with faint cables
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="-2 -2 34 20">
       <path d="M0 11 Q8 9.5 15 10 Q22 10.5 30 11" fill="none" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}"/>
       <rect x="14" y="4" width="2" height="6.5" rx="0.3" fill="${k}" fill-opacity="${o * 0.5}"/>
       <line x1="15" y1="5" x2="7" y2="10" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
@@ -958,7 +958,7 @@ export const SVG_GENERATORS = {
     const sponge = '#D4A04A';
     const coral = '#F87171';
     const sand = '#FDE68A';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="-2 -2 20 28">
       <!-- water surface -->
       <path d="M0 3 Q4 2 8 3 Q12 4 16 3" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.3}"/>
       <!-- air hose going up from helmet -->
@@ -996,7 +996,7 @@ export const SVG_GENERATORS = {
       <path d="M12 21 L12.5 19 L13 21.5 M12.5 19.5 L13.5 18.5" fill="none" stroke="${coral}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: bubbles rising with faint helmet silhouette
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="-2 -2 20 28">
       <circle cx="8" cy="10" r="2.5" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
       <circle cx="8" cy="10" r="1.2" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
       <path d="M6.5 12.5 L6.5 16" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
@@ -1015,7 +1015,7 @@ export const SVG_GENERATORS = {
     const black = '#1E293B';
     const blue = '#38BDF8';
     const white = '#F8FAFC';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-2 -2 20 20">
       <!-- ice surface — more visible -->
       <ellipse cx="8" cy="13" rx="7" ry="2" fill="${ice}" fill-opacity="${o * 0.2}" stroke="${blue}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
       <!-- ice scratch marks -->
@@ -1044,7 +1044,7 @@ export const SVG_GENERATORS = {
       <path d="M12.5 9 L14 8.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: puck shape with faint stick hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-2 -2 20 20">
       <ellipse cx="8" cy="9" rx="3" ry="1.2" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
       <rect x="5" y="8" width="6" height="1" fill="${k}" fill-opacity="${o * 0.15}"/>
       <ellipse cx="8" cy="8" rx="3" ry="1.2" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.8}"/>
@@ -1058,7 +1058,7 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const black = '#1E293B';
     const white = '#F8FAFC';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <!-- flagpole -->
       <line x1="2" y1="0" x2="2" y2="13.5" stroke="${black}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
       <!-- pole cap ball — gold -->
@@ -1090,7 +1090,7 @@ export const SVG_GENERATORS = {
       <path d="M5 13 Q7 12.5 9 13" fill="none" stroke="#4ADE80" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: pole with small furled flag hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <line x1="3" y1="1" x2="3" y2="13" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
       <path d="M4 2 Q8 1 12 2 Q13 4 12 6 Q8 7 4 6.5Z" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
       <circle cx="3" cy="1" r="0.6" fill="${k}" fill-opacity="${o * 0.5}"/>
@@ -1105,7 +1105,7 @@ export const SVG_GENERATORS = {
     const sand = '#D4A04A';
     const blue = '#38BDF8';
     const olive = '#6B7280';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="-2 -2 28 22">
       <!-- sand floor — prominent -->
       <path d="M0 16 Q6 15 12 16 Q18 17 24 16" fill="none" stroke="${sand}" stroke-width="0.8" stroke-opacity="${o * 0.35}"/>
       <circle cx="3" cy="16" r="0.4" fill="${sand}" fill-opacity="${o * 0.3}"/>
@@ -1141,7 +1141,7 @@ export const SVG_GENERATORS = {
       <path d="M11.5 17 L12.5 17.5 L11.5 17.5 L12 18" fill="none" stroke="${dark}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
     </svg>`;
     // INACTIVE: diamond wing shape with tail
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="-2 -2 28 22">
       <path d="M12 3 Q5 5 3 8 Q5 11 12 9.5 Q19 11 21 8 Q19 5 12 3Z" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
       <path d="M12 9.5 Q12 12 11 15" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
       <circle cx="10.5" cy="5.5" r="0.4" fill="${k}" fill-opacity="${o * 0.5}"/>
@@ -1254,7 +1254,7 @@ export const SVG_GENERATORS = {
       <path d="M18 0.5 Q17.5 -0.5 18.5 -0.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: pressed sandwich outline
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 12">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="-2 -2 28 16">
       <path d="M4 4 Q12 2.5 20 4 L20 5 L4 5Z" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <rect x="5" y="5" width="14" height="1.5" fill="${k}" fill-opacity="${o * 0.08}"/>
       <path d="M4 6.5 L20 6.5 L20 8 Q12 9.5 4 8Z" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.8}"/>
@@ -1271,7 +1271,7 @@ export const SVG_GENERATORS = {
     const dark = '#1E293B';
     const water = '#2DD4BF';
     const olive = '#6B7280';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="-2 -2 26 18">
       <!-- water hint — teal -->
       <path d="M0 1 Q5 0.5 11 1 Q17 1.5 22 1" fill="none" stroke="${water}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
       <!-- main body — olive-brown tones -->
@@ -1307,7 +1307,7 @@ export const SVG_GENERATORS = {
       <circle cx="21" cy="2" r="0.25" fill="${water}" fill-opacity="${o * 0.18}"/>
     </svg>`;
     // INACTIVE: fish body outline
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="0 0 22 14">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="14" viewBox="-2 -2 26 18">
       <path d="M5 7 Q6 4 11 3.5 Q16 4 18 7 Q16 10 11 10.5 Q6 10 5 7Z" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
       <path d="M5 7 L2 5 L2 9 L5 7" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
       <circle cx="16" cy="6" r="0.5" fill="${k}" fill-opacity="${o * 0.5}"/>
@@ -1321,7 +1321,7 @@ export const SVG_GENERATORS = {
     const green = '#4ADE80';
     const highlight = '#FDBA74';
     const dark = '#C2410C';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-2 -2 20 20">
       <!-- stem -->
       <path d="M8 3.5 L8 1.5" fill="none" stroke="${dark}" stroke-width="0.8" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
       <!-- leaves — two small ones flanking stem -->
@@ -1352,7 +1352,7 @@ export const SVG_GENERATORS = {
       <circle cx="8" cy="9.5" r="1.5" fill="#FBBF24" fill-opacity="${o * 0.1}"/>
     </svg>`;
     // INACTIVE: round orange shape with stem hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-2 -2 20 20">
       <circle cx="8" cy="9.5" r="5" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
       <path d="M8 4.5 L8 3" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <path d="M8 3.5 Q6 2.5 5.5 3" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
@@ -1368,7 +1368,7 @@ export const SVG_GENERATORS = {
     const glass = '#FDE68A';
     const wood = '#92400E';
     const gold = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="-2 -2 18 22">
       <!-- wooden bar surface -->
       <path d="M0 17.5 L14 17.5" stroke="${wood}" stroke-width="0.6" stroke-opacity="${o * 0.3}"/>
       <!-- pint glass — tapered shape wider at top -->
@@ -1402,7 +1402,7 @@ export const SVG_GENERATORS = {
       <circle cx="3.5" cy="14" r="0.2" fill="${k}" fill-opacity="${o * 0.12}"/>
     </svg>`;
     // INACTIVE: pint glass outline with foam cap
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="-2 -2 18 22">
       <path d="M3 6 L2 16 Q2 17 3 17 L9 17 Q10 17 10 16 L9 6Z" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
       <path d="M3 6 Q6 4.5 9 6" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
       <ellipse cx="6" cy="4" rx="2" ry="1" fill="${k}" fill-opacity="${o * 0.15}"/>
@@ -1417,7 +1417,7 @@ export const SVG_GENERATORS = {
     const hotpink = '#EC4899';
     const dark = '#1E293B';
     const water = '#2DD4BF';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="22" viewBox="0 0 14 22">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="22" viewBox="-2 -2 18 26">
       <!-- head -->
       <circle cx="7" cy="2.5" r="1.8" fill="${pink}" fill-opacity="${o * 0.35}" stroke="${pink}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
       <!-- eye — yellow iris -->
@@ -1446,7 +1446,7 @@ export const SVG_GENERATORS = {
       <path d="M0 20 Q7 19 14 20" fill="none" stroke="${water}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: S-curve neck with body blob
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="22" viewBox="0 0 14 22">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="22" viewBox="-2 -2 18 26">
       <path d="M7 4 Q6 7 5 10 Q4.5 12 5 14" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
       <ellipse cx="6" cy="14.5" rx="2.5" ry="1.5" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.7}"/>
       <circle cx="7" cy="3.5" r="1" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
@@ -1500,7 +1500,7 @@ export const SVG_GENERATORS = {
       <path d="M18.5 10 Q20 8 19 6" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: A-frame roof with poles and faint bar
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-2 -2 22 22">
       <path d="M1 10 L9 3 L17 10" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
       <!-- thatch texture hints -->
       <path d="M3 8.5 L15 8.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
@@ -1667,7 +1667,7 @@ export const SVG_GENERATORS = {
       <circle cx="9" cy="11" r="0.4" fill="${dark}" fill-opacity="${o * 0.4}"/>
     </svg>`;
     // INACTIVE: closed chest with domed lid and lock
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="-2 -2 22 20">
       <!-- box -->
       <rect x="3" y="8" width="12" height="6" rx="0.5" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
       <!-- domed lid -->
@@ -1692,7 +1692,7 @@ export const SVG_GENERATORS = {
     const red = '#F87171';
     const gold = '#FBBF24';
     const stripe = '#FB923C';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="-2 -2 24 22">
       <!-- carnival tent — big top with stripes -->
       <path d="M2 14 L10 2 L18 14" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
       <!-- tent stripes (alternating) -->
@@ -1723,7 +1723,7 @@ export const SVG_GENERATORS = {
       <circle cx="17" cy="6" r="0.35" fill="${gold}" fill-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: carnival tent with stripes and entrance
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="-2 -2 24 22">
       <path d="M4 14 L10 4 L16 14" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o}"/>
       <!-- stripe hints -->
       <path d="M10 4 L7 14" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
@@ -1751,7 +1751,7 @@ export const SVG_GENERATORS = {
     const gray = '#94A3B8';
     const gold = '#FBBF24';
     const red = '#F87171';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <!-- hill slope — green grass -->
       <path d="M0 12 Q5 9 10 7 Q15 9 20 12" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
       <!-- road surface — gray asphalt -->
@@ -1787,7 +1787,7 @@ export const SVG_GENERATORS = {
       <line x1="0" y1="12.5" x2="20" y2="12.5" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: hill slope with question marks and road hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <path d="M1 12 Q10 7 19 5" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
       <!-- road dashes on hill -->
       <path d="M5 10.5 Q10 8 15 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}" stroke-dasharray="1 1"/>
@@ -1807,7 +1807,7 @@ export const SVG_GENERATORS = {
     const red = '#F87171';
     const gold = '#FBBF24';
     const dark = '#1E293B';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-2 -2 24 24">
       <!-- ferris wheel rim — rusted, slightly tilted -->
       <circle cx="10" cy="10" r="8" fill="none" stroke="${rust}" stroke-width="0.8" stroke-opacity="${o * 0.5}" stroke-dasharray="2 0.5"/>
       <!-- inner ring -->
@@ -1842,7 +1842,7 @@ export const SVG_GENERATORS = {
       <line x1="3" y1="19.5" x2="17" y2="19.5" stroke="${rust}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: ferris wheel connected to ground with A-frame support
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-2 -2 24 24">
       <circle cx="10" cy="9" r="6.5" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-dasharray="2 1"/>
       <line x1="10" y1="2.5" x2="10" y2="15.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
       <line x1="3.5" y1="9" x2="16.5" y2="9" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
@@ -1862,7 +1862,7 @@ export const SVG_GENERATORS = {
     const white = '#F8FAFC';
     const brown = '#92400E';
     const red = '#DC2626';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-2 -2 20 20">
       <!-- bat — handle at bottom-left, barrel swinging up-right -->
       <path d="M1 14 L1.5 13.5 L8 5 L8.5 4 Q9 3 8.5 2.5 Q8 2 7.5 2.5 L7 3 L1 13.5Z" fill="${brown}" fill-opacity="${o * 0.4}" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
       <!-- bat handle grip -->
@@ -1887,7 +1887,7 @@ export const SVG_GENERATORS = {
       <path d="M15 1.5 Q15.5 0.5 16 1" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: baseball with stitching
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-2 -2 20 20">
       <circle cx="8" cy="8" r="3.8" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <path d="M5.5 6 Q8 4.5 10.5 6" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
       <path d="M5.5 10 Q8 11.5 10.5 10" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
@@ -1903,7 +1903,7 @@ export const SVG_GENERATORS = {
     const gray = '#94A3B8';
     const bone = '#FDE68A';
     const dirt = '#D4A04A';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="-2 -2 24 20">
       <!-- big phosphate mound — irregularly shaped pile -->
       <path d="M0 14 Q2 10 5 8 Q7 7 9 7.5 Q11 6.5 13 7 Q16 8 18 10 Q20 12 20 14Z" fill="${dirt}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.7" stroke-opacity="${o * 0.6}"/>
       <!-- mound texture — layers showing strata -->
@@ -1941,7 +1941,7 @@ export const SVG_GENERATORS = {
       <line x1="0" y1="15" x2="20" y2="15" stroke="${dirt}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
     </svg>`;
     // INACTIVE: pit with cart silhouette
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="-2 -2 24 20">
       <path d="M2 12 L6 8 L14 8 L18 12" fill="${k}" fill-opacity="${o * 0.06}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <path d="M7 11 L9 11 L9.5 9 L6.5 9Z" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
       <circle cx="7.5" cy="11.5" r="0.5" fill="${k}" fill-opacity="${o * 0.3}"/>
@@ -1959,7 +1959,7 @@ export const SVG_GENERATORS = {
     const dark = '#1E293B';
     const sand = '#D4A04A';
     const brown = '#92400E';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="-2 -2 18 22">
       <!-- massive tooth shape — bone white -->
       <path d="M7 0.5 Q3 5 1.5 9 Q0.5 13 3 16 Q5 17.5 7 17 Q9 17.5 11 16 Q13.5 13 12.5 9 Q11 5 7 0.5Z" fill="${bone}" fill-opacity="${o * 0.35}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o}"/>
       <!-- root — gnarly forked base, brown -->
@@ -1985,7 +1985,7 @@ export const SVG_GENERATORS = {
       <circle cx="1" cy="17" r="0.2" fill="${sand}" fill-opacity="${o * 0.2}"/>
     </svg>`;
     // INACTIVE: triangular tooth shape hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="-2 -2 18 22">
       <path d="M7 3 Q4 8 3 12 Q2.5 15 5 16.5 Q7 17 9 16.5 Q11.5 15 11 12 Q10 8 7 3Z" fill="${k}" fill-opacity="${o * 0.06}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <!-- root hint -->
       <path d="M5 16.5 Q4.5 17.5 5.5 18" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
@@ -2004,7 +2004,7 @@ export const SVG_GENERATORS = {
     const blue = '#38BDF8';
     const gold = '#FBBF24';
     const navy = '#1E3A5F';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-2 -2 28 20">
       <!-- water surface — blue -->
       <path d="M0 4 Q6 3 12 4 Q18 5 24 4" fill="none" stroke="${blue}" stroke-width="0.5" stroke-opacity="${o * 0.35}"/>
       <!-- tarpon body — silver with dark back -->
@@ -2039,7 +2039,7 @@ export const SVG_GENERATORS = {
       <circle cx="20" cy="3" r="0.35" fill="${blue}" fill-opacity="${o * 0.25}"/>
     </svg>`;
     // INACTIVE: subtle fish silhouette
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-2 -2 28 20">
       <path d="M3 8 Q6 5 12 5 Q18 5 21 8 Q18 11 12 11 Q6 11 3 8Z" fill="${k}" fill-opacity="${o * 0.06}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}"/>
       <!-- tail fork -->
       <path d="M21 8 Q23 6 22 4" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
@@ -2058,7 +2058,7 @@ export const SVG_GENERATORS = {
     const dark = '#1E293B';
     const sand = '#D4A04A';
     const green = '#4ADE80';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-2 -2 28 20">
       <!-- water surface — teal -->
       <path d="M0 4 Q6 3 12 4 Q18 5 24 4" fill="none" stroke="${water}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
       <!-- sandy ocean floor — golden sand -->
@@ -2092,7 +2092,7 @@ export const SVG_GENERATORS = {
       <path d="M19 14 Q20 13 21 14" fill="none" stroke="${dark}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: broken mast tips poking above waterline
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="-2 -2 28 20">
       <path d="M0 9 Q6 8 12 9 Q18 10 24 9" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <!-- broken mast tip 1 -->
       <line x1="9" y1="9" x2="8" y2="4" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-linecap="round"/>
@@ -2112,7 +2112,7 @@ export const SVG_GENERATORS = {
     const navy = '#1E3A5F';
     const white = '#F8FAFC';
     const blue = '#38BDF8';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="-2 -2 28 22">
       <!-- giant wing body — dark on top -->
       <path d="M12 2 Q7 1 2 5 Q0 7 1 8 Q3 9 7 7 Q10 6 12 7 Q14 6 17 7 Q21 9 23 8 Q24 7 22 5 Q17 1 12 2Z" fill="${navy}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="1" stroke-opacity="${o}"/>
       <!-- white belly pattern — distinctive manta marking -->
@@ -2148,7 +2148,7 @@ export const SVG_GENERATORS = {
       <circle cx="22" cy="2" r="0.25" fill="${blue}" fill-opacity="${o * 0.18}"/>
     </svg>`;
     // INACTIVE: gentle wing shape with tail
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="-2 -2 28 22">
       <path d="M12 4 Q6 2 1 6 Q3 8 7 7 Q10 6 12 7 Q14 6 17 7 Q21 8 23 6 Q18 2 12 4Z" fill="${k}" fill-opacity="${o * 0.06}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <!-- tail -->
       <path d="M12 7 Q12 10 11 15" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
@@ -2165,7 +2165,7 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const gray = '#94A3B8';
     const green = '#4ADE80';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" viewBox="0 0 16 22">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" viewBox="-2 -2 20 26">
       <!-- thick oak branch across top -->
       <path d="M1 2.5 Q4 1.5 8 1 Q12 1.5 15 2.5" fill="none" stroke="${brown}" stroke-width="1.5" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
       <!-- branch texture/bark -->
@@ -2195,7 +2195,7 @@ export const SVG_GENERATORS = {
       <circle cx="12" cy="8" r="1" fill="#FBBF24" fill-opacity="${o * 0.05}"/>
     </svg>`;
     // INACTIVE: branch with a few wispy strands
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" viewBox="0 0 16 22">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" viewBox="-2 -2 20 26">
       <path d="M3 3 Q8 2 13 3" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- wispy strands -->
       <path d="M5 3 Q4.5 7 5 12" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
@@ -2216,7 +2216,7 @@ export const SVG_GENERATORS = {
     const orange = '#FB923C';
     const gold = '#FBBF24';
     const green = '#4ADE80';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <!-- ocean horizon -->
       <path d="M0 9 Q5 8.5 10 9 Q15 9.5 20 9" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
       <!-- water below -->
@@ -2245,7 +2245,7 @@ export const SVG_GENERATORS = {
       <path d="M7 11.5 L13 11.5" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.1}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: horizon line with faint glow dot
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <path d="M0 9 Q5 8 10 9 Q15 10 20 9" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}"/>
       <!-- tiny sun peeking -->
       <path d="M8 9 A2 2 0 0 1 12 9" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
@@ -2261,7 +2261,7 @@ export const SVG_GENERATORS = {
     const red = '#DC2626';
     const brown = '#92400E';
     const gold = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="-2 -2 22 26">
       <!-- spear shaft — long diagonal -->
       <line x1="9" y1="1" x2="9" y2="20" stroke="${brown}" stroke-width="1" stroke-opacity="${o * 0.7}"/>
       <!-- spear tip — sharp flint point -->
@@ -2291,7 +2291,7 @@ export const SVG_GENERATORS = {
       <path d="M13 21 L12.5 19.5" fill="none" stroke="#4ADE80" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: faint spear outline
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="-2 -2 22 26">
       <line x1="9" y1="4" x2="9" y2="18" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}"/>
       <!-- spear tip hint -->
       <path d="M9 4 L7.5 6.5 L9 5.5 L10.5 6.5 Z" fill="${k}" fill-opacity="${o * 0.15}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.5}"/>
@@ -2373,7 +2373,7 @@ export const SVG_GENERATORS = {
     const red = '#DC2626';
     const cream = '#FEF3C7';
     const brown = '#92400E';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="-2 -2 20 22">
       <!-- typewriter body — dark boxy mechanical look -->
       <rect x="2" y="8" width="12" height="7" rx="0.8" fill="${dark}" fill-opacity="${o * 0.3}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}"/>
       <!-- carriage/platen roller on top — darker -->
@@ -2413,7 +2413,7 @@ export const SVG_GENERATORS = {
       <rect x="11.5" y="15" width="1.5" height="0.6" rx="0.2" fill="${brown}" fill-opacity="${o * 0.3}"/>
     </svg>`;
     // INACTIVE: faint typewriter outline
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="-2 -2 20 22">
       <!-- body hint -->
       <rect x="3" y="9" width="10" height="5.5" rx="0.6" fill="${k}" fill-opacity="${o * 0.05}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}"/>
       <!-- platen hint -->
@@ -2435,7 +2435,7 @@ export const SVG_GENERATORS = {
     const dark = '#1E293B';
     const purple = '#A78BFA';
     const green = '#4ADE80';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <!-- dark water background feel -->
       <rect x="0" y="0" width="20" height="14" rx="0" fill="${dark}" fill-opacity="${o * 0.08}"/>
       <!-- water surface -->
@@ -2467,7 +2467,7 @@ export const SVG_GENERATORS = {
       <path d="M8 8.5 Q10 8 12 8.5" fill="none" stroke="#D4A04A" stroke-width="0.5" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: dark water with tiny glow hints
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <path d="M0 5 Q5 4 10 5 Q15 6 20 5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o}"/>
       <!-- faint glow dots -->
       <circle cx="7" cy="7" r="0.7" fill="${k}" fill-opacity="${o * 0.2}"/>
@@ -2486,7 +2486,7 @@ export const SVG_GENERATORS = {
     const dark = '#1E293B';
     const cream = '#FEF3C7';
     const skin = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-2 -2 22 22">
       <!-- newspaper — cream paper -->
       <rect x="2" y="1" width="14" height="16" rx="0.5" fill="${cream}" fill-opacity="${o * 0.12}" stroke="${dark}" stroke-width="0.7" stroke-opacity="${o * 0.4}"/>
       <!-- headline bar — bright red -->
@@ -2509,7 +2509,7 @@ export const SVG_GENERATORS = {
       <text x="13.5" y="9" font-size="3.5" font-weight="bold" font-family="sans-serif" fill="${gold}" fill-opacity="${o * 0.7}">!</text>
     </svg>`;
     // INACTIVE: faint newspaper outline
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-2 -2 22 22">
       <rect x="4" y="4" width="10" height="10" rx="0.5" fill="${k}" fill-opacity="${o * 0.05}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}"/>
       <!-- headline hint -->
       <line x1="5.5" y1="6" x2="12.5" y2="6" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
@@ -2528,7 +2528,7 @@ export const SVG_GENERATORS = {
     const dark = '#1E293B';
     const white = '#F8FAFC';
     const blue = '#38BDF8';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="-2 -2 26 22">
       <!-- thick spiral arm 1 — gray cloud bands -->
       <path d="M11 1 Q5 1 2 4 Q0 7 1 10 Q2 13 5 14 Q8 15 10 13" fill="${gray}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="1.2" stroke-opacity="${o * 0.6}" stroke-linecap="round" fill-rule="evenodd"/>
       <!-- thick spiral arm 2 -->
@@ -2552,7 +2552,7 @@ export const SVG_GENERATORS = {
       <line x1="19" y1="12" x2="20" y2="14" stroke="${blue}" stroke-width="0.3" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: recognizable spiral with eye
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="-2 -2 26 22">
       <!-- spiral arm hint — thick enough to read as hurricane -->
       <path d="M11 2 Q5 2 3 5 Q1 8 3 11 Q5 14 8 14 Q10 14 10.5 12" fill="none" stroke="${k}" stroke-width="0.8" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- second arm hint -->
@@ -2571,7 +2571,7 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const white = '#F8FAFC';
     const gray = '#94A3B8';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <!-- clean teal water at top — contrast with bloom -->
       <path d="M0 2 Q5 1.5 10 2 Q15 2.5 20 2" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
       <path d="M0 3.5 Q5 3 10 3.5 Q15 4 20 3.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}"/>
@@ -2596,7 +2596,7 @@ export const SVG_GENERATORS = {
       <path d="M0 13 Q5 12.5 10 13 Q15 13.5 20 13" fill="none" stroke="${darkRed}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
     </svg>`;
     // INACTIVE: reddish water hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="-2 -2 24 18">
       <path d="M0 7 Q5 6 10 7 Q15 8 20 7" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.6}"/>
       <path d="M0 9 Q5 8.5 10 9 Q15 9.5 20 9" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
       <!-- algae dots -->
@@ -2613,7 +2613,7 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const water = '#2DD4BF';
     const gold = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="0 0 22 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="-2 -2 26 20">
       <!-- sand island mound -->
       <path d="M4 12 Q7 9 11 8 Q15 9 18 12" fill="${gold}" fill-opacity="${o * 0.1}" stroke="${gold}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
       <!-- palm tree trunk — curved, leaning -->
@@ -2646,7 +2646,7 @@ export const SVG_GENERATORS = {
       <path d="M5 2 Q5.5 1.5 6 2" fill="none" stroke="${k}" stroke-width="0.25" stroke-opacity="${o * 0.12}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: palm tree silhouette with water
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="0 0 22 16">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="-2 -2 26 20">
       <!-- trunk -->
       <path d="M11 11 Q10.5 7 11 3" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}" stroke-linecap="round"/>
       <!-- frond hints -->
@@ -2724,7 +2724,7 @@ export const SVG_GENERATORS = {
     const white = '#F8FAFC';
     const blue = '#1E3A5F';
     const gold = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-2 -2 22 22">
       <!-- baseball -->
       <circle cx="9" cy="9" r="6" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
       <!-- stitching curves -->
@@ -2747,7 +2747,7 @@ export const SVG_GENERATORS = {
       <path d="M16 7 L17.5 6.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: simple baseball outline with sunburst hint
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-2 -2 22 22">
       <circle cx="9" cy="9" r="4" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}"/>
       <path d="M6.5 7 Q9 5.5 11.5 7" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
       <path d="M6.5 11 Q9 12.5 11.5 11" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
@@ -2764,7 +2764,7 @@ export const SVG_GENERATORS = {
     const white = '#F8FAFC';
     const green = '#4ADE80';
     const gold = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="-2 -2 20 24">
       <!-- green grass ground -->
       <ellipse cx="8" cy="18" rx="7" ry="2" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.2}"/>
       <!-- hole -->
@@ -2789,7 +2789,7 @@ export const SVG_GENERATORS = {
       <circle cx="14" cy="2" r="1.5" fill="${gold}" fill-opacity="${o * 0.08}"/>
     </svg>`;
     // INACTIVE: simple flagstick
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="-2 -2 20 24">
       <line x1="8" y1="17" x2="8" y2="4" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-linecap="round"/>
       <path d="M8 4 L13 5.5 L8 7Z" fill="${k}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.6}"/>
       <ellipse cx="8" cy="17.5" rx="2" ry="0.6" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
@@ -2804,7 +2804,7 @@ export const SVG_GENERATORS = {
     const white = '#F8FAFC';
     const green = '#4ADE80';
     const gold = '#FBBF24';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="-2 -2 24 22">
       <!-- dirt track surface -->
       <ellipse cx="10" cy="16" rx="9" ry="2" fill="${brown}" fill-opacity="${o * 0.1}" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
       <!-- horse body — galloping pose -->
@@ -2842,7 +2842,7 @@ export const SVG_GENERATORS = {
       <circle cx="14.5" cy="14" r="0.4" fill="${brown}" fill-opacity="${o * 0.08}"/>
     </svg>`;
     // INACTIVE: simple horse silhouette
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="-2 -2 24 22">
       <!-- simplified horse body -->
       <path d="M6 8 Q9 6 14 8 Q13 10 8 10 Q6 9.5 6 8Z" fill="${k}" fill-opacity="${o * 0.12}" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.8}"/>
       <!-- neck and head -->
