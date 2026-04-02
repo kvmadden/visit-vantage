@@ -3,10 +3,28 @@ import FindMyStore from './FindMyStore';
 import { APP_VERSION } from '../App';
 
 const FEATURES = [
-  { icon: '\u{1F4CD}', text: 'Every store in your region, mapped' },
-  { icon: '\u{1F500}', text: 'Build and optimize your visit route' },
-  { icon: '\u{1F4CB}', text: 'Store details at a tap' },
+  { icon: 'pin', text: 'Every store in your region, mapped' },
+  { icon: 'route', text: 'Build and optimize your visit route' },
+  { icon: 'details', text: 'Store details at a tap' },
 ];
+
+function FeatureIcon({ type }) {
+  if (type === 'pin') return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+  if (type === 'route') return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="16 3 21 3 21 8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21 16 21 21 16 21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" />
+    </svg>
+  );
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" />
+    </svg>
+  );
+}
 
 export default function LandingPage({ onStart, onLocate, onOpenWorkshop }) {
   return (
@@ -14,39 +32,20 @@ export default function LandingPage({ onStart, onLocate, onOpenWorkshop }) {
       <div className="landing-glow landing-glow-1" />
       <div className="landing-glow landing-glow-2" />
 
-      {/* Icon Workshop button — top-right corner */}
-      {onOpenWorkshop && (
-        <button
-          onClick={onOpenWorkshop}
-          style={{
-            position: 'absolute',
-            top: 12,
-            right: 12,
-            zIndex: 10,
-            background: 'rgba(255,255,255,0.12)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            borderRadius: 10,
-            padding: '10px 16px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            color: 'rgba(255,255,255,0.7)',
-            fontSize: 14,
-            fontFamily: "'IBM Plex Sans', sans-serif",
-            fontWeight: 600,
-            transition: 'background 0.2s, color 0.2s',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = 'rgba(255,255,255,0.95)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; }}
-          title="Icon Workshop"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
-          </svg>
-          Icon Workshop
-        </button>
-      )}
+      {/* Version — top-left */}
+      <div style={{
+        position: 'absolute',
+        top: 14,
+        left: 16,
+        zIndex: 10,
+        color: 'rgba(255,255,255,0.4)',
+        fontSize: 13,
+        fontFamily: "'IBM Plex Sans', sans-serif",
+        fontWeight: 600,
+        letterSpacing: '0.5px',
+      }}>
+        {APP_VERSION}
+      </div>
 
       <div className="landing-content">
         <div className="landing-icon" style={{ animationDelay: '0s' }}>
@@ -78,7 +77,7 @@ export default function LandingPage({ onStart, onLocate, onOpenWorkshop }) {
                 className="landing-feature"
                 style={{ animationDelay: (0.25 + i * 0.1) + 's' }}
               >
-                <span className="landing-feature-icon">{f.icon}</span>
+                <span className="landing-feature-icon"><FeatureIcon type={f.icon} /></span>
                 <span className="landing-feature-text">{f.text}</span>
               </div>
             );
@@ -106,8 +105,43 @@ export default function LandingPage({ onStart, onLocate, onOpenWorkshop }) {
             &copy; 2026 Madden Frameworks
           </span>
           <p className="landing-footer-tagline">Smart systems. Better judgment.</p>
-          <p className="landing-version" style={{ color: 'rgba(255,255,255,0.25)', fontSize: '10px', marginTop: '6px' }}>{APP_VERSION}</p>
         </div>
+
+        {/* Icon Workshop — big centered button at bottom */}
+        {onOpenWorkshop && (
+          <button
+            onClick={onOpenWorkshop}
+            style={{
+              animationDelay: '0.85s',
+              marginTop: 24,
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: 12,
+              padding: '14px 32px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+              color: 'rgba(255,255,255,0.6)',
+              fontSize: 16,
+              fontFamily: "'IBM Plex Sans', sans-serif",
+              fontWeight: 600,
+              transition: 'background 0.2s, color 0.2s',
+              width: '100%',
+              maxWidth: 320,
+            }}
+            className="landing-feature"
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; e.currentTarget.style.color = 'rgba(255,255,255,0.9)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}
+            title="Icon Workshop"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+            </svg>
+            Icon Workshop
+          </button>
+        )}
       </div>
     </div>
   );
