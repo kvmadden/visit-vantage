@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { APP_VERSION } from '../App';
 import { SVG_GENERATORS } from './EasterEggs';
 import {
   CATEGORY_COLORS,
@@ -109,7 +110,7 @@ export default function IconWorkshop({ onBack, theme }) {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 6, verticalAlign: -3 }}>
             <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
           </svg>
-          Icon Workshop
+          Icon Workshop <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.5, marginLeft: 6 }}>{APP_VERSION}</span>
         </h1>
         <div style={styles.spacer} />
       </div>
