@@ -1765,27 +1765,27 @@ export const SVG_GENERATORS = {
     const brown = '#92400E';
     const red = '#DC2626';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <!-- bat — angled, on the left side -->
-      <path d="M1 14 L1.5 13.5 L8 5 L8.5 4 Q9 3 8.5 2.5 Q8 2 7.5 2.5 L7 3 L1 13.5Z" fill="${brown}" fill-opacity="${o * 0.4}" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
-      <!-- bat handle grip -->
-      <line x1="1.5" y1="13" x2="2.2" y2="12" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
-      <line x1="1.8" y1="12.5" x2="2.5" y2="11.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
-      <!-- bat knob -->
-      <circle cx="0.8" cy="14.3" r="0.6" fill="${brown}" fill-opacity="${o * 0.45}"/>
-      <!-- baseball — on the right side, just barely touching the bat tip -->
-      <circle cx="11.5" cy="5.5" r="3.2" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
+      <!-- baseball — on the left side -->
+      <circle cx="4.5" cy="5.5" r="3.2" fill="${white}" fill-opacity="${o * 0.2}" stroke="${k}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
       <!-- stitching — classic S-curves -->
-      <path d="M9.2 3.8 Q11.5 2.5 13.8 3.8" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
-      <path d="M9.2 7.2 Q11.5 8.5 13.8 7.2" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <path d="M2.2 3.8 Q4.5 2.5 6.8 3.8" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <path d="M2.2 7.2 Q4.5 8.5 6.8 7.2" fill="none" stroke="${red}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
       <!-- stitch marks -->
-      <path d="M9.5 4 L9.7 4.5 M10.5 3.5 L10.6 4 M11.5 3.2 L11.5 3.7 M12.5 3.5 L12.3 4 M13.5 4 L13.2 4.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <path d="M9.5 7 L9.7 6.5 M10.5 7.5 L10.6 7 M11.5 7.8 L11.5 7.3 M12.5 7.5 L12.3 7 M13.5 7 L13.2 6.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
-      <!-- motion arcs — ball just hit -->
-      <path d="M14.5 3 Q15 2 15.5 2.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M15 2 Q15.5 1 16 1.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M2.5 4 L2.7 4.5 M3.5 3.5 L3.6 4 M4.5 3.2 L4.5 3.7 M5.5 3.5 L5.3 4 M6.5 4 L6.2 4.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <path d="M2.5 7 L2.7 6.5 M3.5 7.5 L3.6 7 M4.5 7.8 L4.5 7.3 M5.5 7.5 L5.3 7 M6.5 7 L6.2 6.5" fill="none" stroke="${red}" stroke-width="0.3" stroke-opacity="${o * 0.4}"/>
+      <!-- bat — angled, on the right side -->
+      <path d="M15 14 L14.5 13.5 L8 5 L7.5 4 Q7 3 7.5 2.5 Q8 2 8.5 2.5 L9 3 L15 13.5Z" fill="${brown}" fill-opacity="${o * 0.4}" stroke="${brown}" stroke-width="0.7" stroke-opacity="${o * 0.7}"/>
+      <!-- bat handle grip -->
+      <line x1="14.5" y1="13" x2="13.8" y2="12" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <line x1="14.2" y1="12.5" x2="13.5" y2="11.5" stroke="${brown}" stroke-width="0.3" stroke-opacity="${o * 0.25}"/>
+      <!-- bat knob -->
+      <circle cx="15.2" cy="14.3" r="0.6" fill="${brown}" fill-opacity="${o * 0.45}"/>
       <!-- impact spark at contact point -->
-      <line x1="8.5" y1="4.5" x2="7.5" y2="3.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <line x1="9" y1="3.5" x2="8" y2="2.5" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <line x1="7.5" y1="4.5" x2="8.5" y2="3.5" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <line x1="7" y1="3.5" x2="8" y2="2.5" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <!-- motion arcs — ball just hit, flying left -->
+      <path d="M1.5 3 Q1 2 0.5 2.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M1 2 Q0.5 1 0 1.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
     </svg>`;
     // INACTIVE: baseball with stitching
     return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
