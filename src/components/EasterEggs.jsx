@@ -2087,38 +2087,39 @@ export const SVG_GENERATORS = {
     const gold = '#FBBF24';
     const green = '#4ADE80';
     if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
+      <!-- warm sky gradient wash -->
+      <path d="M0 9 Q5 7 10 6.5 Q15 7 20 9 L20 14 L0 14Z" fill="${orange}" fill-opacity="${o * 0.06}"/>
       <!-- ocean horizon -->
       <path d="M0 9 Q5 8.5 10 9 Q15 9.5 20 9" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
+      <!-- setting sun — big warm half circle at horizon -->
+      <path d="M4.5 9 A5.5 5.5 0 0 1 15.5 9" fill="${orange}" fill-opacity="${o * 0.25}" stroke="${gold}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
+      <!-- sun glow layers -->
+      <path d="M5.5 9 A4.5 4.5 0 0 1 14.5 9" fill="${gold}" fill-opacity="${o * 0.12}"/>
+      <path d="M7 9 A3 3 0 0 1 13 9" fill="${orange}" fill-opacity="${o * 0.15}"/>
+      <!-- green flash — thin bright band right at top edge of sun -->
+      <path d="M7.5 6 Q10 4.5 12.5 6" fill="none" stroke="${green}" stroke-width="1" stroke-opacity="${o * 0.7}" stroke-linecap="round"/>
+      <!-- green tinge spreading from flash -->
+      <path d="M8.5 5.5 Q10 4 11.5 5.5" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
+      <!-- subtle green ray up center only -->
+      <line x1="10" y1="4.5" x2="10" y2="2" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <!-- orange sun rays -->
+      <line x1="10" y1="5" x2="10" y2="1.5" stroke="${gold}" stroke-width="0.35" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <line x1="6.5" y1="7" x2="4" y2="4" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.1}" stroke-linecap="round"/>
+      <line x1="13.5" y1="7" x2="16" y2="4" stroke="${gold}" stroke-width="0.3" stroke-opacity="${o * 0.1}" stroke-linecap="round"/>
       <!-- water below -->
       <path d="M0 11 Q5 10.5 10 11 Q15 11.5 20 11" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.2}"/>
-      <!-- setting sun — half below horizon -->
-      <path d="M5.5 9 A4.5 4.5 0 0 1 14.5 9" fill="${orange}" fill-opacity="${o * 0.2}" stroke="${orange}" stroke-width="0.6" stroke-opacity="${o * 0.4}"/>
-      <!-- sun glow bands -->
-      <path d="M4 9 Q10 7.5 16 9" fill="none" stroke="${gold}" stroke-width="0.4" stroke-opacity="${o * 0.25}"/>
-      <path d="M3 9 Q10 6.5 17 9" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.15}"/>
-      <!-- THE GREEN FLASH — bright burst at top of sun -->
-      <path d="M7 5.5 Q10 2 13 5.5" fill="${green}" fill-opacity="${o * 0.5}" stroke="${green}" stroke-width="0.8" stroke-opacity="${o * 0.8}"/>
-      <!-- green rays shooting up -->
-      <line x1="10" y1="3" x2="10" y2="0.5" stroke="${green}" stroke-width="0.7" stroke-opacity="${o * 0.6}" stroke-linecap="round"/>
-      <line x1="7" y1="4" x2="5" y2="1.5" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <line x1="13" y1="4" x2="15" y2="1.5" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.4}" stroke-linecap="round"/>
-      <line x1="8.5" y1="3.5" x2="7" y2="1" stroke="${green}" stroke-width="0.35" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <line x1="11.5" y1="3.5" x2="13" y2="1" stroke="${green}" stroke-width="0.35" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <!-- green glow halo -->
-      <circle cx="10" cy="5" r="3" fill="${green}" fill-opacity="${o * 0.08}"/>
-      <!-- sky color wash -->
-      <path d="M0 9 Q5 8 10 7.5 Q15 8 20 9" fill="${orange}" fill-opacity="${o * 0.06}"/>
-      <!-- water reflections -->
-      <path d="M8 10 L12 10" fill="none" stroke="${green}" stroke-width="0.4" stroke-opacity="${o * 0.2}" stroke-linecap="round"/>
-      <path d="M7 11.5 L13 11.5" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.12}" stroke-linecap="round"/>
+      <!-- water reflections — orange and green mixed -->
+      <path d="M7 10 L13 10" fill="none" stroke="${gold}" stroke-width="0.4" stroke-opacity="${o * 0.15}" stroke-linecap="round"/>
+      <path d="M8.5 10.5 L11.5 10.5" fill="none" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.12}" stroke-linecap="round"/>
+      <path d="M6 12 L14 12" fill="none" stroke="${orange}" stroke-width="0.3" stroke-opacity="${o * 0.08}" stroke-linecap="round"/>
     </svg>`;
-    // INACTIVE: horizon line with faint glow dot
+    // INACTIVE: horizon with sun peeking and tiny green hint
     return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14">
       <path d="M0 9 Q5 8 10 9 Q15 10 20 9" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}"/>
-      <!-- tiny sun peeking -->
-      <path d="M8 9 A2 2 0 0 1 12 9" fill="${k}" fill-opacity="${o * 0.1}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
-      <!-- faint green dot -->
-      <circle cx="10" cy="8" r="0.6" fill="${green}" fill-opacity="${o * 0.3}"/>
+      <!-- sun peeking -->
+      <path d="M7.5 9 A2.5 2.5 0 0 1 12.5 9" fill="${k}" fill-opacity="${o * 0.08}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+      <!-- faint green line at top of sun -->
+      <path d="M8.5 7.5 Q10 7 11.5 7.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
     </svg>`;
   },
 
@@ -2171,28 +2172,28 @@ export const SVG_GENERATORS = {
     const o = activated ? 1 : 0.4;
     const green = '#4ADE80';
     const brown = '#92400E';
-    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="0 0 22 16">
+    if (activated) return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="-1 -1 24 18">
       <!-- left mangrove trunk — thick, curving -->
-      <path d="M2 0 Q1 3 0 7 Q-0.5 11 1 15" fill="none" stroke="${brown}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M3 0 Q2 3 1 7 Q0.5 11 1.5 15" fill="none" stroke="${brown}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- left prop roots arching into water -->
-      <path d="M1 10 Q-1 13 0 15" fill="none" stroke="${brown}" stroke-width="0.5" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
-      <path d="M2 9 Q0 12 1 14" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M3 8 Q1 11 2 13" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M2 10 Q0.5 13 1 15" fill="none" stroke="${brown}" stroke-width="0.5" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M3 9 Q1 12 2 14" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M4 8 Q2 11 3 13" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
       <!-- right mangrove trunk -->
-      <path d="M20 0 Q21 3 22 7 Q22.5 11 21 15" fill="none" stroke="${brown}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
+      <path d="M19 0 Q20 3 21 7 Q21.5 11 20.5 15" fill="none" stroke="${brown}" stroke-width="1.2" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- right prop roots -->
-      <path d="M21 10 Q23 13 22 15" fill="none" stroke="${brown}" stroke-width="0.5" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
-      <path d="M20 9 Q22 12 21 14" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
-      <path d="M19 8 Q21 11 20 13" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M20 10 Q21.5 13 21 15" fill="none" stroke="${brown}" stroke-width="0.5" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M19 9 Q21 12 20 14" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.3}" stroke-linecap="round"/>
+      <path d="M18 8 Q20 11 19 13" fill="none" stroke="${brown}" stroke-width="0.4" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
       <!-- canopy arch — dense leaves meeting overhead -->
-      <path d="M2 0 Q6 3 11 3.5 Q16 3 20 0" fill="${green}" fill-opacity="${o * 0.2}" stroke="${green}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
+      <path d="M3 0 Q7 3 11 3.5 Q15 3 19 0" fill="${green}" fill-opacity="${o * 0.2}" stroke="${green}" stroke-width="0.8" stroke-opacity="${o * 0.5}"/>
       <!-- leaf clusters along arch -->
-      <path d="M4 2 Q5 1 6 2.5" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
-      <path d="M8 3 Q9 2 10 3" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <path d="M5 2 Q6 1 7 2.5" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <path d="M8.5 3 Q9.5 2 10.5 3" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
       <path d="M12 3 Q13 2 14 3" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
-      <path d="M16 2.5 Q17 1 18 2" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <path d="M15.5 2.5 Q16.5 1 17.5 2" fill="${green}" fill-opacity="${o * 0.15}" stroke="${green}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
       <!-- second canopy layer -->
-      <path d="M1 5 Q6 6.5 11 7 Q16 6.5 21 5" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
+      <path d="M2 5 Q7 6.5 11 7 Q15 6.5 20 5" fill="none" stroke="${green}" stroke-width="0.5" stroke-opacity="${o * 0.25}"/>
       <!-- kayak in tunnel center -->
       <path d="M8 12 Q11 11 14 12" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o * 0.5}" stroke-linecap="round"/>
       <!-- paddler stick figure -->
@@ -2206,17 +2207,25 @@ export const SVG_GENERATORS = {
       <circle cx="7" cy="13.5" r="0.4" fill="${k}" fill-opacity="${o * 0.12}"/>
       <circle cx="15" cy="13" r="0.35" fill="${k}" fill-opacity="${o * 0.1}"/>
     </svg>`;
-    // INACTIVE: arch of mangroves with water
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="0 0 22 16">
-      <!-- arch hint -->
-      <path d="M6 14 Q6 7 7 4 Q9 2 11 2 Q13 2 15 4 Q16 7 16 14" fill="none" stroke="${k}" stroke-width="0.5" stroke-opacity="${o}" stroke-linecap="round"/>
-      <!-- leaf canopy hint -->
-      <path d="M6 4 Q11 1 16 4" fill="${k}" fill-opacity="${o * 0.06}" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
+    // INACTIVE: mangrove arch with roots and water
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" viewBox="-1 -1 24 18">
+      <!-- left trunk hint -->
+      <path d="M5 0 Q4 5 4 10 Q4 13 5 15" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- right trunk hint -->
+      <path d="M17 0 Q18 5 18 10 Q18 13 17 15" fill="none" stroke="${k}" stroke-width="0.6" stroke-opacity="${o}" stroke-linecap="round"/>
+      <!-- canopy arch -->
+      <path d="M5 1 Q11 4 17 1" fill="${k}" fill-opacity="${o * 0.05}" stroke="${k}" stroke-width="0.5" stroke-opacity="${o * 0.5}"/>
+      <!-- leaf bumps on arch -->
+      <path d="M7 2.5 Q8 1.5 9 2.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <path d="M11 3.5 Q12 2.5 13 3.5" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.3}"/>
+      <!-- left root -->
+      <path d="M5 9 Q3.5 12 4 14.5" fill="none" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M6 8 Q4.5 11 5.5 14" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <!-- right root -->
+      <path d="M17 9 Q18.5 12 18 14.5" fill="none" stroke="${k}" stroke-width="0.35" stroke-opacity="${o * 0.35}" stroke-linecap="round"/>
+      <path d="M16 8 Q17.5 11 16.5 14" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
       <!-- water line -->
-      <path d="M2 14 Q11 13 20 14" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
-      <!-- root hints -->
-      <path d="M6 10 Q5 12 5.5 14" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
-      <path d="M16 10 Q17 12 16.5 14" fill="none" stroke="${k}" stroke-width="0.3" stroke-opacity="${o * 0.25}" stroke-linecap="round"/>
+      <path d="M1 14.5 Q11 13.5 21 14.5" fill="none" stroke="${k}" stroke-width="0.4" stroke-opacity="${o * 0.4}"/>
     </svg>`;
   },
 
