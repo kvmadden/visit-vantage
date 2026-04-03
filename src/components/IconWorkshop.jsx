@@ -90,7 +90,7 @@ export default function IconWorkshop({ onBack, theme }) {
   const approvedCount = Object.values(statuses).filter((s) => s === 'approved').length;
 
   // Get icons for current batch
-  const batchIcons = activeBatch <= 10
+  const batchIcons = activeBatch <= 12
     ? EASTER_EGG_SPECS.filter((s) => s.batch === activeBatch)
     : BEST_OF_BAY_SPECS;
 
@@ -127,8 +127,8 @@ export default function IconWorkshop({ onBack, theme }) {
 
       {/* Batch selector */}
       <div style={styles.batchSelector}>
-        {Array.from({ length: 11 }, (_, i) => i + 1).map((b) => {
-          const batchSpecs = b <= 10
+        {Array.from({ length: 13 }, (_, i) => i + 1).map((b) => {
+          const batchSpecs = b <= 12
             ? EASTER_EGG_SPECS.filter((s) => s.batch === b)
             : BEST_OF_BAY_SPECS;
           const batchApproved = batchSpecs.filter((s) => getStatus(s.svgKey) === 'approved').length;
@@ -140,7 +140,7 @@ export default function IconWorkshop({ onBack, theme }) {
               onClick={() => setActiveBatch(b)}
               style={styles.batchTab(b === activeBatch, isDark, allApproved)}
             >
-              {b <= 10 ? b : 'Bay'}
+              {b <= 12 ? b : 'Bay'}
               {allApproved && <span style={{ marginLeft: 2, fontSize: 10 }}>{'\u2705'}</span>}
             </button>
           );
@@ -154,7 +154,7 @@ export default function IconWorkshop({ onBack, theme }) {
 
       {/* Icon grid */}
       <div style={styles.gridScroll}>
-        {activeBatch <= 10 ? (
+        {activeBatch <= 12 ? (
           /* Easter Egg grid */
           batchIcons.map((spec, idx) => {
             const gen = SVG_GENERATORS[spec.svgKey];

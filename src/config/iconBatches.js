@@ -72,14 +72,14 @@ export const EASTER_EGG_SPECS = [
 export const BEST_OF_BAY_SPECS = [
   { svgKey: 'bernsSteak', destination: "Bern's Steak House", batch: 11, description: 'Sizzling steak — Bern\'s legendary steakhouse with its wine cellar and dessert room, a Tampa institution since 1956' },
   { svgKey: 'flamencoDancer', destination: 'Columbia Restaurant', batch: 11, description: 'Flamenco dancer — Columbia Restaurant in Ybor City, Florida\'s oldest restaurant (1905) with nightly flamenco shows' },
-  { svgKey: 'pirateShipBow', destination: 'Raymond James Stadium', batch: 11, description: 'Pirate ship bow — the 103-foot replica pirate ship inside Raymond James Stadium that fires cannons after Bucs touchdowns' },
+  { svgKey: 'pirateShipBow', destination: 'Raymond James Stadium', batch: 11, description: 'Touchdown cannon — the cannons that fire from the 103-foot pirate ship inside Raymond James Stadium after every Bucs score' },
   { svgKey: 'lightningBolt', destination: 'Amalie Arena', batch: 11, description: 'Lightning bolt strike — home of the Tampa Bay Lightning at Amalie Arena on the downtown waterfront' },
   { svgKey: 'meltingClock', destination: 'The Dali Museum', batch: 11, description: 'Dalí melting clock — The Dalí Museum in St. Pete houses the largest collection of Salvador Dalí works outside Spain' },
-  { svgKey: 'cigarIcon', destination: 'Ybor City', batch: 11, description: 'Cigar and brick — Ybor City\'s historic cigar district with its brick streets, wrought iron, and roaming chickens' },
-  { svgKey: 'bridgeArch', destination: 'Tampa Riverwalk', batch: 11, description: 'Bridge arch over river — the 2.6-mile Tampa Riverwalk connecting downtown\'s parks, museums, and waterfront dining' },
+  { svgKey: 'cigarIcon', destination: 'Ybor City', batch: 11, description: 'Ybor rooster — the wild chickens that roam Ybor City\'s historic streets, descendants of those kept by cigar workers' },
+  { svgKey: 'bridgeArch', destination: 'Tampa Riverwalk', batch: 11, description: 'Riverwalk lamp post — the ornamental street lamps lining the 2.6-mile Tampa Riverwalk waterfront promenade' },
   { svgKey: 'ringlingCircus', destination: 'The Ringling', batch: 11, description: 'Circus tent — The Ringling Museum in Sarasota, John Ringling\'s legacy with art, circus memorabilia, and Ca\' d\'Zan mansion' },
   { svgKey: 'beachUmbrella', destination: 'Clearwater Beach', batch: 11, description: 'Beach umbrella — Clearwater Beach, consistently ranked America\'s #1 beach for its sugar-white sand and clear water' },
-  { svgKey: 'palmTree', destination: 'Siesta Key Beach', batch: 11, description: 'Palm tree on white sand — Siesta Key\'s 99% pure quartz crystal sand that stays cool even in summer heat' },
+  { svgKey: 'palmTree', destination: 'Siesta Key Beach', batch: 11, description: 'Starfish on quartz sand — Siesta Key\'s 99% pure quartz crystal sand that stays cool even in summer heat' },
   { svgKey: 'guitarSilhouette', destination: 'Seminole Hard Rock', batch: 11, description: 'Guitar silhouette — Seminole Hard Rock Hotel & Casino, the guitar-shaped landmark visible for miles' },
   { svgKey: 'donCesar', destination: 'The Don CeSar', batch: 11, description: 'Pink palace towers — The Don CeSar, the iconic 1928 pink resort on St. Pete Beach known as the "Pink Palace"' },
 ];
