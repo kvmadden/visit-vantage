@@ -2857,244 +2857,217 @@ export const SVG_GENERATORS = {
   },
 
   // =========================================================================
-  // Best of the Bay — POI icons (gold silhouettes, single state)
+  // Best of the Bay — POI icons (premium gold silhouettes with dark outlines)
   // =========================================================================
 
   bernsSteak(theme) {
-    const g = '#FBBF24';
+    const g = '#FBBF24';  // gold
+    const s = '#FDE68A';  // shine
+    const d = '#1E293B';  // dark outline
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- steak silhouette -->
-      <path d="M5 6 Q3 8 3 12 Q3 16 6 18 Q10 20 14 19 Q18 18 20 15 Q22 12 21 8 Q20 5 16 4 Q12 3 8 4 Q6 5 5 6Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.8"/>
-      <!-- T-bone -->
-      <path d="M10 7 L10 16" stroke="${g}" stroke-width="1.4" stroke-opacity="0.8" stroke-linecap="round"/>
-      <path d="M7 9 L14 9" stroke="${g}" stroke-width="1.4" stroke-opacity="0.8" stroke-linecap="round"/>
-      <!-- marbling -->
-      <path d="M13 11 Q15 12 14 14" fill="none" stroke="${g}" stroke-width="0.5" stroke-opacity="0.6"/>
-      <path d="M7 12 Q8 14 7 15" fill="none" stroke="${g}" stroke-width="0.4" stroke-opacity="0.5"/>
+      <path d="M5 6 Q3 8 3 12 Q3 16 6 18 Q10 20 14 19 Q18 18 20 15 Q22 12 21 8 Q20 5 16 4 Q12 3 8 4 Q6 5 5 6Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.8" stroke-opacity="0.6"/>
+      <path d="M10 7 L10 16" stroke="${s}" stroke-width="1.6" stroke-opacity="0.9" stroke-linecap="round"/>
+      <path d="M7 9 L14 9" stroke="${s}" stroke-width="1.6" stroke-opacity="0.9" stroke-linecap="round"/>
+      <path d="M6 7 Q8 6 10 7" fill="none" stroke="${s}" stroke-width="0.5" stroke-opacity="0.5"/>
+      <path d="M13 11 Q15 12 14 14" fill="none" stroke="${d}" stroke-width="0.4" stroke-opacity="0.25"/>
+      <path d="M7 12 Q8 14 7 15" fill="none" stroke="${d}" stroke-width="0.3" stroke-opacity="0.2"/>
     </svg>`;
   },
 
   flamencoDancer(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- dress skirt — flared silhouette -->
-      <path d="M8 12 Q6 16 3 21 Q8 23 12 23 Q16 23 21 21 Q18 16 16 12Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.6"/>
-      <!-- torso -->
-      <rect x="10" y="7" width="4" height="5" rx="1" fill="${g}" fill-opacity="0.6"/>
-      <!-- head -->
-      <circle cx="12" cy="5" r="2.2" fill="${g}" fill-opacity="0.55"/>
-      <!-- hair bun -->
-      <circle cx="12" cy="3.2" r="1.2" fill="${g}" fill-opacity="0.65"/>
-      <!-- raised arm -->
-      <path d="M14 8 Q17 6 18 3" fill="none" stroke="${g}" stroke-width="1.2" stroke-opacity="0.6" stroke-linecap="round"/>
-      <!-- other arm -->
-      <path d="M10 9 Q8 10 7 11" fill="none" stroke="${g}" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round"/>
+      <path d="M8 12 Q6 16 3 21 Q8 23 12 23 Q16 23 21 21 Q18 16 16 12Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5"/>
+      <path d="M10 14 Q11 18 9 21" fill="none" stroke="${s}" stroke-width="0.5" stroke-opacity="0.5"/>
+      <path d="M14 14 Q13 18 15 21" fill="none" stroke="${s}" stroke-width="0.5" stroke-opacity="0.5"/>
+      <rect x="10" y="7" width="4" height="5" rx="1" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.5" stroke-opacity="0.45"/>
+      <circle cx="12" cy="5" r="2.2" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.5" stroke-opacity="0.5"/>
+      <circle cx="12" cy="3.2" r="1.2" fill="${g}" fill-opacity="0.9"/>
+      <path d="M14 8 Q17 6 18 3" fill="none" stroke="${g}" stroke-width="1.3" stroke-opacity="0.8" stroke-linecap="round"/>
+      <path d="M10 9 Q8 10 7 11" fill="none" stroke="${g}" stroke-width="1" stroke-opacity="0.7" stroke-linecap="round"/>
+      <circle cx="11" cy="4.5" r="0.6" fill="${s}" fill-opacity="0.5"/>
     </svg>`;
   },
 
   pirateShipBow(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- cannon barrel -->
-      <path d="M4 12 L18 12 Q20 12 20 10.5 Q20 9 18 9 L16 9 L16 12" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.7"/>
-      <!-- barrel bore -->
-      <circle cx="19.5" cy="10.8" r="1" fill="${g}" fill-opacity="0.3" stroke="${g}" stroke-width="0.4"/>
-      <!-- cannon carriage -->
-      <path d="M5 12 L5 18 L17 18 L17 12" fill="${g}" fill-opacity="0.35" stroke="${g}" stroke-width="0.6"/>
-      <!-- carriage cross brace -->
-      <line x1="8" y1="12" x2="8" y2="18" stroke="${g}" stroke-width="0.5" stroke-opacity="0.4"/>
-      <line x1="14" y1="12" x2="14" y2="18" stroke="${g}" stroke-width="0.5" stroke-opacity="0.4"/>
-      <!-- wheels -->
-      <circle cx="6" cy="19" r="2" fill="${g}" fill-opacity="0.45" stroke="${g}" stroke-width="0.6"/>
-      <circle cx="16" cy="19" r="2" fill="${g}" fill-opacity="0.45" stroke="${g}" stroke-width="0.6"/>
-      <!-- wheel spokes -->
-      <line x1="6" y1="17" x2="6" y2="21" stroke="${g}" stroke-width="0.3" stroke-opacity="0.3"/>
-      <line x1="4" y1="19" x2="8" y2="19" stroke="${g}" stroke-width="0.3" stroke-opacity="0.3"/>
-      <line x1="16" y1="17" x2="16" y2="21" stroke="${g}" stroke-width="0.3" stroke-opacity="0.3"/>
-      <line x1="14" y1="19" x2="18" y2="19" stroke="${g}" stroke-width="0.3" stroke-opacity="0.3"/>
-      <!-- fuse -->
-      <path d="M4 11 Q2 9 3 7" fill="none" stroke="${g}" stroke-width="0.6" stroke-opacity="0.5" stroke-linecap="round"/>
-      <!-- cannonball stack -->
-      <circle cx="21" cy="18" r="1.2" fill="${g}" fill-opacity="0.45"/>
-      <circle cx="23" cy="18" r="1.2" fill="${g}" fill-opacity="0.4"/>
-      <circle cx="22" cy="16.5" r="1.2" fill="${g}" fill-opacity="0.5"/>
+      <path d="M4 12 L18 12 Q20 12 20 10.5 Q20 9 18 9 L16 9 L16 12" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5"/>
+      <circle cx="19.5" cy="10.8" r="1" fill="${d}" fill-opacity="0.3"/>
+      <path d="M5 12 L5 17 L17 17 L17 12" fill="${g}" fill-opacity="0.7" stroke="${d}" stroke-width="0.6" stroke-opacity="0.4"/>
+      <line x1="8" y1="12" x2="8" y2="17" stroke="${d}" stroke-width="0.4" stroke-opacity="0.2"/>
+      <line x1="14" y1="12" x2="14" y2="17" stroke="${d}" stroke-width="0.4" stroke-opacity="0.2"/>
+      <circle cx="6" cy="19" r="2.2" fill="${g}" fill-opacity="0.75" stroke="${d}" stroke-width="0.6" stroke-opacity="0.5"/>
+      <circle cx="16" cy="19" r="2.2" fill="${g}" fill-opacity="0.75" stroke="${d}" stroke-width="0.6" stroke-opacity="0.5"/>
+      <line x1="6" y1="17" x2="6" y2="21" stroke="${d}" stroke-width="0.3" stroke-opacity="0.3"/>
+      <line x1="4" y1="19" x2="8" y2="19" stroke="${d}" stroke-width="0.3" stroke-opacity="0.3"/>
+      <line x1="16" y1="17" x2="16" y2="21" stroke="${d}" stroke-width="0.3" stroke-opacity="0.3"/>
+      <line x1="14" y1="19" x2="18" y2="19" stroke="${d}" stroke-width="0.3" stroke-opacity="0.3"/>
+      <path d="M4 11 Q2 9 3 7" fill="none" stroke="${g}" stroke-width="0.7" stroke-opacity="0.6" stroke-linecap="round"/>
+      <circle cx="21" cy="18" r="1.3" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.4" stroke-opacity="0.4"/>
+      <circle cx="23" cy="18" r="1.3" fill="${g}" fill-opacity="0.75" stroke="${d}" stroke-width="0.4" stroke-opacity="0.4"/>
+      <circle cx="22" cy="16.5" r="1.3" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.4" stroke-opacity="0.4"/>
+      <path d="M5 10 L17 10" stroke="${s}" stroke-width="0.4" stroke-opacity="0.4"/>
     </svg>`;
   },
 
   lightningBolt(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- bolt silhouette -->
-      <path d="M13 1 L7 11 L11 11 L9 23 L17 10 L13 10Z" fill="${g}" fill-opacity="0.55" stroke="${g}" stroke-width="0.7" stroke-linejoin="round"/>
-      <!-- inner highlight -->
-      <path d="M12.5 4 L9.5 11 L11.5 11 L10 19 L14.5 10.5 L12.5 10.5Z" fill="${g}" fill-opacity="0.25"/>
+      <path d="M13 1 L7 11 L11 11 L9 23 L17 10 L13 10Z" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.8" stroke-opacity="0.55" stroke-linejoin="round"/>
+      <path d="M12.5 4 L9.5 11 L11.5 11 L10 19 L14.5 10.5 L12.5 10.5Z" fill="${s}" fill-opacity="0.4"/>
     </svg>`;
   },
 
   meltingClock(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- shelf edge -->
-      <line x1="2" y1="10" x2="22" y2="10" stroke="${g}" stroke-width="1" stroke-opacity="0.5"/>
-      <!-- clock face — drooping silhouette -->
-      <path d="M6 5 Q5 5 5 8 Q4 10 3 14 Q3 18 8 19 Q12 20 16 18 Q19 16 19 12 Q19 10 18 8 Q18 5 17 5Z" fill="${g}" fill-opacity="0.45" stroke="${g}" stroke-width="0.7"/>
-      <!-- clock hands -->
-      <line x1="11.5" y1="11" x2="11.5" y2="7.5" stroke="${g}" stroke-width="0.8" stroke-opacity="0.8" stroke-linecap="round"/>
-      <line x1="11.5" y1="11" x2="15" y2="12.5" stroke="${g}" stroke-width="0.6" stroke-opacity="0.7" stroke-linecap="round"/>
-      <!-- center pin -->
-      <circle cx="11.5" cy="11" r="0.6" fill="${g}" fill-opacity="0.7"/>
-      <!-- drip -->
-      <path d="M8 19 Q8 21 9 22" fill="none" stroke="${g}" stroke-width="0.7" stroke-opacity="0.5" stroke-linecap="round"/>
+      <line x1="2" y1="10" x2="22" y2="10" stroke="${d}" stroke-width="1" stroke-opacity="0.4"/>
+      <path d="M6 5 Q5 5 5 8 Q4 10 3 14 Q3 18 8 19 Q12 20 16 18 Q19 16 19 12 Q19 10 18 8 Q18 5 17 5Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5"/>
+      <path d="M8 6 Q10 5 14 6 Q16 7 16 9" fill="none" stroke="${s}" stroke-width="0.6" stroke-opacity="0.5"/>
+      <line x1="11.5" y1="11" x2="11.5" y2="7.5" stroke="${d}" stroke-width="0.8" stroke-opacity="0.6" stroke-linecap="round"/>
+      <line x1="11.5" y1="11" x2="15" y2="12.5" stroke="${d}" stroke-width="0.6" stroke-opacity="0.5" stroke-linecap="round"/>
+      <circle cx="11.5" cy="11" r="0.6" fill="${d}" fill-opacity="0.5"/>
+      <path d="M8 19 Q8 21 9 22" fill="none" stroke="${g}" stroke-width="0.8" stroke-opacity="0.7" stroke-linecap="round"/>
     </svg>`;
   },
 
   cigarIcon(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- rooster body -->
-      <path d="M8 12 Q6 14 6 16 Q6 18 8 19 Q10 20 13 19 Q15 18 16 16 Q16 14 14 12 Q12 11 8 12Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.6"/>
-      <!-- breast -->
-      <path d="M9 14 Q8 16 9 18" fill="none" stroke="${g}" stroke-width="0.4" stroke-opacity="0.4"/>
-      <!-- neck -->
-      <path d="M10 12 Q9 10 9 8 Q9 6 10 5" fill="none" stroke="${g}" stroke-width="1.5" stroke-opacity="0.55" stroke-linecap="round"/>
-      <!-- head -->
-      <circle cx="10.5" cy="4.5" r="1.8" fill="${g}" fill-opacity="0.55"/>
-      <!-- comb -->
-      <path d="M9 3 Q10 1 11 2 Q12 1 12 3" fill="${g}" fill-opacity="0.6" stroke="${g}" stroke-width="0.4"/>
-      <!-- beak -->
-      <path d="M12 4.5 L14 5 L12 5.5" fill="${g}" fill-opacity="0.65"/>
-      <!-- wattle -->
-      <path d="M11 6 Q11.5 7 11 7.5" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.3"/>
-      <!-- eye -->
-      <circle cx="10" cy="4" r="0.4" fill="${g}" fill-opacity="0.8"/>
-      <!-- tail feathers — flowing up -->
-      <path d="M15 13 Q18 10 19 6" fill="none" stroke="${g}" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round"/>
-      <path d="M15 14 Q19 12 20 8" fill="none" stroke="${g}" stroke-width="0.8" stroke-opacity="0.45" stroke-linecap="round"/>
-      <path d="M15 15 Q20 14 21 10" fill="none" stroke="${g}" stroke-width="0.6" stroke-opacity="0.35" stroke-linecap="round"/>
-      <!-- legs -->
-      <path d="M10 19 L9 22 M9 22 L7.5 23 M9 22 L10 23" fill="none" stroke="${g}" stroke-width="0.6" stroke-opacity="0.5" stroke-linecap="round"/>
-      <path d="M13 19 L14 22 M14 22 L12.5 23 M14 22 L15 23" fill="none" stroke="${g}" stroke-width="0.6" stroke-opacity="0.5" stroke-linecap="round"/>
+      <path d="M8 12 Q6 14 6 16 Q6 18 8 19 Q10 20 13 19 Q15 18 16 16 Q16 14 14 12 Q12 11 8 12Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5"/>
+      <path d="M9 13 Q8 15 9 17" fill="none" stroke="${s}" stroke-width="0.5" stroke-opacity="0.45"/>
+      <path d="M10 12 Q9 10 9 8 Q9 6 10 5" fill="none" stroke="${g}" stroke-width="1.8" stroke-opacity="0.85" stroke-linecap="round"/>
+      <circle cx="10.5" cy="4.5" r="1.8" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.6" stroke-opacity="0.5"/>
+      <circle cx="10" cy="4" r="0.5" fill="${d}" fill-opacity="0.5"/>
+      <path d="M9 3 Q10 1 11 2 Q12 1 12 3" fill="${g}" fill-opacity="0.9" stroke="${d}" stroke-width="0.4" stroke-opacity="0.4"/>
+      <path d="M12 4.5 L14 5 L12 5.5" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.3" stroke-opacity="0.35"/>
+      <path d="M11 6 Q11.5 7 11 7.5" fill="${g}" fill-opacity="0.7" stroke="${d}" stroke-width="0.3" stroke-opacity="0.3"/>
+      <path d="M15 13 Q18 10 19 6" fill="none" stroke="${g}" stroke-width="1.2" stroke-opacity="0.8" stroke-linecap="round"/>
+      <path d="M15 14 Q19 12 20 8" fill="none" stroke="${g}" stroke-width="1" stroke-opacity="0.65" stroke-linecap="round"/>
+      <path d="M15 15 Q20 14 21 10" fill="none" stroke="${g}" stroke-width="0.7" stroke-opacity="0.5" stroke-linecap="round"/>
+      <path d="M10 19 L9 22 M9 22 L7.5 23 M9 22 L10 23" fill="none" stroke="${g}" stroke-width="0.7" stroke-opacity="0.7" stroke-linecap="round"/>
+      <path d="M13 19 L14 22 M14 22 L12.5 23 M14 22 L15 23" fill="none" stroke="${g}" stroke-width="0.7" stroke-opacity="0.7" stroke-linecap="round"/>
     </svg>`;
   },
 
   bridgeArch(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- lamp post pole -->
-      <line x1="12" y1="22" x2="12" y2="6" stroke="${g}" stroke-width="1.2" stroke-opacity="0.6" stroke-linecap="round"/>
-      <!-- decorative scroll arm -->
-      <path d="M12 7 Q15 6 17 7 Q18 8 17 9" fill="none" stroke="${g}" stroke-width="0.8" stroke-opacity="0.55" stroke-linecap="round"/>
-      <path d="M12 7 Q9 6 7 7 Q6 8 7 9" fill="none" stroke="${g}" stroke-width="0.8" stroke-opacity="0.55" stroke-linecap="round"/>
-      <!-- lanterns -->
-      <path d="M16 7 L18 7 L17.5 10 L16.5 10Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.4"/>
-      <path d="M6 7 L8 7 L7.5 10 L6.5 10Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.4"/>
-      <!-- lantern glow -->
-      <circle cx="17" cy="8.5" r="1.5" fill="${g}" fill-opacity="0.15"/>
-      <circle cx="7" cy="8.5" r="1.5" fill="${g}" fill-opacity="0.15"/>
-      <!-- post base -->
-      <rect x="10" y="20" width="4" height="2" rx="0.5" fill="${g}" fill-opacity="0.45"/>
-      <!-- base detail -->
-      <rect x="9" y="21" width="6" height="1" rx="0.3" fill="${g}" fill-opacity="0.35"/>
-      <!-- riverwalk railing hint -->
-      <line x1="1" y1="18" x2="23" y2="18" stroke="${g}" stroke-width="0.5" stroke-opacity="0.3"/>
-      <line x1="3" y1="18" x2="3" y2="20" stroke="${g}" stroke-width="0.4" stroke-opacity="0.25"/>
-      <line x1="21" y1="18" x2="21" y2="20" stroke="${g}" stroke-width="0.4" stroke-opacity="0.25"/>
+      <line x1="12" y1="22" x2="12" y2="6" stroke="${g}" stroke-width="1.4" stroke-opacity="0.8" stroke-linecap="round"/>
+      <path d="M12 7 Q15 6 17 7 Q18 8 17 9" fill="none" stroke="${g}" stroke-width="1" stroke-opacity="0.75" stroke-linecap="round"/>
+      <path d="M12 7 Q9 6 7 7 Q6 8 7 9" fill="none" stroke="${g}" stroke-width="1" stroke-opacity="0.75" stroke-linecap="round"/>
+      <path d="M16 7 L18 7 L17.5 10 L16.5 10Z" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.4" stroke-opacity="0.45"/>
+      <path d="M6 7 L8 7 L7.5 10 L6.5 10Z" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.4" stroke-opacity="0.45"/>
+      <circle cx="17" cy="8.5" r="1.8" fill="${s}" fill-opacity="0.25"/>
+      <circle cx="7" cy="8.5" r="1.8" fill="${s}" fill-opacity="0.25"/>
+      <circle cx="17" cy="8.5" r="0.6" fill="${s}" fill-opacity="0.6"/>
+      <circle cx="7" cy="8.5" r="0.6" fill="${s}" fill-opacity="0.6"/>
+      <rect x="10" y="20" width="4" height="2" rx="0.5" fill="${g}" fill-opacity="0.75" stroke="${d}" stroke-width="0.4" stroke-opacity="0.35"/>
+      <rect x="9" y="21.5" width="6" height="1" rx="0.3" fill="${g}" fill-opacity="0.65" stroke="${d}" stroke-width="0.3" stroke-opacity="0.3"/>
+      <line x1="1" y1="18" x2="23" y2="18" stroke="${g}" stroke-width="0.5" stroke-opacity="0.35"/>
+      <path d="M12 7 L12 6.5" stroke="${s}" stroke-width="0.5" stroke-opacity="0.5" stroke-linecap="round"/>
     </svg>`;
   },
 
   ringlingCircus(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- big top tent silhouette -->
-      <path d="M3 19 L5 7 Q12 2 19 7 L21 19Z" fill="${g}" fill-opacity="0.45" stroke="${g}" stroke-width="0.7"/>
-      <!-- tent stripes -->
-      <path d="M8 18 L9 6" fill="none" stroke="${g}" stroke-width="0.6" stroke-opacity="0.3"/>
-      <path d="M12 18 L12 4" fill="none" stroke="${g}" stroke-width="0.6" stroke-opacity="0.3"/>
-      <path d="M16 18 L15 6" fill="none" stroke="${g}" stroke-width="0.6" stroke-opacity="0.3"/>
-      <!-- peak finial -->
-      <circle cx="12" cy="3.5" r="1" fill="${g}" fill-opacity="0.7"/>
-      <!-- flag -->
-      <path d="M12 3 L15 1.5 L12 0.5" fill="${g}" fill-opacity="0.6"/>
-      <!-- entrance -->
-      <path d="M9 19 Q12 15 15 19" fill="${g}" fill-opacity="0.2"/>
+      <path d="M3 19 L5 7 Q12 2 19 7 L21 19Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5"/>
+      <path d="M8 18 L9 6" fill="none" stroke="${s}" stroke-width="0.7" stroke-opacity="0.35"/>
+      <path d="M12 18 L12 4" fill="none" stroke="${s}" stroke-width="0.7" stroke-opacity="0.35"/>
+      <path d="M16 18 L15 6" fill="none" stroke="${s}" stroke-width="0.7" stroke-opacity="0.35"/>
+      <circle cx="12" cy="3.5" r="1.2" fill="${g}" fill-opacity="0.95" stroke="${d}" stroke-width="0.4" stroke-opacity="0.4"/>
+      <path d="M12 3 L15 1.5 L12 0.5" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.3" stroke-opacity="0.35"/>
+      <path d="M9 19 Q12 15 15 19" fill="${d}" fill-opacity="0.15"/>
+      <path d="M6 5 Q8 4 12 4" fill="none" stroke="${s}" stroke-width="0.5" stroke-opacity="0.4"/>
     </svg>`;
   },
 
   beachUmbrella(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- pole -->
-      <line x1="12" y1="7" x2="12" y2="21" stroke="${g}" stroke-width="0.8" stroke-opacity="0.55" stroke-linecap="round"/>
-      <!-- canopy silhouette -->
-      <path d="M4 8 Q8 2 12 2 Q16 2 20 8Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.6"/>
-      <!-- canopy ribs -->
-      <path d="M6 7 Q9 4 12 7" fill="none" stroke="${g}" stroke-width="0.4" stroke-opacity="0.35"/>
-      <path d="M12 7 Q15 4 18 7" fill="none" stroke="${g}" stroke-width="0.4" stroke-opacity="0.35"/>
-      <!-- chair -->
-      <path d="M14 17 L18 14 L20 17" fill="none" stroke="${g}" stroke-width="0.7" stroke-opacity="0.4" stroke-linecap="round"/>
-      <line x1="16" y1="15.5" x2="16" y2="19" stroke="${g}" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="12" y1="7" x2="12" y2="21" stroke="${g}" stroke-width="1" stroke-opacity="0.75" stroke-linecap="round"/>
+      <path d="M4 8 Q8 2 12 2 Q16 2 20 8Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5"/>
+      <path d="M6 7 Q9 4 12 3" fill="none" stroke="${s}" stroke-width="0.6" stroke-opacity="0.5"/>
+      <path d="M8 7 Q10 4 12 7" fill="none" stroke="${d}" stroke-width="0.3" stroke-opacity="0.15"/>
+      <path d="M12 7 Q14 4 16 7" fill="none" stroke="${d}" stroke-width="0.3" stroke-opacity="0.15"/>
+      <path d="M14 17 L18 14 L20 17" fill="none" stroke="${g}" stroke-width="0.8" stroke-opacity="0.6" stroke-linecap="round"/>
+      <line x1="16" y1="15.5" x2="16" y2="19" stroke="${g}" stroke-width="0.6" stroke-opacity="0.45"/>
     </svg>`;
   },
 
   palmTree(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- starfish body — five arms radiating out -->
-      <path d="M12 4 L13.5 9 L19 9 L14.5 12.5 L16.5 18 L12 14.5 L7.5 18 L9.5 12.5 L5 9 L10.5 9Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.7" stroke-linejoin="round"/>
-      <!-- arm texture dots -->
-      <circle cx="12" cy="7" r="0.4" fill="${g}" fill-opacity="0.7"/>
-      <circle cx="15" cy="10" r="0.4" fill="${g}" fill-opacity="0.65"/>
-      <circle cx="9" cy="10" r="0.4" fill="${g}" fill-opacity="0.65"/>
-      <circle cx="10" cy="15" r="0.4" fill="${g}" fill-opacity="0.6"/>
-      <circle cx="14" cy="15" r="0.4" fill="${g}" fill-opacity="0.6"/>
-      <!-- center -->
-      <circle cx="12" cy="11" r="1.2" fill="${g}" fill-opacity="0.35"/>
+      <path d="M12 4 L13.5 9 L19 9 L14.5 12.5 L16.5 18 L12 14.5 L7.5 18 L9.5 12.5 L5 9 L10.5 9Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5" stroke-linejoin="round"/>
+      <path d="M10.5 9 L12 6 L13.5 9" fill="${s}" fill-opacity="0.35"/>
+      <circle cx="12" cy="7" r="0.5" fill="${s}" fill-opacity="0.6"/>
+      <circle cx="15" cy="10" r="0.5" fill="${s}" fill-opacity="0.5"/>
+      <circle cx="9" cy="10" r="0.5" fill="${s}" fill-opacity="0.5"/>
+      <circle cx="10" cy="15" r="0.5" fill="${s}" fill-opacity="0.45"/>
+      <circle cx="14" cy="15" r="0.5" fill="${s}" fill-opacity="0.45"/>
+      <circle cx="12" cy="11" r="1.3" fill="${s}" fill-opacity="0.25"/>
     </svg>`;
   },
 
   guitarSilhouette(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- guitar body silhouette -->
-      <path d="M9 22 Q5 21 4 18 Q3 15 5 13 Q6 12 6 11 Q5 10 5 8 Q6 6 9 6 Q10 6 10 8 Q10 10 9 11 Q8 12 8 13 Q7 15 8 17 Q9 19 12 19 Q15 19 16 17 Q17 15 16 13 Q15 12 15 11 Q14 10 14 8 Q14 6 15 6 Q18 6 19 8 Q19 10 18 11 Q17 12 18 13 Q21 15 20 18 Q19 21 15 22Z" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.6"/>
-      <!-- sound hole -->
-      <circle cx="12" cy="15" r="2" fill="${g}" fill-opacity="0.25" stroke="${g}" stroke-width="0.5" stroke-opacity="0.6"/>
-      <!-- neck -->
-      <rect x="11" y="1" width="2" height="6" rx="0.5" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.4"/>
-      <!-- headstock -->
-      <rect x="10" y="0" width="4" height="1.5" rx="0.5" fill="${g}" fill-opacity="0.55"/>
-      <!-- frets -->
-      <line x1="11" y1="2.5" x2="13" y2="2.5" stroke="${g}" stroke-width="0.3" stroke-opacity="0.5"/>
-      <line x1="11" y1="4" x2="13" y2="4" stroke="${g}" stroke-width="0.3" stroke-opacity="0.5"/>
-      <line x1="11" y1="5.5" x2="13" y2="5.5" stroke="${g}" stroke-width="0.3" stroke-opacity="0.5"/>
+      <path d="M9 22 Q5 21 4 18 Q3 15 5 13 Q6 12 6 11 Q5 10 5 8 Q6 6 9 6 Q10 6 10 8 Q10 10 9 11 Q8 12 8 13 Q7 15 8 17 Q9 19 12 19 Q15 19 16 17 Q17 15 16 13 Q15 12 15 11 Q14 10 14 8 Q14 6 15 6 Q18 6 19 8 Q19 10 18 11 Q17 12 18 13 Q21 15 20 18 Q19 21 15 22Z" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.7" stroke-opacity="0.5"/>
+      <circle cx="12" cy="15" r="2" fill="${d}" fill-opacity="0.2" stroke="${d}" stroke-width="0.5" stroke-opacity="0.35"/>
+      <rect x="11" y="1" width="2" height="6" rx="0.5" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.5" stroke-opacity="0.4"/>
+      <rect x="10" y="0" width="4" height="1.5" rx="0.5" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.4" stroke-opacity="0.4"/>
+      <line x1="11" y1="2.5" x2="13" y2="2.5" stroke="${s}" stroke-width="0.4" stroke-opacity="0.5"/>
+      <line x1="11" y1="4" x2="13" y2="4" stroke="${s}" stroke-width="0.4" stroke-opacity="0.5"/>
+      <line x1="11" y1="5.5" x2="13" y2="5.5" stroke="${s}" stroke-width="0.4" stroke-opacity="0.5"/>
+      <path d="M6 8 Q7 7 9 8" fill="none" stroke="${s}" stroke-width="0.4" stroke-opacity="0.35"/>
+      <path d="M6 14 Q8 13 10 15" fill="none" stroke="${s}" stroke-width="0.4" stroke-opacity="0.3"/>
     </svg>`;
   },
 
   donCesar(theme) {
     const g = '#FBBF24';
+    const s = '#FDE68A';
+    const d = '#1E293B';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 26 26">
-      <!-- main building -->
-      <rect x="4" y="8" width="16" height="13" rx="0.5" fill="${g}" fill-opacity="0.4" stroke="${g}" stroke-width="0.6"/>
-      <!-- center tower -->
-      <rect x="9" y="3" width="6" height="6" rx="0.3" fill="${g}" fill-opacity="0.45"/>
-      <!-- dome -->
-      <path d="M9 3 Q12 0 15 3" fill="${g}" fill-opacity="0.5" stroke="${g}" stroke-width="0.5"/>
-      <!-- finial -->
-      <circle cx="12" cy="0.5" r="0.5" fill="${g}" fill-opacity="0.7"/>
-      <!-- side towers -->
-      <rect x="4" y="6" width="3" height="3" rx="0.2" fill="${g}" fill-opacity="0.4"/>
-      <rect x="17" y="6" width="3" height="3" rx="0.2" fill="${g}" fill-opacity="0.4"/>
-      <!-- windows -->
-      <rect x="6" y="10" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.2"/>
-      <rect x="9" y="10" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.2"/>
-      <rect x="13.5" y="10" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.2"/>
-      <rect x="16.5" y="10" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.2"/>
-      <rect x="6" y="14" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.15"/>
-      <rect x="9" y="14" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.15"/>
-      <rect x="13.5" y="14" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.15"/>
-      <rect x="16.5" y="14" width="1.5" height="2" rx="0.3" fill="${g}" fill-opacity="0.15"/>
-      <!-- entrance arch -->
-      <path d="M10 21 Q12 18 14 21" fill="${g}" fill-opacity="0.2"/>
+      <rect x="4" y="8" width="16" height="13" rx="0.5" fill="${g}" fill-opacity="0.75" stroke="${d}" stroke-width="0.6" stroke-opacity="0.45"/>
+      <rect x="9" y="3" width="6" height="6" rx="0.3" fill="${g}" fill-opacity="0.8" stroke="${d}" stroke-width="0.5" stroke-opacity="0.4"/>
+      <path d="M9 3 Q12 0 15 3" fill="${g}" fill-opacity="0.85" stroke="${d}" stroke-width="0.5" stroke-opacity="0.4"/>
+      <circle cx="12" cy="0.5" r="0.6" fill="${s}" fill-opacity="0.8"/>
+      <rect x="4" y="6" width="3" height="3" rx="0.2" fill="${g}" fill-opacity="0.7" stroke="${d}" stroke-width="0.4" stroke-opacity="0.35"/>
+      <rect x="17" y="6" width="3" height="3" rx="0.2" fill="${g}" fill-opacity="0.7" stroke="${d}" stroke-width="0.4" stroke-opacity="0.35"/>
+      <rect x="6" y="10" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.15"/>
+      <rect x="9" y="10" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.15"/>
+      <rect x="13.5" y="10" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.15"/>
+      <rect x="16.5" y="10" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.15"/>
+      <rect x="6" y="14" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.12"/>
+      <rect x="9" y="14" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.12"/>
+      <rect x="13.5" y="14" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.12"/>
+      <rect x="16.5" y="14" width="1.5" height="2" rx="0.3" fill="${d}" fill-opacity="0.12"/>
+      <path d="M10 21 Q12 18 14 21" fill="${d}" fill-opacity="0.12"/>
+      <path d="M10 4 Q11 3 12 3.5" fill="none" stroke="${s}" stroke-width="0.5" stroke-opacity="0.5"/>
+      <path d="M5 9 Q8 8 12 9" fill="none" stroke="${s}" stroke-width="0.4" stroke-opacity="0.3"/>
     </svg>`;
   },
 };
