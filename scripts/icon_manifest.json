@@ -1,0 +1,513 @@
+{
+  "global_style": "Clean vector-style illustration, flat or semi-flat design, crisp edges, NOT photorealistic. 128x128px PNG with transparent background (alpha channel). Icon centered with ~8px padding on all sides. Line weight: medium 2-3px equivalent at 128px scale.",
+  "category_colors": {
+    "marine": "#2DD4BF",
+    "birds": "#38BDF8",
+    "nature": "#4ADE80",
+    "culture": "#FB923C",
+    "heritage": "#A78BFA",
+    "sports": "#F87171",
+    "folklore": "#C084FC",
+    "landmarks": "#FBBF24"
+  },
+  "easter_eggs": [
+    {
+      "svgKey": "pirateShip",
+      "category": "heritage",
+      "batch": 1,
+      "description": "Jose Gaspar's pirate ship — the legendary pirate of Tampa Bay, celebrated at the annual Gasparilla festival",
+      "inactive_prompt": "A single mast with a triangular sail poking above a wavy horizon line. Tiny flag at top. All in purple monochrome, ghostly.",
+      "active_prompt": "Full pirate ship with brown wooden hull, cream-colored billowing sails, cannon ports along the hull, Jolly Roger flag (black with white skull), crow's nest, rigging ropes, bowsprit, and teal ocean waves beneath. Red trim stripe on hull."
+    },
+    {
+      "svgKey": "kraken",
+      "category": "folklore",
+      "batch": 1,
+      "description": "A giant kraken/sea monster rising from Tampa Bay — Gulf of Mexico deep water folklore",
+      "inactive_prompt": "Three tentacle tips curling up above a wavy waterline, evenly spaced. Small sucker dots on tentacles. All in light purple monochrome.",
+      "active_prompt": "Full kraken with massive domed purple head, glowing yellow eyes with dark pupils, open mouth, and 4 long tentacles reaching upward out of the water with coral-pink sucker dots. Water splashes at base."
+    },
+    {
+      "svgKey": "skunkApe",
+      "category": "folklore",
+      "batch": 1,
+      "description": "Florida's Skunk Ape — the swamp-dwelling Bigfoot cousin of the Everglades and Green Swamp",
+      "inactive_prompt": "A dark shadowy bigfoot silhouette standing among simple vertical lines (trees/reeds). Glowing yellow eyes peering out. All in light purple monochrome.",
+      "active_prompt": "Full hairy ape-like creature with shaggy dark brown fur, muscular build, standing in a swamp scene with green hanging Spanish moss, teal swamp water at feet, and dark green cypress trees in background. Yellow glowing eyes."
+    },
+    {
+      "svgKey": "strawberry",
+      "category": "culture",
+      "batch": 1,
+      "description": "Plant City strawberry — the Winter Strawberry Capital of the World",
+      "inactive_prompt": "Simple strawberry outline/silhouette with a few seed dots. Small leaf crown on top. All in orange monochrome.",
+      "active_prompt": "Lush red strawberry with visible seeds, bright green leaf crown, a small slice showing pink interior, maybe a tiny blossom. Realistic fruit colors — red body, green leaves, yellow seeds."
+    },
+    {
+      "svgKey": "lightning",
+      "category": "nature",
+      "batch": 1,
+      "description": "Lightning bolt over Lightning Alley — Tampa Bay is the lightning capital of North America",
+      "inactive_prompt": "A single zigzag lightning bolt shape, thin and angular. All in green monochrome.",
+      "active_prompt": "Dramatic forked lightning bolt in bright yellow/white striking down from a dark storm cloud. Electric glow effect around the bolt. Dark blue-gray cloud at top, rain lines, and a faint green glow at the ground impact point."
+    },
+    {
+      "svgKey": "mermaid",
+      "category": "folklore",
+      "batch": 2,
+      "description": "Weeki Wachee Springs mermaid — the iconic live mermaid shows running since 1947",
+      "inactive_prompt": "Simple mermaid tail silhouette curving upward, with flowing hair lines at top. All in light purple monochrome.",
+      "active_prompt": "Beautiful mermaid with flowing hair, detailed scaled tail in teal/purple iridescent colors, seashell top, holding a small air hose (the real Weeki Wachee mermaids breathe from hoses). Underwater bubbles, small fish nearby. Spring-clear blue water tones."
+    },
+    {
+      "svgKey": "cigar",
+      "category": "culture",
+      "batch": 2,
+      "description": "Hand-rolled Ybor City cigar — Tampa was the Cigar Capital of the World",
+      "inactive_prompt": "Simple horizontal cigar shape with a band ring in the middle. Thin wisp of smoke curling up from the lit end. All in orange monochrome.",
+      "active_prompt": "Detailed hand-rolled cigar with realistic brown tobacco wrapper texture, ornate gold-and-red cigar band, glowing orange ember at the lit tip, and elegant curling smoke wisps rising up. Rich warm brown tones."
+    },
+    {
+      "svgKey": "dolphin",
+      "category": "marine",
+      "batch": 2,
+      "description": "Bottlenose dolphin leaping — commonly spotted in Tampa Bay and along the Gulf Coast",
+      "inactive_prompt": "Simple dolphin silhouette mid-leap, arcing over a wavy line (water surface). All in teal monochrome.",
+      "active_prompt": "Sleek gray bottlenose dolphin leaping out of teal-blue water with a splash beneath. Detailed flippers, dorsal fin, smiling rostrum, eye detail. Water droplets in the air. Sunny feel."
+    },
+    {
+      "svgKey": "pelican",
+      "category": "birds",
+      "batch": 2,
+      "description": "Brown pelican diving — an iconic coastal bird seen on every pier and dock",
+      "inactive_prompt": "Simple pelican silhouette perched on a post/piling, large bill visible. All in sky blue monochrome.",
+      "active_prompt": "Brown pelican with detailed plumage — brown body, white/cream neck, large gray bill with yellow-orange pouch. Perched on a wooden dock piling. Maybe wings slightly spread. Realistic bird coloring."
+    },
+    {
+      "svgKey": "osprey",
+      "category": "birds",
+      "batch": 2,
+      "description": "Osprey in flight — fish hawks that nest on power poles and channel markers around Tampa Bay",
+      "inactive_prompt": "Bird of prey silhouette with spread wings, soaring. Simple angular wing shape. All in sky blue monochrome.",
+      "active_prompt": "Osprey with wings spread wide in flight, talons extended gripping a fish. White breast, brown wings with distinctive dark eye stripe. Detailed feather patterns. Fish (silver/gray) in talons."
+    },
+    {
+      "svgKey": "sandhillCrane",
+      "category": "birds",
+      "batch": 3,
+      "description": "Sandhill crane pair — tall gray birds that wander suburban lawns across Central Florida",
+      "inactive_prompt": "Tall wading bird silhouette standing on long legs, long neck, small head. All in sky blue monochrome.",
+      "active_prompt": "Elegant sandhill crane standing tall with gray plumage, distinctive red crown patch on forehead, long dark legs, long neck. Standing in grass. Realistic gray-brown bird coloring with that signature red patch."
+    },
+    {
+      "svgKey": "gopherTortoise",
+      "category": "landmarks",
+      "batch": 3,
+      "description": "Gopher tortoise — a keystone species whose burrows shelter 350+ other animals in Florida scrub",
+      "inactive_prompt": "Simple tortoise/turtle silhouette from the side, domed shell visible. All in gold monochrome.",
+      "active_prompt": "Detailed gopher tortoise with brown-gray domed shell with visible scute pattern, sturdy elephant-like legs, small head peeking out. Sandy ground beneath, maybe entrance to its burrow visible. Earthy brown/tan colors."
+    },
+    {
+      "svgKey": "alligator",
+      "category": "marine",
+      "batch": 3,
+      "description": "American alligator — 1.3 million gators call Florida home",
+      "inactive_prompt": "Low-profile gator silhouette — just eyes and snout ridge above a waterline, with a subtle tail curve. All in teal monochrome.",
+      "active_prompt": "Full American alligator with dark olive-green scaly skin, powerful jaws (slightly open showing teeth), thick tail, partially submerged in water. Yellow-green eyes. Detailed scales and armor plates. Swampy green water around it."
+    },
+    {
+      "svgKey": "roseateSpoonbill",
+      "category": "birds",
+      "batch": 3,
+      "description": "Roseate spoonbill wading — the stunning pink bird often mistaken for a flamingo",
+      "inactive_prompt": "Wading bird silhouette with distinctive spoon-shaped bill (wider/flatter than other birds). All in sky blue monochrome.",
+      "active_prompt": "Gorgeous roseate spoonbill with vibrant pink plumage, distinctive flat spoon-shaped bill sweeping through shallow water, long pink legs. Shades of pink from pale to hot pink on wings. Standing in shallow mangrove water."
+    },
+    {
+      "svgKey": "seaTurtle",
+      "category": "marine",
+      "batch": 3,
+      "description": "Loggerhead sea turtle — nests on Gulf beaches every summer",
+      "inactive_prompt": "Sea turtle silhouette swimming, flippers extended, oval shell. All in teal monochrome.",
+      "active_prompt": "Beautiful loggerhead sea turtle swimming with outstretched flippers. Brown-olive shell with detailed scute pattern, lighter tan/cream underside. Flippers with scale detail. Maybe a few small bubbles. Ocean blue-teal water feel."
+    },
+    {
+      "svgKey": "skywayBridge",
+      "category": "landmarks",
+      "batch": 4,
+      "description": "Sunshine Skyway Bridge — the iconic cable-stayed bridge spanning Tampa Bay",
+      "inactive_prompt": "Simple bridge silhouette with two tower pylons and cable stays fanning down. Horizontal roadway line. All in gold monochrome.",
+      "active_prompt": "Dramatic Sunshine Skyway Bridge with bright yellow cable stays fanning from twin concrete pylons, blue water below, sunset-colored sky behind. The distinctive inverted-Y tower shape is key. Cars on the roadway as tiny dots."
+    },
+    {
+      "svgKey": "spongeDiver",
+      "category": "heritage",
+      "batch": 4,
+      "description": "Tarpon Springs sponge diver — Greek immigrants brought deep-sea sponge diving to Florida in the early 1900s",
+      "inactive_prompt": "Standing figure silhouette in old-fashioned diving suit with round helmet. All in purple monochrome.",
+      "active_prompt": "Classic vintage deep-sea diver in brass/copper diving helmet with round viewing ports, canvas suit, weighted boots, air hose trailing upward. Holding a natural sponge in one hand. Bubbles rising. Underwater blue-green tones with the warm brass helmet as focal point."
+    },
+    {
+      "svgKey": "hockeyPuck",
+      "category": "sports",
+      "batch": 4,
+      "description": "Hockey puck for the Tampa Bay Lightning — back-to-back Stanley Cup champions 2020-2021",
+      "inactive_prompt": "Simple circle/disc shape (puck from above) with a few horizontal lines across it. All in red monochrome.",
+      "active_prompt": "Black hockey puck with a small lightning bolt emblem, sitting on ice with ice spray/shavings around it. A hockey stick blade visible hitting the puck. Ice surface with scratch marks. Black puck, blue-white ice, red accent from stick tape."
+    },
+    {
+      "svgKey": "pirateFlag",
+      "category": "sports",
+      "batch": 4,
+      "description": "Jolly Roger pirate flag — representing the Tampa Bay Buccaneers, Super Bowl LV champions",
+      "inactive_prompt": "Simple flag on a pole, with a basic skull shape visible on the flag. Flag waving slightly. All in red monochrome.",
+      "active_prompt": "Black Jolly Roger flag flying on a wooden pole, with white skull and crossed swords/bones on the flag, flag billowing in the wind. Red trim on the flag edges. Dramatic and bold — the Bucs' pirate spirit."
+    },
+    {
+      "svgKey": "stingray",
+      "category": "marine",
+      "batch": 4,
+      "description": "Cownose stingray gliding — massive schools migrate through Tampa Bay every spring",
+      "inactive_prompt": "Simple diamond/wing shape of a ray gliding, seen from above. Thin tail trailing behind. All in teal monochrome.",
+      "active_prompt": "Graceful cownose stingray with wide wing-like pectoral fins spread out, gliding through clear blue water. Light tan/brown top with lighter underside showing. Long thin tail. Smooth, elegant shape. Subtle water caustic light patterns."
+    },
+    {
+      "svgKey": "greekCross",
+      "category": "heritage",
+      "batch": 5,
+      "description": "Greek Orthodox cross — honoring Tarpon Springs' Greek heritage and the annual Epiphany cross dive",
+      "inactive_prompt": "Simple cross shape with slightly flared/ornate ends (Greek Orthodox style, not plain). All in purple monochrome.",
+      "active_prompt": "Ornate Greek Orthodox cross in gold with intricate decorative ends, partially submerged in blue-green water with splash effects — representing the famous dive. Water droplets on the cross. Gold cross, blue water, white splash."
+    },
+    {
+      "svgKey": "cubanSandwich",
+      "category": "culture",
+      "batch": 5,
+      "description": "Tampa's signature Cuban sandwich — ham, roast pork, Swiss, pickles, mustard on Cuban bread",
+      "inactive_prompt": "Simple sandwich silhouette — long sub shape with a line through the middle (pressed). All in orange monochrome.",
+      "active_prompt": "Delicious pressed Cuban sandwich cut in half showing layers: golden-brown pressed Cuban bread, pink ham, roast pork, melted yellow Swiss cheese, green pickle slices, yellow mustard. Grill press marks on bread. Toothpick through the top. Warm appetizing colors."
+    },
+    {
+      "svgKey": "grouper",
+      "category": "marine",
+      "batch": 5,
+      "description": "Grouper fish — the Gulf grouper sandwich is a Tampa Bay culinary staple",
+      "inactive_prompt": "Simple fish silhouette — stocky, wide-mouthed grouper shape. All in teal monochrome.",
+      "active_prompt": "Hefty grouper fish with brown-olive mottled skin, large mouth, prominent dorsal fin, thick body. Detailed scales and fins. Swimming near a coral/reef structure. Brown, olive, and tan realistic fish coloring."
+    },
+    {
+      "svgKey": "orange",
+      "category": "culture",
+      "batch": 5,
+      "description": "Florida orange — the Sunshine State produces 70% of U.S. citrus",
+      "inactive_prompt": "Simple circle with a small stem and leaf at top (orange shape). All in orange monochrome.",
+      "active_prompt": "Bright, juicy Florida orange with realistic dimpled skin texture, green stem with two leaves, maybe a slice showing juicy orange interior segments. Bright orange with green leaf accent. Fresh and vibrant."
+    },
+    {
+      "svgKey": "craftBeer",
+      "category": "culture",
+      "batch": 5,
+      "description": "Craft beer pint — Tampa Bay has 80+ craft breweries",
+      "inactive_prompt": "Simple pint glass silhouette with foam line at top. All in orange monochrome.",
+      "active_prompt": "Frosty pint glass filled with amber/golden craft beer, thick white foam head overflowing slightly. Condensation droplets on the glass. Maybe a small hop cone accent. Warm amber gold beer color, white foam, clear glass."
+    },
+    {
+      "svgKey": "flamingo",
+      "category": "birds",
+      "batch": 6,
+      "description": "Pink flamingo — wild flamingos returning to Florida, plus the iconic lawn ornament",
+      "inactive_prompt": "Flamingo silhouette standing on one leg, curved neck, round body. All in sky blue monochrome.",
+      "active_prompt": "Bright hot-pink flamingo standing on one long pink leg, elegant S-curved neck, black-tipped bill. Lush and vibrant pink plumage. Classic flamingo pose. Maybe standing in shallow water with a subtle reflection."
+    },
+    {
+      "svgKey": "tikiHut",
+      "category": "landmarks",
+      "batch": 6,
+      "description": "Tiki hut — the quintessential Florida beach bar with thatched chickee hut",
+      "inactive_prompt": "Simple A-frame/triangular roof shape on two posts (tiki hut outline). All in gold monochrome.",
+      "active_prompt": "Charming tiki hut with detailed thatched palm-frond roof, wooden support poles wrapped with rope, a small bar counter underneath, maybe a tiki torch on one side. Warm brown wood, golden-tan thatch, tropical feel. A small palm tree beside it."
+    },
+    {
+      "svgKey": "ufo",
+      "category": "folklore",
+      "batch": 6,
+      "description": "UFO over Gulf Breeze — Florida's famous 1987 UFO sighting wave",
+      "inactive_prompt": "Simple flying saucer disc shape with a small dome on top. All in light purple monochrome.",
+      "active_prompt": "Classic silver/metallic flying saucer with domed top, colored lights around the rim (green, red, blue), a beam of light shining down from the bottom. Night sky behind with stars. Metallic silver saucer, colorful lights, dramatic beam."
+    },
+    {
+      "svgKey": "conchShell",
+      "category": "landmarks",
+      "batch": 6,
+      "description": "Queen conch shell — symbol of Florida's coastal heritage",
+      "inactive_prompt": "Simple spiral shell silhouette (conch shape). All in gold monochrome.",
+      "active_prompt": "Beautiful queen conch shell with pearlescent pink interior, spiral ridged exterior in warm cream/tan/brown, flared lip showing the gorgeous pink inside. Sitting on sand. Natural shell colors — cream exterior, pink interior, sandy base."
+    },
+    {
+      "svgKey": "treasureChest",
+      "category": "heritage",
+      "batch": 6,
+      "description": "Pirate treasure chest — legends of buried treasure along the Gulf Coast tied to Gasparilla",
+      "inactive_prompt": "Simple chest/box shape with a rounded lid, slightly open. A small keyhole or lock on front. All in purple monochrome.",
+      "active_prompt": "Open wooden treasure chest overflowing with gold coins, jewels, and pearl necklaces spilling out. Ornate metal bands/hinges on the dark wood chest. Gold coins scattered on the sand around it. Rich browns, glittering gold, ruby red and emerald green gems."
+    },
+    {
+      "svgKey": "gibsonton",
+      "category": "folklore",
+      "batch": 7,
+      "description": "Gibsonton carnival tent — 'Gibtown' was the off-season home for sideshow performers",
+      "inactive_prompt": "Simple circus/carnival tent peak silhouette with a flag on top and scalloped edge. All in light purple monochrome.",
+      "active_prompt": "Colorful striped carnival tent (red and white stripes) with pennant flags, a 'SIDESHOW' banner, carnival lights along the edges. A ferris wheel silhouette in the background. Warm evening lighting. Red, white, gold, purple accents."
+    },
+    {
+      "svgKey": "spookHill",
+      "category": "folklore",
+      "batch": 7,
+      "description": "Spook Hill gravity illusion — the famous optical illusion hill in Lake Wales where cars appear to roll uphill",
+      "inactive_prompt": "Simple hill/slope line with a small car silhouette on it, tilted at an angle. All in light purple monochrome.",
+      "active_prompt": "A car (vintage style) appearing to roll uphill on a sloped road with a 'SPOOK HILL' sign visible. Spooky atmosphere — misty/foggy, maybe a ghostly Native American chief or alligator spirit faintly visible in the mist. Eerie green-purple tones."
+    },
+    {
+      "svgKey": "joyland",
+      "category": "folklore",
+      "batch": 7,
+      "description": "Abandoned Joyland ferris wheel — haunting remnants of Florida's forgotten roadside amusement parks",
+      "inactive_prompt": "Simple ferris wheel silhouette — circle with spokes and small car shapes around the rim. All in light purple monochrome.",
+      "active_prompt": "Rusting, overgrown abandoned ferris wheel with vines and vegetation growing through it. Faded paint, broken seats, rust-orange metal against green overgrowth. Haunting but beautiful — urban decay meets nature reclaiming. Rust, green, faded carnival colors."
+    },
+    {
+      "svgKey": "babeRuth",
+      "category": "sports",
+      "batch": 7,
+      "description": "Babe Ruth baseball — the Sultan of Swat did spring training in Tampa",
+      "inactive_prompt": "Simple baseball silhouette — circle with curved stitching lines. All in red monochrome.",
+      "active_prompt": "Classic white baseball with red stitching, a wooden bat crossed behind it, and a vintage 1920s-era baseball cap. Home plate or a diamond shape in the background. Nostalgic sepia-tinted feel with red stitching popping. Vintage Americana style."
+    },
+    {
+      "svgKey": "phosphateMining",
+      "category": "heritage",
+      "batch": 7,
+      "description": "Phosphate mining cart — Bone Valley near Tampa produces 75% of U.S. phosphate",
+      "inactive_prompt": "Simple mining cart silhouette on rails — box car shape on two wheels. All in purple monochrome.",
+      "active_prompt": "Old-fashioned mining cart on tracks filled with phosphate rock, with a large fossilized shark tooth (megalodon) visible among the rocks. Mining headframe/derrick in background. Earthy brown cart, gray-white phosphate rock, the distinctive dark fossil tooth as focal point."
+    },
+    {
+      "svgKey": "sharkTooth",
+      "category": "marine",
+      "batch": 8,
+      "description": "Megalodon shark tooth — Venice, FL is the 'Shark Tooth Capital of the World'",
+      "inactive_prompt": "Simple triangular tooth shape with serrated edges. All in teal monochrome.",
+      "active_prompt": "Large, dark fossilized megalodon tooth (triangular, serrated edges) sitting on sandy beach with small shells around it. The tooth is dark gray/black with a glossy fossilized look. Sandy beach colors, dark dramatic tooth. Maybe a hand for scale showing how massive it is."
+    },
+    {
+      "svgKey": "tarponFish",
+      "category": "marine",
+      "batch": 8,
+      "description": "Silver king tarpon — the prized game fish that draws anglers to Tampa Bay",
+      "inactive_prompt": "Leaping fish silhouette — elongated body, forked tail, mouth open. All in teal monochrome.",
+      "active_prompt": "Magnificent silver tarpon leaping out of the water, mouth wide open, scales gleaming with metallic silver sheen. Large prominent eye, forked tail, powerful body. Water splashing around it. Brilliant silver with blue-teal water. The 'Silver King' in all its glory."
+    },
+    {
+      "svgKey": "shipwreck",
+      "category": "folklore",
+      "batch": 8,
+      "description": "Sunken shipwreck — hundreds of wrecks lie off the Gulf Coast",
+      "inactive_prompt": "Simple sunken ship outline tilted on its side, with a wavy waterline above. All in light purple monochrome.",
+      "active_prompt": "Underwater scene of a sunken wooden ship (Spanish galleon style) tilted and broken on the ocean floor. Coral and sea life growing on the hull. Fish swimming through the broken ribs of the ship. Moody blue-green underwater lighting. Dark wood, colorful coral, schools of small fish."
+    },
+    {
+      "svgKey": "mantaRay",
+      "category": "marine",
+      "batch": 8,
+      "description": "Giant manta ray — graceful winged rays in Gulf waters, wingspans up to 23 feet",
+      "inactive_prompt": "Simple diamond/wing shape from above — wider and more angular than the stingray, with cephalic fins (horn-like flaps) at the front. All in teal monochrome.",
+      "active_prompt": "Majestic manta ray gliding through blue water with enormous wing-like pectoral fins spread wide. Dark back (black/navy) with white belly markings. Distinctive cephalic fins (like horns) flanking the wide mouth. Remora fish riding along. Deep blue water with light rays filtering down."
+    },
+    {
+      "svgKey": "spanishMoss",
+      "category": "heritage",
+      "batch": 8,
+      "description": "Spanish moss draping from live oaks — the atmospheric gray garlands throughout the Bay area",
+      "inactive_prompt": "Vertical hanging strands/garlands draping down from a horizontal branch line at top. Wispy, flowing lines. All in purple monochrome.",
+      "active_prompt": "Thick curtains of silver-gray Spanish moss hanging from a gnarled live oak branch. The branch is dark brown and twisted. Moss is delicate, wispy, atmospheric — almost ghostly. Soft gray-green moss, dark brown branch, dappled sunlight filtering through. Southern Gothic beauty."
+    },
+    {
+      "svgKey": "greenFlash",
+      "category": "nature",
+      "batch": 9,
+      "description": "Green flash sunset — the rare optical phenomenon visible over the Gulf of Mexico at sunset",
+      "inactive_prompt": "Simple half-circle (setting sun) on a horizon line with a small green dot/flash at the top of the sun. All in green monochrome.",
+      "active_prompt": "Stunning sunset over the Gulf with the sun half below the horizon, and a vivid bright green flash emanating from the top of the sun. Orange/pink/purple sky gradient, dark blue water, and that brilliant green flash as the focal point. The moment captured perfectly."
+    },
+    {
+      "svgKey": "unconquered",
+      "category": "heritage",
+      "batch": 9,
+      "description": "Seminole spear — honoring the unconquered Seminole Tribe of Florida",
+      "inactive_prompt": "Simple upright spear/lance silhouette with a pointed tip and maybe feather decorations near the top. All in purple monochrome.",
+      "active_prompt": "Ornate Seminole spear standing upright with detailed stone/flint spearhead, wrapped leather grip, eagle feathers tied near the head, and beadwork decorations. A traditional Seminole patchwork pattern band around the shaft. Earth tones — brown wood, gray flint, white/brown feathers, colorful patchwork (red, yellow, black Seminole pattern)."
+    },
+    {
+      "svgKey": "mangroveTunnels",
+      "category": "nature",
+      "batch": 9,
+      "description": "Mangrove tunnel kayak trail — paddling through arching red mangrove canopies",
+      "inactive_prompt": "Arch/tunnel shape made of intertwining branch lines, with a small kayak silhouette inside. All in green monochrome.",
+      "active_prompt": "Lush green mangrove tunnel with arching red mangrove roots and canopy forming a natural tunnel over calm water. A kayak paddling through the center. Dappled sunlight filtering through leaves. Rich greens, brown root tangles, calm teal-green water, the small colorful kayak as a focal point."
+    },
+    {
+      "svgKey": "kerouac",
+      "category": "heritage",
+      "batch": 9,
+      "description": "Jack Kerouac's typewriter — the Beat Generation author spent his final years in St. Petersburg",
+      "inactive_prompt": "Simple typewriter silhouette — boxy shape with a paper sheet sticking up from the top. All in purple monochrome.",
+      "active_prompt": "Vintage manual typewriter (1950s style) with round keys, a sheet of paper rolled in with typed text visible, maybe a coffee cup beside it and a worn paperback book. Nostalgic warm tones — dark metal typewriter, cream paper, warm amber lighting. Beat Generation aesthetic."
+    },
+    {
+      "svgKey": "bioluminescence",
+      "category": "nature",
+      "batch": 9,
+      "description": "Bioluminescent bay glow — dinoflagellates light up Tampa Bay waters with ethereal blue-green light",
+      "inactive_prompt": "Simple wavy water lines with a few small glowing dots/sparkles along them. All in green monochrome.",
+      "active_prompt": "Magical nighttime water scene with brilliant electric blue-green bioluminescent glow in the water. A kayak paddle creating a trail of glowing light. Dark night sky above, but the water is alive with swirling neon blue-green light from the dinoflagellates. Ethereal, magical feel. Deep dark blue-black night, vivid cyan-green glow in water."
+    },
+    {
+      "svgKey": "floridaMan",
+      "category": "landmarks",
+      "batch": 10,
+      "description": "Florida Man — the beloved internet meme born from Florida's public records laws and wild news headlines",
+      "inactive_prompt": "Simple male figure silhouette in a casual/wild pose — maybe arms raised triumphantly or running. All in gold monochrome.",
+      "active_prompt": "Comedic 'Florida Man' figure — a sunburned dude in cargo shorts, flip-flops, tank top, and sunglasses, striking a triumphant pose. Maybe holding a newspaper with 'FLORIDA MAN' headline. Palm tree behind him. Humorous and exaggerated. Bright sunny colors, comedic energy."
+    },
+    {
+      "svgKey": "hurricaneAlley",
+      "category": "nature",
+      "batch": 10,
+      "description": "Hurricane spiral — Tampa Bay sits in Hurricane Alley, most vulnerable metro for storm surge",
+      "inactive_prompt": "Simple spiral shape (hurricane from above) with a dot in the center (eye). All in green monochrome.",
+      "active_prompt": "Dramatic satellite-view hurricane spiral with well-defined eye in the center, swirling cloud bands in white/gray, dark blue ocean beneath. Rain bands spiraling outward. Atmospheric and powerful — whites, grays, deep blue. The eye is clear and distinct."
+    },
+    {
+      "svgKey": "redTide",
+      "category": "nature",
+      "batch": 10,
+      "description": "Red tide algae bloom — Karenia brevis blooms that periodically affect Gulf beaches",
+      "inactive_prompt": "Wavy water lines with a reddish-brown tint/wash spreading through them. All in green monochrome.",
+      "active_prompt": "Coastal scene showing reddish-brown discolored water (the algal bloom) meeting normal blue-green water. Dead fish floating on the surface. Beach shoreline visible. The contrast between the murky red-brown bloom water and clean blue water is key. Warning/cautionary feel."
+    },
+    {
+      "svgKey": "honeymoonIsland",
+      "category": "landmarks",
+      "batch": 10,
+      "description": "Honeymoon Island palm — the state park was a 1940s honeymoon resort",
+      "inactive_prompt": "Simple palm tree silhouette leaning over a small island/sandbar shape. All in gold monochrome.",
+      "active_prompt": "Idyllic tropical island scene — a leaning coconut palm tree on a small white sand beach, crystal-clear turquoise water, maybe a pair of Adirondack chairs or a small dock. Bright sunny tropical paradise feel. White sand, turquoise water, green palm, blue sky."
+    },
+    {
+      "svgKey": "ghostOrchid",
+      "category": "nature",
+      "batch": 10,
+      "description": "Ghost orchid in bloom — the rare, ethereal flower found in Florida swamps",
+      "inactive_prompt": "Simple flower shape with elongated petals floating/hanging — the orchid's distinctive angular shape. All in green monochrome.",
+      "active_prompt": "Ethereal white ghost orchid with its distinctive frog-like shape — two long lateral petals and a lip petal that looks like dangling legs. Attached to a dark tree trunk with visible aerial roots (no leaves — ghost orchids are leafless). Dark swamp background with soft light illuminating the pure white flower. Magical, rare, otherworldly."
+    },
+    {
+      "svgKey": "raysBaseball",
+      "category": "sports",
+      "batch": 12,
+      "description": "Tampa Bay Rays sunburst baseball — the Rays have called St. Petersburg home since 1998",
+      "inactive_prompt": "Simple baseball silhouette with curved stitching lines and a small sunburst/ray pattern. All in red monochrome.",
+      "active_prompt": "White baseball with red stitching and a yellow sunburst pattern (the Rays' logo style) radiating from behind it. A bat leaning against the ball. Bright, energetic sports feel. White ball, red stitching, yellow sunburst rays, wooden bat."
+    },
+    {
+      "svgKey": "golfFlag",
+      "category": "sports",
+      "batch": 12,
+      "description": "Golf flag on the green — Innisbrook's Copperhead Course hosts the PGA Tour's Valspar Championship",
+      "inactive_prompt": "Simple flag on a stick in a small circle (hole). All in red monochrome.",
+      "active_prompt": "Golf pin/flag on a manicured green with the flag waving in the breeze. A golf ball nearby on the putting surface, rolling toward the hole. Lush green grass, white flag with a number, white golf ball. Clean, pristine golf course feel. Palm trees in the distant background (it's Florida)."
+    },
+    {
+      "svgKey": "horseRacing",
+      "category": "sports",
+      "batch": 12,
+      "description": "Thoroughbred horse racing — Tampa Bay Downs in Oldsmar has hosted live racing since 1926",
+      "inactive_prompt": "Simple horse silhouette in galloping pose with a small jockey figure on top. All in red monochrome.",
+      "active_prompt": "Thoroughbred racehorse at full gallop with jockey in colorful silks leaning forward, dirt/turf kicking up behind the hooves. Dynamic action pose — muscles and motion. Rich brown horse, colorful jockey silks (red, blue, yellow), flying dirt, racetrack rail in background."
+    }
+  ],
+  "best_of_bay": [
+    {
+      "svgKey": "bernsSteak",
+      "destination": "Bern's Steak House",
+      "batch": 11,
+      "prompt": "Gold silhouette of a thick-cut steak on a sizzling plate/skillet, with small steam/sizzle lines rising. The steak should have grill marks. Elegant, appetizing. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "flamencoDancer",
+      "destination": "Columbia Restaurant",
+      "batch": 11,
+      "prompt": "Gold silhouette of a flamenco dancer mid-twirl, arms raised, ruffled dress fanning out dramatically. Dynamic, elegant pose capturing the energy of the dance. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "pirateShipBow",
+      "destination": "Raymond James Stadium",
+      "batch": 11,
+      "prompt": "Gold silhouette of a pirate ship bow/prow with a cannon firing (small blast/smoke puff). The bow has ornate carved details. This is the STADIUM ship, not a sailing vessel — it's a fixed structure with cannons. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "lightningBolt",
+      "destination": "Amalie Arena",
+      "batch": 11,
+      "prompt": "Gold silhouette of a bold, angular lightning bolt (sports/team logo style, not weather). Clean, powerful, geometric. Maybe with a subtle ice/arena floor line beneath it. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "meltingClock",
+      "destination": "The Dali Museum",
+      "batch": 11,
+      "prompt": "Gold silhouette of a Dali-style melting/drooping clock draped over the edge of a surface, the face distorted and flowing. Surrealist style. The clock hands visible but warped. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "cigarIcon",
+      "destination": "Ybor City",
+      "batch": 11,
+      "prompt": "Gold silhouette of a proud rooster standing with tail feathers fanned up, chest puffed out, beak open mid-crow. Detailed feather silhouette. NOT a cigar — this is the ROOSTER icon. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "bridgeArch",
+      "destination": "Tampa Riverwalk",
+      "batch": 11,
+      "prompt": "Gold silhouette of an elegant ornamental street lamp/lamp post (Victorian or Art Deco style) with a glowing light at the top. Maybe a subtle railing/walkway line beneath it suggesting the riverwalk. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "ringlingCircus",
+      "destination": "The Ringling",
+      "batch": 11,
+      "prompt": "Gold silhouette of a classic big-top circus tent with peaked top, pennant flag, and scalloped entrance. The grand, old-fashioned circus tent shape. Maybe a small ring/circle suggesting the performance ring inside. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "beachUmbrella",
+      "destination": "Clearwater Beach",
+      "batch": 11,
+      "prompt": "Gold silhouette of a tilted beach umbrella planted in sand with a beach chair beside it. Simple, iconic beach scene. Maybe a small wave line suggesting the shore. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "palmTree",
+      "destination": "Siesta Key Beach",
+      "batch": 11,
+      "prompt": "Gold silhouette of a starfish resting on a small sand mound/dune with a palm tree behind it. The starfish is the PRIMARY element (not the palm tree). Detailed five-armed starfish shape. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "guitarSilhouette",
+      "destination": "Seminole Hard Rock",
+      "batch": 11,
+      "prompt": "Gold silhouette of an electric guitar (the iconic Hard Rock guitar shape), standing upright. Clean, bold, instantly recognizable guitar outline. Maybe subtle building/hotel lines behind it suggesting the guitar-shaped tower. Pure gold on transparent background."
+    },
+    {
+      "svgKey": "donCesar",
+      "destination": "The Don CeSar",
+      "batch": 11,
+      "prompt": "Gold silhouette of the Don CeSar hotel's distinctive architecture — twin towers, arched windows, Mediterranean Revival style with domed/peaked roofline. The building's unique roofline profile is key for recognition. Pure gold on transparent background."
+    }
+  ]
+}
